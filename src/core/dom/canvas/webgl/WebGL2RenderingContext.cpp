@@ -22,6 +22,7 @@
 #include "StarfishConfig.h"
 #include "core/dom/canvas/webgl/WebGL2RenderingContext.h"
 #include "core/dom/ExecutionContext.h"
+#include "binding/generated/ArrayBufferOrSharedArrayBufferOrArrayBufferViewUnion.h"
 
 #include "platform/canvas/gl/IncludeGL.h"
 #include "platform/canvas/gl/GL.h"
@@ -363,6 +364,36 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         return scriptNull();
     }
     return WebGLRenderingContext::getParameter(pname);
+}
+
+// WebGLRenderingContextOverloads
+
+void WebGL2RenderingContext::bufferData(GLenum target, GLsizeiptr size,
+                                       GLenum usage)
+{
+    // INDIGO_TODO
+    //ENTER_CONTEXT_SCOPE();
+
+    WebGLRenderingContext::bufferData(target, size, usage);
+}
+
+void WebGL2RenderingContext::bufferData(GLenum target,
+                                       Optional<AllowSharedBufferSource> data,
+                                       GLenum usage)
+{
+    // INDIGO_TODO
+    //ENTER_CONTEXT_SCOPE();
+
+    WebGLRenderingContext::bufferData(target, data, usage);
+}
+
+void WebGL2RenderingContext::bufferData(GLenum target, ScriptArrayBufferView srcData, GLenum usage, unsigned long long srcOffset, GLuint length)
+{
+    // INDIGO_TODO
+    //ENTER_CONTEXT_SCOPE();
+
+    // INDIGO_TODO
+    STARFISH_UNIMPLEMENTED("INDIGO_WebGL2RenderingContext::bufferData");
 }
 
 } // namespace Starfish
