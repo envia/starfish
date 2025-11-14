@@ -1207,6 +1207,9 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
         return createTypedArray<Int32ArrayObjectRef>(scriptBindingInstance(),
                                                      std::vector<int>());
     }
+    case kUNPACK_PREMULTIPLY_ALPHA_WEBGL: {
+        return ValueRef::create(m_unpackPremultiplyAlpha);
+    }
     default:
         STARFISH_UNSUPPORTED("pname: 0x%04X(%s)", pname, __PRETTY_FUNCTION__);
         return scriptNull();
