@@ -278,18 +278,6 @@ PartialInterface,
 NoInterfaceObject]
 interface WebGL2RenderingContextOverloads
 {
-    // WebGL1:
-    undefined bufferData(GLenum target, GLsizeiptr size, GLenum usage);
-    undefined bufferData(GLenum target, AllowSharedBufferSource? srcData, GLenum usage);
-    // INDIGO_TODO
-    //undefined bufferSubData(GLenum target, GLintptr dstByteOffset, AllowSharedBufferSource srcData);
-    // WebGL2:
-    undefined bufferData(GLenum target, [AllowShared] ArrayBufferView srcData, GLenum usage, unsigned long long srcOffset,
-                         optional GLuint length = 0);
-    // INDIGO_TODO
-    //undefined bufferSubData(GLenum target, GLintptr dstByteOffset, [AllowShared] ArrayBufferView srcData,
-    //                        unsigned long long srcOffset, optional GLuint length = 0);
-
     // INDIGO_TODO
 };
 
