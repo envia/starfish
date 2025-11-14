@@ -34,6 +34,13 @@ public:
     DECLARE_SCRIPT_BINDING_REQUIRED_FUNCTIONS(WebGL2RenderingContext);
 
     ScriptValue getParameter(GLenum pname);
+
+    // Implement WebGLRenderingContextOverloads
+    void bufferData(GLenum target, GLsizeiptr size, GLenum usage);
+    void bufferData(GLenum target, Optional<AllowSharedBufferSource> data,
+                    GLenum usage);
+    // INDIGO_TODO: Starfish::WebGL2RenderingContext::bufferData(uint32_t&, Escargot::ArrayBufferViewRef*&, uint32_t&, uint64_t&, uint32_t&)
+    void bufferData(GLenum target, ScriptArrayBufferView srcData, GLenum usage, unsigned long long srcOffset, GLuint length);
 };
 
 } // namespace Starfish
