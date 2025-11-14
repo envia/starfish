@@ -32,6 +32,8 @@ public:
     ~WebGL2RenderingContext() override;
 
     DECLARE_SCRIPT_BINDING_REQUIRED_FUNCTIONS(WebGL2RenderingContext);
+
+    ScriptValue getParameter(GLenum pname);
 };
 
 } // namespace Starfish

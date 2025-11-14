@@ -337,8 +337,10 @@ private:
     GLenum m_unpackColorspaceConversion;
     WebGLContextAttributes m_attributes;
     bool m_isContextLost;
+protected:
     GL* m_gl;
 
+private:
     // The followings are gc managed.
     WebGLRenderingContextState* m_state;
     String* m_unpackColorSpace;

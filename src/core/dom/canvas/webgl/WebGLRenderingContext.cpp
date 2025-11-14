@@ -1078,8 +1078,17 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case GL_MAX_TEXTURE_IMAGE_UNITS:
     case GL_MAX_TEXTURE_SIZE:
     case GL_MAX_VARYING_VECTORS:
-    case GL_MAX_VERTEX_ATTRIBS:
-    case GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS:
+    case GL_MAX_VERTEX_ATTRIBS: {
+        std::vector<int> values(1);
+        m_gl->getIntegerv(pname, &values[0]);
+        return ValueRef::create(values[0]);
+    }
+    case GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS: {
+        std::vector<int> values(1);
+        m_gl->getIntegerv(pname, &values[0]);
+        STARFISH_LOG_WARN("INDIGO_TEMP: MAX_VERTEX_TEXTURE_IMAGE_UNITS=%d", values[0]);
+        return ValueRef::create(values[0]);
+    }
     case GL_MAX_VERTEX_UNIFORM_VECTORS:
     case GL_PACK_ALIGNMENT:
     case GL_RED_BITS:
@@ -1090,7 +1099,7 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case GL_STENCIL_CLEAR_VALUE:
     case GL_STENCIL_REF:
     case GL_SUBPIXEL_BITS:
-    case GL_MAX_SAMPLES:
+    case GL_MAX_SAMPLES: /* INDIGO_TODO: GL_MAX_SAMPLES (2) */
     case GL_UNPACK_ALIGNMENT: {
         std::vector<int> values(1);
         m_gl->getIntegerv(pname, &values[0]);
@@ -1116,7 +1125,7 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
         STARFISH_ASSERT(static_cast<GLint>(maybe.value()->glObject()) == value);
         return maybe.value()->scriptValue();
     }
-    case GL_FRAMEBUFFER_BINDING: {
+    case GL_FRAMEBUFFER_BINDING: /* Same as GL_DRAW_FRAMEBUFFER_BINDING */ {
         GLint value = -1;
         m_gl->getIntegerv(pname, &value);
 
@@ -1132,7 +1141,7 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
         STARFISH_ASSERT(static_cast<GLint>(maybe.value()->glObject()) == value);
         return maybe.value()->scriptValue();
     }
-    case GL_VERTEX_ARRAY_BINDING: {
+    case GL_VERTEX_ARRAY_BINDING: /* INDIGO_TODO: GL_VERTEX_ARRAY_BINDING (2) */ {
         // GL_VERTEX_ARRAY_BINDING_OES
         if (!isExtensionEnabled("OES_vertex_array_object")) {
             setGLError(GL_INVALID_ENUM);
