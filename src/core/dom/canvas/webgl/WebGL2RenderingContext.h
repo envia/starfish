@@ -52,6 +52,18 @@ public:
     // INDIGO_TODO: Starfish::WebGL2RenderingContext::texImage2D(uint32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Starfish::ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElement&)
     void texImage2D(GLenum target, GLint level, GLint internalFormat,
                     GLenum format, GLenum type, TexImageSource source);
+    // INDIGO_TODO: Starfish::WebGL2RenderingContext::uniformMatrix2fv(Optional<Starfish::WebGLUniformLocation*>&, bool&, Starfish::Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&)
+    void uniformMatrix2fv(Optional<WebGLUniformLocation*> uniform,
+                          GLboolean transpose, Float32List value,
+                          unsigned long long srcOffset, GLuint srcLength);
+    // INDIGO_TODO: Starfish::WebGL2RenderingContext::uniformMatrix3fv(Optional<Starfish::WebGLUniformLocation*>&, bool&, Starfish::Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&)
+    void uniformMatrix3fv(Optional<WebGLUniformLocation*> uniform,
+                          GLboolean transpose, Float32List value,
+                          unsigned long long srcOffset, GLuint srcLength);
+    // INDIGO_TODO: Starfish::WebGL2RenderingContext::uniformMatrix4fv(Optional<Starfish::WebGLUniformLocation*>&, bool&, Starfish::Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&)
+    void uniformMatrix4fv(Optional<WebGLUniformLocation*> uniform,
+                          GLboolean transpose, Float32List value,
+                          unsigned long long srcOffset, GLuint srcLength);
 };
 
 } // namespace Starfish

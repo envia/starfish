@@ -324,6 +324,13 @@ interface WebGL2RenderingContextOverloads
     //                        GLsizei height, GLenum format, GLenum type, [AllowShared] ArrayBufferView srcData,
     //                        unsigned long long srcOffset);
 
+    undefined uniformMatrix2fv(WebGLUniformLocation? location, GLboolean transpose, Float32List data,
+                               optional unsigned long long srcOffset = 0, optional GLuint srcLength = 0);
+    undefined uniformMatrix3fv(WebGLUniformLocation? location, GLboolean transpose, Float32List data,
+                               optional unsigned long long srcOffset = 0, optional GLuint srcLength = 0);
+    undefined uniformMatrix4fv(WebGLUniformLocation? location, GLboolean transpose, Float32List data,
+                               optional unsigned long long srcOffset = 0, optional GLuint srcLength = 0);
+
     // INDIGO_TODO
 };
 

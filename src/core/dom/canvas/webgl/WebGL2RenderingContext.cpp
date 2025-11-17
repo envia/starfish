@@ -22,6 +22,7 @@
 #include "StarfishConfig.h"
 #include "core/dom/canvas/webgl/WebGL2RenderingContext.h"
 #include "core/dom/ExecutionContext.h"
+#include "binding/generated/Float32ArrayOrSequenceOfGLfloatUnion.h"
 #include "binding/generated/ArrayBufferOrSharedArrayBufferOrArrayBufferViewUnion.h"
 #include "binding/generated/ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElementUnion.h"
 
@@ -442,6 +443,36 @@ void WebGL2RenderingContext::texImage2D(GLenum target, GLint level,
 
     WebGLRenderingContext::texImage2D(target, level, internalFormat, format,
                                       type, source);
+}
+
+void WebGL2RenderingContext::uniformMatrix2fv(
+    Optional<WebGLUniformLocation*> mayBeLocation, GLboolean transpose,
+    Float32List variant, unsigned long long srcOffset, GLuint srcLength)
+{
+    // INDIGO_TODO
+    //ENTER_CONTEXT_SCOPE();
+
+    WebGLRenderingContext::uniformMatrix2fv(mayBeLocation, transpose, variant);
+}
+
+void WebGL2RenderingContext::uniformMatrix3fv(
+    Optional<WebGLUniformLocation*> mayBeLocation, GLboolean transpose,
+    Float32List variant, unsigned long long srcOffset, GLuint srcLength)
+{
+    // INDIGO_TODO
+    //ENTER_CONTEXT_SCOPE();
+
+    WebGLRenderingContext::uniformMatrix3fv(mayBeLocation, transpose, variant);
+}
+
+void WebGL2RenderingContext::uniformMatrix4fv(
+    Optional<WebGLUniformLocation*> mayBeLocation, GLboolean transpose,
+    Float32List variant, unsigned long long srcOffset, GLuint srcLength)
+{
+    // INDIGO_TODO
+    //ENTER_CONTEXT_SCOPE();
+
+    WebGLRenderingContext::uniformMatrix4fv(mayBeLocation, transpose, variant);
 }
 
 } // namespace Starfish
