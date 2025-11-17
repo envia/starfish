@@ -290,6 +290,40 @@ interface WebGL2RenderingContextOverloads
     //undefined bufferSubData(GLenum target, GLintptr dstByteOffset, [AllowShared] ArrayBufferView srcData,
     //                        unsigned long long srcOffset, optional GLuint length = 0);
 
+    // WebGL1 legacy entrypoints:
+    undefined texImage2D(GLenum target, GLint level, GLint internalformat,
+                         GLsizei width, GLsizei height, GLint border, GLenum format,
+                         GLenum type, [AllowShared] ArrayBufferView? pixels);
+    undefined texImage2D(GLenum target, GLint level, GLint internalformat,
+                         GLenum format, GLenum type, TexImageSource source); // May throw DOMException
+
+    // INDIGO_TODO
+    //undefined texSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset,
+    //                        GLsizei width, GLsizei height,
+    //                        GLenum format, GLenum type, [AllowShared] ArrayBufferView? pixels);
+    //undefined texSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset,
+    //                        GLenum format, GLenum type, TexImageSource source); // May throw DOMException
+
+    // WebGL2 entrypoints:
+    undefined texImage2D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height,
+                         GLint border, GLenum format, GLenum type, GLintptr pboOffset);
+    undefined texImage2D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height,
+                         GLint border, GLenum format, GLenum type,
+                         TexImageSource source); // May throw DOMException
+    undefined texImage2D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height,
+                         GLint border, GLenum format, GLenum type, [AllowShared] ArrayBufferView srcData,
+                         unsigned long long srcOffset);
+
+    // INDIGO_TODO
+    //undefined texSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width,
+    //                        GLsizei height, GLenum format, GLenum type, GLintptr pboOffset);
+    //undefined texSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width,
+    //                        GLsizei height, GLenum format, GLenum type,
+    //                        TexImageSource source); // May throw DOMException
+    //undefined texSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width,
+    //                        GLsizei height, GLenum format, GLenum type, [AllowShared] ArrayBufferView srcData,
+    //                        unsigned long long srcOffset);
+
     // INDIGO_TODO
 };
 

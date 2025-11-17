@@ -23,6 +23,7 @@
 #include "core/dom/canvas/webgl/WebGL2RenderingContext.h"
 #include "core/dom/ExecutionContext.h"
 #include "binding/generated/ArrayBufferOrSharedArrayBufferOrArrayBufferViewUnion.h"
+#include "binding/generated/ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElementUnion.h"
 
 #include "platform/canvas/gl/IncludeGL.h"
 #include "platform/canvas/gl/GL.h"
@@ -394,6 +395,53 @@ void WebGL2RenderingContext::bufferData(GLenum target, ScriptArrayBufferView src
 
     // INDIGO_TODO
     STARFISH_UNIMPLEMENTED("INDIGO_WebGL2RenderingContext::bufferData");
+}
+
+void WebGL2RenderingContext::texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Escargot::ArrayBufferViewRef*&, uint64_t&)
+{
+    // INDIGO_TODO
+    //ENTER_CONTEXT_SCOPE();
+
+    // INDIGO_TODO
+    STARFISH_UNIMPLEMENTED("INDIGO_WebGL2RenderingContext::texImage2D");
+}
+
+void WebGL2RenderingContext::texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElement&)
+{
+    // INDIGO_TODO
+    //ENTER_CONTEXT_SCOPE();
+
+    // INDIGO_TODO
+    STARFISH_UNIMPLEMENTED("INDIGO_WebGL2RenderingContext::texImage2D");
+}
+
+void WebGL2RenderingContext::texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, int64_t&)
+{
+    // INDIGO_TODO
+    //ENTER_CONTEXT_SCOPE();
+
+    // INDIGO_TODO
+    STARFISH_UNIMPLEMENTED("INDIGO_WebGL2RenderingContext::texImage2D");
+}
+
+void WebGL2RenderingContext::texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Escargot::ArrayBufferViewRef*&)
+{
+    // INDIGO_TODO
+    //ENTER_CONTEXT_SCOPE();
+
+    // INDIGO_TODO
+    STARFISH_UNIMPLEMENTED("INDIGO_WebGL2RenderingContext::texImage2D");
+}
+
+void WebGL2RenderingContext::texImage2D(GLenum target, GLint level,
+                                        GLint internalFormat, GLenum format,
+                                        GLenum type, TexImageSource source)
+{
+    // INDIGO_TODO
+    //ENTER_CONTEXT_SCOPE();
+
+    WebGLRenderingContext::texImage2D(target, level, internalFormat, format,
+                                      type, source);
 }
 
 } // namespace Starfish

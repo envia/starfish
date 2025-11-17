@@ -35,12 +35,23 @@ public:
 
     ScriptValue getParameter(GLenum pname);
 
-    // Implement WebGLRenderingContextOverloads
+    // Implement WebGL2RenderingContextOverloads
     void bufferData(GLenum target, GLsizeiptr size, GLenum usage);
     void bufferData(GLenum target, Optional<AllowSharedBufferSource> data,
                     GLenum usage);
     // INDIGO_TODO: Starfish::WebGL2RenderingContext::bufferData(uint32_t&, Escargot::ArrayBufferViewRef*&, uint32_t&, uint64_t&, uint32_t&)
     void bufferData(GLenum target, ScriptArrayBufferView srcData, GLenum usage, unsigned long long srcOffset, GLuint length);
+    // INDIGO_TODO: Starfish::WebGL2RenderingContext::texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Escargot::ArrayBufferViewRef*&, uint64_t&)
+    void texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Escargot::ArrayBufferViewRef*&, uint64_t&);
+    // INDIGO_TODO: Starfish::WebGL2RenderingContext::texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Starfish::ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElement&)
+    void texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElement&);
+    // INDIGO_TODO: Starfish::WebGL2RenderingContext::texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, int64_t&)
+    void texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, int64_t&);
+    // INDIGO_TODO: Starfish::WebGL2RenderingContext::texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Escargot::ArrayBufferViewRef*&)
+    void texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Escargot::ArrayBufferViewRef*&);
+    // INDIGO_TODO: Starfish::WebGL2RenderingContext::texImage2D(uint32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Starfish::ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElement&)
+    void texImage2D(GLenum target, GLint level, GLint internalFormat,
+                    GLenum format, GLenum type, TexImageSource source);
 };
 
 } // namespace Starfish
