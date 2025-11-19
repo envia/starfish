@@ -48,9 +48,9 @@ interface WebGLTransformFeedback : WebGLObject {
 interface WebGLVertexArrayObject : WebGLObject {
 };
 
-typedef ([AllowShared] Uint32Array or sequence<GLuint>) Uint32List;
+typedef (Uint32Array or sequence<GLuint>) Uint32List;
 
-interface mixin WebGL2RenderingContextBase
+interface WebGL2RenderingContextBase
 {
     const GLenum READ_BUFFER                                   = 0x0C02;
     const GLenum UNPACK_ROW_LENGTH                             = 0x0CF2;
@@ -500,7 +500,7 @@ interface mixin WebGL2RenderingContextBase
     undefined bindVertexArray(WebGLVertexArrayObject? array);
 };
 
-interface mixin WebGL2RenderingContextOverloads
+interface WebGL2RenderingContextOverloads
 {
     // WebGL1:
     undefined bufferData(GLenum target, GLsizeiptr size, GLenum usage);
@@ -598,7 +598,7 @@ interface mixin WebGL2RenderingContextOverloads
 interface WebGL2RenderingContext
 {
 };
-WebGL2RenderingContext includes WebGLRenderingContextBase;
-WebGL2RenderingContext includes WebGL2RenderingContextBase;
-WebGL2RenderingContext includes WebGL2RenderingContextOverloads;
+WebGL2RenderingContext implements WebGLRenderingContextBase;
+WebGL2RenderingContext implements WebGL2RenderingContextBase;
+WebGL2RenderingContext implements WebGL2RenderingContextOverloads;
 
