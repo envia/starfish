@@ -36,20 +36,20 @@ public:
     void compressedTexSubImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, int32_t&, int64_t&){}
     void readPixels(int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Escargot::ArrayBufferViewRef*&, uint64_t&){}
     void texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Escargot::ArrayBufferViewRef*&, uint64_t&){}
-    void texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Starfish::ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElement&){}
+    void texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElement&){}
     void texSubImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Escargot::ArrayBufferViewRef*&, uint64_t&){}
-    void texSubImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Starfish::ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElement&){}
-    void uniform1fv(Optional<Starfish::WebGLUniformLocation*>&, Starfish::Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
-    void uniform1iv(Optional<Starfish::WebGLUniformLocation*>&, Starfish::Int32ArrayOrSequenceOfGLint&, uint64_t&, uint32_t&){}
-    void uniform2fv(Optional<Starfish::WebGLUniformLocation*>&, Starfish::Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
-    void uniform2iv(Optional<Starfish::WebGLUniformLocation*>&, Starfish::Int32ArrayOrSequenceOfGLint&, uint64_t&, uint32_t&){}
-    void uniform3fv(Optional<Starfish::WebGLUniformLocation*>&, Starfish::Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
-    void uniform3iv(Optional<Starfish::WebGLUniformLocation*>&, Starfish::Int32ArrayOrSequenceOfGLint&, uint64_t&, uint32_t&){}
-    void uniform4fv(Optional<Starfish::WebGLUniformLocation*>&, Starfish::Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
-    void uniform4iv(Optional<Starfish::WebGLUniformLocation*>&, Starfish::Int32ArrayOrSequenceOfGLint&, uint64_t&, uint32_t&){}
-    void uniformMatrix2fv(Optional<Starfish::WebGLUniformLocation*>&, bool&, Starfish::Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
-    void uniformMatrix3fv(Optional<Starfish::WebGLUniformLocation*>&, bool&, Starfish::Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
-    void uniformMatrix4fv(Optional<Starfish::WebGLUniformLocation*>&, bool&, Starfish::Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
+    void texSubImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElement&){}
+    void uniform1fv(Optional<WebGLUniformLocation*>&, Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
+    void uniform1iv(Optional<WebGLUniformLocation*>&, Int32ArrayOrSequenceOfGLint&, uint64_t&, uint32_t&){}
+    void uniform2fv(Optional<WebGLUniformLocation*>&, Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
+    void uniform2iv(Optional<WebGLUniformLocation*>&, Int32ArrayOrSequenceOfGLint&, uint64_t&, uint32_t&){}
+    void uniform3fv(Optional<WebGLUniformLocation*>&, Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
+    void uniform3iv(Optional<WebGLUniformLocation*>&, Int32ArrayOrSequenceOfGLint&, uint64_t&, uint32_t&){}
+    void uniform4fv(Optional<WebGLUniformLocation*>&, Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
+    void uniform4iv(Optional<WebGLUniformLocation*>&, Int32ArrayOrSequenceOfGLint&, uint64_t&, uint32_t&){}
+    void uniformMatrix2fv(Optional<WebGLUniformLocation*>&, bool&, Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
+    void uniformMatrix3fv(Optional<WebGLUniformLocation*>&, bool&, Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
+    void uniformMatrix4fv(Optional<WebGLUniformLocation*>&, bool&, Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
 };
 
 } // namespace Starfish
