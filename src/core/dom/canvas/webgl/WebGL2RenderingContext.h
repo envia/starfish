@@ -27,6 +27,29 @@
 namespace Starfish {
 
 class WebGL2RenderingContext : public WebGLRenderingContext {
+public:
+    void bufferData(uint32_t&, Escargot::ArrayBufferViewRef*&, uint32_t&, uint64_t&, uint32_t&){}
+    void bufferSubData(uint32_t&, int64_t&, Escargot::ArrayBufferViewRef*&, uint64_t&, uint32_t&){}
+    void compressedTexImage2D(uint32_t&, int32_t&, uint32_t&, int32_t&, int32_t&, int32_t&, Escargot::ArrayBufferViewRef*&, uint64_t&, uint32_t&){}
+    void compressedTexImage2D(uint32_t&, int32_t&, uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int64_t&){}
+    void compressedTexSubImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, Escargot::ArrayBufferViewRef*&, uint64_t&, uint32_t&){}
+    void compressedTexSubImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, int32_t&, int64_t&){}
+    void readPixels(int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Escargot::ArrayBufferViewRef*&, uint64_t&){}
+    void texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Escargot::ArrayBufferViewRef*&, uint64_t&){}
+    void texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Starfish::ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElement&){}
+    void texSubImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Escargot::ArrayBufferViewRef*&, uint64_t&){}
+    void texSubImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Starfish::ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElement&){}
+    void uniform1fv(Optional<Starfish::WebGLUniformLocation*>&, Starfish::Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
+    void uniform1iv(Optional<Starfish::WebGLUniformLocation*>&, Starfish::Int32ArrayOrSequenceOfGLint&, uint64_t&, uint32_t&){}
+    void uniform2fv(Optional<Starfish::WebGLUniformLocation*>&, Starfish::Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
+    void uniform2iv(Optional<Starfish::WebGLUniformLocation*>&, Starfish::Int32ArrayOrSequenceOfGLint&, uint64_t&, uint32_t&){}
+    void uniform3fv(Optional<Starfish::WebGLUniformLocation*>&, Starfish::Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
+    void uniform3iv(Optional<Starfish::WebGLUniformLocation*>&, Starfish::Int32ArrayOrSequenceOfGLint&, uint64_t&, uint32_t&){}
+    void uniform4fv(Optional<Starfish::WebGLUniformLocation*>&, Starfish::Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
+    void uniform4iv(Optional<Starfish::WebGLUniformLocation*>&, Starfish::Int32ArrayOrSequenceOfGLint&, uint64_t&, uint32_t&){}
+    void uniformMatrix2fv(Optional<Starfish::WebGLUniformLocation*>&, bool&, Starfish::Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
+    void uniformMatrix3fv(Optional<Starfish::WebGLUniformLocation*>&, bool&, Starfish::Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
+    void uniformMatrix4fv(Optional<Starfish::WebGLUniformLocation*>&, bool&, Starfish::Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
 };
 
 } // namespace Starfish
