@@ -22,11 +22,42 @@
 
 #if defined(STARFISH_ENABLE_CANVAS) && defined(STARFISH_ENABLE_WEBGL)
 
+#include "core/dom/canvas/webgl/WebGLObject.h"
 #include "core/dom/canvas/webgl/WebGLRenderingContext.h"
 
 namespace Starfish {
 
 class Uint32ArrayOrSequenceOfGLuint;
+
+class WebGLQuery : public WebGLObject {
+public:
+    void init(ScriptBindingInstance* instance, void* domObjectPointer) override;
+    bool isWebGLQuery() const override;
+};
+
+class WebGLSampler : public WebGLObject {
+public:
+    void init(ScriptBindingInstance* instance, void* domObjectPointer) override;
+    bool isWebGLSampler() const override;
+};
+
+class WebGLSync : public WebGLObject {
+public:
+    void init(ScriptBindingInstance* instance, void* domObjectPointer) override;
+    bool isWebGLSync() const override;
+};
+
+class WebGLTransformFeedback : public WebGLObject {
+public:
+    void init(ScriptBindingInstance* instance, void* domObjectPointer) override;
+    bool isWebGLTransformFeedback() const override;
+};
+
+class WebGLVertexArrayObject : public WebGLObject {
+public:
+    void init(ScriptBindingInstance* instance, void* domObjectPointer) override;
+    bool isWebGLVertexArrayObject() const override;
+};
 
 class WebGL2RenderingContext : public WebGLRenderingContext {
 public:
