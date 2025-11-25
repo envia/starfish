@@ -26,6 +26,8 @@
 
 namespace Starfish {
 
+class Uint32ArrayOrSequenceOfGLuint;
+
 class WebGL2RenderingContext : public WebGLRenderingContext {
 public:
     void beginQuery(){}
