@@ -249,7 +249,7 @@ void WebGLRenderingContext::onResize()
     });
 #endif
 
-GLenum WebGLRenderingContext::getError()
+GLenum WebGLRenderingContextBase::getError()
 {
     GLContextScope contextScope(m_context);
 
@@ -308,26 +308,26 @@ void WebGLRenderingContext::setUnpackColorSpace(String* value)
     }
 }
 
-Optional<WebGLContextAttributes> WebGLRenderingContext::getContextAttributes()
+Optional<WebGLContextAttributes> WebGLRenderingContextBase::getContextAttributes()
 {
     ENTER_CONTEXT_SCOPE(Optional<WebGLContextAttributes>());
 
     return m_attributes;
 }
 
-Optional<GCVector<String*>> WebGLRenderingContext::getSupportedExtensions()
+Optional<GCVector<String*>> WebGLRenderingContextBase::getSupportedExtensions()
 {
     ENTER_CONTEXT_SCOPE(Optional<GCVector<String*>>());
 
     return WebGLExtensionRegistry::instance().getSupportedExtensions();
 }
 
-bool WebGLRenderingContext::isContextLost()
+bool WebGLRenderingContextBase::isContextLost()
 {
     return m_isContextLost;
 }
 
-Optional<ScriptObject> WebGLRenderingContext::getExtension(
+Optional<ScriptObject> WebGLRenderingContextBase::getExtension(
     String* requestedName)
 {
     ENTER_CONTEXT_SCOPE(Optional<ScriptObject>());
@@ -357,14 +357,14 @@ Optional<ScriptObject> WebGLRenderingContext::getExtension(
     return object;
 }
 
-void WebGLRenderingContext::activeTexture(GLenum texture)
+void WebGLRenderingContextBase::activeTexture(GLenum texture)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->activeTexture(texture);
 }
 
-void WebGLRenderingContext::attachShader(WebGLProgram* program,
+void WebGLRenderingContextBase::attachShader(WebGLProgram* program,
                                          WebGLShader* shader)
 {
     if (!isFromCurrentContext(program) || !isFromCurrentContext(shader)) {
@@ -378,7 +378,7 @@ void WebGLRenderingContext::attachShader(WebGLProgram* program,
     program->addAttachedShader(shader);
 }
 
-void WebGLRenderingContext::bindAttribLocation(WebGLProgram* program,
+void WebGLRenderingContextBase::bindAttribLocation(WebGLProgram* program,
                                                GLuint index, String* name)
 {
     ENTER_CONTEXT_SCOPE();
@@ -395,7 +395,7 @@ void WebGLRenderingContext::bindAttribLocation(WebGLProgram* program,
     m_gl->bindAttribLocation(program->glObject(), index, CSTR(name));
 }
 
-void WebGLRenderingContext::bindBuffer(GLenum target,
+void WebGLRenderingContextBase::bindBuffer(GLenum target,
                                        Optional<WebGLBuffer*> buffer)
 {
     ENTER_CONTEXT_SCOPE();
@@ -425,7 +425,7 @@ void WebGLRenderingContext::bindBuffer(GLenum target,
     }
 }
 
-void WebGLRenderingContext::bindFramebuffer(
+void WebGLRenderingContextBase::bindFramebuffer(
     GLenum target, Optional<WebGLFramebuffer*> maybeFramebuffer)
 {
     ENTER_CONTEXT_SCOPE();
@@ -456,7 +456,7 @@ void WebGLRenderingContext::bindFramebuffer(
     }
 }
 
-void WebGLRenderingContext::bindRenderbuffer(
+void WebGLRenderingContextBase::bindRenderbuffer(
     GLenum target, Optional<WebGLRenderbuffer*> maybeRenderbuffer)
 {
     ENTER_CONTEXT_SCOPE();
@@ -485,7 +485,7 @@ void WebGLRenderingContext::bindRenderbuffer(
     }
 }
 
-void WebGLRenderingContext::bindTexture(GLenum target,
+void WebGLRenderingContextBase::bindTexture(GLenum target,
                                         Optional<WebGLTexture*> maybeTexture)
 {
     ENTER_CONTEXT_SCOPE();
@@ -511,7 +511,7 @@ void WebGLRenderingContext::bindTexture(GLenum target,
     }
 }
 
-void WebGLRenderingContext::blendColor(GLclampf red, GLclampf green,
+void WebGLRenderingContextBase::blendColor(GLclampf red, GLclampf green,
                                        GLclampf blue, GLclampf alpha)
 {
     ENTER_CONTEXT_SCOPE();
@@ -519,14 +519,14 @@ void WebGLRenderingContext::blendColor(GLclampf red, GLclampf green,
     m_gl->blendColor(red, green, blue, alpha);
 }
 
-void WebGLRenderingContext::blendEquation(GLenum mode)
+void WebGLRenderingContextBase::blendEquation(GLenum mode)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->blendEquation(mode);
 }
 
-void WebGLRenderingContext::blendEquationSeparate(GLenum modeRGB,
+void WebGLRenderingContextBase::blendEquationSeparate(GLenum modeRGB,
                                                   GLenum modeAlpha)
 {
     ENTER_CONTEXT_SCOPE();
@@ -534,14 +534,14 @@ void WebGLRenderingContext::blendEquationSeparate(GLenum modeRGB,
     m_gl->blendEquationSeparate(modeRGB, modeAlpha);
 }
 
-void WebGLRenderingContext::blendFunc(GLenum sfactor, GLenum dfactor)
+void WebGLRenderingContextBase::blendFunc(GLenum sfactor, GLenum dfactor)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->blendFunc(sfactor, dfactor);
 }
 
-void WebGLRenderingContext::blendFuncSeparate(GLenum srcRGB, GLenum dstRGB,
+void WebGLRenderingContextBase::blendFuncSeparate(GLenum srcRGB, GLenum dstRGB,
                                               GLenum srcAlpha, GLenum dstAlpha)
 {
     ENTER_CONTEXT_SCOPE();
@@ -549,7 +549,7 @@ void WebGLRenderingContext::blendFuncSeparate(GLenum srcRGB, GLenum dstRGB,
     m_gl->blendFuncSeparate(srcRGB, dstRGB, srcAlpha, dstAlpha);
 }
 
-GLenum WebGLRenderingContext::checkFramebufferStatus(GLenum target)
+GLenum WebGLRenderingContextBase::checkFramebufferStatus(GLenum target)
 {
     ENTER_CONTEXT_SCOPE(GL_FRAMEBUFFER_UNSUPPORTED);
 
@@ -560,7 +560,7 @@ GLenum WebGLRenderingContext::checkFramebufferStatus(GLenum target)
     return m_gl->checkFramebufferStatus(target);
 }
 
-void WebGLRenderingContext::clear(uint32_t mask)
+void WebGLRenderingContextBase::clear(uint32_t mask)
 {
     ENTER_CONTEXT_SCOPE();
 
@@ -570,7 +570,7 @@ void WebGLRenderingContext::clear(uint32_t mask)
     m_ownerHTMLCanvasElement->setNeedsComposite();
 }
 
-void WebGLRenderingContext::clearColor(float red, float green, float blue,
+void WebGLRenderingContextBase::clearColor(float red, float green, float blue,
                                        float alpha)
 {
     ENTER_CONTEXT_SCOPE();
@@ -582,7 +582,7 @@ void WebGLRenderingContext::clearColor(float red, float green, float blue,
     TRACE(WEBGL_V, KV(red), KV(green), KV(blue), KV(alpha));
 }
 
-void WebGLRenderingContext::clearDepth(GLclampf depth)
+void WebGLRenderingContextBase::clearDepth(GLclampf depth)
 {
     ENTER_CONTEXT_SCOPE();
 
@@ -597,7 +597,7 @@ void WebGLRenderingContext::clearDepth(GLclampf depth)
     TRACE(WEBGL_V, KV(depth));
 }
 
-void WebGLRenderingContext::clearStencil(GLint s)
+void WebGLRenderingContextBase::clearStencil(GLint s)
 {
     ENTER_CONTEXT_SCOPE();
 
@@ -611,7 +611,7 @@ void WebGLRenderingContext::clearStencil(GLint s)
     TRACE(WEBGL_V, KV(s));
 }
 
-void WebGLRenderingContext::colorMask(GLboolean red, GLboolean green,
+void WebGLRenderingContextBase::colorMask(GLboolean red, GLboolean green,
                                       GLboolean blue, GLboolean alpha)
 {
     ENTER_CONTEXT_SCOPE();
@@ -619,7 +619,7 @@ void WebGLRenderingContext::colorMask(GLboolean red, GLboolean green,
     m_gl->colorMask(red, green, blue, alpha);
 }
 
-void WebGLRenderingContext::compileShader(WebGLShader* shader)
+void WebGLRenderingContextBase::compileShader(WebGLShader* shader)
 {
     ENTER_CONTEXT_SCOPE();
 
@@ -631,7 +631,7 @@ void WebGLRenderingContext::compileShader(WebGLShader* shader)
     m_gl->compileShader(shader->glObject());
 }
 
-void WebGLRenderingContext::copyTexImage2D(GLenum target, GLint level,
+void WebGLRenderingContextBase::copyTexImage2D(GLenum target, GLint level,
                                            GLenum internalformat, GLint x,
                                            GLint y, GLsizei width,
                                            GLsizei height, GLint border)
@@ -647,7 +647,7 @@ void WebGLRenderingContext::copyTexImage2D(GLenum target, GLint level,
                          border);
 }
 
-void WebGLRenderingContext::copyTexSubImage2D(GLenum target, GLint level,
+void WebGLRenderingContextBase::copyTexSubImage2D(GLenum target, GLint level,
                                               GLint xoffset, GLint yoffset,
                                               GLint x, GLint y, GLsizei width,
                                               GLsizei height)
@@ -662,7 +662,7 @@ void WebGLRenderingContext::copyTexSubImage2D(GLenum target, GLint level,
                             height);
 }
 
-WebGLBuffer* WebGLRenderingContext::createBuffer()
+WebGLBuffer* WebGLRenderingContextBase::createBuffer()
 {
     ENTER_CONTEXT_SCOPE(nullptr);
 
@@ -671,7 +671,7 @@ WebGLBuffer* WebGLRenderingContext::createBuffer()
     return new WebGLBuffer(scriptBindingInstance(), this, buffer);
 }
 
-WebGLFramebuffer* WebGLRenderingContext::createFramebuffer()
+WebGLFramebuffer* WebGLRenderingContextBase::createFramebuffer()
 {
     ENTER_CONTEXT_SCOPE(nullptr);
 
@@ -680,14 +680,14 @@ WebGLFramebuffer* WebGLRenderingContext::createFramebuffer()
     return new WebGLFramebuffer(scriptBindingInstance(), this, fbo);
 }
 
-WebGLProgram* WebGLRenderingContext::createProgram()
+WebGLProgram* WebGLRenderingContextBase::createProgram()
 {
     ENTER_CONTEXT_SCOPE(nullptr);
     return new WebGLProgram(scriptBindingInstance(), this,
                             m_gl->createProgram());
 }
 
-WebGLRenderbuffer* WebGLRenderingContext::createRenderbuffer()
+WebGLRenderbuffer* WebGLRenderingContextBase::createRenderbuffer()
 {
     ENTER_CONTEXT_SCOPE(nullptr);
 
@@ -696,7 +696,7 @@ WebGLRenderbuffer* WebGLRenderingContext::createRenderbuffer()
     return new WebGLRenderbuffer(scriptBindingInstance(), this, rbo);
 }
 
-WebGLShader* WebGLRenderingContext::createShader(unsigned long type)
+WebGLShader* WebGLRenderingContextBase::createShader(unsigned long type)
 {
     ENTER_CONTEXT_SCOPE(nullptr);
 
@@ -704,7 +704,7 @@ WebGLShader* WebGLRenderingContext::createShader(unsigned long type)
                            m_gl->createShader(type));
 }
 
-WebGLTexture* WebGLRenderingContext::createTexture()
+WebGLTexture* WebGLRenderingContextBase::createTexture()
 {
     ENTER_CONTEXT_SCOPE(nullptr);
 
@@ -713,30 +713,30 @@ WebGLTexture* WebGLRenderingContext::createTexture()
     return new WebGLTexture(scriptBindingInstance(), this, textureId);
 }
 
-void WebGLRenderingContext::cullFace(GLenum mode)
+void WebGLRenderingContextBase::cullFace(GLenum mode)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->cullFace(mode);
 }
 
-#define IMPLEMENT_DELETE_BUFFERS(Name, Deleter)                            \
-    void WebGLRenderingContext::delete##Name(Optional<WebGL##Name*> maybe) \
-    {                                                                      \
-        ENTER_CONTEXT_SCOPE();                                             \
-        if (maybe.hasValue()) {                                            \
-            WebGL##Name* value = maybe.value();                            \
-            if (!isFromCurrentContext(value)) {                            \
-                setGLError(GL_INVALID_OPERATION);                          \
-                return;                                                    \
-            }                                                              \
-            if (value->isDeleted()) {                                      \
-                return;                                                    \
-            }                                                              \
-            GLuint buffer = value->glObject();                             \
-            Deleter(1, &buffer);                                           \
-            value->markDeleted();                                          \
-        }                                                                  \
+#define IMPLEMENT_DELETE_BUFFERS(Name, Deleter)                                \
+    void WebGLRenderingContextBase::delete##Name(Optional<WebGL##Name*> maybe) \
+    {                                                                          \
+        ENTER_CONTEXT_SCOPE();                                                 \
+        if (maybe.hasValue()) {                                                \
+            WebGL##Name* value = maybe.value();                                \
+            if (!isFromCurrentContext(value)) {                                \
+                setGLError(GL_INVALID_OPERATION);                              \
+                return;                                                        \
+            }                                                                  \
+            if (value->isDeleted()) {                                          \
+                return;                                                        \
+            }                                                                  \
+            GLuint buffer = value->glObject();                                 \
+            Deleter(1, &buffer);                                               \
+            value->markDeleted();                                              \
+        }                                                                      \
     }
 
 IMPLEMENT_DELETE_BUFFERS(Buffer, m_gl->deleteBuffers);
@@ -745,50 +745,50 @@ IMPLEMENT_DELETE_BUFFERS(Renderbuffer, m_gl->deleteRenderbuffers);
 IMPLEMENT_DELETE_BUFFERS(Texture, m_gl->deleteTextures);
 #undef IMPLEMENT_DELETE_BUFFERS
 
-#define IMPLEMENT_DELETE_OBJECT(Name, Deleter)                             \
-    void WebGLRenderingContext::delete##Name(Optional<WebGL##Name*> maybe) \
-    {                                                                      \
-        ENTER_CONTEXT_SCOPE();                                             \
-        if (maybe.hasValue()) {                                            \
-            WebGL##Name* value = maybe.value();                            \
-            if (!isFromCurrentContext(value)) {                            \
-                setGLError(GL_INVALID_OPERATION);                          \
-                return;                                                    \
-            }                                                              \
-            if (value->isDeleted()) {                                      \
-                return;                                                    \
-            }                                                              \
-            Deleter(value->glObject());                                    \
-            value->markDeleted();                                          \
-        }                                                                  \
+#define IMPLEMENT_DELETE_OBJECT(Name, Deleter)                                 \
+    void WebGLRenderingContextBase::delete##Name(Optional<WebGL##Name*> maybe) \
+    {                                                                          \
+        ENTER_CONTEXT_SCOPE();                                                 \
+        if (maybe.hasValue()) {                                                \
+            WebGL##Name* value = maybe.value();                                \
+            if (!isFromCurrentContext(value)) {                                \
+                setGLError(GL_INVALID_OPERATION);                              \
+                return;                                                        \
+            }                                                                  \
+            if (value->isDeleted()) {                                          \
+                return;                                                        \
+            }                                                                  \
+            Deleter(value->glObject());                                        \
+            value->markDeleted();                                              \
+        }                                                                      \
     }
 
 IMPLEMENT_DELETE_OBJECT(Program, m_gl->deleteProgram);
 IMPLEMENT_DELETE_OBJECT(Shader, m_gl->deleteShader);
 #undef IMPLEMENT_DELETE_OBJECT
 
-void WebGLRenderingContext::depthFunc(GLenum func)
+void WebGLRenderingContextBase::depthFunc(GLenum func)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->depthFunc(func);
 }
 
-void WebGLRenderingContext::depthMask(GLboolean flag)
+void WebGLRenderingContextBase::depthMask(GLboolean flag)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->depthMask(flag);
 }
 
-void WebGLRenderingContext::depthRange(GLclampf zNear, GLclampf zFar)
+void WebGLRenderingContextBase::depthRange(GLclampf zNear, GLclampf zFar)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->depthRangef(zNear, zFar);
 }
 
-void WebGLRenderingContext::detachShader(WebGLProgram* program,
+void WebGLRenderingContextBase::detachShader(WebGLProgram* program,
                                          WebGLShader* shader)
 {
     ENTER_CONTEXT_SCOPE();
@@ -800,21 +800,21 @@ void WebGLRenderingContext::detachShader(WebGLProgram* program,
     program->removeDetachedShader(shader);
 }
 
-void WebGLRenderingContext::disable(GLenum cap)
+void WebGLRenderingContextBase::disable(GLenum cap)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->disable(cap);
 }
 
-void WebGLRenderingContext::disableVertexAttribArray(GLuint index)
+void WebGLRenderingContextBase::disableVertexAttribArray(GLuint index)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->disableVertexAttribArray(index);
 }
 
-void WebGLRenderingContext::drawArrays(GLenum mode, GLint first, GLsizei count)
+void WebGLRenderingContextBase::drawArrays(GLenum mode, GLint first, GLsizei count)
 {
     ENTER_CONTEXT_SCOPE();
 
@@ -836,7 +836,7 @@ void WebGLRenderingContext::drawArrays(GLenum mode, GLint first, GLsizei count)
     m_ownerHTMLCanvasElement->setNeedsComposite();
 }
 
-void WebGLRenderingContext::drawElements(GLenum mode, GLsizei count,
+void WebGLRenderingContextBase::drawElements(GLenum mode, GLsizei count,
                                          GLenum type, GLintptr offset)
 {
     ENTER_CONTEXT_SCOPE();
@@ -866,14 +866,14 @@ void WebGLRenderingContext::drawElements(GLenum mode, GLsizei count,
     m_ownerHTMLCanvasElement->setNeedsComposite();
 }
 
-void WebGLRenderingContext::enable(GLenum cap)
+void WebGLRenderingContextBase::enable(GLenum cap)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->enable(cap);
 }
 
-void WebGLRenderingContext::enableVertexAttribArray(GLuint index)
+void WebGLRenderingContextBase::enableVertexAttribArray(GLuint index)
 {
     ENTER_CONTEXT_SCOPE();
     /*
@@ -885,7 +885,7 @@ void WebGLRenderingContext::enableVertexAttribArray(GLuint index)
     m_gl->enableVertexAttribArray(index);
 }
 
-void WebGLRenderingContext::finish()
+void WebGLRenderingContextBase::finish()
 {
     ENTER_CONTEXT_SCOPE();
 
@@ -895,7 +895,7 @@ void WebGLRenderingContext::finish()
     m_ownerHTMLCanvasElement->setNeedsComposite();
 }
 
-void WebGLRenderingContext::flushWebGL()
+void WebGLRenderingContextBase::flushWebGL()
 {
     ENTER_CONTEXT_SCOPE();
 
@@ -905,7 +905,7 @@ void WebGLRenderingContext::flushWebGL()
     m_ownerHTMLCanvasElement->setNeedsComposite();
 }
 
-void WebGLRenderingContext::framebufferRenderbuffer(
+void WebGLRenderingContextBase::framebufferRenderbuffer(
     GLenum target, GLenum attachment, GLenum renderbuffertarget,
     Optional<WebGLRenderbuffer*> maybeRenderbuffer)
 {
@@ -938,7 +938,7 @@ void WebGLRenderingContext::framebufferRenderbuffer(
     }
 }
 
-void WebGLRenderingContext::framebufferTexture2D(
+void WebGLRenderingContextBase::framebufferTexture2D(
     GLenum target, GLenum attachment, GLenum textarget,
     Optional<WebGLTexture*> maybeTexture, GLint level)
 {
@@ -976,21 +976,21 @@ void WebGLRenderingContext::framebufferTexture2D(
     }
 }
 
-void WebGLRenderingContext::frontFace(GLenum mode)
+void WebGLRenderingContextBase::frontFace(GLenum mode)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->frontFace(mode);
 }
 
-void WebGLRenderingContext::generateMipmap(GLenum target)
+void WebGLRenderingContextBase::generateMipmap(GLenum target)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->generateMipmap(target);
 }
 
-void WebGLRenderingContext::shaderSource(WebGLShader* shader, String* source)
+void WebGLRenderingContextBase::shaderSource(WebGLShader* shader, String* source)
 {
     ENTER_CONTEXT_SCOPE();
 
@@ -1000,14 +1000,14 @@ void WebGLRenderingContext::shaderSource(WebGLShader* shader, String* source)
     m_gl->shaderSource(shader->glObject(), 1, sourceArray, nullptr);
 }
 
-void WebGLRenderingContext::stencilFunc(GLenum func, GLint ref, GLuint mask)
+void WebGLRenderingContextBase::stencilFunc(GLenum func, GLint ref, GLuint mask)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->stencilFunc(func, ref, mask);
 }
 
-void WebGLRenderingContext::stencilFuncSeparate(GLenum face, GLenum func,
+void WebGLRenderingContextBase::stencilFuncSeparate(GLenum face, GLenum func,
                                                 GLint ref, GLuint mask)
 {
     ENTER_CONTEXT_SCOPE();
@@ -1015,28 +1015,28 @@ void WebGLRenderingContext::stencilFuncSeparate(GLenum face, GLenum func,
     m_gl->stencilFuncSeparate(face, func, ref, mask);
 }
 
-void WebGLRenderingContext::stencilMask(GLuint mask)
+void WebGLRenderingContextBase::stencilMask(GLuint mask)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->stencilMask(mask);
 }
 
-void WebGLRenderingContext::stencilMaskSeparate(GLenum face, GLuint mask)
+void WebGLRenderingContextBase::stencilMaskSeparate(GLenum face, GLuint mask)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->stencilMaskSeparate(face, mask);
 }
 
-void WebGLRenderingContext::stencilOp(GLenum fail, GLenum zfail, GLenum zpass)
+void WebGLRenderingContextBase::stencilOp(GLenum fail, GLenum zfail, GLenum zpass)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->stencilOp(fail, zfail, zpass);
 }
 
-void WebGLRenderingContext::stencilOpSeparate(GLenum face, GLenum fail,
+void WebGLRenderingContextBase::stencilOpSeparate(GLenum face, GLenum fail,
                                               GLenum zfail, GLenum zpass)
 {
     ENTER_CONTEXT_SCOPE();
@@ -1044,7 +1044,7 @@ void WebGLRenderingContext::stencilOpSeparate(GLenum face, GLenum fail,
     m_gl->stencilOpSeparate(face, fail, zfail, zpass);
 }
 
-ScriptValue WebGLRenderingContext::getBufferParameter(GLenum target,
+ScriptValue WebGLRenderingContextBase::getBufferParameter(GLenum target,
                                                       GLenum pname)
 {
     ENTER_CONTEXT_SCOPE(scriptNull());
@@ -1062,7 +1062,7 @@ ScriptValue WebGLRenderingContext::getBufferParameter(GLenum target,
         pname == GL_BUFFER_SIZE ? value : static_cast<GLenum>(value));
 }
 
-ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
+ScriptValue WebGLRenderingContextBase::getParameter(GLenum pname)
 {
     ENTER_CONTEXT_SCOPE(scriptNull());
 
@@ -1203,7 +1203,7 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     return scriptNull();
 }
 
-WebGLActiveInfo* WebGLRenderingContext::getActiveAttrib(WebGLProgram* program,
+WebGLActiveInfo* WebGLRenderingContextBase::getActiveAttrib(WebGLProgram* program,
                                                         GLuint index)
 {
     ENTER_CONTEXT_SCOPE(nullptr);
@@ -1232,7 +1232,7 @@ WebGLActiveInfo* WebGLRenderingContext::getActiveAttrib(WebGLProgram* program,
                                String::createASCIIString(name.data(), length));
 }
 
-WebGLActiveInfo* WebGLRenderingContext::getActiveUniform(WebGLProgram* program,
+WebGLActiveInfo* WebGLRenderingContextBase::getActiveUniform(WebGLProgram* program,
                                                          GLuint index)
 {
     ENTER_CONTEXT_SCOPE(nullptr);
@@ -1261,7 +1261,7 @@ WebGLActiveInfo* WebGLRenderingContext::getActiveUniform(WebGLProgram* program,
                                String::createASCIIString(name.data(), length));
 }
 
-Optional<GCVector<WebGLShader*>> WebGLRenderingContext::getAttachedShaders(
+Optional<GCVector<WebGLShader*>> WebGLRenderingContextBase::getAttachedShaders(
     WebGLProgram* program)
 {
     ENTER_CONTEXT_SCOPE(nullptr);
@@ -1284,7 +1284,7 @@ Optional<GCVector<WebGLShader*>> WebGLRenderingContext::getAttachedShaders(
     return webGLShaders;
 }
 
-GLint WebGLRenderingContext::getAttribLocation(WebGLProgram* program,
+GLint WebGLRenderingContextBase::getAttribLocation(WebGLProgram* program,
                                                String* name)
 {
     ENTER_CONTEXT_SCOPE(-1);
@@ -1310,7 +1310,7 @@ GLint WebGLRenderingContext::getAttribLocation(WebGLProgram* program,
     return m_gl->getAttribLocation(program->glObject(), CSTR(name));
 }
 
-ScriptValue WebGLRenderingContext::getFramebufferAttachmentParameter(
+ScriptValue WebGLRenderingContextBase::getFramebufferAttachmentParameter(
     GLenum target, GLenum attachment, GLenum pname)
 {
     ENTER_CONTEXT_SCOPE(scriptNull());
@@ -1369,7 +1369,7 @@ ScriptValue WebGLRenderingContext::getFramebufferAttachmentParameter(
     return scriptNull();
 }
 
-ScriptValue WebGLRenderingContext::getProgramParameter(WebGLProgram* program,
+ScriptValue WebGLRenderingContextBase::getProgramParameter(WebGLProgram* program,
                                                        GLenum pname)
 {
     ENTER_CONTEXT_SCOPE(scriptNull());
@@ -1406,7 +1406,7 @@ ScriptValue WebGLRenderingContext::getProgramParameter(WebGLProgram* program,
     return scriptNull();
 }
 
-String* WebGLRenderingContext::getProgramInfoLog(WebGLProgram* program)
+String* WebGLRenderingContextBase::getProgramInfoLog(WebGLProgram* program)
 {
     ENTER_CONTEXT_SCOPE(nullptr);
 
@@ -1427,7 +1427,7 @@ String* WebGLRenderingContext::getProgramInfoLog(WebGLProgram* program)
     return String::fromUTF8(buffer.data(), length);
 }
 
-ScriptValue WebGLRenderingContext::getRenderbufferParameter(GLenum target,
+ScriptValue WebGLRenderingContextBase::getRenderbufferParameter(GLenum target,
                                                             GLenum pname)
 {
     ENTER_CONTEXT_SCOPE(scriptNull());
@@ -1458,7 +1458,7 @@ ScriptValue WebGLRenderingContext::getRenderbufferParameter(GLenum target,
     return scriptNull();
 }
 
-ScriptValue WebGLRenderingContext::getShaderParameter(WebGLShader* shader,
+ScriptValue WebGLRenderingContextBase::getShaderParameter(WebGLShader* shader,
                                                       GLenum pname)
 {
     ENTER_CONTEXT_SCOPE(scriptNull());
@@ -1492,7 +1492,7 @@ ScriptValue WebGLRenderingContext::getShaderParameter(WebGLShader* shader,
     return scriptNull();
 }
 
-WebGLShaderPrecisionFormat* WebGLRenderingContext::getShaderPrecisionFormat(
+WebGLShaderPrecisionFormat* WebGLRenderingContextBase::getShaderPrecisionFormat(
     GLenum shadertype, GLenum precisiontype)
 {
     ENTER_CONTEXT_SCOPE(nullptr);
@@ -1510,7 +1510,7 @@ WebGLShaderPrecisionFormat* WebGLRenderingContext::getShaderPrecisionFormat(
                                           range[1], precision);
 }
 
-String* WebGLRenderingContext::getShaderInfoLog(WebGLShader* shader)
+String* WebGLRenderingContextBase::getShaderInfoLog(WebGLShader* shader)
 {
     ENTER_CONTEXT_SCOPE(nullptr);
 
@@ -1530,7 +1530,7 @@ String* WebGLRenderingContext::getShaderInfoLog(WebGLShader* shader)
     return String::fromUTF8(buffer.data(), length);
 }
 
-String* WebGLRenderingContext::getShaderSource(WebGLShader* shader)
+String* WebGLRenderingContextBase::getShaderSource(WebGLShader* shader)
 {
     ENTER_CONTEXT_SCOPE(nullptr);
 
@@ -1548,7 +1548,7 @@ String* WebGLRenderingContext::getShaderSource(WebGLShader* shader)
     return String::fromUTF8(buffer.data(), length);
 }
 
-ScriptValue WebGLRenderingContext::getTexParameter(GLenum target, GLenum pname)
+ScriptValue WebGLRenderingContextBase::getTexParameter(GLenum target, GLenum pname)
 {
     ENTER_CONTEXT_SCOPE(scriptNull());
 
@@ -1580,7 +1580,7 @@ ScriptValue WebGLRenderingContext::getTexParameter(GLenum target, GLenum pname)
     return createScriptValue(static_cast<GLenum>(params));
 }
 
-ScriptValue WebGLRenderingContext::getUniform(WebGLProgram* program,
+ScriptValue WebGLRenderingContextBase::getUniform(WebGLProgram* program,
                                               WebGLUniformLocation* location)
 {
     ENTER_CONTEXT_SCOPE(nullptr);
@@ -1602,7 +1602,7 @@ ScriptValue WebGLRenderingContext::getUniform(WebGLProgram* program,
     return nullptr;
 }
 
-WebGLUniformLocation* WebGLRenderingContext::getUniformLocation(
+WebGLUniformLocation* WebGLRenderingContextBase::getUniformLocation(
     WebGLProgram* program, String* name)
 {
     ENTER_CONTEXT_SCOPE(nullptr);
@@ -1638,7 +1638,7 @@ WebGLUniformLocation* WebGLRenderingContext::getUniformLocation(
     return new WebGLUniformLocation(scriptBindingInstance(), program, location);
 }
 
-ScriptValue WebGLRenderingContext::getVertexAttrib(GLuint index, GLenum pname)
+ScriptValue WebGLRenderingContextBase::getVertexAttrib(GLuint index, GLenum pname)
 {
     ENTER_CONTEXT_SCOPE(scriptNull());
 
@@ -1707,7 +1707,7 @@ ScriptValue WebGLRenderingContext::getVertexAttrib(GLuint index, GLenum pname)
     return scriptNull();
 }
 
-GLintptr WebGLRenderingContext::getVertexAttribOffset(GLuint index,
+GLintptr WebGLRenderingContextBase::getVertexAttribOffset(GLuint index,
                                                       GLenum pname)
 {
     ENTER_CONTEXT_SCOPE(0);
@@ -1717,14 +1717,14 @@ GLintptr WebGLRenderingContext::getVertexAttribOffset(GLuint index,
     return reinterpret_cast<GLintptr>(pointer);
 }
 
-void WebGLRenderingContext::hint(GLenum target, GLenum mode)
+void WebGLRenderingContextBase::hint(GLenum target, GLenum mode)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->hint(target, mode);
 }
 
-bool WebGLRenderingContext::isBuffer(Optional<WebGLBuffer*> maybe)
+bool WebGLRenderingContextBase::isBuffer(Optional<WebGLBuffer*> maybe)
 {
     ENTER_CONTEXT_SCOPE(false);
 
@@ -1739,7 +1739,7 @@ bool WebGLRenderingContext::isBuffer(Optional<WebGLBuffer*> maybe)
     return true;
 }
 
-bool WebGLRenderingContext::isEnabled(GLenum cap)
+bool WebGLRenderingContextBase::isEnabled(GLenum cap)
 {
     ENTER_CONTEXT_SCOPE(false);
 
@@ -1750,7 +1750,7 @@ bool WebGLRenderingContext::isEnabled(GLenum cap)
     return m_gl->isEnabled(cap);
 }
 
-bool WebGLRenderingContext::isFramebuffer(Optional<WebGLFramebuffer*> maybe)
+bool WebGLRenderingContextBase::isFramebuffer(Optional<WebGLFramebuffer*> maybe)
 {
     ENTER_CONTEXT_SCOPE(false);
 
@@ -1762,7 +1762,7 @@ bool WebGLRenderingContext::isFramebuffer(Optional<WebGLFramebuffer*> maybe)
     return true;
 }
 
-bool WebGLRenderingContext::isProgram(Optional<WebGLProgram*> maybe)
+bool WebGLRenderingContextBase::isProgram(Optional<WebGLProgram*> maybe)
 {
     ENTER_CONTEXT_SCOPE(false);
 
@@ -1774,7 +1774,7 @@ bool WebGLRenderingContext::isProgram(Optional<WebGLProgram*> maybe)
     return true;
 }
 
-bool WebGLRenderingContext::isRenderbuffer(Optional<WebGLRenderbuffer*> maybe)
+bool WebGLRenderingContextBase::isRenderbuffer(Optional<WebGLRenderbuffer*> maybe)
 {
     ENTER_CONTEXT_SCOPE(false);
 
@@ -1786,7 +1786,7 @@ bool WebGLRenderingContext::isRenderbuffer(Optional<WebGLRenderbuffer*> maybe)
     return true;
 }
 
-bool WebGLRenderingContext::isShader(Optional<WebGLShader*> maybe)
+bool WebGLRenderingContextBase::isShader(Optional<WebGLShader*> maybe)
 {
     ENTER_CONTEXT_SCOPE(false);
 
@@ -1798,7 +1798,7 @@ bool WebGLRenderingContext::isShader(Optional<WebGLShader*> maybe)
     return true;
 }
 
-bool WebGLRenderingContext::isTexture(Optional<WebGLTexture*> maybe)
+bool WebGLRenderingContextBase::isTexture(Optional<WebGLTexture*> maybe)
 {
     ENTER_CONTEXT_SCOPE(false);
 
@@ -1810,14 +1810,14 @@ bool WebGLRenderingContext::isTexture(Optional<WebGLTexture*> maybe)
     return true;
 }
 
-void WebGLRenderingContext::lineWidth(GLfloat width)
+void WebGLRenderingContextBase::lineWidth(GLfloat width)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->lineWidth(width);
 }
 
-void WebGLRenderingContext::linkProgram(WebGLProgram* program)
+void WebGLRenderingContextBase::linkProgram(WebGLProgram* program)
 {
     ENTER_CONTEXT_SCOPE();
 
@@ -1851,7 +1851,7 @@ void WebGLRenderingContext::linkProgram(WebGLProgram* program)
     }
 }
 
-void WebGLRenderingContext::pixelStorei(GLenum pname, GLint param)
+void WebGLRenderingContextBase::pixelStorei(GLenum pname, GLint param)
 {
     ENTER_CONTEXT_SCOPE();
 
@@ -1878,14 +1878,14 @@ void WebGLRenderingContext::pixelStorei(GLenum pname, GLint param)
     }
 }
 
-void WebGLRenderingContext::polygonOffset(GLfloat factor, GLfloat units)
+void WebGLRenderingContextBase::polygonOffset(GLfloat factor, GLfloat units)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->polygonOffset(factor, units);
 }
 
-void WebGLRenderingContext::renderbufferStorage(GLenum target,
+void WebGLRenderingContextBase::renderbufferStorage(GLenum target,
                                                 GLenum internalformat,
                                                 GLsizei width, GLsizei height)
 {
@@ -1894,14 +1894,14 @@ void WebGLRenderingContext::renderbufferStorage(GLenum target,
     m_gl->renderbufferStorage(target, internalformat, width, height);
 }
 
-void WebGLRenderingContext::sampleCoverage(GLclampf value, GLboolean invert)
+void WebGLRenderingContextBase::sampleCoverage(GLclampf value, GLboolean invert)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->sampleCoverage(value, invert);
 }
 
-void WebGLRenderingContext::scissor(GLint x, GLint y, GLsizei width,
+void WebGLRenderingContextBase::scissor(GLint x, GLint y, GLsizei width,
                                     GLsizei height)
 {
     ENTER_CONTEXT_SCOPE();
@@ -1909,7 +1909,7 @@ void WebGLRenderingContext::scissor(GLint x, GLint y, GLsizei width,
     m_gl->scissor(x, y, width, height);
 }
 
-void WebGLRenderingContext::texParameterf(GLenum target, GLenum pname,
+void WebGLRenderingContextBase::texParameterf(GLenum target, GLenum pname,
                                           GLfloat param)
 {
     ENTER_CONTEXT_SCOPE();
@@ -1930,7 +1930,7 @@ void WebGLRenderingContext::texParameterf(GLenum target, GLenum pname,
     m_gl->texParameterf(target, pname, param);
 }
 
-void WebGLRenderingContext::texParameteri(GLenum target, GLenum pname,
+void WebGLRenderingContextBase::texParameteri(GLenum target, GLenum pname,
                                           GLint param)
 {
     ENTER_CONTEXT_SCOPE();
@@ -1951,7 +1951,7 @@ void WebGLRenderingContext::texParameteri(GLenum target, GLenum pname,
     m_gl->texParameteri(target, pname, param);
 }
 
-void WebGLRenderingContext::uniform1f(
+void WebGLRenderingContextBase::uniform1f(
     Optional<WebGLUniformLocation*> maybeUniform, GLfloat x)
 {
     ENTER_CONTEXT_SCOPE();
@@ -1977,7 +1977,7 @@ void WebGLRenderingContext::uniform1f(
     m_gl->uniform1f(uniform->location(), x);
 }
 
-void WebGLRenderingContext::uniform2f(
+void WebGLRenderingContextBase::uniform2f(
     Optional<WebGLUniformLocation*> maybeUniform, GLfloat x, GLfloat y)
 {
     ENTER_CONTEXT_SCOPE();
@@ -1996,7 +1996,7 @@ void WebGLRenderingContext::uniform2f(
     m_gl->uniform2f(uniform->location(), x, y);
 }
 
-void WebGLRenderingContext::uniform3f(
+void WebGLRenderingContextBase::uniform3f(
     Optional<WebGLUniformLocation*> maybeUniform, GLfloat x, GLfloat y,
     GLfloat z)
 {
@@ -2016,7 +2016,7 @@ void WebGLRenderingContext::uniform3f(
     m_gl->uniform3f(uniform->location(), x, y, z);
 }
 
-void WebGLRenderingContext::uniform4f(
+void WebGLRenderingContextBase::uniform4f(
     Optional<WebGLUniformLocation*> maybeUniform, GLfloat x, GLfloat y,
     GLfloat z, GLfloat w)
 {
@@ -2036,7 +2036,7 @@ void WebGLRenderingContext::uniform4f(
     m_gl->uniform4f(uniform->location(), x, y, z, w);
 }
 
-void WebGLRenderingContext::uniform1i(
+void WebGLRenderingContextBase::uniform1i(
     Optional<WebGLUniformLocation*> maybeUniform, GLint x)
 {
     ENTER_CONTEXT_SCOPE();
@@ -2055,7 +2055,7 @@ void WebGLRenderingContext::uniform1i(
     m_gl->uniform1i(uniform->location(), x);
 }
 
-void WebGLRenderingContext::uniform2i(
+void WebGLRenderingContextBase::uniform2i(
     Optional<WebGLUniformLocation*> maybeUniform, GLint x, GLint y)
 {
     ENTER_CONTEXT_SCOPE();
@@ -2074,7 +2074,7 @@ void WebGLRenderingContext::uniform2i(
     m_gl->uniform2i(uniform->location(), x, y);
 }
 
-void WebGLRenderingContext::uniform3i(
+void WebGLRenderingContextBase::uniform3i(
     Optional<WebGLUniformLocation*> maybeUniform, GLint x, GLint y, GLint z)
 {
     ENTER_CONTEXT_SCOPE();
@@ -2093,7 +2093,7 @@ void WebGLRenderingContext::uniform3i(
     m_gl->uniform3i(uniform->location(), x, y, z);
 }
 
-void WebGLRenderingContext::uniform4i(
+void WebGLRenderingContextBase::uniform4i(
     Optional<WebGLUniformLocation*> maybeUniform, GLint x, GLint y, GLint z,
     GLint w)
 {
@@ -2113,7 +2113,7 @@ void WebGLRenderingContext::uniform4i(
     m_gl->uniform4i(uniform->location(), x, y, z, w);
 }
 
-void WebGLRenderingContext::useProgram(Optional<WebGLProgram*> maybeProgram)
+void WebGLRenderingContextBase::useProgram(Optional<WebGLProgram*> maybeProgram)
 {
     ENTER_CONTEXT_SCOPE();
 
@@ -2131,7 +2131,7 @@ void WebGLRenderingContext::useProgram(Optional<WebGLProgram*> maybeProgram)
     }
 }
 
-void WebGLRenderingContext::validateProgram(WebGLProgram* program)
+void WebGLRenderingContextBase::validateProgram(WebGLProgram* program)
 {
     ENTER_CONTEXT_SCOPE();
 
@@ -2142,21 +2142,21 @@ void WebGLRenderingContext::validateProgram(WebGLProgram* program)
     m_gl->validateProgram(program->glObject());
 }
 
-void WebGLRenderingContext::vertexAttrib1f(GLuint index, GLfloat x)
+void WebGLRenderingContextBase::vertexAttrib1f(GLuint index, GLfloat x)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->vertexAttrib1f(index, x);
 }
 
-void WebGLRenderingContext::vertexAttrib2f(GLuint index, GLfloat x, GLfloat y)
+void WebGLRenderingContextBase::vertexAttrib2f(GLuint index, GLfloat x, GLfloat y)
 {
     ENTER_CONTEXT_SCOPE();
 
     m_gl->vertexAttrib2f(index, x, y);
 }
 
-void WebGLRenderingContext::vertexAttrib3f(GLuint index, GLfloat x, GLfloat y,
+void WebGLRenderingContextBase::vertexAttrib3f(GLuint index, GLfloat x, GLfloat y,
                                            GLfloat z)
 {
     ENTER_CONTEXT_SCOPE();
@@ -2164,7 +2164,7 @@ void WebGLRenderingContext::vertexAttrib3f(GLuint index, GLfloat x, GLfloat y,
     m_gl->vertexAttrib3f(index, x, y, z);
 }
 
-void WebGLRenderingContext::vertexAttrib4f(GLuint index, GLfloat x, GLfloat y,
+void WebGLRenderingContextBase::vertexAttrib4f(GLuint index, GLfloat x, GLfloat y,
                                            GLfloat z, GLfloat w)
 {
     ENTER_CONTEXT_SCOPE();
@@ -2173,7 +2173,7 @@ void WebGLRenderingContext::vertexAttrib4f(GLuint index, GLfloat x, GLfloat y,
 }
 
 #define IMPLEMENT_VERTEX_ATTRIB_NFV(N)                                      \
-    void WebGLRenderingContext::vertexAttrib##N##fv(GLuint index,           \
+    void WebGLRenderingContextBase::vertexAttrib##N##fv(GLuint index,       \
                                                     Float32List variant)    \
     {                                                                       \
         ENTER_CONTEXT_SCOPE();                                              \
@@ -2211,7 +2211,7 @@ IMPLEMENT_VERTEX_ATTRIB_NFV(4)
 
 #undef IMPLEMENT_VERTEX_ATTRIB_NFV
 
-void WebGLRenderingContext::vertexAttribPointer(GLuint index, GLint size,
+void WebGLRenderingContextBase::vertexAttribPointer(GLuint index, GLint size,
                                                 GLenum type,
                                                 GLboolean normalized,
                                                 GLsizei stride, GLintptr offset)
@@ -2253,7 +2253,7 @@ void WebGLRenderingContext::vertexAttribPointer(GLuint index, GLint size,
                               reinterpret_cast<void*>(offset));
 }
 
-void WebGLRenderingContext::viewport(uint32_t x, uint32_t y, uint32_t width,
+void WebGLRenderingContextBase::viewport(uint32_t x, uint32_t y, uint32_t width,
                                      uint32_t height)
 {
     ENTER_CONTEXT_SCOPE();
