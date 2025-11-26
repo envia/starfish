@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-present Samsung Electronics Co., Ltd
+ * Copyright (c) 2025-present Samsung Electronics Co., Ltd
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -260,6 +260,56 @@ public:
 class WebGL2RenderingContext : public WebGLRenderingContext,
                                public WebGL2RenderingContextBase,
                                public WebGL2RenderingContextOverloads {
+public:
+    // WebGL1:
+    void bufferData(uint32_t&, int64_t&, uint32_t&){}
+    void bufferData(uint32_t&, Optional<ArrayBufferOrSharedArrayBufferOrArrayBufferView>&, uint32_t&){}
+    void bufferSubData(uint32_t&, int64_t&, ArrayBufferOrSharedArrayBufferOrArrayBufferView&){}
+    // WebGL2:
+    void bufferData(uint32_t&, Escargot::ArrayBufferViewRef*&, uint32_t&, uint64_t&, uint32_t&){}
+    void bufferSubData(uint32_t&, int64_t&, Escargot::ArrayBufferViewRef*&, uint64_t&, uint32_t&){}
+    // WebGL1 legacy entrypoints:
+    void texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Escargot::ArrayBufferViewRef*&){}
+    void texImage2D(uint32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElement&){}
+
+    void texSubImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Escargot::ArrayBufferViewRef*&){}
+    void texSubImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElement&){}
+
+    // WebGL2 entrypoints:
+    void texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, int64_t&){}
+    void texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElement&){}
+    void texImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Escargot::ArrayBufferViewRef*&, uint64_t&){}
+
+    void texSubImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, int64_t&){}
+    void texSubImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElement&){}
+    void texSubImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Escargot::ArrayBufferViewRef*&, uint64_t&){}
+
+    void compressedTexImage2D(uint32_t&, int32_t&, uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int64_t&){}
+    void compressedTexImage2D(uint32_t&, int32_t&, uint32_t&, int32_t&, int32_t&, int32_t&, Escargot::ArrayBufferViewRef*&, uint64_t&, uint32_t&){}
+
+    void compressedTexSubImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, int32_t&, int64_t&){}
+    void compressedTexSubImage2D(uint32_t&, int32_t&, int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, Escargot::ArrayBufferViewRef*&, uint64_t&, uint32_t&){}
+
+    void uniform1fv(Optional<WebGLUniformLocation*>&, Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
+    void uniform2fv(Optional<WebGLUniformLocation*>&, Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
+    void uniform3fv(Optional<WebGLUniformLocation*>&, Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
+    void uniform4fv(Optional<WebGLUniformLocation*>&, Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
+
+    void uniform1iv(Optional<WebGLUniformLocation*>&, Int32ArrayOrSequenceOfGLint&, uint64_t&, uint32_t&){}
+    void uniform2iv(Optional<WebGLUniformLocation*>&, Int32ArrayOrSequenceOfGLint&, uint64_t&, uint32_t&){}
+    void uniform3iv(Optional<WebGLUniformLocation*>&, Int32ArrayOrSequenceOfGLint&, uint64_t&, uint32_t&){}
+    void uniform4iv(Optional<WebGLUniformLocation*>&, Int32ArrayOrSequenceOfGLint&, uint64_t&, uint32_t&){}
+
+    void uniformMatrix2fv(Optional<WebGLUniformLocation*>&, bool&, Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
+    void uniformMatrix3fv(Optional<WebGLUniformLocation*>&, bool&, Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
+    void uniformMatrix4fv(Optional<WebGLUniformLocation*>&, bool&, Float32ArrayOrSequenceOfGLfloat&, uint64_t&, uint32_t&){}
+
+    /* Reading back pixels */
+    // WebGL1:
+    void readPixels(int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Escargot::ArrayBufferViewRef*&){}
+    // WebGL2:
+    void readPixels(int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, int64_t&){}
+    void readPixels(int32_t&, int32_t&, int32_t&, int32_t&, uint32_t&, uint32_t&, Escargot::ArrayBufferViewRef*&, uint64_t&){}
 };
 
 } // namespace Starfish

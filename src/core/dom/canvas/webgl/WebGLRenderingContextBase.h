@@ -17,12 +17,18 @@
  *  USA
  */
 
+#ifndef __StarfishWebGLRenderingContextBase__
+#define __StarfishWebGLRenderingContextBase__
+
 #if defined(STARFISH_ENABLE_CANVAS) && defined(STARFISH_ENABLE_WEBGL)
 
-#include "StarfishConfig.h"
-#include "core/dom/canvas/webgl/WebGL2RenderingContext.h"
-
 namespace Starfish {
+
+class WebGLRenderingContextBase {
+};
+
 } // namespace Starfish
 
 #endif // defined(STARFISH_ENABLE_CANVAS) && defined(STARFISH_ENABLE_WEBGL)
+
+#endif // __StarfishWebGLRenderingContextBase__
