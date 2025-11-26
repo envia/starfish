@@ -23,7 +23,9 @@
 #if defined(STARFISH_ENABLE_CANVAS) && defined(STARFISH_ENABLE_WEBGL)
 
 #include "platform/canvas/gl/GLTypes.h"
+#include "core/dom/canvas/webgl/WebGLRenderingContextBase.h"
 #include "core/dom/canvas/webgl/WebGLRenderingContextBaseMixIn.h"
+#include "core/dom/canvas/webgl/WebGLRenderingContextOverloads.h"
 #include "core/dom/canvas/webgl/WebGLUtils.h"
 #include "core/dom/canvas/webgl/WebGLContextAttributes.h"
 #include "core/util/GCDescriptor.h"
@@ -65,7 +67,7 @@ using GLExtensionMap =
     GCUnorderedMap<std::string, ScriptObject, CaseInsensitiveHash,
                    CaseInsensitiveEqual>;
 
-class WebGLRenderingContext : public WebGLRenderingContextBaseMixIn {
+class WebGLRenderingContext : public WebGLRenderingContextBaseMixIn, public WebGLRenderingContextBase, public WebGLRenderingContextOverloads {
 public:
     WebGLRenderingContext(HTMLCanvasElement* canvasElement);
     virtual ~WebGLRenderingContext();
@@ -238,24 +240,6 @@ public:
                              GLintptr offset);
     void viewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height);
 
-    // Implement WebGLRenderingContextOverloads
-    void bufferData(GLenum target, GLsizeiptr size, GLenum usage);
-    void bufferData(GLenum target, Optional<AllowSharedBufferSource> data,
-                    GLenum usage);
-    void bufferSubData(GLenum target, GLintptr offset,
-                       AllowSharedBufferSource data);
-
-    void compressedTexImage2D(GLenum target, GLint level, GLenum internalformat,
-                              GLsizei width, GLsizei height, GLint border,
-                              ScriptArrayBufferView data);
-    void compressedTexSubImage2D(GLenum target, GLint level, GLint xoffset,
-                                 GLint yoffset, GLsizei width, GLsizei height,
-                                 GLenum format, ScriptArrayBufferView data);
-
-    void readPixels(GLint x, GLint y, GLsizei width, GLsizei height,
-                    GLenum format, GLenum type,
-                    Optional<ScriptArrayBufferView> pixels);
-
 private:
     void handleTexImageWithArrayBufferView(
         GLenum target, GLint level, GLsizei width, GLsizei height,
@@ -269,34 +253,6 @@ private:
         std::function<void(const TexImageHelper*)> updateImage);
 
 public:
-    void texImage2D(GLenum target, GLint level, GLint internalFormat,
-                    GLsizei width, GLsizei height, GLint border, GLenum format,
-                    GLenum type, Optional<ScriptArrayBufferView> pixels);
-    void texImage2D(GLenum target, GLint level, GLint internalFormat,
-                    GLenum format, GLenum type, TexImageSource source);
-    void texSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset,
-                       GLsizei width, GLsizei height, GLenum format,
-                       GLenum type, Optional<ScriptArrayBufferView> pixels);
-    void texSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset,
-                       GLenum format, GLenum type, TexImageSource source);
-
-    void uniform1fv(Optional<WebGLUniformLocation*> location, Float32List v);
-    void uniform2fv(Optional<WebGLUniformLocation*> location, Float32List v);
-    void uniform3fv(Optional<WebGLUniformLocation*> location, Float32List v);
-    void uniform4fv(Optional<WebGLUniformLocation*> location, Float32List v);
-
-    void uniform1iv(Optional<WebGLUniformLocation*> location, Int32List v);
-    void uniform2iv(Optional<WebGLUniformLocation*> location, Int32List v);
-    void uniform3iv(Optional<WebGLUniformLocation*> location, Int32List v);
-    void uniform4iv(Optional<WebGLUniformLocation*> location, Int32List v);
-
-    void uniformMatrix2fv(Optional<WebGLUniformLocation*> uniform,
-                          GLboolean transpose, Float32List value);
-    void uniformMatrix3fv(Optional<WebGLUniformLocation*> uniform,
-                          GLboolean transpose, Float32List value);
-    void uniformMatrix4fv(Optional<WebGLUniformLocation*> uniform,
-                          GLboolean transpose, Float32List value);
-
     GL* gl();
 
     BEGIN_IMPLEMENT_NEW_WITH_GC_DESC(WebGLRenderingContext,

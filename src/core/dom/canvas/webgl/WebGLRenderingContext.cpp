@@ -2263,7 +2263,7 @@ void WebGLRenderingContext::viewport(uint32_t x, uint32_t y, uint32_t width,
 
 // WebGLRenderingContextOverloads
 
-void WebGLRenderingContext::bufferData(GLenum target, GLsizeiptr size,
+void WebGLRenderingContextOverloads::bufferData(GLenum target, GLsizeiptr size,
                                        GLenum usage)
 {
     ENTER_CONTEXT_SCOPE();
@@ -2273,7 +2273,7 @@ void WebGLRenderingContext::bufferData(GLenum target, GLsizeiptr size,
     m_gl->bufferData(target, size, nullptr, usage);
 }
 
-void WebGLRenderingContext::bufferData(GLenum target,
+void WebGLRenderingContextOverloads::bufferData(GLenum target,
                                        Optional<AllowSharedBufferSource> data,
                                        GLenum usage)
 {
@@ -2301,7 +2301,7 @@ void WebGLRenderingContext::bufferData(GLenum target,
     }
 }
 
-void WebGLRenderingContext::bufferSubData(GLenum target, GLintptr offset,
+void WebGLRenderingContextOverloads::bufferSubData(GLenum target, GLintptr offset,
                                           AllowSharedBufferSource data)
 {
     ENTER_CONTEXT_SCOPE();
@@ -2323,7 +2323,7 @@ void WebGLRenderingContext::bufferSubData(GLenum target, GLintptr offset,
     }
 }
 
-void WebGLRenderingContext::compressedTexImage2D(GLenum target, GLint level,
+void WebGLRenderingContextOverloads::compressedTexImage2D(GLenum target, GLint level,
                                                  GLenum internalformat,
                                                  GLsizei width, GLsizei height,
                                                  GLint border,
@@ -2345,7 +2345,7 @@ void WebGLRenderingContext::compressedTexImage2D(GLenum target, GLint level,
     setGLError(GL_INVALID_ENUM);
 }
 
-void WebGLRenderingContext::compressedTexSubImage2D(
+void WebGLRenderingContextOverloads::compressedTexSubImage2D(
     GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width,
     GLsizei height, GLenum format, ScriptArrayBufferView data)
 {
@@ -2361,7 +2361,7 @@ void WebGLRenderingContext::compressedTexSubImage2D(
     setGLError(GL_INVALID_ENUM);
 }
 
-void WebGLRenderingContext::readPixels(GLint x, GLint y, GLsizei width,
+void WebGLRenderingContextOverloads::readPixels(GLint x, GLint y, GLsizei width,
                                        GLsizei height, GLenum format,
                                        GLenum type,
                                        Optional<ScriptArrayBufferView> pixels)
@@ -2829,7 +2829,7 @@ void WebGLRenderingContext::handleTexImageWithImageSource(
     updateImage(&image);
 }
 
-void WebGLRenderingContext::texImage2D(GLenum target, GLint level,
+void WebGLRenderingContextOverloads::texImage2D(GLenum target, GLint level,
                                        GLint internalFormat, GLsizei width,
                                        GLsizei height, GLint border,
                                        GLenum format, GLenum type,
@@ -2940,7 +2940,7 @@ void WebGLRenderingContext::texImage2D(GLenum target, GLint level,
         });
 }
 
-void WebGLRenderingContext::texSubImage2D(
+void WebGLRenderingContextOverloads::texSubImage2D(
     GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width,
     GLsizei height, GLenum format, GLenum type,
     Optional<ScriptArrayBufferView> pixels)
@@ -2976,7 +2976,7 @@ void WebGLRenderingContext::texSubImage2D(
         });
 }
 
-void WebGLRenderingContext::texSubImage2D(GLenum target, GLint level,
+void WebGLRenderingContextOverloads::texSubImage2D(GLenum target, GLint level,
                                           GLint xoffset, GLint yoffset,
                                           GLenum format, GLenum type,
                                           TexImageSource source)
@@ -3000,7 +3000,7 @@ void WebGLRenderingContext::texSubImage2D(GLenum target, GLint level,
 }
 
 #define IMPLEMENT_UNIFORM_NFV(N, Suffix, SrcType)                           \
-    void WebGLRenderingContext::uniform##N##Suffix(                         \
+    void WebGLRenderingContextOverloads::uniform##N##Suffix(                \
         Optional<WebGLUniformLocation*> mayBeLocation, SrcType variant)     \
     {                                                                       \
         ENTER_CONTEXT_SCOPE();                                              \
@@ -3046,7 +3046,7 @@ IMPLEMENT_UNIFORM_NFV(4, fv, Float32List)
 #undef IMPLEMENT_UNIFORM_NFV
 
 #define IMPLEMENT_UNIFORM_NIV(N, Suffix, SrcType)                             \
-    void WebGLRenderingContext::uniform##N##Suffix(                           \
+    void WebGLRenderingContextOverloads::uniform##N##Suffix(                  \
         Optional<WebGLUniformLocation*> mayBeLocation, SrcType variant)       \
     {                                                                         \
         ENTER_CONTEXT_SCOPE();                                                \
@@ -3086,7 +3086,7 @@ IMPLEMENT_UNIFORM_NIV(4, iv, Int32List)
 #undef IMPLEMENT_UNIFORM_NIV
 
 #define IMPLEMENT_UNIFORM_MATRIX_NFV(N)                                        \
-    void WebGLRenderingContext::uniformMatrix##N##fv(                          \
+    void WebGLRenderingContextOverloads::uniformMatrix##N##fv(                 \
         Optional<WebGLUniformLocation*> mayBeLocation, GLboolean transpose,    \
         Float32List variant)                                                   \
     {                                                                          \
