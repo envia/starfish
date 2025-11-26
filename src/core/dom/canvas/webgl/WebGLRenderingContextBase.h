@@ -22,9 +22,26 @@
 
 #if defined(STARFISH_ENABLE_CANVAS) && defined(STARFISH_ENABLE_WEBGL)
 
+#include "platform/canvas/gl/GLTypes.h"
+#include "core/dom/canvas/webgl/WebGLContextAttributes.h"
+
 namespace Starfish {
 
+class WebGLActiveInfo;
+class WebGLBuffer;
+class WebGLProgram;
+class WebGLShader;
+class WebGLTexture;
+class WebGLFramebuffer;
+class WebGLRenderbuffer;
+class WebGLUniformLocation;
+class WebGLShaderPrecisionFormat;
+class Float32ArrayOrSequenceOfGLfloat;
+
+using Float32List = Float32ArrayOrSequenceOfGLfloat;
+
 class WebGLRenderingContextBase {
+public:
     Optional<WebGLContextAttributes> getContextAttributes();
     bool isContextLost();
     Optional<GCVector<String*>> getSupportedExtensions();

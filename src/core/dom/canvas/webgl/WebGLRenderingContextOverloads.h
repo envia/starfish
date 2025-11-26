@@ -22,7 +22,23 @@
 
 #if defined(STARFISH_ENABLE_CANVAS) && defined(STARFISH_ENABLE_WEBGL)
 
+#include "binding/ScriptWrappable.h"
+#include "platform/canvas/gl/GLTypes.h"
+
 namespace Starfish {
+
+class WebGLUniformLocation;
+class Float32ArrayOrSequenceOfGLfloat;
+class Int32ArrayOrSequenceOfGLint;
+class ArrayBufferOrSharedArrayBufferOrArrayBufferView;
+class
+    ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElement;
+
+using Float32List = Float32ArrayOrSequenceOfGLfloat;
+using Int32List = Int32ArrayOrSequenceOfGLint;
+using AllowSharedBufferSource = ArrayBufferOrSharedArrayBufferOrArrayBufferView;
+using TexImageSource =
+    ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElement;
 
 class WebGLRenderingContextOverloads {
 public:
