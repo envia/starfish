@@ -25,6 +25,51 @@
 namespace Starfish {
 
 class WebGLRenderingContextOverloads {
+public:
+    void bufferData(GLenum target, GLsizeiptr size, GLenum usage);
+    void bufferData(GLenum target, Optional<AllowSharedBufferSource> data,
+                    GLenum usage);
+    void bufferSubData(GLenum target, GLintptr offset,
+                       AllowSharedBufferSource data);
+
+    void compressedTexImage2D(GLenum target, GLint level, GLenum internalformat,
+                              GLsizei width, GLsizei height, GLint border,
+                              ScriptArrayBufferView data);
+    void compressedTexSubImage2D(GLenum target, GLint level, GLint xoffset,
+                                 GLint yoffset, GLsizei width, GLsizei height,
+                                 GLenum format, ScriptArrayBufferView data);
+
+    void readPixels(GLint x, GLint y, GLsizei width, GLsizei height,
+                    GLenum format, GLenum type,
+                    Optional<ScriptArrayBufferView> pixels);
+
+    void texImage2D(GLenum target, GLint level, GLint internalFormat,
+                    GLsizei width, GLsizei height, GLint border, GLenum format,
+                    GLenum type, Optional<ScriptArrayBufferView> pixels);
+    void texImage2D(GLenum target, GLint level, GLint internalFormat,
+                    GLenum format, GLenum type, TexImageSource source);
+    void texSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset,
+                       GLsizei width, GLsizei height, GLenum format,
+                       GLenum type, Optional<ScriptArrayBufferView> pixels);
+    void texSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset,
+                       GLenum format, GLenum type, TexImageSource source);
+
+    void uniform1fv(Optional<WebGLUniformLocation*> location, Float32List v);
+    void uniform2fv(Optional<WebGLUniformLocation*> location, Float32List v);
+    void uniform3fv(Optional<WebGLUniformLocation*> location, Float32List v);
+    void uniform4fv(Optional<WebGLUniformLocation*> location, Float32List v);
+
+    void uniform1iv(Optional<WebGLUniformLocation*> location, Int32List v);
+    void uniform2iv(Optional<WebGLUniformLocation*> location, Int32List v);
+    void uniform3iv(Optional<WebGLUniformLocation*> location, Int32List v);
+    void uniform4iv(Optional<WebGLUniformLocation*> location, Int32List v);
+
+    void uniformMatrix2fv(Optional<WebGLUniformLocation*> uniform,
+                          GLboolean transpose, Float32List value);
+    void uniformMatrix3fv(Optional<WebGLUniformLocation*> uniform,
+                          GLboolean transpose, Float32List value);
+    void uniformMatrix4fv(Optional<WebGLUniformLocation*> uniform,
+                          GLboolean transpose, Float32List value);
 };
 
 } // namespace Starfish
