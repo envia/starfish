@@ -29,6 +29,11 @@
 #include "binding/generated/ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElementUnion.h"
 #include "binding/generated/Uint32ArrayOrSequenceOfGLuintUnion.h"
 
+#include "platform/canvas/gl/IncludeGL.h"
+#include "platform/canvas/gl/GL.h"
+
+#include <EscargotPublic.h>
+
 namespace Starfish {
 
 WebGL2RenderingContext::WebGL2RenderingContext(HTMLCanvasElement* canvasElement)
@@ -78,7 +83,58 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
     STARFISH_LOG_WARN("WebGL2RenderingContext::getParameter()");
     {
         ENTER_CONTEXT_SCOPE(scriptNull());
-        STARFISH_UNIMPLEMENTED();
+
+        switch (pname) {
+        case GL_MAX_3D_TEXTURE_SIZE: {
+            std::vector<int> values(1);
+            gl()->getIntegerv(pname, &values[0]);
+            STARFISH_LOG_WARN("INDIGO_TEMP: MAX_3D_TEXTURE_SIZE=%d", values[0]);
+            return Escargot::ValueRef::create(values[0]);
+        }
+        case GL_MAX_COLOR_ATTACHMENTS: {
+            std::vector<int> values(1);
+            gl()->getIntegerv(pname, &values[0]);
+            STARFISH_LOG_WARN("INDIGO_TEMP: MAX_COLOR_ATTACHMENTS=%d",
+                              values[0]);
+            return Escargot::ValueRef::create(values[0]);
+        }
+        case GL_MAX_COMBINED_UNIFORM_BLOCKS: {
+            std::vector<int> values(1);
+            gl()->getIntegerv(pname, &values[0]);
+            STARFISH_LOG_WARN("INDIGO_TEMP: MAX_COMBINED_UNIFORM_BLOCKS=%d",
+                              values[0]);
+            return Escargot::ValueRef::create(values[0]);
+        }
+        case GL_MAX_DRAW_BUFFERS: {
+            std::vector<int> values(1);
+            gl()->getIntegerv(pname, &values[0]);
+            STARFISH_LOG_WARN("INDIGO_TEMP: MAX_DRAW_BUFFERS=%d", values[0]);
+            return Escargot::ValueRef::create(values[0]);
+        }
+        case GL_MAX_FRAGMENT_INPUT_COMPONENTS: {
+            std::vector<int> values(1);
+            gl()->getIntegerv(pname, &values[0]);
+            STARFISH_LOG_WARN("INDIGO_TEMP: MAX_FRAGMENT_INPUT_COMPONENTS=%d",
+                              values[0]);
+            return Escargot::ValueRef::create(values[0]);
+        }
+
+        case GL_MAX_UNIFORM_BUFFER_BINDINGS: {
+            std::vector<int> values(1);
+            gl()->getIntegerv(pname, &values[0]);
+            STARFISH_LOG_WARN("INDIGO_TEMP: MAX_UNIFORM_BUFFER_BINDINGS=%d",
+                              values[0]);
+            return Escargot::ValueRef::create(values[0]);
+        }
+
+        case GL_MAX_VERTEX_UNIFORM_BLOCKS: {
+            std::vector<int> values(1);
+            gl()->getIntegerv(pname, &values[0]);
+            STARFISH_LOG_WARN("INDIGO_TEMP: MAX_VERTEX_UNIFORM_BLOCKS=%d",
+                              values[0]);
+            return Escargot::ValueRef::create(values[0]);
+        }
+        }
     }
     return WebGLRenderingContext::getParameter(pname);
 }
