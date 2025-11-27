@@ -19,6 +19,25 @@
           p.textContent = "WebGL not initialized.";
           return;
         }
+        // https://github.com/KhronosGroup/WebGL/blob/main/other/get.webgl.org/webgl2/index.html
+        var params = [
+          { pname: 'MAX_3D_TEXTURE_SIZE', min: 256, },
+          { pname: 'MAX_DRAW_BUFFERS', min:4, },
+          { pname: 'MAX_COLOR_ATTACHMENTS', min:4, },
+          { pname: 'MAX_VERTEX_UNIFORM_BLOCKS', min:12, },
+          { pname: 'MAX_VERTEX_TEXTURE_IMAGE_UNITS', min:16, },
+          { pname: 'MAX_FRAGMENT_INPUT_COMPONENTS', min:60, },
+          { pname: 'MAX_UNIFORM_BUFFER_BINDINGS', min:24, },
+          { pname: 'MAX_COMBINED_UNIFORM_BLOCKS', min:24, },
+        ];
+        for (var i = 0; i < params.length; ++i) {
+          var param = params[i];
+          var value = gl.getParameter(gl[param.pname]);
+          if (typeof value !== 'number' || Number.isNaN(value) || value < params.min) {
+            p.textContent = "WebGL not implemented.";
+            return;
+          }
+        }
         p.textContent = "WebGL initialized.";
 
         // Set clear color to black, fully opaque
