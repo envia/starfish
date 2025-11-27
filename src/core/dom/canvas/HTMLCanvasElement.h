@@ -32,8 +32,8 @@ namespace Starfish {
 class CanvasSurface;
 class CanvasRenderingContext;
 class
-    CanvasRenderingContext2DOrWebGLRenderingContextOrImageBitmapRenderingContext;
-typedef CanvasRenderingContext2DOrWebGLRenderingContextOrImageBitmapRenderingContext
+    CanvasRenderingContext2DOrWebGLRenderingContextOrWebGL2RenderingContextOrImageBitmapRenderingContext;
+typedef CanvasRenderingContext2DOrWebGLRenderingContextOrWebGL2RenderingContextOrImageBitmapRenderingContext
     RenderingContextBindindingUnion;
 
 class HTMLCanvasElement : public HTMLElement {
@@ -45,7 +45,9 @@ public:
         CanvasContextModePlaceHolder,
         CanvasContextMode2D,
         CanvasContextModeBitmapRenderer,
-        CanvasContextModeWebGL
+        CanvasContextModeWebGL,
+        CanvasContextModeWebGL2
+        // INDIGO_TODO: CanvasContextModeWebGPU
     };
 
     HTMLCanvasElement(Document* document, const QualifiedName& qname)

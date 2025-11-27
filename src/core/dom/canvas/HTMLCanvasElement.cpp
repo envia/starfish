@@ -24,10 +24,11 @@
 #include "binding/ScriptWrappable.h"
 #include "core/dom/canvas/CanvasRenderingContext.h"
 #include "core/dom/canvas/HTMLCanvasElement.h"
-#include "binding/generated/CanvasRenderingContext2DOrWebGLRenderingContextOrImageBitmapRenderingContextUnion.h"
+#include "binding/generated/CanvasRenderingContext2DOrWebGLRenderingContextOrWebGL2RenderingContextOrImageBitmapRenderingContextUnion.h"
 #include "core/modules/canvas/Canvas.h"
 #include "core/modules/canvas/image/ImageEncoder.h"
 #include "core/dom/canvas/webgl/WebGLRenderingContext.h"
+#include "core/dom/canvas/webgl/WebGL2RenderingContext.h"
 #include "core/dom/canvas/CanvasRenderingContext2D.h"
 #include "core/dom/canvas/ImageBitmapRenderingContext.h"
 #include "core/dom/DOMException.h"
@@ -122,6 +123,7 @@ void HTMLCanvasElement::setHeight(uint32_t value)
 Optional<RenderingContextBindindingUnion> HTMLCanvasElement::getContext(
     String* contextId, GCVector<ScriptValue> arguments)
 {
+    STARFISH_LOG_WARN("INDIGO_INIT: contextID=%s", contextId->toUTF8NonGCString().data());
     if (contextId->equals("2d")) {
         if (m_contextMode == CanvasContextModeNone) {
             m_contextMode = CanvasContextMode2D;
@@ -129,6 +131,7 @@ Optional<RenderingContextBindindingUnion> HTMLCanvasElement::getContext(
             m_canvasRenderingContext->setOriginCleanFlag(true);
         }
         if (m_contextMode == CanvasContextMode2D) {
+            STARFISH_LOG_WARN("INDIGO_FINI: 2d");
             return RenderingContextBindindingUnion::
                 createCanvasRenderingContext2D(
                     (CanvasRenderingContext2D*)m_canvasRenderingContext);
@@ -140,6 +143,7 @@ Optional<RenderingContextBindindingUnion> HTMLCanvasElement::getContext(
             m_canvasRenderingContext->setOriginCleanFlag(true);
         }
         if (m_contextMode == CanvasContextModeBitmapRenderer) {
+            STARFISH_LOG_WARN("INDIGO_FINI: bitmaprenderer");
             return RenderingContextBindindingUnion::
                 createImageBitmapRenderingContext(
                     (ImageBitmapRenderingContext*)m_canvasRenderingContext);
@@ -147,6 +151,7 @@ Optional<RenderingContextBindindingUnion> HTMLCanvasElement::getContext(
     } else if (contextId->equals("webgl") ||
                contextId->equals("experimental-webgl")) {
 #if defined(STARFISH_ENABLE_WEBGL)
+        STARFISH_LOG_WARN("INDIGO_TEMP: STARFISH_ENABLE_WEBGL!");
         if (m_contextMode == CanvasContextModeNone) {
             m_contextMode = CanvasContextModeWebGL;
             auto context = new WebGLRenderingContext(this);
@@ -157,11 +162,37 @@ Optional<RenderingContextBindindingUnion> HTMLCanvasElement::getContext(
             m_canvasRenderingContext->setOriginCleanFlag(true);
         }
         if (m_contextMode == CanvasContextModeWebGL) {
+            STARFISH_LOG_WARN("INDIGO_FINI: webgl");
             return RenderingContextBindindingUnion::createWebGLRenderingContext(
                 static_cast<WebGLRenderingContext*>(m_canvasRenderingContext));
         }
+#else
+        STARFISH_LOG_WARN("INDIGO_TEMP: !STARFISH_ENABLE_WEBGL");
+#endif
+    } else if (contextId->equals("webgl2")) {
+#if defined(STARFISH_ENABLE_WEBGL)
+        STARFISH_LOG_WARN("INDIGO_TEMP: STARFISH_ENABLE_WEBGL2!");
+        if (m_contextMode == CanvasContextModeNone) {
+            STARFISH_LOG_WARN("INDIGO_TEMP: webgl2_CanvasContextModeNone");
+            m_contextMode = CanvasContextModeWebGL2;
+            auto context = new WebGL2RenderingContext(this);
+            context->preInitialize(arguments.empty() ? scriptUndefined()
+                                                     : arguments[0]);
+            m_canvasRenderingContext = context;
+            m_canvasRenderingContext->initialize();
+            m_canvasRenderingContext->setOriginCleanFlag(true);
+        }
+        if (m_contextMode == CanvasContextModeWebGL2) {
+            STARFISH_LOG_WARN("INDIGO_TEMP: webgl2_CanvasContextModeWebGL2");
+            STARFISH_LOG_WARN("INDIGO_FINI: webgl2");
+            return RenderingContextBindindingUnion::createWebGL2RenderingContext(
+                static_cast<WebGL2RenderingContext*>(m_canvasRenderingContext));
+        }
+#else
+        STARFISH_LOG_WARN("INDIGO_TEMP: !STARFISH_ENABLE_WEBGL2");
 #endif
     }
+    STARFISH_LOG_WARN("INDIGO_FINI: nullptr");
     return nullptr;
 }
 
