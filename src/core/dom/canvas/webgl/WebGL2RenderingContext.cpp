@@ -22,6 +22,7 @@
 #include "StarfishConfig.h"
 #include "core/dom/canvas/webgl/WebGL2RenderingContext.h"
 #include "core/dom/ExecutionContext.h"
+#include "core/util/debug/Trace.h"
 #include "binding/generated/Float32ArrayOrSequenceOfGLfloatUnion.h"
 #include "binding/generated/Int32ArrayOrSequenceOfGLintUnion.h"
 #include "binding/generated/ArrayBufferOrSharedArrayBufferOrArrayBufferViewUnion.h"
@@ -46,11 +47,40 @@ ScriptBindingInstance* WebGL2RenderingContext::scriptBindingInstance()
 
 // WebGLRenderingContextBase
 
+#define ENTER_CONTEXT_SCOPE_IMPL(bailoutValue, ...) \
+    GLContextScope contextScope_(m_context);        \
+    if (contextScope_.hasError()) {                 \
+        TRACE(WEBGL,                                \
+              "\033[33m"                            \
+              "GL Context error detected."          \
+              "\033[0m");                           \
+        return bailoutValue;                        \
+    }
+
+#if defined(NDEBUG) and !defined(ENABLE_TRACE)
+#define ENTER_CONTEXT_SCOPE(bailoutValue, ...) \
+    ENTER_CONTEXT_SCOPE_IMPL(bailoutValue);
+#else
+#define ENTER_CONTEXT_SCOPE(bailoutValue, ...)       \
+    ENTER_CONTEXT_SCOPE_IMPL(bailoutValue);          \
+    auto onScopeLeave = OnScopeLeave::create([&]() { \
+        if (hasGLError()) {                          \
+            TRACE(WEBGL,                             \
+                  "\033[33m"                         \
+                  "GL error detected."               \
+                  "\033[0m");                        \
+        }                                            \
+    });
+#endif
+
 ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
 {
     STARFISH_LOG_WARN("WebGL2RenderingContext::getParameter()");
-    STARFISH_UNIMPLEMENTED();
-    return scriptNull();
+    {
+        ENTER_CONTEXT_SCOPE(scriptNull());
+        STARFISH_UNIMPLEMENTED();
+    }
+    return WebGLRenderingContext::getParameter(pname);
 }
 
 // WebGL2RenderingContextBase
