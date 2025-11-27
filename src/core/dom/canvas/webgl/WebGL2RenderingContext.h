@@ -60,6 +60,9 @@ class WebGLVertexArrayObject : public WebGLObject {
 class WebGL2RenderingContext : public WebGLRenderingContext {
 public:
     WebGL2RenderingContext(HTMLCanvasElement* canvasElement);
+    ~WebGL2RenderingContext() override;
+
+    DECLARE_SCRIPT_BINDING_REQUIRED_FUNCTIONS(WebGL2RenderingContext);
 
     // Implement WebGL2RenderingContextBase
 

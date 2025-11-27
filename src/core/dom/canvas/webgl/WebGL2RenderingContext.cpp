@@ -21,6 +21,7 @@
 
 #include "StarfishConfig.h"
 #include "core/dom/canvas/webgl/WebGL2RenderingContext.h"
+#include "core/dom/ExecutionContext.h"
 #include "binding/generated/Float32ArrayOrSequenceOfGLfloatUnion.h"
 #include "binding/generated/Int32ArrayOrSequenceOfGLintUnion.h"
 #include "binding/generated/ArrayBufferOrSharedArrayBufferOrArrayBufferViewUnion.h"
@@ -32,6 +33,15 @@ namespace Starfish {
 WebGL2RenderingContext::WebGL2RenderingContext(HTMLCanvasElement* canvasElement)
     : WebGLRenderingContext(canvasElement)
 {
+}
+
+WebGL2RenderingContext::~WebGL2RenderingContext()
+{
+}
+
+ScriptBindingInstance* WebGL2RenderingContext::scriptBindingInstance()
+{
+    return executionContext()->scriptBindingInstance();
 }
 
 // WebGL2RenderingContextBase
