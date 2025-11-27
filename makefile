@@ -1,9 +1,9 @@
 .PHONY: all try clean
 
-all: out/webgl2 binding_generator/scripts/starfish_code_generator.py
+all: binding_generator/scripts/starfish_code_generator.py out/webgl2
 	ninja -C out/webgl2 starfish.executable
 
-try: out/webgl2 binding_generator/scripts/starfish_code_generator.py
+try: binding_generator/scripts/starfish_code_generator.py out/webgl2
 	ninja -k 0 -C out/webgl2 starfish.executable
 
 out/webgl2:
