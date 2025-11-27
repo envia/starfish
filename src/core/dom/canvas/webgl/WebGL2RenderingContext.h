@@ -59,6 +59,8 @@ class WebGLVertexArrayObject : public WebGLObject {
 
 class WebGL2RenderingContext : public WebGLRenderingContext {
 public:
+    WebGL2RenderingContext(HTMLCanvasElement* canvasElement);
+
     // Implement WebGL2RenderingContextBase
 
     /* Buffer objects */

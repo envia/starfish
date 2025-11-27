@@ -29,6 +29,11 @@
 
 namespace Starfish {
 
+WebGL2RenderingContext::WebGL2RenderingContext(HTMLCanvasElement* canvasElement)
+    : WebGLRenderingContext(canvasElement)
+{
+}
+
 // WebGL2RenderingContextBase
 
 void WebGL2RenderingContext::copyBufferSubData(GLenum readTarget,
