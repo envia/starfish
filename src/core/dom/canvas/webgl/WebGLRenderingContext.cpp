@@ -1064,6 +1064,7 @@ ScriptValue WebGLRenderingContext::getBufferParameter(GLenum target,
 
 ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
 {
+    STARFISH_LOG_WARN("WebGLRenderingContext::getParameter()");
     ENTER_CONTEXT_SCOPE(scriptNull());
 
     switch (pname) {

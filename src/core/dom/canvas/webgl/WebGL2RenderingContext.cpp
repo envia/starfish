@@ -44,6 +44,15 @@ ScriptBindingInstance* WebGL2RenderingContext::scriptBindingInstance()
     return executionContext()->scriptBindingInstance();
 }
 
+// WebGLRenderingContextBase
+
+ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
+{
+    STARFISH_LOG_WARN("WebGL2RenderingContext::getParameter()");
+    STARFISH_UNIMPLEMENTED();
+    return scriptNull();
+}
+
 // WebGL2RenderingContextBase
 
 void WebGL2RenderingContext::copyBufferSubData(GLenum readTarget,
