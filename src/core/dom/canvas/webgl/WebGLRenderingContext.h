@@ -159,7 +159,7 @@ public:
     Optional<GCVector<WebGLShader*>> getAttachedShaders(WebGLProgram* program);
     GLint getAttribLocation(WebGLProgram* program, String* name);
     ScriptValue getBufferParameter(GLenum target, GLenum pname);
-    ScriptValue getParameter(GLenum pname);
+    virtual ScriptValue getParameter(GLenum pname);
     GLenum getError();
     ScriptValue getFramebufferAttachmentParameter(GLenum target,
                                                   GLenum attachment,

@@ -34,6 +34,14 @@ WebGL2RenderingContext::WebGL2RenderingContext(HTMLCanvasElement* canvasElement)
 {
 }
 
+// WebGLRenderingContextBase
+
+ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
+{
+    STARFISH_UNIMPLEMENTED();
+    return scriptNull();
+}
+
 // WebGL2RenderingContextBase
 
 void WebGL2RenderingContext::copyBufferSubData(GLenum readTarget,

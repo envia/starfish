@@ -61,6 +61,10 @@ class WebGL2RenderingContext : public WebGLRenderingContext {
 public:
     WebGL2RenderingContext(HTMLCanvasElement* canvasElement);
 
+    // Implement WebGLRenderingContextBase
+
+    ScriptValue getParameter(GLenum pname) override;
+
     // Implement WebGL2RenderingContextBase
 
     /* Buffer objects */
