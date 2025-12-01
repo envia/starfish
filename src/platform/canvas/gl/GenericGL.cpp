@@ -857,6 +857,21 @@ public:
 #endif
     }
 
+    void genQueries(GLsizei n, GLuint *arrays) override
+    {
+        glGenQueries(n, arrays);
+    }
+
+    void genSamplers(GLsizei n, GLuint *arrays) override
+    {
+        glGenSamplers(n, arrays);
+    }
+
+    void genTransformFeedback(GLsizei n, GLuint *arrays) override
+    {
+        glGenTransformFeedbacks(n, arrays);
+    }
+
     GenericGL(Renderer *renderer)
     {
         m_eglGetCurrentDisplayProc =

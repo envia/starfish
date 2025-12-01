@@ -33,11 +33,17 @@ using GLuint64 = unsigned long long;
 using Uint32List = Uint32ArrayOrSequenceOfGLuint;
 
 class WebGLQuery : public WebGLObject {
+public:
+    WebGLQuery(ScriptBindingInstance* instance, WebGLRenderingContext* context,
+               GLuint object);
     void init(ScriptBindingInstance* instance, void* domObjectPointer) override;
     bool isWebGLQuery() const override;
 };
 
 class WebGLSampler : public WebGLObject {
+public:
+    WebGLSampler(ScriptBindingInstance* instance,
+                 WebGLRenderingContext* context, GLuint object);
     void init(ScriptBindingInstance* instance, void* domObjectPointer) override;
     bool isWebGLSampler() const override;
 };
@@ -48,11 +54,17 @@ class WebGLSync : public WebGLObject {
 };
 
 class WebGLTransformFeedback : public WebGLObject {
+public:
+    WebGLTransformFeedback(ScriptBindingInstance* instance,
+                           WebGLRenderingContext* context, GLuint object);
     void init(ScriptBindingInstance* instance, void* domObjectPointer) override;
     bool isWebGLTransformFeedback() const override;
 };
 
 class WebGLVertexArrayObject : public WebGLObject {
+public:
+    WebGLVertexArrayObject(ScriptBindingInstance* instance,
+                           WebGLRenderingContext* context, GLuint object);
     void init(ScriptBindingInstance* instance, void* domObjectPointer) override;
     bool isWebGLVertexArrayObject() const override;
 };

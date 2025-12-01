@@ -270,6 +270,11 @@ public:
     virtual void xglImageTargetTexture2DOES(GLenum target, void *image)
     {
     }
+
+    // WebGL2
+    virtual void genQueries(GLsizei n, GLuint *arrays) = 0;
+    virtual void genSamplers(GLsizei n, GLuint *arrays) = 0;
+    virtual void genTransformFeedback(GLsizei n, GLuint *arrays) = 0;
 };
 
 } // namespace Starfish
