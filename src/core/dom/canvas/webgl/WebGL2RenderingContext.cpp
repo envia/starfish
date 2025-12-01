@@ -788,20 +788,20 @@ void WebGL2RenderingContext::bindVertexArray(
 void WebGL2RenderingContext::bufferData(GLenum target, GLsizeiptr size,
                                         GLenum usage)
 {
-    STARFISH_UNIMPLEMENTED();
+    WebGLRenderingContext::bufferData(target, size, usage);
 }
 
 void WebGL2RenderingContext::bufferData(
     GLenum target, Optional<AllowSharedBufferSource> srcData, GLenum usage)
 {
-    STARFISH_UNIMPLEMENTED();
+    WebGLRenderingContext::bufferData(target, srcData, usage);
 }
 
 void WebGL2RenderingContext::bufferSubData(GLenum target,
                                            GLintptr dstByteOffset,
                                            AllowSharedBufferSource srcData)
 {
-    STARFISH_UNIMPLEMENTED();
+    WebGLRenderingContext::bufferSubData(target, dstByteOffset, srcData);
 }
 
 void WebGL2RenderingContext::bufferData(GLenum target,
@@ -828,14 +828,16 @@ void WebGL2RenderingContext::texImage2D(GLenum target, GLint level,
                                         GLenum format, GLenum type,
                                         Optional<ScriptArrayBufferView> pixels)
 {
-    STARFISH_UNIMPLEMENTED();
+    WebGLRenderingContext::texImage2D(target, level, internalformat, width,
+                                      height, border, format, type, pixels);
 }
 
 void WebGL2RenderingContext::texImage2D(GLenum target, GLint level,
                                         GLint internalformat, GLenum format,
                                         GLenum type, TexImageSource source)
 {
-    STARFISH_UNIMPLEMENTED();
+    WebGLRenderingContext::texImage2D(target, level, internalformat, format,
+                                      type, source);
 }
 
 void WebGL2RenderingContext::texSubImage2D(
@@ -843,7 +845,8 @@ void WebGL2RenderingContext::texSubImage2D(
     GLsizei height, GLenum format, GLenum type,
     Optional<ScriptArrayBufferView> pixels)
 {
-    STARFISH_UNIMPLEMENTED();
+    WebGLRenderingContext::texSubImage2D(target, level, xoffset, yoffset, width,
+                                         height, format, type, pixels);
 }
 
 void WebGL2RenderingContext::texSubImage2D(GLenum target, GLint level,
@@ -851,7 +854,8 @@ void WebGL2RenderingContext::texSubImage2D(GLenum target, GLint level,
                                            GLenum format, GLenum type,
                                            TexImageSource source)
 {
-    STARFISH_UNIMPLEMENTED();
+    WebGLRenderingContext::texSubImage2D(target, level, xoffset, yoffset,
+                                         format, type, source);
 }
 
 void WebGL2RenderingContext::texImage2D(GLenum target, GLint level,
@@ -1022,7 +1026,8 @@ void WebGL2RenderingContext::readPixels(GLint x, GLint y, GLsizei width,
                                         GLenum type,
                                         Optional<ScriptArrayBufferView> dstData)
 {
-    STARFISH_UNIMPLEMENTED();
+    WebGLRenderingContext::readPixels(x, y, width, height, format, type,
+                                      dstData);
 }
 
 void WebGL2RenderingContext::readPixels(GLint x, GLint y, GLsizei width,
