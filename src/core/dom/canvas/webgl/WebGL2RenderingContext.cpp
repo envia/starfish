@@ -112,6 +112,7 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
 {
     {
         ENTER_CONTEXT_SCOPE(scriptNull());
+
         switch (pname) {
         case GL_MAX_3D_TEXTURE_SIZE:
         case GL_MAX_ARRAY_TEXTURE_LAYERS:
