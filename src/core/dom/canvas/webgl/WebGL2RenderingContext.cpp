@@ -144,7 +144,6 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
                               values[0]);
             return Escargot::ValueRef::create(values[0]);
         }
-
         case GL_MAX_UNIFORM_BUFFER_BINDINGS: {
             std::vector<int> values(1);
             gl()->getIntegerv(pname, &values[0]);
@@ -152,7 +151,6 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
                               values[0]);
             return Escargot::ValueRef::create(values[0]);
         }
-
         case GL_MAX_VERTEX_UNIFORM_BLOCKS: {
             std::vector<int> values(1);
             gl()->getIntegerv(pname, &values[0]);
