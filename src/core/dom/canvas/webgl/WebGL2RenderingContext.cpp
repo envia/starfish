@@ -27,6 +27,10 @@
 #include "binding/generated/Int32ArrayOrSequenceOfGLintUnion.h"
 #include "binding/generated/Uint32ArrayOrSequenceOfGLuintUnion.h"
 #include "core/dom/ExecutionContext.h"
+#include "core/util/debug/Trace.h"
+#include "platform/canvas/gl/GL.h"
+#include "platform/canvas/gl/IncludeGL.h"
+#include <EscargotPublic.h>
 
 namespace Starfish {
 
@@ -74,6 +78,78 @@ WebGL2RenderingContext::~WebGL2RenderingContext()
 ScriptBindingInstance* WebGL2RenderingContext::scriptBindingInstance()
 {
     return executionContext()->scriptBindingInstance();
+}
+
+// WebGLRenderingContextBase
+
+#define ENTER_CONTEXT_SCOPE_IMPL(bailoutValue, ...) \
+    GLContextScope contextScope_(m_context);        \
+    if (contextScope_.hasError()) {                 \
+        TRACE(WEBGL,                                \
+              "\033[33m"                            \
+              "GL Context error detected."          \
+              "\033[0m");                           \
+        return bailoutValue;                        \
+    }
+
+#if defined(NDEBUG) and !defined(ENABLE_TRACE)
+#define ENTER_CONTEXT_SCOPE(bailoutValue, ...) \
+    ENTER_CONTEXT_SCOPE_IMPL(bailoutValue);
+#else
+#define ENTER_CONTEXT_SCOPE(bailoutValue, ...)       \
+    ENTER_CONTEXT_SCOPE_IMPL(bailoutValue);          \
+    auto onScopeLeave = OnScopeLeave::create([&]() { \
+        if (hasGLError()) {                          \
+            TRACE(WEBGL,                             \
+                  "\033[33m"                         \
+                  "GL error detected."               \
+                  "\033[0m");                        \
+        }                                            \
+    });
+#endif
+
+ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
+{
+    {
+        ENTER_CONTEXT_SCOPE(scriptNull());
+        switch (pname) {
+        case GL_MAX_3D_TEXTURE_SIZE:
+        case GL_MAX_ARRAY_TEXTURE_LAYERS:
+        case GL_MAX_COLOR_ATTACHMENTS:
+        case GL_MAX_COMBINED_UNIFORM_BLOCKS:
+        case GL_MAX_DRAW_BUFFERS:
+        case GL_MAX_ELEMENTS_INDICES:
+        case GL_MAX_ELEMENTS_VERTICES:
+        case GL_MAX_FRAGMENT_INPUT_COMPONENTS:
+        case GL_MAX_FRAGMENT_UNIFORM_BLOCKS:
+        case GL_MAX_FRAGMENT_UNIFORM_COMPONENTS:
+        case GL_MAX_PROGRAM_TEXEL_OFFSET:
+        case GL_MAX_SAMPLES:
+        case GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS:
+        case GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS:
+        case GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS:
+        case GL_MAX_UNIFORM_BUFFER_BINDINGS:
+        case GL_MAX_VARYING_COMPONENTS:
+        case GL_MAX_VERTEX_OUTPUT_COMPONENTS:
+        case GL_MAX_VERTEX_UNIFORM_BLOCKS:
+        case GL_MAX_VERTEX_UNIFORM_COMPONENTS:
+        case GL_MIN_PROGRAM_TEXEL_OFFSET:
+        case GL_PACK_ROW_LENGTH:
+        case GL_PACK_SKIP_PIXELS:
+        case GL_PACK_SKIP_ROWS:
+        case GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT:
+        case GL_UNPACK_IMAGE_HEIGHT:
+        case GL_UNPACK_ROW_LENGTH:
+        case GL_UNPACK_SKIP_IMAGES:
+        case GL_UNPACK_SKIP_PIXELS:
+        case GL_UNPACK_SKIP_ROWS: {
+            std::vector<int> values(1);
+            gl()->getIntegerv(pname, &values[0]);
+            return Escargot::ValueRef::create(values[0]);
+        }
+        }
+    }
+    return WebGLRenderingContext::getParameter(pname);
 }
 
 // WebGL2RenderingContextBase
