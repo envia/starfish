@@ -315,7 +315,7 @@ public:
     bool executeInContextScope(std::function<void()> callback);
     WebGLRenderingContextState* getState();
 
-private:
+protected:
     bool checkAttribOrUniformName(String* name);
     bool isFromCurrentContext(WebGLObject* object);
     bool isBoundCubeMapTexture(GLenum target);
@@ -327,6 +327,7 @@ private:
     void completePendingJobs();
     void setPendingClearMask(uint32_t mask);
 
+private:
     bool m_hasPendingJobsBetweenFrames;
     uint32_t m_pendingClearMask;
 

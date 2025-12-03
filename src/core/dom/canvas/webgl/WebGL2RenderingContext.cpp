@@ -48,6 +48,13 @@ WebGLSampler::WebGLSampler(ScriptBindingInstance* instance,
 {
 }
 
+WebGLSync::WebGLSync(ScriptBindingInstance* instance,
+                     WebGLRenderingContext* context, GLsync object)
+    : WebGLObject(instance, context, 0)
+    , m_glObject(object)
+{
+}
+
 WebGLTransformFeedback::WebGLTransformFeedback(ScriptBindingInstance* instance,
                                                WebGLRenderingContext* context,
                                                GLuint object)
@@ -633,39 +640,67 @@ ScriptValue WebGL2RenderingContext::getSamplerParameter(WebGLSampler* sampler,
 Optional<WebGLSync*> WebGL2RenderingContext::fenceSync(GLenum condition,
                                                        GLbitfield flags)
 {
-    STARFISH_UNIMPLEMENTED();
-    return nullptr;
+    ENTER_CONTEXT_SCOPE(Optional<WebGLSync*>());
+
+    GLsync sync = glFenceSync(condition, flags);
+    return new WebGLSync(scriptBindingInstance(), this, sync);
 }
 
 GLboolean WebGL2RenderingContext::isSync(Optional<WebGLSync*> sync)
 {
-    STARFISH_UNIMPLEMENTED();
-    return false;
+    ENTER_CONTEXT_SCOPE(false);
+
+    if (!sync.hasValue() || !isFromCurrentContext(sync.value()) ||
+        sync.value()->invalidated()) {
+        return false;
+    }
+
+    return glIsSync(sync.value()->glObject());
 }
 
 void WebGL2RenderingContext::deleteSync(Optional<WebGLSync*> sync)
 {
-    STARFISH_UNIMPLEMENTED();
+    ENTER_CONTEXT_SCOPE();
+
+    if (!sync.hasValue()) {
+        return;
+    }
+    WebGLSync* value = sync.value();
+    if (!isFromCurrentContext(value)) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+    if (value->isDeleted()) {
+        return;
+    }
+    glDeleteSync(value->glObject());
+    value->markDeleted();
 }
 
 GLenum WebGL2RenderingContext::clientWaitSync(WebGLSync* sync, GLbitfield flags,
                                               GLuint64 timeout)
 {
-    STARFISH_UNIMPLEMENTED();
-    return 0;
+    ENTER_CONTEXT_SCOPE(GL_WAIT_FAILED);
+
+    return glClientWaitSync(sync->glObject(), flags, timeout);
 }
 
 void WebGL2RenderingContext::waitSync(WebGLSync* sync, GLbitfield flags,
                                       GLint64 timeout)
 {
-    STARFISH_UNIMPLEMENTED();
+    ENTER_CONTEXT_SCOPE();
+
+    glWaitSync(sync->glObject(), flags, timeout);
 }
 
 ScriptValue WebGL2RenderingContext::getSyncParameter(WebGLSync* sync,
                                                      GLenum pname)
 {
-    STARFISH_UNIMPLEMENTED();
-    return scriptNull();
+    ENTER_CONTEXT_SCOPE(scriptNull());
+
+    GLint values;
+    glGetSynciv(sync->glObject(), pname, 1, nullptr, &values);
+    return Escargot::ValueRef::create(values);
 }
 
 WebGLTransformFeedback* WebGL2RenderingContext::createTransformFeedback()
