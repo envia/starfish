@@ -13,4 +13,4 @@ binding_generator/scripts/starfish_code_generator.py:
 	git submodule update --init --recursive
 
 clean:
-	rm -rf out/webgl2
+	rm -rf Starfish out/webgl2
