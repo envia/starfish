@@ -174,8 +174,10 @@ Optional<RenderingContextBindindingUnion> HTMLCanvasElement::getContext(
             m_canvasRenderingContext->setOriginCleanFlag(true);
         }
         if (m_contextMode == CanvasContextModeWebGL2) {
-            return RenderingContextBindindingUnion::createWebGL2RenderingContext(
-                static_cast<WebGL2RenderingContext*>(m_canvasRenderingContext));
+            return RenderingContextBindindingUnion::
+                createWebGL2RenderingContext(
+                    static_cast<WebGL2RenderingContext*>(
+                        m_canvasRenderingContext));
         }
 #endif
     }
