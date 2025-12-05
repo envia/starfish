@@ -1064,7 +1064,6 @@ ScriptValue WebGLRenderingContext::getBufferParameter(GLenum target,
 
 ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
 {
-    STARFISH_LOG_WARN("WebGLRenderingContext::getParameter()");
     ENTER_CONTEXT_SCOPE(scriptNull());
 
     switch (pname) {
@@ -1079,18 +1078,8 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case GL_MAX_TEXTURE_IMAGE_UNITS:
     case GL_MAX_TEXTURE_SIZE:
     case GL_MAX_VARYING_VECTORS:
-    case GL_MAX_VERTEX_ATTRIBS: {
-        std::vector<int> values(1);
-        m_gl->getIntegerv(pname, &values[0]);
-        return ValueRef::create(values[0]);
-    }
-    case GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS: {
-        std::vector<int> values(1);
-        m_gl->getIntegerv(pname, &values[0]);
-        STARFISH_LOG_WARN("INDIGO_TEMP: MAX_VERTEX_TEXTURE_IMAGE_UNITS=%d",
-                          values[0]);
-        return ValueRef::create(values[0]);
-    }
+    case GL_MAX_VERTEX_ATTRIBS:
+    case GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS:
     case GL_MAX_VERTEX_UNIFORM_VECTORS:
     case GL_PACK_ALIGNMENT:
     case GL_RED_BITS:

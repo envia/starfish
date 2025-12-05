@@ -34,6 +34,11 @@
 
 #include <EscargotPublic.h>
 
+/* WebGL-specific enums */
+static const GLenum kMAX_CLIENT_WAIT_TIMEOUT_WEBGL = 0x9247;
+
+static const GLint64 kMaxClientWaitTimeoutWebgl = 0;
+
 namespace Starfish {
 
 WebGLQuery::WebGLQuery(ScriptBindingInstance* instance,
@@ -113,58 +118,105 @@ ScriptBindingInstance* WebGL2RenderingContext::scriptBindingInstance()
 
 ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
 {
-    STARFISH_LOG_WARN("WebGL2RenderingContext::getParameter()");
     {
         ENTER_CONTEXT_SCOPE(scriptNull());
 
         switch (pname) {
-        case GL_MAX_3D_TEXTURE_SIZE: {
-            std::vector<int> values(1);
+        // GLboolean
+        case GL_RASTERIZER_DISCARD:
+        case GL_TRANSFORM_FEEDBACK_ACTIVE:
+        case GL_TRANSFORM_FEEDBACK_PAUSED:
+        // GLenum
+        case GL_DRAW_BUFFER0:
+        case GL_DRAW_BUFFER1:
+        case GL_DRAW_BUFFER2:
+        case GL_DRAW_BUFFER3:
+        case GL_DRAW_BUFFER4:
+        case GL_DRAW_BUFFER5:
+        case GL_DRAW_BUFFER6:
+        case GL_DRAW_BUFFER7:
+        case GL_DRAW_BUFFER8:
+        case GL_DRAW_BUFFER9:
+        case GL_DRAW_BUFFER10:
+        case GL_DRAW_BUFFER11:
+        case GL_DRAW_BUFFER12:
+        case GL_DRAW_BUFFER13:
+        case GL_DRAW_BUFFER14:
+        case GL_DRAW_BUFFER15:
+        case GL_FRAGMENT_SHADER_DERIVATIVE_HINT:
+        case GL_READ_BUFFER:
+        // GLfloat
+        case GL_MAX_TEXTURE_LOD_BIAS:
+            STARFISH_UNIMPLEMENTED();
+            break;
+        // GLint
+        case GL_MAX_3D_TEXTURE_SIZE:
+        case GL_MAX_ARRAY_TEXTURE_LAYERS:
+        case GL_MAX_COLOR_ATTACHMENTS:
+        case GL_MAX_COMBINED_UNIFORM_BLOCKS:
+        case GL_MAX_DRAW_BUFFERS:
+        case GL_MAX_ELEMENTS_INDICES:
+        case GL_MAX_ELEMENTS_VERTICES:
+        case GL_MAX_FRAGMENT_INPUT_COMPONENTS:
+        case GL_MAX_FRAGMENT_UNIFORM_BLOCKS:
+        case GL_MAX_FRAGMENT_UNIFORM_COMPONENTS:
+        case GL_MAX_PROGRAM_TEXEL_OFFSET:
+        case GL_MAX_SAMPLES: // TODO
+        case GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS:
+        case GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS:
+        case GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS:
+        case GL_MAX_UNIFORM_BUFFER_BINDINGS:
+        case GL_MAX_VARYING_COMPONENTS:
+        case GL_MAX_VERTEX_OUTPUT_COMPONENTS:
+        case GL_MAX_VERTEX_UNIFORM_BLOCKS:
+        case GL_MAX_VERTEX_UNIFORM_COMPONENTS:
+        case GL_MIN_PROGRAM_TEXEL_OFFSET:
+        case GL_PACK_ROW_LENGTH:
+        case GL_PACK_SKIP_PIXELS:
+        case GL_PACK_SKIP_ROWS:
+        case GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT:
+        case GL_UNPACK_IMAGE_HEIGHT:
+        case GL_UNPACK_ROW_LENGTH:
+        case GL_UNPACK_SKIP_IMAGES:
+        case GL_UNPACK_SKIP_PIXELS:
+        case GL_UNPACK_SKIP_ROWS: {
+            std::vector<GLint> values(1);
             gl()->getIntegerv(pname, &values[0]);
-            STARFISH_LOG_WARN("INDIGO_TEMP: MAX_3D_TEXTURE_SIZE=%d", values[0]);
             return Escargot::ValueRef::create(values[0]);
         }
-        case GL_MAX_COLOR_ATTACHMENTS: {
-            std::vector<int> values(1);
-            gl()->getIntegerv(pname, &values[0]);
-            STARFISH_LOG_WARN("INDIGO_TEMP: MAX_COLOR_ATTACHMENTS=%d",
-                              values[0]);
+        // GLint64
+        case kMAX_CLIENT_WAIT_TIMEOUT_WEBGL:
+            return Escargot::ValueRef::create(kMaxClientWaitTimeoutWebgl);
+        case GL_MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS:
+        case GL_MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS:
+        case GL_MAX_ELEMENT_INDEX:
+        case GL_MAX_SERVER_WAIT_TIMEOUT:
+        case GL_MAX_UNIFORM_BLOCK_SIZE: {
+            std::vector<GLint64> values(1);
+            gl()->getInteger64v(pname, &values[0]);
             return Escargot::ValueRef::create(values[0]);
         }
-        case GL_MAX_COMBINED_UNIFORM_BLOCKS: {
-            std::vector<int> values(1);
-            gl()->getIntegerv(pname, &values[0]);
-            STARFISH_LOG_WARN("INDIGO_TEMP: MAX_COMBINED_UNIFORM_BLOCKS=%d",
-                              values[0]);
-            return Escargot::ValueRef::create(values[0]);
-        }
-        case GL_MAX_DRAW_BUFFERS: {
-            std::vector<int> values(1);
-            gl()->getIntegerv(pname, &values[0]);
-            STARFISH_LOG_WARN("INDIGO_TEMP: MAX_DRAW_BUFFERS=%d", values[0]);
-            return Escargot::ValueRef::create(values[0]);
-        }
-        case GL_MAX_FRAGMENT_INPUT_COMPONENTS: {
-            std::vector<int> values(1);
-            gl()->getIntegerv(pname, &values[0]);
-            STARFISH_LOG_WARN("INDIGO_TEMP: MAX_FRAGMENT_INPUT_COMPONENTS=%d",
-                              values[0]);
-            return Escargot::ValueRef::create(values[0]);
-        }
-        case GL_MAX_UNIFORM_BUFFER_BINDINGS: {
-            std::vector<int> values(1);
-            gl()->getIntegerv(pname, &values[0]);
-            STARFISH_LOG_WARN("INDIGO_TEMP: MAX_UNIFORM_BUFFER_BINDINGS=%d",
-                              values[0]);
-            return Escargot::ValueRef::create(values[0]);
-        }
-        case GL_MAX_VERTEX_UNIFORM_BLOCKS: {
-            std::vector<int> values(1);
-            gl()->getIntegerv(pname, &values[0]);
-            STARFISH_LOG_WARN("INDIGO_TEMP: MAX_VERTEX_UNIFORM_BLOCKS=%d",
-                              values[0]);
-            return Escargot::ValueRef::create(values[0]);
-        }
+        // WebGLBuffer
+        case GL_COPY_READ_BUFFER_BINDING:
+        case GL_COPY_WRITE_BUFFER_BINDING:
+        case GL_PIXEL_PACK_BUFFER_BINDING:
+        case GL_PIXEL_UNPACK_BUFFER_BINDING:
+        case GL_TRANSFORM_FEEDBACK_BUFFER_BINDING:
+        case GL_UNIFORM_BUFFER_BINDING:
+        // WebGLFramebuffer
+        case GL_DRAW_FRAMEBUFFER_BINDING: // TODO
+        case GL_READ_FRAMEBUFFER_BINDING:
+        // WebGLSampler
+        case GL_SAMPLER_BINDING:
+        // WebGLTexture
+        case GL_TEXTURE_BINDING_2D_ARRAY:
+        case GL_TEXTURE_BINDING_3D:
+        // WebGLTransformFeedback
+        case GL_TRANSFORM_FEEDBACK_BINDING:
+        // WebGLVertexArrayObject
+        case GL_VERTEX_ARRAY_BINDING: // TODO
+            STARFISH_UNIMPLEMENTED();
+            break;
         }
     }
     return WebGLRenderingContext::getParameter(pname);
