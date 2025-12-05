@@ -23,11 +23,13 @@
 #include "core/dom/canvas/webgl/WebGL2RenderingContext.h"
 #include "core/dom/ExecutionContext.h"
 #include "core/util/debug/Trace.h"
+#include "core/dom/canvas/webgl/WebGLRenderingContextState.h"
 #include "binding/generated/Float32ArrayOrSequenceOfGLfloatUnion.h"
 #include "binding/generated/Int32ArrayOrSequenceOfGLintUnion.h"
 #include "binding/generated/ArrayBufferOrSharedArrayBufferOrArrayBufferViewUnion.h"
 #include "binding/generated/ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElementUnion.h"
 #include "binding/generated/Uint32ArrayOrSequenceOfGLuintUnion.h"
+#include "core/dom/canvas/webgl/WebGLOES_VertexArrayObject.h"
 
 #include "platform/canvas/gl/IncludeGL.h"
 #include "platform/canvas/gl/GL.h"
@@ -217,10 +219,27 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         case GL_TEXTURE_BINDING_3D:
         // WebGLTransformFeedback
         case GL_TRANSFORM_FEEDBACK_BINDING:
-        // WebGLVertexArrayObject
-        case GL_VERTEX_ARRAY_BINDING: // TODO
             STARFISH_UNIMPLEMENTED();
             break;
+        // WebGLVertexArrayObject
+        case GL_VERTEX_ARRAY_BINDING: {
+            GLint value = -1;
+            gl()->getIntegerv(pname, &value);
+            if (value == 0) {
+                return scriptNull();
+            }
+
+            Optional<WebGLVertexArrayObjectOES*> maybe =
+                state()->webGLVertexArrayObjectOES();
+
+            if (!maybe.hasValue() || maybe.value()->isDeleted()) {
+                return scriptNull();
+            }
+
+            STARFISH_ASSERT(static_cast<GLint>(maybe.value()->glObject()) ==
+                            value);
+            return maybe.value()->scriptValue();
+        }
         }
     }
     return WebGLRenderingContext::getParameter(pname);

@@ -327,6 +327,11 @@ protected:
     void completePendingJobs();
     void setPendingClearMask(uint32_t mask);
 
+    WebGLRenderingContextState* state()
+    {
+        return m_state;
+    }
+
 private:
     bool m_hasPendingJobsBetweenFrames;
     uint32_t m_pendingClearMask;
