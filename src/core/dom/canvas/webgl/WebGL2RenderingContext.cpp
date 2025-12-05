@@ -29,7 +29,6 @@
 #include "binding/generated/ArrayBufferOrSharedArrayBufferOrArrayBufferViewUnion.h"
 #include "binding/generated/ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElementUnion.h"
 #include "binding/generated/Uint32ArrayOrSequenceOfGLuintUnion.h"
-#include "core/dom/canvas/webgl/WebGLOES_VertexArrayObject.h"
 
 #include "platform/canvas/gl/IncludeGL.h"
 #include "platform/canvas/gl/GL.h"
@@ -229,8 +228,8 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
                 return scriptNull();
             }
 
-            Optional<WebGLVertexArrayObjectOES*> maybe =
-                state()->webGLVertexArrayObjectOES();
+            Optional<WebGLVertexArrayObject*> maybe =
+                state()->webGLVertexArrayObject();
 
             if (!maybe.hasValue() || maybe.value()->isDeleted()) {
                 return scriptNull();
