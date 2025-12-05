@@ -203,8 +203,12 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         case GL_PIXEL_UNPACK_BUFFER_BINDING:
         case GL_TRANSFORM_FEEDBACK_BUFFER_BINDING:
         case GL_UNIFORM_BUFFER_BINDING:
+            STARFISH_UNIMPLEMENTED();
+            break;
         // WebGLFramebuffer
-        case GL_DRAW_FRAMEBUFFER_BINDING: // TODO
+        case GL_DRAW_FRAMEBUFFER_BINDING:
+            // GL_FRAMEBUFFER_BINDING (WebGL1)
+            break;
         case GL_READ_FRAMEBUFFER_BINDING:
         // WebGLSampler
         case GL_SAMPLER_BINDING:
