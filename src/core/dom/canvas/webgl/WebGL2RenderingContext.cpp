@@ -1101,56 +1101,80 @@ void WebGL2RenderingContext::uniform1fv(
     Optional<WebGLUniformLocation*> location, Float32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED();
+    if (srcOffset != 0 || srcLength != 0) {
+        STARFISH_UNIMPLEMENTED();
+    }
+    WebGLRenderingContext::uniform1fv(location, data);
 }
 
 void WebGL2RenderingContext::uniform2fv(
     Optional<WebGLUniformLocation*> location, Float32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED();
+    if (srcOffset != 0 || srcLength != 0) {
+        STARFISH_UNIMPLEMENTED();
+    }
+    WebGLRenderingContext::uniform2fv(location, data);
 }
 
 void WebGL2RenderingContext::uniform3fv(
     Optional<WebGLUniformLocation*> location, Float32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED();
+    if (srcOffset != 0 || srcLength != 0) {
+        STARFISH_UNIMPLEMENTED();
+    }
+    WebGLRenderingContext::uniform3fv(location, data);
 }
 
 void WebGL2RenderingContext::uniform4fv(
     Optional<WebGLUniformLocation*> location, Float32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED();
+    if (srcOffset != 0 || srcLength != 0) {
+        STARFISH_UNIMPLEMENTED();
+    }
+    WebGLRenderingContext::uniform4fv(location, data);
 }
 
 void WebGL2RenderingContext::uniform1iv(
     Optional<WebGLUniformLocation*> location, Int32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED();
+    if (srcOffset != 0 || srcLength != 0) {
+        STARFISH_UNIMPLEMENTED();
+    }
+    WebGLRenderingContext::uniform1iv(location, data);
 }
 
 void WebGL2RenderingContext::uniform2iv(
     Optional<WebGLUniformLocation*> location, Int32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED();
+    if (srcOffset != 0 || srcLength != 0) {
+        STARFISH_UNIMPLEMENTED();
+    }
+    WebGLRenderingContext::uniform2iv(location, data);
 }
 
 void WebGL2RenderingContext::uniform3iv(
     Optional<WebGLUniformLocation*> location, Int32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED();
+    if (srcOffset != 0 || srcLength != 0) {
+        STARFISH_UNIMPLEMENTED();
+    }
+    WebGLRenderingContext::uniform3iv(location, data);
 }
 
 void WebGL2RenderingContext::uniform4iv(
     Optional<WebGLUniformLocation*> location, Int32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED();
+    if (srcOffset != 0 || srcLength != 0) {
+        STARFISH_UNIMPLEMENTED();
+    }
+    WebGLRenderingContext::uniform4iv(location, data);
 }
 
 void WebGL2RenderingContext::uniformMatrix2fv(
