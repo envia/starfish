@@ -1196,15 +1196,6 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
         return createTypedArray<Int32ArrayObjectRef>(scriptBindingInstance(),
                                                      std::vector<int>());
     }
-    case kUNPACK_FLIP_Y_WEBGL: {
-        return ValueRef::create(m_unpackFlipY);
-    }
-    case kUNPACK_PREMULTIPLY_ALPHA_WEBGL: {
-        return ValueRef::create(m_unpackPremultiplyAlpha);
-    }
-    case kUNPACK_COLORSPACE_CONVERSION_WEBGL: {
-        return ValueRef::create(m_unpackColorspaceConversion);
-    }
     default:
         STARFISH_UNSUPPORTED("pname: 0x%04X(%s)", pname, __PRETTY_FUNCTION__);
         return scriptNull();
