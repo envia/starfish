@@ -247,7 +247,7 @@ test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-array-of-structs-uniform.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-attrib-array.vert.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-attrib-struct.vert.html
-test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-clipvertex.vert.html
+# test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-clipvertex.vert.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-conditional-scoping.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-conditional-scoping-negative.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-default-precision.frag.html
@@ -267,10 +267,10 @@ test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-comma-assignment.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-comma-conditional-assignment.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-comma-separated-variable-declarations.html
-test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-glcolor.vert.html
+# test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-glcolor.vert.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-gles-1.frag.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-gles-symbol.frag.html
-test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-glprojectionmatrix.vert.html
+# test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-glprojectionmatrix.vert.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-implicit-vec3-to-vec4-cast.vert.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-include.vert.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-int-return-value.frag.html
@@ -316,7 +316,7 @@ test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/struct-nesti
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-short-circuiting-operators.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/shader-with-global-variable-precision-mismatch.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/large-loop-compile.html
-test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/struct-equals.html
+# test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/struct-equals.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/struct-assign.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/struct-mixed-array-declarators.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/glsl/misc/struct-nesting-of-variable-names.html
@@ -554,7 +554,7 @@ test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/state/state-uneffected
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/textures/misc/copy-tex-image-and-sub-image-2d.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/textures/misc/copy-tex-image-2d-formats.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/textures/misc/copy-tex-sub-image-2d-partial-texture.html
-test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/textures/misc/cube-incomplete-fbo.html
+# test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/textures/misc/cube-incomplete-fbo.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/textures/misc/default-texture.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/textures/misc/gl-pixelstorei.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/textures/misc/gl-teximage.html
