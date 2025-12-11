@@ -40,8 +40,9 @@ WebGLSampler::WebGLSampler(ScriptBindingInstance* instance,
 }
 
 WebGLSync::WebGLSync(ScriptBindingInstance* instance,
-                     WebGLRenderingContext* context, GLuint object)
-    : WebGLObject(instance, context, object)
+                     WebGLRenderingContext* context, GLsync object)
+    : WebGLObject(instance, context, /* dummy */ 0)
+    , m_glObject(object)
 {
 }
 

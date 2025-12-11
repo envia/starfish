@@ -24,6 +24,8 @@
 
 #include "core/dom/canvas/webgl/WebGLRenderingContext.h"
 
+typedef struct __GLsync* GLsync;
+
 namespace Starfish {
 
 class Uint32ArrayOrSequenceOfGLuint;
@@ -51,9 +53,17 @@ public:
 class WebGLSync : public WebGLObject {
 public:
     WebGLSync(ScriptBindingInstance* instance, WebGLRenderingContext* context,
-              GLuint object);
+              GLsync object);
     void init(ScriptBindingInstance* instance, void* domObjectPointer) override;
     bool isWebGLSync() const override;
+
+    GLsync glObject() const
+    {
+        return m_glObject;
+    }
+
+private:
+    GLsync m_glObject;
 };
 
 class WebGLTransformFeedback : public WebGLObject {
