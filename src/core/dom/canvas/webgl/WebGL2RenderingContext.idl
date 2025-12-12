@@ -44,40 +44,49 @@
 // https://registry.khronos.org/webgl/specs/latest/2.0/#3
 
 // https://registry.khronos.org/webgl/specs/latest/2.0/#3.1
+[STARFISH_ENABLE_WEBGL]
 typedef long long GLint64;
+[STARFISH_ENABLE_WEBGL]
 typedef unsigned long long GLuint64;
 
 // https://registry.khronos.org/webgl/specs/latest/2.0/#3.2
-[Exposed=(Window,Worker)]
+[STARFISH_ENABLE_WEBGL, Exposed=(Window,Worker)]
 interface WebGLQuery : WebGLObject {
 };
 
 // https://registry.khronos.org/webgl/specs/latest/2.0/#3.3
-[Exposed=(Window,Worker)]
+[STARFISH_ENABLE_WEBGL, Exposed=(Window,Worker)]
 interface WebGLSampler : WebGLObject {
 };
 
 // https://registry.khronos.org/webgl/specs/latest/2.0/#3.4
-[Exposed=(Window,Worker)]
+[STARFISH_ENABLE_WEBGL, Exposed=(Window,Worker)]
 interface WebGLSync : WebGLObject {
 };
 
 // https://registry.khronos.org/webgl/specs/latest/2.0/#3.5
-[Exposed=(Window,Worker)]
+[STARFISH_ENABLE_WEBGL, Exposed=(Window,Worker)]
 interface WebGLTransformFeedback : WebGLObject {
 };
 
 // https://registry.khronos.org/webgl/specs/latest/2.0/#3.6
-[Exposed=(Window,Worker)]
+[STARFISH_ENABLE_WEBGL, Exposed=(Window,Worker)]
 interface WebGLVertexArrayObject : WebGLObject {
 };
 
 // https://registry.khronos.org/webgl/specs/latest/2.0/#3.7
 
-typedef ([AllowShared] Uint32Array or sequence<GLuint>) Uint32List;
+// FIXME: Support [AllowShared] by binding_generator
+// typedef ([AllowShared] Uint32Array or sequence<GLuint>) Uint32List;
+[STARFISH_ENABLE_WEBGL]
+typedef (Uint32Array or sequence<GLuint>) Uint32List;
 
 // https://www.khronos.org/registry/webgl/specs/latest/2.0/#WebGL2RenderingContextBase
-interface mixin WebGL2RenderingContextBase
+// mixin
+[STARFISH_ENABLE_WEBGL,
+PartialInterface,
+NoInterfaceObject]
+interface WebGL2RenderingContextBase
 {
     const GLenum READ_BUFFER                                   = 0x0C02;
     const GLenum UNPACK_ROW_LENGTH                             = 0x0CF2;
@@ -528,7 +537,11 @@ interface mixin WebGL2RenderingContextBase
 };
 
 // https://www.khronos.org/registry/webgl/specs/latest/2.0/#WebGL2RenderingContextOverloads
-interface mixin WebGL2RenderingContextOverloads
+// mixin
+[STARFISH_ENABLE_WEBGL,
+PartialInterface,
+NoInterfaceObject]
+interface WebGL2RenderingContextOverloads
 {
     // WebGL1:
     undefined bufferData(GLenum target, GLsizeiptr size, GLenum usage);
@@ -623,11 +636,16 @@ interface mixin WebGL2RenderingContextOverloads
 };
 
 // https://www.khronos.org/registry/webgl/specs/latest/2.0/#WebGL2RenderingContext
-[Exposed=(Window,Worker)]
+[STARFISH_ENABLE_WEBGL, Exposed=(Window,Worker)]
 interface WebGL2RenderingContext
 {
+    // FIXME: The spec says no member here. In this case, the binding generator
+    // doesn't generate 'void WebGL2RenderingContext::init(...)', and so on. So
+    // we add the following dummy line for now.
+    [Unimplemented] readonly attribute HTMLCanvasElement canvas;
 };
 
-WebGL2RenderingContext includes WebGLRenderingContextBase;
-WebGL2RenderingContext includes WebGL2RenderingContextBase;
-WebGL2RenderingContext includes WebGL2RenderingContextOverloads;
+// includes -> implements
+WebGL2RenderingContext implements WebGLRenderingContextBase;
+WebGL2RenderingContext implements WebGL2RenderingContextBase;
+WebGL2RenderingContext implements WebGL2RenderingContextOverloads;
