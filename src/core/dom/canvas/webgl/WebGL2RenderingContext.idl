@@ -501,7 +501,7 @@ interface mixin WebGL2RenderingContextBase
     WebGLTransformFeedback? createTransformFeedback();
     undefined deleteTransformFeedback(WebGLTransformFeedback? tf);
     [WebGLHandlesContextLoss] GLboolean isTransformFeedback(WebGLTransformFeedback? tf);
-    undefined bindTransformFeedback (GLenum target, WebGLTransformFeedback? tf);
+    undefined bindTransformFeedback(GLenum target, WebGLTransformFeedback? tf);
     undefined beginTransformFeedback(GLenum primitiveMode);
     undefined endTransformFeedback();
     undefined transformFeedbackVaryings(WebGLProgram program, sequence<DOMString> varyings, GLenum bufferMode);
@@ -627,7 +627,7 @@ interface mixin WebGL2RenderingContextOverloads
 interface WebGL2RenderingContext
 {
 };
+
 WebGL2RenderingContext includes WebGLRenderingContextBase;
 WebGL2RenderingContext includes WebGL2RenderingContextBase;
 WebGL2RenderingContext includes WebGL2RenderingContextOverloads;
-
