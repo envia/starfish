@@ -103,6 +103,7 @@ public:
     // Implement WebGLRenderingContextBase
 
     ScriptValue getParameter(GLenum pname);
+    ScriptValue getVertexAttrib(GLuint index, GLenum pname);
 
     // Implement WebGL2RenderingContextBase
 
