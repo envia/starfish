@@ -145,9 +145,9 @@ Optional<RenderingContextBindindingUnion> HTMLCanvasElement::getContext(
                 createImageBitmapRenderingContext(
                     (ImageBitmapRenderingContext*)m_canvasRenderingContext);
         }
+#if defined(STARFISH_ENABLE_WEBGL)
     } else if (contextId->equals("webgl") ||
                contextId->equals("experimental-webgl")) {
-#if defined(STARFISH_ENABLE_WEBGL)
         if (m_contextMode == CanvasContextModeNone) {
             m_contextMode = CanvasContextModeWebGL;
             auto context = new WebGLRenderingContext(this);
@@ -161,9 +161,7 @@ Optional<RenderingContextBindindingUnion> HTMLCanvasElement::getContext(
             return RenderingContextBindindingUnion::createWebGLRenderingContext(
                 static_cast<WebGLRenderingContext*>(m_canvasRenderingContext));
         }
-#endif
     } else if (contextId->equals("webgl2")) {
-#if defined(STARFISH_ENABLE_WEBGL)
         if (m_contextMode == CanvasContextModeNone) {
             m_contextMode = CanvasContextModeWebGL2;
             auto context = new WebGL2RenderingContext(this);
