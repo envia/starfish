@@ -1794,21 +1794,30 @@ void WebGL2RenderingContext::uniformMatrix2fv(
     Optional<WebGLUniformLocation*> location, GLboolean transpose,
     Float32List data, unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED();
+    if (srcOffset != 0 || srcLength != 0) {
+        STARFISH_UNIMPLEMENTED();
+    }
+    WebGLRenderingContext::uniformMatrix2fv(location, transpose, data);
 }
 
 void WebGL2RenderingContext::uniformMatrix3fv(
     Optional<WebGLUniformLocation*> location, GLboolean transpose,
     Float32List data, unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED();
+    if (srcOffset != 0 || srcLength != 0) {
+        STARFISH_UNIMPLEMENTED();
+    }
+    WebGLRenderingContext::uniformMatrix3fv(location, transpose, data);
 }
 
 void WebGL2RenderingContext::uniformMatrix4fv(
     Optional<WebGLUniformLocation*> location, GLboolean transpose,
     Float32List data, unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED();
+    if (srcOffset != 0 || srcLength != 0) {
+        STARFISH_UNIMPLEMENTED();
+    }
+    WebGLRenderingContext::uniformMatrix4fv(location, transpose, data);
 }
 
 void WebGL2RenderingContext::readPixels(GLint x, GLint y, GLsizei width,
