@@ -30,7 +30,6 @@
 #include "core/util/debug/Trace.h"
 #include "platform/canvas/gl/GL.h"
 #include "platform/canvas/gl/IncludeGL.h"
-#include <EscargotPublic.h>
 
 /* WebGL-specific enums */
 static const GLenum kMAX_CLIENT_WAIT_TIMEOUT_WEBGL = 0x9247;
@@ -543,11 +542,11 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         case GL_UNPACK_SKIP_ROWS: {
             std::vector<GLint> values(1);
             gl()->getIntegerv(pname, &values[0]);
-            return Escargot::ValueRef::create(values[0]);
+            return createScriptValue(values[0]);
         }
         // GLint64
         case kMAX_CLIENT_WAIT_TIMEOUT_WEBGL:
-            return Escargot::ValueRef::create(kMaxClientWaitTimeoutWebgl);
+            return createScriptValue(kMaxClientWaitTimeoutWebgl);
         }
     }
     return WebGLRenderingContext::getParameter(pname);
