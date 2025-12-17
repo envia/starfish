@@ -32,6 +32,11 @@
 #include "platform/canvas/gl/IncludeGL.h"
 #include <EscargotPublic.h>
 
+/* WebGL-specific enums */
+static const GLenum kMAX_CLIENT_WAIT_TIMEOUT_WEBGL = 0x9247;
+
+static const GLint64 kMaxClientWaitTimeoutWebgl = 0;
+
 namespace Starfish {
 
 WebGLQuery::WebGLQuery(ScriptBindingInstance* instance,
@@ -505,6 +510,7 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         ENTER_CONTEXT_SCOPE(scriptNull());
 
         switch (pname) {
+        // GLint
         case GL_MAX_3D_TEXTURE_SIZE:
         case GL_MAX_ARRAY_TEXTURE_LAYERS:
         case GL_MAX_COLOR_ATTACHMENTS:
@@ -535,10 +541,13 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         case GL_UNPACK_SKIP_IMAGES:
         case GL_UNPACK_SKIP_PIXELS:
         case GL_UNPACK_SKIP_ROWS: {
-            std::vector<int> values(1);
+            std::vector<GLint> values(1);
             gl()->getIntegerv(pname, &values[0]);
             return Escargot::ValueRef::create(values[0]);
         }
+        // GLint64
+        case kMAX_CLIENT_WAIT_TIMEOUT_WEBGL:
+            return Escargot::ValueRef::create(kMaxClientWaitTimeoutWebgl);
         }
     }
     return WebGLRenderingContext::getParameter(pname);
@@ -1393,38 +1402,100 @@ ScriptValue WebGL2RenderingContext::getSamplerParameter(WebGLSampler* sampler,
 Optional<WebGLSync*> WebGL2RenderingContext::fenceSync(GLenum condition,
                                                        GLbitfield flags)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
-    return nullptr;
+    ENTER_CONTEXT_SCOPE(Optional<WebGLSync*>());
+
+    GLsync sync = glFenceSync(condition, flags);
+    return new WebGLSync(scriptBindingInstance(), this, sync);
 }
 
 GLboolean WebGL2RenderingContext::isSync(Optional<WebGLSync*> sync)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
-    return false;
+    ENTER_CONTEXT_SCOPE(false);
+
+    if (!sync.hasValue() || sync.value()->context() != this ||
+        sync.value()->invalidated()) {
+        return false;
+    }
+
+    return glIsSync(sync.value()->glObject());
 }
 
 void WebGL2RenderingContext::deleteSync(Optional<WebGLSync*> sync)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    if (!sync.hasValue()) {
+        return;
+    }
+    WebGLSync* value = sync.value();
+    if (value->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+    if (value->isDeleted()) {
+        return;
+    }
+    glDeleteSync(value->glObject());
+    value->markDeleted();
 }
 
 GLenum WebGL2RenderingContext::clientWaitSync(WebGLSync* sync, GLbitfield flags,
                                               GLuint64 timeout)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
-    return 0;
+    ENTER_CONTEXT_SCOPE(GL_WAIT_FAILED);
+
+    if (sync->context() != this || flags & ~GL_SYNC_FLUSH_COMMANDS_BIT ||
+        timeout > kMaxClientWaitTimeoutWebgl) {
+        setGLError(GL_INVALID_OPERATION);
+        return GL_WAIT_FAILED;
+    }
+    return glClientWaitSync(sync->glObject(), flags, timeout);
 }
 
 void WebGL2RenderingContext::waitSync(WebGLSync* sync, GLbitfield flags,
                                       GLint64 timeout)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    if (sync->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+    glWaitSync(sync->glObject(), flags, timeout);
 }
 
 ScriptValue WebGL2RenderingContext::getSyncParameter(WebGLSync* sync,
                                                      GLenum pname)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE(scriptNull());
+
+    if (sync->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return scriptNull();
+    }
+    switch (pname) {
+    // GLenum
+    case GL_OBJECT_TYPE:
+    case GL_SYNC_STATUS:
+    case GL_SYNC_CONDITION: {
+        GLint value;
+        glGetSynciv(sync->glObject(), pname, 1, nullptr, &value);
+        if (hasGLError()) {
+            return scriptNull();
+        }
+        return createScriptValue(static_cast<GLenum>(value));
+    }
+    // GLbitfield
+    case GL_SYNC_FLAGS: {
+        GLint value;
+        glGetSynciv(sync->glObject(), pname, 1, nullptr, &value);
+        if (hasGLError()) {
+            return scriptNull();
+        }
+        return createScriptValue(static_cast<GLbitfield>(value));
+    }
+    }
+    setGLError(GL_INVALID_ENUM);
     return scriptNull();
 }
 
