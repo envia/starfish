@@ -513,10 +513,10 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
 
         switch (pname) {
         // DOMString
-        case GL_SHADING_LANGUAGE_VERSION:
+        case GL_SHADING_LANGUAGE_VERSION: /* WebGL1 */
             return createScriptValue(
                 createScriptASCIIString(kShadingLanguageVersion));
-        case GL_VERSION:
+        case GL_VERSION: /* WebGL1 */
             return createScriptValue(createScriptASCIIString(kVersion));
         // GLboolean
         case GL_RASTERIZER_DISCARD:
@@ -544,10 +544,10 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         // GLfloat
         case GL_MAX_TEXTURE_LOD_BIAS:
         // GLint
-        case GL_ALPHA_BITS:
-        case GL_BLUE_BITS:
-        case GL_GREEN_BITS:
-        case GL_RED_BITS:
+        case GL_ALPHA_BITS: /* WebGL1 */
+        case GL_BLUE_BITS:  /* WebGL1 */
+        case GL_GREEN_BITS: /* WebGL1 */
+        case GL_RED_BITS:   /* WebGL1 */
             STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getParameter");
             break;
         case GL_MAX_3D_TEXTURE_SIZE:
@@ -600,7 +600,7 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         case GL_TRANSFORM_FEEDBACK_BUFFER_BINDING:
         case GL_UNIFORM_BUFFER_BINDING:
         // WebGLFramebuffer
-        case GL_DRAW_FRAMEBUFFER_BINDING:
+        case GL_DRAW_FRAMEBUFFER_BINDING: /* WebGL1 (GL_FRAMEBUFFER_BINDING) */
         case GL_READ_FRAMEBUFFER_BINDING:
         // WebGLSampler
         case GL_SAMPLER_BINDING:

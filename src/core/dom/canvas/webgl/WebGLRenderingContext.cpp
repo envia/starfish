@@ -1069,9 +1069,9 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     switch (pname) {
     // DOMString
     case GL_RENDERER:
-    case GL_SHADING_LANGUAGE_VERSION:
+    case GL_SHADING_LANGUAGE_VERSION: /* WebGL2 */
     case GL_VENDOR:
-    case GL_VERSION:
+    case GL_VERSION: /* WebGL2 */
     // Float32Array (with 2 elements)
     case GL_ALIASED_LINE_WIDTH_RANGE:
     case GL_ALIASED_POINT_SIZE_RANGE:
@@ -1123,10 +1123,10 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case GL_POLYGON_OFFSET_UNITS:
     case GL_SAMPLE_COVERAGE_VALUE:
     // GLint
-    case GL_ALPHA_BITS:
-    case GL_BLUE_BITS:
+    case GL_ALPHA_BITS: /* WebGL2 */
+    case GL_BLUE_BITS: /* WebGL2 */
     case GL_DEPTH_BITS:
-    case GL_GREEN_BITS:
+    case GL_GREEN_BITS: /* WebGL2 */
     case GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS:
     case GL_MAX_CUBE_MAP_TEXTURE_SIZE:
     case GL_MAX_FRAGMENT_UNIFORM_VECTORS:
@@ -1138,7 +1138,7 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS:
     case GL_MAX_VERTEX_UNIFORM_VECTORS:
     case GL_PACK_ALIGNMENT:
-    case GL_RED_BITS:
+    case GL_RED_BITS: /* WebGL2 */
     case GL_SAMPLE_BUFFERS:
     case GL_SAMPLES:
     case GL_STENCIL_BACK_REF:
@@ -1163,7 +1163,7 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case GL_ARRAY_BUFFER_BINDING:
     case GL_ELEMENT_ARRAY_BUFFER_BINDING:
     // WebGLFramebuffer
-    case GL_FRAMEBUFFER_BINDING:
+    case GL_FRAMEBUFFER_BINDING: /* WebGL2 (GL_DRAW_FRAMEBUFFER_BINDING) */
     // WebGLProgram
     case GL_CURRENT_PROGRAM:
     // WebGLRenderbuffer
