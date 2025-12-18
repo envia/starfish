@@ -32,9 +32,12 @@
 #include "platform/canvas/gl/IncludeGL.h"
 
 /* WebGL-specific enums */
-static const GLenum kMAX_CLIENT_WAIT_TIMEOUT_WEBGL = 0x9247;
+static constexpr GLenum kMAX_CLIENT_WAIT_TIMEOUT_WEBGL = 0x9247;
 
-static const GLint64 kMaxClientWaitTimeoutWebgl = 0;
+/* WebGL constants */
+static constexpr GLint64 kMaxClientWaitTimeoutWebgl = 0;
+static constexpr char kShadingLanguageVersion[] = "WebGL GLSL ES 3.00";
+static constexpr char kVersion[] = "WebGL 2.0";
 
 namespace Starfish {
 
@@ -509,7 +512,44 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         ENTER_CONTEXT_SCOPE(scriptNull());
 
         switch (pname) {
+        // DOMString
+        case GL_SHADING_LANGUAGE_VERSION:
+            return createScriptValue(
+                createScriptASCIIString(kShadingLanguageVersion));
+        case GL_VERSION:
+            return createScriptValue(createScriptASCIIString(kVersion));
+        // GLboolean
+        case GL_RASTERIZER_DISCARD:
+        case GL_TRANSFORM_FEEDBACK_ACTIVE:
+        case GL_TRANSFORM_FEEDBACK_PAUSED:
+        // GLenum
+        case GL_DRAW_BUFFER0:
+        case GL_DRAW_BUFFER1:
+        case GL_DRAW_BUFFER2:
+        case GL_DRAW_BUFFER3:
+        case GL_DRAW_BUFFER4:
+        case GL_DRAW_BUFFER5:
+        case GL_DRAW_BUFFER6:
+        case GL_DRAW_BUFFER7:
+        case GL_DRAW_BUFFER8:
+        case GL_DRAW_BUFFER9:
+        case GL_DRAW_BUFFER10:
+        case GL_DRAW_BUFFER11:
+        case GL_DRAW_BUFFER12:
+        case GL_DRAW_BUFFER13:
+        case GL_DRAW_BUFFER14:
+        case GL_DRAW_BUFFER15:
+        case GL_FRAGMENT_SHADER_DERIVATIVE_HINT:
+        case GL_READ_BUFFER:
+        // GLfloat
+        case GL_MAX_TEXTURE_LOD_BIAS:
         // GLint
+        case GL_ALPHA_BITS:
+        case GL_BLUE_BITS:
+        case GL_GREEN_BITS:
+        case GL_RED_BITS:
+            STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getParameter");
+            break;
         case GL_MAX_3D_TEXTURE_SIZE:
         case GL_MAX_ARRAY_TEXTURE_LAYERS:
         case GL_MAX_COLOR_ATTACHMENTS:
@@ -547,6 +587,32 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         // GLint64
         case kMAX_CLIENT_WAIT_TIMEOUT_WEBGL:
             return createScriptValue(kMaxClientWaitTimeoutWebgl);
+        case GL_MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS:
+        case GL_MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS:
+        case GL_MAX_ELEMENT_INDEX:
+        case GL_MAX_SERVER_WAIT_TIMEOUT:
+        case GL_MAX_UNIFORM_BLOCK_SIZE:
+        // WebGLBuffer
+        case GL_COPY_READ_BUFFER_BINDING:
+        case GL_COPY_WRITE_BUFFER_BINDING:
+        case GL_PIXEL_PACK_BUFFER_BINDING:
+        case GL_PIXEL_UNPACK_BUFFER_BINDING:
+        case GL_TRANSFORM_FEEDBACK_BUFFER_BINDING:
+        case GL_UNIFORM_BUFFER_BINDING:
+        // WebGLFramebuffer
+        case GL_DRAW_FRAMEBUFFER_BINDING:
+        case GL_READ_FRAMEBUFFER_BINDING:
+        // WebGLSampler
+        case GL_SAMPLER_BINDING:
+        // WebGLTexture
+        case GL_TEXTURE_BINDING_2D_ARRAY:
+        case GL_TEXTURE_BINDING_3D:
+        // WebGLTransformFeedback
+        case GL_TRANSFORM_FEEDBACK_BINDING:
+        // WebGLVertexArrayObject
+        case GL_VERTEX_ARRAY_BINDING:
+            STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getParameter");
+            break;
         }
     }
     return WebGLRenderingContext::getParameter(pname);
