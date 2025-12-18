@@ -1067,6 +1067,62 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     ENTER_CONTEXT_SCOPE(scriptNull());
 
     switch (pname) {
+    // DOMString
+    case GL_RENDERER:
+    case GL_SHADING_LANGUAGE_VERSION:
+    case GL_VENDOR:
+    case GL_VERSION:
+    // Float32Array (with 2 elements)
+    case GL_ALIASED_LINE_WIDTH_RANGE:
+    case GL_ALIASED_POINT_SIZE_RANGE:
+    case GL_DEPTH_RANGE:
+    // Float32Array (with 4 values)
+    case GL_BLEND_COLOR:
+    case GL_COLOR_CLEAR_VALUE:
+    // GLboolean
+    case GL_BLEND:
+    case GL_CULL_FACE:
+    case GL_DEPTH_TEST:
+    case GL_DEPTH_WRITEMASK:
+    case GL_DITHER:
+    case GL_POLYGON_OFFSET_FILL:
+    case GL_SAMPLE_ALPHA_TO_COVERAGE:
+    case GL_SAMPLE_COVERAGE:
+    case GL_SAMPLE_COVERAGE_INVERT:
+    case GL_SCISSOR_TEST:
+    case GL_STENCIL_TEST:
+    case kUNPACK_FLIP_Y_WEBGL:
+    case kUNPACK_PREMULTIPLY_ALPHA_WEBGL:
+    // GLenum
+    case GL_ACTIVE_TEXTURE:
+    case GL_BLEND_DST_ALPHA:
+    case GL_BLEND_DST_RGB:
+    case GL_BLEND_EQUATION_ALPHA:
+    case GL_BLEND_EQUATION_RGB:
+    case GL_BLEND_SRC_ALPHA:
+    case GL_BLEND_SRC_RGB:
+    case GL_CULL_FACE_MODE:
+    case GL_DEPTH_FUNC:
+    case GL_FRONT_FACE:
+    case GL_GENERATE_MIPMAP_HINT:
+    case GL_IMPLEMENTATION_COLOR_READ_FORMAT:
+    case GL_IMPLEMENTATION_COLOR_READ_TYPE:
+    case GL_STENCIL_BACK_FAIL:
+    case GL_STENCIL_BACK_FUNC:
+    case GL_STENCIL_BACK_PASS_DEPTH_FAIL:
+    case GL_STENCIL_BACK_PASS_DEPTH_PASS:
+    case GL_STENCIL_FAIL:
+    case GL_STENCIL_FUNC:
+    case GL_STENCIL_PASS_DEPTH_FAIL:
+    case GL_STENCIL_PASS_DEPTH_PASS:
+    case kUNPACK_COLORSPACE_CONVERSION_WEBGL:
+    // GLfloat
+    case GL_DEPTH_CLEAR_VALUE:
+    case GL_LINE_WIDTH:
+    case GL_POLYGON_OFFSET_FACTOR:
+    case GL_POLYGON_OFFSET_UNITS:
+    case GL_SAMPLE_COVERAGE_VALUE:
+    // GLint
     case GL_ALPHA_BITS:
     case GL_BLUE_BITS:
     case GL_DEPTH_BITS:
@@ -1090,121 +1146,33 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case GL_STENCIL_CLEAR_VALUE:
     case GL_STENCIL_REF:
     case GL_SUBPIXEL_BITS:
-    case GL_MAX_SAMPLES:
-    case GL_UNPACK_ALIGNMENT: {
-        std::vector<int> values(1);
-        m_gl->getIntegerv(pname, &values[0]);
-        return ValueRef::create(values[0]);
-    }
-    case GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT: {
-        if (!isExtensionEnabled("EXT_texture_filter_anisotropic")) {
-            setGLError(GL_INVALID_ENUM);
-            return scriptNull();
-        }
-        std::vector<int> values(1);
-        m_gl->getIntegerv(pname, &values[0]);
-        return ValueRef::create(values[0]);
-    }
-    case GL_CURRENT_PROGRAM: {
-        GLint value = -1;
-        m_gl->getIntegerv(pname, &value);
-
-        Optional<WebGLProgram*> maybe = m_state->webGLProgram();
-        if (!maybe.hasValue() || maybe.value()->isDeleted()) {
-            return scriptNull();
-        }
-        STARFISH_ASSERT(static_cast<GLint>(maybe.value()->glObject()) == value);
-        return maybe.value()->scriptValue();
-    }
-    case GL_FRAMEBUFFER_BINDING: {
-        GLint value = -1;
-        m_gl->getIntegerv(pname, &value);
-
-        if (isDefaultFramebufferBound()) {
-            return scriptNull();
-        }
-
-        Optional<WebGLFramebuffer*> maybe = m_state->webGLFramebuffer();
-        if (!maybe.hasValue() || maybe.value()->isDeleted()) {
-            return scriptNull();
-        }
-        TRACE(WEBGL, KV(maybe.value()->glObject()), KV(value));
-        STARFISH_ASSERT(static_cast<GLint>(maybe.value()->glObject()) == value);
-        return maybe.value()->scriptValue();
-    }
-    case GL_VERTEX_ARRAY_BINDING: {
-        // GL_VERTEX_ARRAY_BINDING_OES
-        if (!isExtensionEnabled("OES_vertex_array_object")) {
-            setGLError(GL_INVALID_ENUM);
-            return scriptNull();
-        }
-        GLint value = -1;
-        m_gl->getIntegerv(pname, &value);
-        if (value == 0) {
-            return scriptNull();
-        }
-
-        Optional<WebGLVertexArrayObjectOES*> maybe =
-            m_state->webGLVertexArrayObjectOES();
-
-        if (!maybe.hasValue() || maybe.value()->isDeleted()) {
-            return scriptNull();
-        }
-
-        STARFISH_ASSERT(static_cast<GLint>(maybe.value()->glObject()) == value);
-        return maybe.value()->scriptValue();
-    }
-    case GL_ARRAY_BUFFER_BINDING:
-    case GL_ELEMENT_ARRAY_BUFFER_BINDING: {
-        GLuint target = (pname == GL_ARRAY_BUFFER_BINDING)
-                            ? GL_ARRAY_BUFFER
-                            : GL_ELEMENT_ARRAY_BUFFER_BINDING;
-        WebGLBuffer* buffer = m_state->getBoundBuffer(target).valueOr(nullptr);
-        return buffer ? buffer->scriptValue() : scriptNull();
-    }
-    case kIMPLEMENTATION_COLOR_READ_TYPE: {
-        // Our implementation-chosen is a combination of RGBA and UNSIGNED_BYTE.
-        return ValueRef::create(GL_UNSIGNED_BYTE);
-    }
-    case kIMPLEMENTATION_COLOR_READ_FORMAT: {
-        return ValueRef::create(GL_RGBA);
-    }
-    case GL_RENDERER:
-    case GL_SHADING_LANGUAGE_VERSION:
-    case GL_VERSION:
-    case GL_VENDOR: {
-        const std::string output =
-            reinterpret_cast<const char*>(glGetString(pname));
-        return StringRef::createFromASCII(output.c_str(), output.length());
-    }
-    case GL_MAX_VIEWPORT_DIMS: {
-        std::vector<int> values(2);
-        m_gl->getIntegerv(pname, &values[0]);
-        return createTypedArray<Int32ArrayObjectRef>(scriptBindingInstance(),
-                                                     values);
-    }
+    case GL_UNPACK_ALIGNMENT:
+    // GLuint
+    case GL_STENCIL_BACK_VALUE_MASK:
+    case GL_STENCIL_BACK_WRITEMASK:
+    case GL_STENCIL_VALUE_MASK:
+    case GL_STENCIL_WRITEMASK:
+    // Int32Array (with 2 elements)
+    case GL_MAX_VIEWPORT_DIMS:
+    // Int32Array (with 4 elements)
     case GL_SCISSOR_BOX:
-    case GL_VIEWPORT: {
-        std::vector<int> values(4);
-        m_gl->getIntegerv(pname, &values[0]);
-        return createTypedArray<Int32ArrayObjectRef>(scriptBindingInstance(),
-                                                     values);
-    }
-    case GL_COMPRESSED_TEXTURE_FORMATS: {
-        STARFISH_ASSERT(WebGLExtensionRegistry::instance()
-                            .hasTextureCompressionExtension() == false);
-        return createTypedArray<Int32ArrayObjectRef>(scriptBindingInstance(),
-                                                     std::vector<int>());
-    }
-    case kUNPACK_FLIP_Y_WEBGL: {
-        return ValueRef::create(m_unpackFlipY);
-    }
-    case kUNPACK_PREMULTIPLY_ALPHA_WEBGL: {
-        return ValueRef::create(m_unpackPremultiplyAlpha);
-    }
-    case kUNPACK_COLORSPACE_CONVERSION_WEBGL: {
-        return ValueRef::create(m_unpackColorspaceConversion);
-    }
+    case GL_VIEWPORT:
+    // Uint32Array
+    case GL_COMPRESSED_TEXTURE_FORMATS:
+    // WebGLBuffer
+    case GL_ARRAY_BUFFER_BINDING:
+    case GL_ELEMENT_ARRAY_BUFFER_BINDING:
+    // WebGLFramebuffer
+    case GL_FRAMEBUFFER_BINDING:
+    // WebGLProgram
+    case GL_CURRENT_PROGRAM:
+    // WebGLRenderbuffer
+    case GL_RENDERBUFFER_BINDING:
+    // WebGLTexture
+    case GL_TEXTURE_BINDING_2D:
+    case GL_TEXTURE_BINDING_CUBE_MAP:
+    // sequence<GLboolean> (with 4 values)
+    case GL_COLOR_WRITEMASK:
     default:
         STARFISH_UNSUPPORTED("pname: 0x%04X(%s)", pname, __PRETTY_FUNCTION__);
         return scriptNull();
