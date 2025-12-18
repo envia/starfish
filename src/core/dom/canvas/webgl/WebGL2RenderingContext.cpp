@@ -561,7 +561,7 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         case GL_MAX_FRAGMENT_UNIFORM_BLOCKS:
         case GL_MAX_FRAGMENT_UNIFORM_COMPONENTS:
         case GL_MAX_PROGRAM_TEXEL_OFFSET:
-        case GL_MAX_SAMPLES:
+        case GL_MAX_SAMPLES: /* WebGL1? */
         case GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS:
         case GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS:
         case GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS:
@@ -610,7 +610,7 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         // WebGLTransformFeedback
         case GL_TRANSFORM_FEEDBACK_BINDING:
         // WebGLVertexArrayObject
-        case GL_VERTEX_ARRAY_BINDING:
+        case GL_VERTEX_ARRAY_BINDING: /* WebGL1? */
             STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getParameter");
             break;
         }
