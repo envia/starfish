@@ -73,8 +73,8 @@ static const GLenum kIMPLEMENTATION_COLOR_READ_TYPE = 0x8B9A;
 static const GLenum kIMPLEMENTATION_COLOR_READ_FORMAT = 0x8B9B;
 
 /* WebGL constants */
-static const std::string kShadingLanguageVersion = "WebGL GLSL ES 1.0";
-static const std::string kVersion = "WebGL 1.0";
+static constexpr char kShadingLanguageVersion[] = "WebGL GLSL ES 1.0";
+static constexpr char kVersion[] = "WebGL 1.0";
 
 namespace Starfish {
 
@@ -1109,8 +1109,7 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
         return StringRef::createFromASCII(output.c_str(), output.length());
     }
     case GL_SHADING_LANGUAGE_VERSION: /* WebGL2 */ {
-        return Escargot::StringRef::createFromASCII(
-            kShadingLanguageVersion.c_str(), kShadingLanguageVersion.length());
+        return createScriptASCIIString(kShadingLanguageVersion);
     }
     case GL_VENDOR: {
         const std::string output =
@@ -1118,8 +1117,7 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
         return StringRef::createFromASCII(output.c_str(), output.length());
     }
     case GL_VERSION: /* WebGL2 */ {
-        return Escargot::StringRef::createFromASCII(kVersion.c_str(),
-                                                    kVersion.length());
+        return createScriptASCIIString(kVersion);
     }
     // Float32Array (with 2 elements)
     case GL_ALIASED_LINE_WIDTH_RANGE:
