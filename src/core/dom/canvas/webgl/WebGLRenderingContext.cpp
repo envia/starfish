@@ -1099,13 +1099,25 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
         return maybe.value()->scriptValue();
     }
     // DOMString
-    case GL_RENDERER:
-    case GL_SHADING_LANGUAGE_VERSION: /* WebGL2 */
-    case GL_VENDOR:
-    case GL_VERSION: /* WebGL2 */ {
+    case GL_RENDERER: {
         const std::string output =
             reinterpret_cast<const char*>(glGetString(pname));
         return StringRef::createFromASCII(output.c_str(), output.length());
+    }
+    case GL_SHADING_LANGUAGE_VERSION: /* WebGL2 */ {
+        const std::string output = "WebGL GLSL ES 1.0";
+        return Escargot::StringRef::createFromASCII(output.c_str(),
+                                                    output.length());
+    }
+    case GL_VENDOR: {
+        const std::string output =
+            reinterpret_cast<const char*>(glGetString(pname));
+        return StringRef::createFromASCII(output.c_str(), output.length());
+    }
+    case GL_VERSION: /* WebGL2 */ {
+        const std::string output = "WebGL 1.0";
+        return Escargot::StringRef::createFromASCII(output.c_str(),
+                                                    output.length());
     }
     // Float32Array (with 2 elements)
     case GL_ALIASED_LINE_WIDTH_RANGE:
