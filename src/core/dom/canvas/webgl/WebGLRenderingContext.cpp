@@ -1266,8 +1266,7 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case GL_COMPRESSED_TEXTURE_FORMATS: {
         STARFISH_ASSERT(WebGLExtensionRegistry::instance()
                             .hasTextureCompressionExtension() == false);
-        return createTypedArray<Int32ArrayObjectRef>(scriptBindingInstance(),
-                                                     std::vector<int>());
+        return createEmptyUint32Array(scriptBindingInstance());
     }
     // WebGLBuffer
     case GL_ARRAY_BUFFER_BINDING:
