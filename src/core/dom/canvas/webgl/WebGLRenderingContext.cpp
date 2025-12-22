@@ -1179,6 +1179,7 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case GL_MAX_CUBE_MAP_TEXTURE_SIZE:
     case GL_MAX_FRAGMENT_UNIFORM_VECTORS:
     case GL_MAX_RENDERBUFFER_SIZE:
+    case GL_MAX_SAMPLES: /* WebGL2? */
     case GL_MAX_TEXTURE_IMAGE_UNITS:
     case GL_MAX_TEXTURE_SIZE:
     case GL_MAX_VARYING_VECTORS:
@@ -1187,14 +1188,13 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case GL_MAX_VERTEX_UNIFORM_VECTORS:
     case GL_PACK_ALIGNMENT:
     case GL_RED_BITS: /* WebGL2 */
-    case GL_SAMPLE_BUFFERS:
     case GL_SAMPLES:
+    case GL_SAMPLE_BUFFERS:
     case GL_STENCIL_BACK_REF:
     case GL_STENCIL_BITS:
     case GL_STENCIL_CLEAR_VALUE:
     case GL_STENCIL_REF:
     case GL_SUBPIXEL_BITS:
-    case GL_MAX_SAMPLES: /* WebGL2? */
     case GL_UNPACK_ALIGNMENT: {
         std::vector<int> values(1);
         m_gl->getIntegerv(pname, &values[0]);
