@@ -1122,10 +1122,20 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     // Float32Array (with 2 elements)
     case GL_ALIASED_LINE_WIDTH_RANGE:
     case GL_ALIASED_POINT_SIZE_RANGE:
-    case GL_DEPTH_RANGE:
+    case GL_DEPTH_RANGE: {
+        std::vector<GLfloat> values(2);
+        m_gl->getFloatv(pname, &values[0]);
+        return createTypedArray<Float32ArrayObjectRef>(scriptBindingInstance(),
+                                                       values);
+    }
     // Float32Array (with 4 values)
     case GL_BLEND_COLOR:
-    case GL_COLOR_CLEAR_VALUE:
+    case GL_COLOR_CLEAR_VALUE: {
+        std::vector<GLfloat> values(4);
+        m_gl->getFloatv(pname, &values[0]);
+        return createTypedArray<Float32ArrayObjectRef>(scriptBindingInstance(),
+                                                       values);
+    }
     // GLboolean
     case GL_BLEND:
     case GL_CULL_FACE:
@@ -1137,9 +1147,17 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case GL_SAMPLE_COVERAGE:
     case GL_SAMPLE_COVERAGE_INVERT:
     case GL_SCISSOR_TEST:
-    case GL_STENCIL_TEST:
-    case kUNPACK_FLIP_Y_WEBGL:
-    case kUNPACK_PREMULTIPLY_ALPHA_WEBGL:
+    case GL_STENCIL_TEST: {
+        std::vector<GLboolean> values(1);
+        m_gl->getBooleanv(pname, &values[0]);
+        return ValueRef::create(static_cast<bool>(values[0]));
+    }
+    case kUNPACK_FLIP_Y_WEBGL: {
+        return ValueRef::create(m_unpackFlipY);
+    }
+    case kUNPACK_PREMULTIPLY_ALPHA_WEBGL: {
+        return ValueRef::create(m_unpackPremultiplyAlpha);
+    }
     // GLenum
     case GL_ACTIVE_TEXTURE:
     case GL_BLEND_DST_ALPHA:
@@ -1151,10 +1169,11 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case GL_CULL_FACE_MODE:
     case GL_DEPTH_FUNC:
     case GL_FRONT_FACE:
-    case GL_GENERATE_MIPMAP_HINT:
-        STARFISH_UNIMPLEMENTED("WebGLRenderingContext::getParameter");
-        STARFISH_UNSUPPORTED("pname: 0x%04X(%s)", pname, __PRETTY_FUNCTION__);
-        return scriptNull();
+    case GL_GENERATE_MIPMAP_HINT: {
+        std::vector<int> values(1);
+        m_gl->getIntegerv(pname, &values[0]);
+        return ValueRef::create(static_cast<GLenum>(values[0]));
+    }
     case GL_IMPLEMENTATION_COLOR_READ_FORMAT: {
         // kIMPLEMENTATION_COLOR_READ_FORMAT
         return ValueRef::create(GL_RGBA);
@@ -1171,17 +1190,24 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case GL_STENCIL_FAIL:
     case GL_STENCIL_FUNC:
     case GL_STENCIL_PASS_DEPTH_FAIL:
-    case GL_STENCIL_PASS_DEPTH_PASS:
-    case kUNPACK_COLORSPACE_CONVERSION_WEBGL:
+    case GL_STENCIL_PASS_DEPTH_PASS: {
+        std::vector<int> values(1);
+        m_gl->getIntegerv(pname, &values[0]);
+        return ValueRef::create(static_cast<GLenum>(values[0]));
+    }
+    case kUNPACK_COLORSPACE_CONVERSION_WEBGL: {
+        return ValueRef::create(m_unpackColorspaceConversion);
+    }
     // GLfloat
     case GL_DEPTH_CLEAR_VALUE:
     case GL_LINE_WIDTH:
     case GL_POLYGON_OFFSET_FACTOR:
     case GL_POLYGON_OFFSET_UNITS:
-    case GL_SAMPLE_COVERAGE_VALUE:
-        STARFISH_UNIMPLEMENTED("WebGLRenderingContext::getParameter");
-        STARFISH_UNSUPPORTED("pname: 0x%04X(%s)", pname, __PRETTY_FUNCTION__);
-        return scriptNull();
+    case GL_SAMPLE_COVERAGE_VALUE: {
+        std::vector<GLfloat> values(1);
+        m_gl->getFloatv(pname, &values[0]);
+        return ValueRef::create(values[0]);
+    }
     // GLint
     case GL_ALPHA_BITS: /* WebGL2 */
     case GL_BLUE_BITS:  /* WebGL2 */
@@ -1216,10 +1242,11 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case GL_STENCIL_BACK_VALUE_MASK:
     case GL_STENCIL_BACK_WRITEMASK:
     case GL_STENCIL_VALUE_MASK:
-    case GL_STENCIL_WRITEMASK:
-        STARFISH_UNIMPLEMENTED("WebGLRenderingContext::getParameter");
-        STARFISH_UNSUPPORTED("pname: 0x%04X(%s)", pname, __PRETTY_FUNCTION__);
-        return scriptNull();
+    case GL_STENCIL_WRITEMASK: {
+        std::vector<int> values(1);
+        m_gl->getIntegerv(pname, &values[0]);
+        return ValueRef::create(static_cast<GLuint>(values[0]));
+    }
     // Int32Array (with 2 elements)
     case GL_MAX_VIEWPORT_DIMS: {
         std::vector<int> values(2);
