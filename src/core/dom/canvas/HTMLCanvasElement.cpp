@@ -123,7 +123,8 @@ void HTMLCanvasElement::setHeight(uint32_t value)
 Optional<RenderingContextBindindingUnion> HTMLCanvasElement::getContext(
     String* contextId, GCVector<ScriptValue> arguments)
 {
-    STARFISH_LOG_WARN("INDIGO_INIT: contextID=%s", contextId->toUTF8NonGCString().data());
+    STARFISH_LOG_WARN("INDIGO_INIT: contextID=%s",
+                      contextId->toUTF8NonGCString().data());
     if (contextId->equals("2d")) {
         if (m_contextMode == CanvasContextModeNone) {
             m_contextMode = CanvasContextMode2D;
@@ -185,8 +186,10 @@ Optional<RenderingContextBindindingUnion> HTMLCanvasElement::getContext(
         if (m_contextMode == CanvasContextModeWebGL2) {
             STARFISH_LOG_WARN("INDIGO_TEMP: webgl2_CanvasContextModeWebGL2");
             STARFISH_LOG_WARN("INDIGO_FINI: webgl2");
-            return RenderingContextBindindingUnion::createWebGL2RenderingContext(
-                static_cast<WebGL2RenderingContext*>(m_canvasRenderingContext));
+            return RenderingContextBindindingUnion::
+                createWebGL2RenderingContext(
+                    static_cast<WebGL2RenderingContext*>(
+                        m_canvasRenderingContext));
         }
 #else
         STARFISH_LOG_WARN("INDIGO_TEMP: !STARFISH_ENABLE_WEBGL2");
