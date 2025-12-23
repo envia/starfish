@@ -216,7 +216,7 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
             break;
         // WebGLFramebuffer
         case GL_DRAW_FRAMEBUFFER_BINDING:
-            // GL_FRAMEBUFFER_BINDING (WebGL1)
+            // WebGL1 (GL_FRAMEBUFFER_BINDING)
             break;
         case GL_READ_FRAMEBUFFER_BINDING:
         // WebGLSampler
@@ -268,7 +268,7 @@ ScriptValue WebGL2RenderingContext::getVertexAttrib(GLuint index, GLenum pname)
         }
         // GLenum
         case GL_VERTEX_ATTRIB_ARRAY_TYPE:
-            STARFISH_UNIMPLEMENTED();
+            // WebGL1
             break;
         // GLint
         case GL_VERTEX_ATTRIB_ARRAY_DIVISOR:
