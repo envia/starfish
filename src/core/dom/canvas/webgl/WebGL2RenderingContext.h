@@ -40,6 +40,19 @@ public:
                GLuint object);
     void init(ScriptBindingInstance* instance, void* domObjectPointer) override;
     bool isWebGLQuery() const override;
+
+    bool isActive() const
+    {
+        return m_isActive;
+    }
+
+    void setIsActive(bool active)
+    {
+        m_isActive = active;
+    }
+
+private:
+    bool m_isActive = false;
 };
 
 class WebGLSampler : public WebGLObject {
@@ -619,6 +632,9 @@ public:
     void readPixels(GLint x, GLint y, GLsizei width, GLsizei height,
                     GLenum format, GLenum type, ScriptArrayBufferView dstData,
                     unsigned long long dstOffset);
+
+private:
+    std::unordered_map<GLuint, WebGLQuery*> m_queries;
 };
 
 } // namespace Starfish
