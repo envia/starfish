@@ -1829,7 +1829,30 @@ GLboolean WebGL2RenderingContext::isVertexArray(
 void WebGL2RenderingContext::bindVertexArray(
     Optional<WebGLVertexArrayObject*> array)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    if (!array.hasValue()) {
+        glBindVertexArray(0);
+        getState()->setWebGLVertexArrayObject(nullptr);
+        return;
+    }
+
+    WebGLVertexArrayObject* value = array.value();
+
+    if (value->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    if (value->isDeleted()) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    TRACE(WEBGL, KV(value->glObject()));
+    glBindVertexArray(value->glObject());
+    value->setHasEverBound();
+    getState()->setWebGLVertexArrayObject(value);
 }
 
 // WebGL2RenderingContextOverloads
@@ -1997,56 +2020,80 @@ void WebGL2RenderingContext::uniform1fv(
     Optional<WebGLUniformLocation*> location, Float32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
+    if (srcOffset != 0 || srcLength != 0) {
+        STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
+    }
+    WebGLRenderingContext::uniform1fv(location, data);
 }
 
 void WebGL2RenderingContext::uniform2fv(
     Optional<WebGLUniformLocation*> location, Float32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
+    if (srcOffset != 0 || srcLength != 0) {
+        STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
+    }
+    WebGLRenderingContext::uniform2fv(location, data);
 }
 
 void WebGL2RenderingContext::uniform3fv(
     Optional<WebGLUniformLocation*> location, Float32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
+    if (srcOffset != 0 || srcLength != 0) {
+        STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
+    }
+    WebGLRenderingContext::uniform3fv(location, data);
 }
 
 void WebGL2RenderingContext::uniform4fv(
     Optional<WebGLUniformLocation*> location, Float32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
+    if (srcOffset != 0 || srcLength != 0) {
+        STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
+    }
+    WebGLRenderingContext::uniform4fv(location, data);
 }
 
 void WebGL2RenderingContext::uniform1iv(
     Optional<WebGLUniformLocation*> location, Int32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
+    if (srcOffset != 0 || srcLength != 0) {
+        STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
+    }
+    WebGLRenderingContext::uniform1iv(location, data);
 }
 
 void WebGL2RenderingContext::uniform2iv(
     Optional<WebGLUniformLocation*> location, Int32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
+    if (srcOffset != 0 || srcLength != 0) {
+        STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
+    }
+    WebGLRenderingContext::uniform2iv(location, data);
 }
 
 void WebGL2RenderingContext::uniform3iv(
     Optional<WebGLUniformLocation*> location, Int32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
+    if (srcOffset != 0 || srcLength != 0) {
+        STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
+    }
+    WebGLRenderingContext::uniform3iv(location, data);
 }
 
 void WebGL2RenderingContext::uniform4iv(
     Optional<WebGLUniformLocation*> location, Int32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
+    if (srcOffset != 0 || srcLength != 0) {
+        STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
+    }
+    WebGLRenderingContext::uniform4iv(location, data);
 }
 
 void WebGL2RenderingContext::uniformMatrix2fv(

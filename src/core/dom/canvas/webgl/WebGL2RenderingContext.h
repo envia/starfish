@@ -93,6 +93,19 @@ public:
                            WebGLRenderingContext* context, GLuint object);
     void init(ScriptBindingInstance* instance, void* domObjectPointer) override;
     bool isWebGLVertexArrayObject() const override;
+
+    bool hasEverBound()
+    {
+        return m_hasEverBound;
+    }
+
+    void setHasEverBound()
+    {
+        m_hasEverBound = true;
+    }
+
+private:
+    bool m_hasEverBound = false;
 };
 
 class WebGL2RenderingContext : public WebGLRenderingContext {
