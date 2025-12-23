@@ -23,6 +23,7 @@
 #include "core/dom/canvas/webgl/WebGL2RenderingContext.h"
 #include "core/dom/ExecutionContext.h"
 #include "core/util/debug/Trace.h"
+#include "core/dom/canvas/webgl/WebGLBuffer.h"
 #include "core/dom/canvas/webgl/WebGLRenderingContextState.h"
 #include "binding/generated/Float32ArrayOrSequenceOfGLfloatUnion.h"
 #include "binding/generated/Int32ArrayOrSequenceOfGLintUnion.h"
@@ -280,12 +281,35 @@ ScriptValue WebGL2RenderingContext::getVertexAttrib(GLuint index, GLenum pname)
         }
         // One of Float32Array, Int32Array or Uint32Array
         case GL_CURRENT_VERTEX_ATTRIB:
-            STARFISH_UNIMPLEMENTED();
+            // WebGL1
             break;
         // WebGLBuffer
-        case GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING:
-            STARFISH_UNIMPLEMENTED();
-            break;
+        case GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING: {
+            GLint value = 0;
+            gl()->getVertexAttribiv(index, pname, &value);
+
+            TRACE(WEBGL, KV(index), KV(value));
+
+            Optional<WebGLVertexArrayObject*> maybe =
+                getState()->webGLVertexArrayObject();
+
+            if (!maybe.hasValue()) {
+                return scriptNull(); // No mention found for this in the spec.
+            }
+
+            Optional<WebGLBuffer*> maybeBuffer =
+                getState()->getBufferBoundToVertexAttributes(index);
+
+            if (!maybeBuffer.hasValue()) {
+                return scriptNull(); // No mention found for this in the spec.
+            }
+
+            TRACE(WEBGL, KV(index), KV(maybeBuffer.value()->glObject()));
+
+            STARFISH_ASSERT(index == maybeBuffer.value()->glObject());
+
+            return maybeBuffer.value()->scriptValue();
+        }
         }
     }
     return WebGLRenderingContext::getVertexAttrib(index, pname);
