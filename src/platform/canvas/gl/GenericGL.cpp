@@ -857,6 +857,11 @@ public:
 #endif
     }
 
+    void genQueries(GLsizei n, GLuint *ids) override
+    {
+        glGenQueries(n, ids);
+    }
+
     GLint getFragDataLocation(GLuint program, const GLchar *name) override
     {
         return glGetFragDataLocation(program, name);
@@ -897,6 +902,16 @@ public:
                    GLint *values) override
     {
         glGetSynciv(sync, pname, bufSize, length, values);
+    }
+
+    void genSamplers(GLsizei count, GLuint *samplers) override
+    {
+        glGenSamplers(count, samplers);
+    }
+
+    void genTransformFeedbacks(GLsizei n, GLuint *ids) override
+    {
+        glGenTransformFeedbacks(n, ids);
     }
 
     GenericGL(Renderer *renderer)

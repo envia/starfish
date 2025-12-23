@@ -1443,7 +1443,7 @@ WebGLQuery* WebGL2RenderingContext::createQuery()
     ENTER_CONTEXT_SCOPE(nullptr);
 
     GLuint query = 0;
-    glGenQueries(1, &query);
+    gl()->genQueries(1, &query);
     m_queries[query] = new WebGLQuery(scriptBindingInstance(), this, query);
     return m_queries[query];
 }
@@ -1562,8 +1562,11 @@ ScriptValue WebGL2RenderingContext::getQueryParameter(WebGLQuery* query,
 
 WebGLSampler* WebGL2RenderingContext::createSampler()
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
-    return nullptr;
+    ENTER_CONTEXT_SCOPE(nullptr);
+
+    GLuint sampler = 0;
+    gl()->genSamplers(1, &sampler);
+    return new WebGLSampler(scriptBindingInstance(), this, sampler);
 }
 
 void WebGL2RenderingContext::deleteSampler(Optional<WebGLSampler*> sampler)
@@ -1703,8 +1706,11 @@ ScriptValue WebGL2RenderingContext::getSyncParameter(WebGLSync* sync,
 
 WebGLTransformFeedback* WebGL2RenderingContext::createTransformFeedback()
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
-    return nullptr;
+    ENTER_CONTEXT_SCOPE(nullptr);
+
+    GLuint tf = 0;
+    gl()->genTransformFeedbacks(1, &tf);
+    return new WebGLTransformFeedback(scriptBindingInstance(), this, tf);
 }
 
 void WebGL2RenderingContext::deleteTransformFeedback(
@@ -1823,8 +1829,11 @@ void WebGL2RenderingContext::uniformBlockBinding(WebGLProgram* program,
 
 WebGLVertexArrayObject* WebGL2RenderingContext::createVertexArray()
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
-    return nullptr;
+    ENTER_CONTEXT_SCOPE(nullptr);
+
+    GLuint vao = 0;
+    gl()->genVertexArrays(1, &vao);
+    return new WebGLVertexArrayObject(scriptBindingInstance(), this, vao);
 }
 
 void WebGL2RenderingContext::deleteVertexArray(

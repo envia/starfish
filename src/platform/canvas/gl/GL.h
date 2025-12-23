@@ -272,6 +272,7 @@ public:
     }
 
     // WebGL2
+    virtual void genQueries(GLsizei n, GLuint *ids) = 0;
     virtual GLint getFragDataLocation(GLuint program, const GLchar *name) = 0;
     virtual GLsync fenceSync(GLenum condition, GLbitfield flags) = 0;
     virtual GLboolean isSync(GLsync sync) = 0;
@@ -282,6 +283,8 @@ public:
     virtual void getInteger64v(GLenum pname, GLint64 *data) = 0;
     virtual void getSynciv(GLsync sync, GLenum pname, GLsizei bufSize,
                            GLsizei *length, GLint *values) = 0;
+    virtual void genSamplers(GLsizei count, GLuint *samplers) = 0;
+    virtual void genTransformFeedbacks(GLsizei n, GLuint *ids) = 0;
 };
 
 } // namespace Starfish
