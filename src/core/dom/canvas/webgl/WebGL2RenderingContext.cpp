@@ -27,6 +27,7 @@
 #include "binding/generated/Int32ArrayOrSequenceOfGLintUnion.h"
 #include "binding/generated/Uint32ArrayOrSequenceOfGLuintUnion.h"
 #include "core/dom/ExecutionContext.h"
+#include "core/dom/canvas/webgl/WebGLBuffer.h"
 #include "core/dom/canvas/webgl/WebGLRenderingContextState.h"
 #include "core/util/debug/Trace.h"
 #include "platform/canvas/gl/GL.h"
@@ -747,9 +748,11 @@ ScriptValue WebGL2RenderingContext::getVertexAttrib(GLuint index, GLenum pname)
             return Escargot::ValueRef::create(value == 1 ? true : false);
         }
         // GLenum
-        case GL_VERTEX_ATTRIB_ARRAY_TYPE: /* WebGL1? */
-            STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getVertexAttrib");
-            break;
+        case GL_VERTEX_ATTRIB_ARRAY_TYPE: /* WebGL1? */ {
+            GLint value = GL_FLOAT;
+            gl()->getVertexAttribiv(index, pname, &value);
+            return Escargot::ValueRef::create(value);
+        }
         // GLint
         case GL_VERTEX_ATTRIB_ARRAY_DIVISOR:
         case GL_VERTEX_ATTRIB_ARRAY_SIZE: /* WebGL1? */
@@ -759,13 +762,39 @@ ScriptValue WebGL2RenderingContext::getVertexAttrib(GLuint index, GLenum pname)
             return Escargot::ValueRef::create(value);
         }
         // One of Float32Array, Int32Array or Uint32Array (each with 4 elements)
-        case GL_CURRENT_VERTEX_ATTRIB: /* WebGL1? */
-            STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getVertexAttrib");
-            break;
+        case GL_CURRENT_VERTEX_ATTRIB: /* WebGL1? */ {
+            std::vector<float> values(4);
+            gl()->getVertexAttribfv(index, pname, &values[0]);
+            return createTypedArray<Escargot::Float32ArrayObjectRef>(
+                scriptBindingInstance(), values);
+        }
         // WebGLBuffer
-        case GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING: /* WebGL1? */
-            STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getVertexAttrib");
-            break;
+        case GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING: /* WebGL1? */ {
+            GLint value = 0;
+            gl()->getVertexAttribiv(index, pname, &value);
+
+            TRACE(WEBGL, KV(index), KV(value));
+
+            Optional<WebGLVertexArrayObject*> maybe =
+                getState()->webGLVertexArrayObject();
+
+            if (!maybe.hasValue()) {
+                return scriptNull(); // No mention found for this in the spec.
+            }
+
+            Optional<WebGLBuffer*> maybeBuffer =
+                getState()->getBufferBoundToVertexAttributes(index);
+
+            if (!maybeBuffer.hasValue()) {
+                return scriptNull(); // No mention found for this in the spec.
+            }
+
+            TRACE(WEBGL, KV(index), KV(maybeBuffer.value()->glObject()));
+
+            STARFISH_ASSERT(index == maybeBuffer.value()->glObject());
+
+            return maybeBuffer.value()->scriptValue();
+        }
         }
     }
     return WebGLRenderingContext::getVertexAttrib(index, pname);
