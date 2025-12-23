@@ -30,6 +30,7 @@
 #include "core/util/debug/Trace.h"
 #include "platform/canvas/gl/GL.h"
 #include "platform/canvas/gl/IncludeGL.h"
+#include <EscargotPublic.h>
 
 /* WebGL-specific enums */
 static constexpr GLenum kMAX_CLIENT_WAIT_TIMEOUT_WEBGL = 0x9247;
@@ -591,7 +592,11 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         case GL_MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS:
         case GL_MAX_ELEMENT_INDEX:
         case GL_MAX_SERVER_WAIT_TIMEOUT:
-        case GL_MAX_UNIFORM_BLOCK_SIZE:
+        case GL_MAX_UNIFORM_BLOCK_SIZE: {
+            std::vector<GLint64> values(1);
+            gl()->getInteger64v(pname, &values[0]);
+            return Escargot::ValueRef::create(values[0]);
+        }
         // WebGLBuffer
         case GL_COPY_READ_BUFFER_BINDING:
         case GL_COPY_WRITE_BUFFER_BINDING:

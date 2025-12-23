@@ -46,6 +46,9 @@ typedef long int GLintptr;
 typedef long int GLsizeiptr;
 #endif
 
+// GLES3
+typedef int64_t GLint64;
+
 #ifndef GL_NONE
 #define GL_NONE 0
 #endif

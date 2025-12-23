@@ -862,6 +862,11 @@ public:
         glGenQueries(n, arrays);
     }
 
+    void getInteger64v(GLenum pname, GLint64 *data) override
+    {
+        glGetInteger64v(pname, data);
+    }
+
     void genSamplers(GLsizei n, GLuint *arrays) override
     {
         glGenSamplers(n, arrays);
