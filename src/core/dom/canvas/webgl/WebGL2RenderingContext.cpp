@@ -748,7 +748,7 @@ ScriptValue WebGL2RenderingContext::getVertexAttrib(GLuint index, GLenum pname)
         }
         // GLenum
         case GL_VERTEX_ATTRIB_ARRAY_TYPE:
-            STARFISH_UNIMPLEMENTED();
+            STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getVertexAttrib");
             break;
         // GLint
         case GL_VERTEX_ATTRIB_ARRAY_DIVISOR:
@@ -758,13 +758,13 @@ ScriptValue WebGL2RenderingContext::getVertexAttrib(GLuint index, GLenum pname)
             gl()->getVertexAttribiv(index, pname, &value);
             return Escargot::ValueRef::create(value);
         }
-        // One of Float32Array, Int32Array or Uint32Array
+        // One of Float32Array, Int32Array or Uint32Array (each with 4 elements)
         case GL_CURRENT_VERTEX_ATTRIB:
-            STARFISH_UNIMPLEMENTED();
+            STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getVertexAttrib");
             break;
         // WebGLBuffer
         case GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING:
-            STARFISH_UNIMPLEMENTED();
+            STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getVertexAttrib");
             break;
         }
     }
