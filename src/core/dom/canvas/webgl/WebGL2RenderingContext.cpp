@@ -1529,7 +1529,33 @@ Optional<WebGLQuery*> WebGL2RenderingContext::getQuery(GLenum target,
 ScriptValue WebGL2RenderingContext::getQueryParameter(WebGLQuery* query,
                                                       GLenum pname)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE(scriptNull());
+
+    if (query->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return scriptNull();
+    }
+    switch (pname) {
+    // GLboolean
+    case GL_QUERY_RESULT_AVAILABLE: {
+        GLuint value;
+        gl()->getQueryObjectuiv(query->glObject(), pname, &value);
+        if (hasGLError()) {
+            return scriptNull();
+        }
+        return createScriptValue(static_cast<GLboolean>(value));
+    }
+    // GLuint
+    case GL_QUERY_RESULT: {
+        GLuint value;
+        gl()->getQueryObjectuiv(query->glObject(), pname, &value);
+        if (hasGLError()) {
+            return scriptNull();
+        }
+        return createScriptValue(value);
+    }
+    }
+    setGLError(GL_INVALID_ENUM);
     return scriptNull();
 }
 
