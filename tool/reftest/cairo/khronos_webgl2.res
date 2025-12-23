@@ -1553,7 +1553,7 @@ test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/context/context-type-
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/misc/uninitialized-test-2.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/misc/views-with-offsets.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/programs/gl-get-frag-data-location.html
-# test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/query/occlusion-query.html
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/query/occlusion-query.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/query/query.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/reading/read-pixels-from-fbo-test.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/reading/read-pixels-into-pixel-pack-buffer.html
