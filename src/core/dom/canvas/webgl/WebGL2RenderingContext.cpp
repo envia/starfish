@@ -1816,7 +1816,27 @@ WebGLVertexArrayObject* WebGL2RenderingContext::createVertexArray()
 void WebGL2RenderingContext::deleteVertexArray(
     Optional<WebGLVertexArrayObject*> vertexArray)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    if (!vertexArray.hasValue()) {
+        return;
+    }
+
+    WebGLVertexArrayObject* value = vertexArray.value();
+
+    if (value->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    if (value->isDeleted()) {
+        return;
+    }
+
+    GLuint vao = value->glObject();
+    TRACE(WEBGL, KV(vao));
+    glDeleteVertexArrays(1, &vao);
+    value->markDeleted();
 }
 
 GLboolean WebGL2RenderingContext::isVertexArray(
