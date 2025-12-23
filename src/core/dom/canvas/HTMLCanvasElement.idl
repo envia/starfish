@@ -4,6 +4,7 @@
 typedef (CanvasRenderingContext2D or
          WebGLRenderingContext or
          WebGL2RenderingContext or
+         // INDIGO_TODO: GPUCanvasContext
          ImageBitmapRenderingContext) RenderingContext;
 
 [STARFISH_ENABLE_CANVAS]
