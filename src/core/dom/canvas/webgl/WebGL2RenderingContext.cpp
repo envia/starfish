@@ -28,6 +28,7 @@
 #include "binding/generated/Uint32ArrayOrSequenceOfGLuintUnion.h"
 #include "core/dom/ExecutionContext.h"
 #include "core/dom/canvas/webgl/WebGLProgram.h"
+#include "core/dom/canvas/webgl/WebGLRenderingContextState.h"
 #include "core/util/debug/Trace.h"
 #include "platform/canvas/gl/GL.h"
 #include "platform/canvas/gl/IncludeGL.h"
@@ -638,10 +639,27 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         case GL_TEXTURE_BINDING_3D:
         // WebGLTransformFeedback
         case GL_TRANSFORM_FEEDBACK_BINDING:
-        // WebGLVertexArrayObject
-        case GL_VERTEX_ARRAY_BINDING: /* WebGL1? */
             STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getParameter");
             break;
+        // WebGLVertexArrayObject
+        case GL_VERTEX_ARRAY_BINDING: /* WebGL1? */ {
+            GLint value = -1;
+            gl()->getIntegerv(pname, &value);
+            if (value == 0) {
+                return scriptNull();
+            }
+
+            Optional<WebGLVertexArrayObject*> maybe =
+                getState()->webGLVertexArrayObject();
+
+            if (!maybe.hasValue() || maybe.value()->isDeleted()) {
+                return scriptNull();
+            }
+
+            STARFISH_ASSERT(static_cast<GLint>(maybe.value()->glObject()) ==
+                            value);
+            return maybe.value()->scriptValue();
+        }
         }
     }
     return WebGLRenderingContext::getParameter(pname);
