@@ -1440,35 +1440,79 @@ void WebGL2RenderingContext::clearBufferfi(GLenum buffer, GLint drawbuffer,
 
 WebGLQuery* WebGL2RenderingContext::createQuery()
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
-    return nullptr;
+    ENTER_CONTEXT_SCOPE(nullptr);
+
+    GLuint query = 0;
+    glGenQueries(1, &query);
+    return new WebGLQuery(scriptBindingInstance(), this, query);
 }
 
 void WebGL2RenderingContext::deleteQuery(Optional<WebGLQuery*> query)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    if (!query.hasValue()) {
+        return;
+    }
+    WebGLQuery* value = query.value();
+    if (value->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+    if (value->isDeleted()) {
+        return;
+    }
+    GLuint id = value->glObject();
+    glDeleteQueries(1, &id);
+    value->markDeleted();
 }
 
 GLboolean WebGL2RenderingContext::isQuery(Optional<WebGLQuery*> query)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
-    return false;
+    ENTER_CONTEXT_SCOPE(false);
+
+    if (!query.hasValue() || query.value()->context() != this ||
+        query.value()->invalidated()) {
+        return false;
+    }
+    return glIsQuery(query.value()->glObject());
 }
 
 void WebGL2RenderingContext::beginQuery(GLenum target, WebGLQuery* query)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    if (query->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+    glBeginQuery(target, query->glObject());
 }
 
 void WebGL2RenderingContext::endQuery(GLenum target)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    glEndQuery(target);
 }
 
 Optional<WebGLQuery*> WebGL2RenderingContext::getQuery(GLenum target,
                                                        GLenum pname)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE(Optional<WebGLQuery*>());
+
+    switch (target) {
+    case GL_ANY_SAMPLES_PASSED:
+    case GL_ANY_SAMPLES_PASSED_CONSERVATIVE:
+    case GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN:
+        GLint query;
+        glGetQueryiv(target, pname, &query);
+        if (hasGLError() || query == 0) {
+            return Optional<WebGLQuery*>();
+        }
+        return new WebGLQuery(scriptBindingInstance(), this, query);
+    }
+    setGLError(GL_INVALID_ENUM);
     return Optional<WebGLQuery*>();
 }
 
