@@ -734,7 +734,40 @@ WebGLUniformLocation* WebGL2RenderingContext::getUniformLocation(
 
 ScriptValue WebGL2RenderingContext::getVertexAttrib(GLuint index, GLenum pname)
 {
-    STARFISH_UNIMPLEMENTED("WebGLRenderingContextBase");
+    {
+        ENTER_CONTEXT_SCOPE(scriptNull());
+
+        switch (pname) {
+        // GLboolean
+        case GL_VERTEX_ATTRIB_ARRAY_ENABLED:
+        case GL_VERTEX_ATTRIB_ARRAY_INTEGER:
+        case GL_VERTEX_ATTRIB_ARRAY_NORMALIZED: {
+            GLint value = 0;
+            gl()->getVertexAttribiv(index, pname, &value);
+            return Escargot::ValueRef::create(value == 1 ? true : false);
+        }
+        // GLenum
+        case GL_VERTEX_ATTRIB_ARRAY_TYPE:
+            STARFISH_UNIMPLEMENTED();
+            break;
+        // GLint
+        case GL_VERTEX_ATTRIB_ARRAY_DIVISOR:
+        case GL_VERTEX_ATTRIB_ARRAY_SIZE:
+        case GL_VERTEX_ATTRIB_ARRAY_STRIDE: {
+            GLint value = 0;
+            gl()->getVertexAttribiv(index, pname, &value);
+            return Escargot::ValueRef::create(value);
+        }
+        // One of Float32Array, Int32Array or Uint32Array
+        case GL_CURRENT_VERTEX_ATTRIB:
+            STARFISH_UNIMPLEMENTED();
+            break;
+        // WebGLBuffer
+        case GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING:
+            STARFISH_UNIMPLEMENTED();
+            break;
+        }
+    }
     return WebGLRenderingContext::getVertexAttrib(index, pname);
 }
 
