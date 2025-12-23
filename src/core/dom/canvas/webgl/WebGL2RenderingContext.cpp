@@ -739,31 +739,31 @@ ScriptValue WebGL2RenderingContext::getVertexAttrib(GLuint index, GLenum pname)
 
         switch (pname) {
         // GLboolean
-        case GL_VERTEX_ATTRIB_ARRAY_ENABLED:
+        case GL_VERTEX_ATTRIB_ARRAY_ENABLED: /* WebGL1? */
         case GL_VERTEX_ATTRIB_ARRAY_INTEGER:
-        case GL_VERTEX_ATTRIB_ARRAY_NORMALIZED: {
+        case GL_VERTEX_ATTRIB_ARRAY_NORMALIZED: /* WebGL1? */ {
             GLint value = 0;
             gl()->getVertexAttribiv(index, pname, &value);
             return Escargot::ValueRef::create(value == 1 ? true : false);
         }
         // GLenum
-        case GL_VERTEX_ATTRIB_ARRAY_TYPE:
+        case GL_VERTEX_ATTRIB_ARRAY_TYPE: /* WebGL1? */
             STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getVertexAttrib");
             break;
         // GLint
         case GL_VERTEX_ATTRIB_ARRAY_DIVISOR:
-        case GL_VERTEX_ATTRIB_ARRAY_SIZE:
-        case GL_VERTEX_ATTRIB_ARRAY_STRIDE: {
+        case GL_VERTEX_ATTRIB_ARRAY_SIZE: /* WebGL1? */
+        case GL_VERTEX_ATTRIB_ARRAY_STRIDE: /* WebGL1? */ {
             GLint value = 0;
             gl()->getVertexAttribiv(index, pname, &value);
             return Escargot::ValueRef::create(value);
         }
         // One of Float32Array, Int32Array or Uint32Array (each with 4 elements)
-        case GL_CURRENT_VERTEX_ATTRIB:
+        case GL_CURRENT_VERTEX_ATTRIB: /* WebGL1? */
             STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getVertexAttrib");
             break;
         // WebGLBuffer
-        case GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING:
+        case GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING: /* WebGL1? */
             STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getVertexAttrib");
             break;
         }

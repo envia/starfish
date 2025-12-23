@@ -1763,13 +1763,13 @@ ScriptValue WebGLRenderingContext::getVertexAttrib(GLuint index, GLenum pname)
     ENTER_CONTEXT_SCOPE(scriptNull());
 
     switch (pname) {
-    case GL_CURRENT_VERTEX_ATTRIB: {
+    case GL_CURRENT_VERTEX_ATTRIB: /* WebGL2? */ {
         std::vector<float> values(4);
         m_gl->getVertexAttribfv(index, pname, &values[0]);
         return createTypedArray<Float32ArrayObjectRef>(scriptBindingInstance(),
                                                        values);
     }
-    case GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING: {
+    case GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING: /* WebGL2? */ {
         GLint value = 0;
         m_gl->getVertexAttribiv(index, pname, &value);
 
@@ -1795,27 +1795,27 @@ ScriptValue WebGLRenderingContext::getVertexAttrib(GLuint index, GLenum pname)
 
         return maybeBuffer.value()->scriptValue();
     }
-    case GL_VERTEX_ATTRIB_ARRAY_ENABLED: {
+    case GL_VERTEX_ATTRIB_ARRAY_ENABLED: /* WebGL2? */ {
         GLint value = 0;
         m_gl->getVertexAttribiv(index, pname, &value);
         return ValueRef::create(value == 1 ? true : false);
     }
-    case GL_VERTEX_ATTRIB_ARRAY_SIZE: {
+    case GL_VERTEX_ATTRIB_ARRAY_SIZE: /* WebGL2? */ {
         GLint value = 4;
         m_gl->getVertexAttribiv(index, pname, &value);
         return ValueRef::create(value);
     }
-    case GL_VERTEX_ATTRIB_ARRAY_STRIDE: {
+    case GL_VERTEX_ATTRIB_ARRAY_STRIDE: /* WebGL2? */ {
         GLint value = 0;
         m_gl->getVertexAttribiv(index, pname, &value);
         return ValueRef::create(value);
     }
-    case GL_VERTEX_ATTRIB_ARRAY_TYPE: {
+    case GL_VERTEX_ATTRIB_ARRAY_TYPE: /* WebGL2? */ {
         GLint value = GL_FLOAT;
         m_gl->getVertexAttribiv(index, pname, &value);
         return ValueRef::create(value);
     }
-    case GL_VERTEX_ATTRIB_ARRAY_NORMALIZED: {
+    case GL_VERTEX_ATTRIB_ARRAY_NORMALIZED: /* WebGL2? */ {
         GLint value = 0;
         m_gl->getVertexAttribiv(index, pname, &value);
         return ValueRef::create(value == 1 ? true : false);
