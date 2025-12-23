@@ -1572,8 +1572,11 @@ ScriptValue WebGL2RenderingContext::getQueryParameter(WebGLQuery* query,
 
 WebGLSampler* WebGL2RenderingContext::createSampler()
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
-    return nullptr;
+    ENTER_CONTEXT_SCOPE(nullptr);
+
+    GLuint sampler = 0;
+    gl()->genSamplers(1, &sampler);
+    return new WebGLSampler(scriptBindingInstance(), this, sampler);
 }
 
 void WebGL2RenderingContext::deleteSampler(Optional<WebGLSampler*> sampler)
