@@ -1893,8 +1893,23 @@ void WebGL2RenderingContext::deleteVertexArray(
 GLboolean WebGL2RenderingContext::isVertexArray(
     Optional<WebGLVertexArrayObject*> vertexArray)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
-    return false;
+    ENTER_CONTEXT_SCOPE(false);
+
+    if (!vertexArray.hasValue()) {
+        return false;
+    }
+
+    WebGLVertexArrayObject* value = vertexArray.value();
+
+    if (value->context() != this || value->invalidated()) {
+        return false;
+    }
+
+    if (!value->hasEverBound()) {
+        return false;
+    }
+
+    return true;
 }
 
 void WebGL2RenderingContext::bindVertexArray(
