@@ -523,7 +523,11 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         // GLboolean
         case GL_RASTERIZER_DISCARD:
         case GL_TRANSFORM_FEEDBACK_ACTIVE:
-        case GL_TRANSFORM_FEEDBACK_PAUSED:
+        case GL_TRANSFORM_FEEDBACK_PAUSED: {
+            std::vector<GLboolean> values(1);
+            gl()->getBooleanv(pname, &values[0]);
+            return Escargot::ValueRef::create(static_cast<bool>(values[0]));
+        }
         // GLenum
         case GL_DRAW_BUFFER0:
         case GL_DRAW_BUFFER1:
@@ -543,8 +547,14 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         case GL_DRAW_BUFFER15:
         case GL_FRAGMENT_SHADER_DERIVATIVE_HINT:
         case GL_READ_BUFFER:
+            STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getParameter");
+            break;
         // GLfloat
-        case GL_MAX_TEXTURE_LOD_BIAS:
+        case GL_MAX_TEXTURE_LOD_BIAS: {
+            std::vector<GLfloat> values(1);
+            gl()->getFloatv(pname, &values[0]);
+            return Escargot::ValueRef::create(values[0]);
+        }
         // GLint
         case GL_ALPHA_BITS: /* WebGL1 */
         case GL_BLUE_BITS:  /* WebGL1 */
