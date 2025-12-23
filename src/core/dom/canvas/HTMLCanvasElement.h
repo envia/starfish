@@ -47,6 +47,7 @@ public:
         CanvasContextModeBitmapRenderer,
         CanvasContextModeWebGL,
         CanvasContextModeWebGL2
+        // INDIGO_TODO: CanvasContextModeWebGPU
     };
 
     HTMLCanvasElement(Document* document, const QualifiedName& qname)
