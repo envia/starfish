@@ -286,6 +286,7 @@ ScriptValue WebGL2RenderingContext::getVertexAttrib(GLuint index, GLenum pname)
         case GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING:
             STARFISH_UNIMPLEMENTED();
             break;
+        }
     }
     return WebGLRenderingContext::getVertexAttrib(index, pname);
 }
