@@ -273,6 +273,8 @@ public:
 
     // WebGL2
     virtual void getInteger64v(GLenum pname, GLint64 *data) = 0;
+    virtual void GetSynciv(GLsync sync, GLenum pname, GLsizei bufSize,
+                           GLsizei *length, GLint *values) = 0;
 };
 
 } // namespace Starfish

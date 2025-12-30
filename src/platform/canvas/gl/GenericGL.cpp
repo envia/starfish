@@ -862,6 +862,12 @@ public:
         glGetInteger64v(pname, data);
     }
 
+    void GetSynciv(GLsync sync, GLenum pname, GLsizei bufSize, GLsizei *length,
+                   GLint *values) override
+    {
+        glGetSynciv(sync, pname, bufSize, length, values);
+    }
+
     GenericGL(Renderer *renderer)
     {
         m_eglGetCurrentDisplayProc =

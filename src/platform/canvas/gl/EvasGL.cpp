@@ -846,6 +846,12 @@ public:
         m_evasGLAPI->glGetInteger64v(pname, data);
     }
 
+    void GetSynciv(GLsync sync, GLenum pname, GLsizei bufSize, GLsizei *length,
+                   GLint *values) override
+    {
+        m_evasGLAPI->glGetSynciv(sync, pname, bufSize, length, values);
+    }
+
     EvasGL(void *p)
         : m_evasGLAPI(static_cast<Evas_GL_API *>(p))
     {
