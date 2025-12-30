@@ -24,6 +24,16 @@
 #include "binding/generated/ArrayBufferOrSharedArrayBufferOrArrayBufferViewUnion.h"
 #include "binding/generated/ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElementUnion.h"
 #include "core/dom/ExecutionContext.h"
+#include "core/util/debug/Trace.h"
+#include "platform/canvas/gl/GL.h"
+#include "platform/canvas/gl/IncludeGL.h"
+#include <EscargotPublic.h>
+
+/* WebGL-specific enums */
+static constexpr GLenum kMAX_CLIENT_WAIT_TIMEOUT_WEBGL = 0x9247;
+
+/* WebGL constants */
+static constexpr GLint64 kMaxClientWaitTimeoutWebgl = 0;
 
 namespace Starfish {
 
@@ -72,6 +82,149 @@ WebGL2RenderingContext::~WebGL2RenderingContext()
 ScriptBindingInstance* WebGL2RenderingContext::scriptBindingInstance()
 {
     return executionContext()->scriptBindingInstance();
+}
+
+// WebGLRenderingContextBase
+
+#define ENTER_CONTEXT_SCOPE_IMPL(bailoutValue, ...) \
+    GLContextScope contextScope_(m_context);        \
+    if (contextScope_.hasError()) {                 \
+        TRACE(WEBGL,                                \
+              "\033[33m"                            \
+              "GL Context error detected."          \
+              "\033[0m");                           \
+        return bailoutValue;                        \
+    }
+
+#if defined(NDEBUG) and !defined(ENABLE_TRACE)
+#define ENTER_CONTEXT_SCOPE(bailoutValue, ...) \
+    ENTER_CONTEXT_SCOPE_IMPL(bailoutValue);
+#else
+#define ENTER_CONTEXT_SCOPE(bailoutValue, ...)       \
+    ENTER_CONTEXT_SCOPE_IMPL(bailoutValue);          \
+    auto onScopeLeave = OnScopeLeave::create([&]() { \
+        if (hasGLError()) {                          \
+            TRACE(WEBGL,                             \
+                  "\033[33m"                         \
+                  "GL error detected."               \
+                  "\033[0m");                        \
+        }                                            \
+    });
+#endif
+
+ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
+{
+    {
+        ENTER_CONTEXT_SCOPE(scriptNull());
+
+        switch (pname) {
+        // GLint64
+        case kMAX_CLIENT_WAIT_TIMEOUT_WEBGL:
+            return Escargot::ValueRef::create(kMaxClientWaitTimeoutWebgl);
+        }
+    }
+    return WebGLRenderingContext::getParameter(pname);
+}
+
+// WebGL2RenderingContextBase
+
+Optional<WebGLSync*> WebGL2RenderingContext::fenceSync(GLenum condition,
+                                                       GLbitfield flags)
+{
+    ENTER_CONTEXT_SCOPE(Optional<WebGLSync*>());
+
+    GLsync sync = glFenceSync(condition, flags);
+    return new WebGLSync(scriptBindingInstance(), this, sync);
+}
+
+GLboolean WebGL2RenderingContext::isSync(Optional<WebGLSync*> sync)
+{
+    ENTER_CONTEXT_SCOPE(false);
+
+    if (!sync.hasValue() || sync.value()->context() != this ||
+        sync.value()->invalidated()) {
+        return false;
+    }
+    return glIsSync(sync.value()->glObject());
+}
+
+void WebGL2RenderingContext::deleteSync(Optional<WebGLSync*> sync)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    if (!sync.hasValue()) {
+        return;
+    }
+    WebGLSync* value = sync.value();
+    if (value->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+    if (value->isDeleted()) {
+        return;
+    }
+    glDeleteSync(value->glObject());
+    value->markDeleted();
+}
+
+GLenum WebGL2RenderingContext::clientWaitSync(WebGLSync* sync, GLbitfield flags,
+                                              GLuint64 timeout)
+{
+    ENTER_CONTEXT_SCOPE(GL_WAIT_FAILED);
+
+    if (sync->context() != this || flags & ~GL_SYNC_FLUSH_COMMANDS_BIT ||
+        timeout > kMaxClientWaitTimeoutWebgl) {
+        setGLError(GL_INVALID_OPERATION);
+        return GL_WAIT_FAILED;
+    }
+    return glClientWaitSync(sync->glObject(), flags, timeout);
+}
+
+void WebGL2RenderingContext::waitSync(WebGLSync* sync, GLbitfield flags,
+                                      GLint64 timeout)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    if (sync->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+    glWaitSync(sync->glObject(), flags, timeout);
+}
+
+ScriptValue WebGL2RenderingContext::getSyncParameter(WebGLSync* sync,
+                                                     GLenum pname)
+{
+    ENTER_CONTEXT_SCOPE(scriptNull());
+
+    if (sync->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return scriptNull();
+    }
+    switch (pname) {
+    // GLenum
+    case GL_OBJECT_TYPE:
+    case GL_SYNC_STATUS:
+    case GL_SYNC_CONDITION: {
+        GLint value;
+        gl()->GetSynciv(sync->glObject(), pname, 1, nullptr, &value);
+        if (hasGLError()) {
+            return scriptNull();
+        }
+        return createScriptValue(static_cast<GLenum>(value));
+    }
+    // GLbitfield
+    case GL_SYNC_FLAGS: {
+        GLint value;
+        gl()->GetSynciv(sync->glObject(), pname, 1, nullptr, &value);
+        if (hasGLError()) {
+            return scriptNull();
+        }
+        return createScriptValue(static_cast<GLbitfield>(value));
+    }
+    }
+    setGLError(GL_INVALID_ENUM);
+    return scriptNull();
 }
 
 // WebGL2RenderingContextOverloads

@@ -270,6 +270,10 @@ public:
     virtual void xglImageTargetTexture2DOES(GLenum target, void *image)
     {
     }
+
+    // WebGL2
+    virtual void GetSynciv(GLsync sync, GLenum pname, GLsizei bufSize,
+                           GLsizei *length, GLint *values) = 0;
 };
 
 } // namespace Starfish
