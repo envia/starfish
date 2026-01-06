@@ -1878,8 +1878,38 @@ ScriptValue WebGL2RenderingContext::getIndexedParameter(GLenum target,
 Optional<GCAtomicVector<GLuint>> WebGL2RenderingContext::getUniformIndices(
     WebGLProgram* program, GCVector<String*> uniformNames)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
-    return Optional<GCAtomicVector<GLuint>>();
+    ENTER_CONTEXT_SCOPE(Optional<GCAtomicVector<GLuint>>());
+
+    if (program->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return Optional<GCAtomicVector<GLuint>>();
+    }
+    GLsizei count = uniformNames.size();
+    char** names = (char**)malloc(sizeof(char*) * count);
+    for (GLsizei i = 0; i < count; i++) {
+        const char* src = CSTR(uniformNames[i]);
+        size_t len = strlen(src);
+        names[i] = (char*)malloc(sizeof(char) * len);
+        strcpy(names[i], src);
+    }
+    GLuint* indices = (GLuint*)malloc(sizeof(GLuint) * count);
+    gl()->getUniformIndices(program->glObject(), count, names, indices);
+    if (hasGLError()) {
+        for (GLsizei i = 0; i < count; i++) {
+            free(names[i]);
+        }
+        free(names);
+        free(indices);
+        return Optional<GCAtomicVector<GLuint>>();
+    }
+    GCAtomicVector<GLuint> uniformIndices;
+    for (GLsizei i = 0; i < count; i++) {
+        uniformIndices.push_back(indices[i]);
+        free(names[i]);
+    }
+    free(names);
+    free(indices);
+    return uniformIndices;
 }
 
 ScriptValue WebGL2RenderingContext::getActiveUniforms(
