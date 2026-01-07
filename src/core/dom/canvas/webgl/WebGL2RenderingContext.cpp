@@ -1894,8 +1894,13 @@ ScriptValue WebGL2RenderingContext::getActiveUniforms(
 GLuint WebGL2RenderingContext::getUniformBlockIndex(WebGLProgram* program,
                                                     String* uniformBlockName)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
-    return 0;
+    ENTER_CONTEXT_SCOPE(GL_INVALID_INDEX);
+
+    if (program->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return GL_INVALID_INDEX;
+    }
+    return glGetUniformBlockIndex(program->glObject(), CSTR(uniformBlockName));
 }
 
 ScriptValue WebGL2RenderingContext::getActiveUniformBlockParameter(
