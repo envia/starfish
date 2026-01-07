@@ -1858,14 +1858,34 @@ void WebGL2RenderingContext::resumeTransformFeedback()
 void WebGL2RenderingContext::bindBufferBase(GLenum target, GLuint index,
                                             Optional<WebGLBuffer*> buffer)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    if (!buffer.hasValue()) {
+        return;
+    }
+    WebGLBuffer* value = buffer.value();
+    if (value->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+    gl()->bindBufferBase(target, index, value->glObject());
 }
 
 void WebGL2RenderingContext::bindBufferRange(GLenum target, GLuint index,
                                              Optional<WebGLBuffer*> buffer,
                                              GLintptr offset, GLsizeiptr size)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    if (!buffer.hasValue()) {
+        return;
+    }
+    WebGLBuffer* value = buffer.value();
+    if (value->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+    gl()->bindBufferRange(target, index, value->glObject(), offset, size);
 }
 
 ScriptValue WebGL2RenderingContext::getIndexedParameter(GLenum target,
@@ -2011,7 +2031,14 @@ void WebGL2RenderingContext::uniformBlockBinding(WebGLProgram* program,
                                                  GLuint uniformBlockIndex,
                                                  GLuint uniformBlockBinding)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    if (program->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+    gl()->uniformBlockBinding(program->glObject(), uniformBlockIndex,
+                              uniformBlockBinding);
 }
 
 WebGLVertexArrayObject* WebGL2RenderingContext::createVertexArray()
