@@ -1975,11 +1975,21 @@ ScriptValue WebGL2RenderingContext::getActiveUniformBlockParameter(
     switch (pname) {
     // GLboolean
     case GL_UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER:
-    case GL_UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER:
+    case GL_UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER: {
+        GLint value;
+        gl()->getActiveUniformBlockiv(program->glObject(), uniformBlockIndex,
+                                      pname, &value);
+        return createScriptValue(static_cast<bool>(value));
+    }
     // GLuint
     case GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS:
     case GL_UNIFORM_BLOCK_BINDING:
-    case GL_UNIFORM_BLOCK_DATA_SIZE:
+    case GL_UNIFORM_BLOCK_DATA_SIZE: {
+        GLint value;
+        gl()->getActiveUniformBlockiv(program->glObject(), uniformBlockIndex,
+                                      pname, &value);
+        return createScriptValue(static_cast<GLuint>(value));
+    }
     // Uint32Array
     case GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES:
         STARFISH_UNIMPLEMENTED(
