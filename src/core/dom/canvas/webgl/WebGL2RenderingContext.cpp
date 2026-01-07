@@ -1906,27 +1906,7 @@ GLuint WebGL2RenderingContext::getUniformBlockIndex(WebGLProgram* program,
 ScriptValue WebGL2RenderingContext::getActiveUniformBlockParameter(
     WebGLProgram* program, GLuint uniformBlockIndex, GLenum pname)
 {
-    ENTER_CONTEXT_SCOPE(scriptNull());
-
-    if (program->context() != this) {
-        setGLError(GL_INVALID_OPERATION);
-        return scriptNull();
-    }
-    switch (pname) {
-    // GLboolean
-    case GL_UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER:
-    case GL_UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER:
-    // GLuint
-    case GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS:
-    case GL_UNIFORM_BLOCK_BINDING:
-    case GL_UNIFORM_BLOCK_DATA_SIZE:
-    // Uint32Array
-    case GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES:
-        STARFISH_UNIMPLEMENTED(
-            "WebGL2RenderingContext::getActiveUniformBlockParameter");
-        return scriptNull();
-    }
-    setGLError(GL_INVALID_ENUM);
+    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
     return scriptNull();
 }
 
