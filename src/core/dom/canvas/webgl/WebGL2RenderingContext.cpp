@@ -1859,29 +1859,16 @@ ScriptValue WebGL2RenderingContext::getActiveUniforms(
 {
     ENTER_CONTEXT_SCOPE(scriptNull());
 
-    if (program->context() != this) {
-        setGLError(GL_INVALID_OPERATION);
-        return scriptNull();
-    }
     switch (pname) {
     // sequence<GLboolean>
     case GL_UNIFORM_IS_ROW_MAJOR:
     // sequence<GLenum>
     case GL_UNIFORM_TYPE:
-        STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getActiveUniforms");
-        return scriptNull();
     // sequence<GLint>
     case GL_UNIFORM_ARRAY_STRIDE:
     case GL_UNIFORM_BLOCK_INDEX:
     case GL_UNIFORM_MATRIX_STRIDE:
-    case GL_UNIFORM_OFFSET: {
-        GLsizei count = uniformIndices.size();
-        std::vector<GLint> values(count);
-        glGetActiveUniformsiv(program->glObject(), count, uniformIndices.data(),
-                              pname, values.data());
-        return createTypedArray<Escargot::Int32ArrayObjectRef>(
-            scriptBindingInstance(), values);
-    }
+    case GL_UNIFORM_OFFSET:
     // sequence<GLuint>
     case GL_UNIFORM_SIZE:
         STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getActiveUniforms");
