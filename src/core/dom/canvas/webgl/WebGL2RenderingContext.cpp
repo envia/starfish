@@ -168,6 +168,14 @@ void WebGL2RenderingContext::bindAttribLocation(WebGLProgram* program,
 void WebGL2RenderingContext::bindBuffer(GLenum target,
                                         Optional<WebGLBuffer*> buffer)
 {
+    if (!buffer.hasValue()) {
+        return;
+    }
+    WebGLBuffer* value = buffer.value();
+    if (value->isDeleted()) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
     STARFISH_UNIMPLEMENTED("WebGLRenderingContextBase");
     WebGLRenderingContext::bindBuffer(target, buffer);
 }
@@ -335,6 +343,12 @@ void WebGL2RenderingContext::cullFace(GLenum mode)
 
 void WebGL2RenderingContext::deleteBuffer(Optional<WebGLBuffer*> buffer)
 {
+    Optional<WebGLBuffer*> current =
+        getState()->getBoundBuffer(GL_UNIFORM_BUFFER);
+    if (buffer.hasValue() && current.hasValue() &&
+        buffer.value() == current.value()) {
+        getState()->setBoundBuffer(GL_UNIFORM_BUFFER, nullptr);
+    }
     STARFISH_UNIMPLEMENTED("WebGLRenderingContextBase");
     WebGLRenderingContext::deleteBuffer(buffer);
 }
@@ -616,7 +630,16 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         case GL_PIXEL_PACK_BUFFER_BINDING:
         case GL_PIXEL_UNPACK_BUFFER_BINDING:
         case GL_TRANSFORM_FEEDBACK_BUFFER_BINDING:
-        case GL_UNIFORM_BUFFER_BINDING:
+            STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getParameter");
+            break;
+        case GL_UNIFORM_BUFFER_BINDING: {
+            Optional<WebGLBuffer*> buffer =
+                getState()->getBoundBuffer(GL_UNIFORM_BUFFER);
+            if (!buffer.hasValue()) {
+                return scriptNull();
+            }
+            return buffer.value()->scriptValue();
+        }
         // WebGLFramebuffer
         case GL_DRAW_FRAMEBUFFER_BINDING: /* WebGL1 (GL_FRAMEBUFFER_BINDING) */
         case GL_READ_FRAMEBUFFER_BINDING:
