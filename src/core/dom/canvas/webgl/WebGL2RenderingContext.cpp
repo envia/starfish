@@ -1857,24 +1857,7 @@ Optional<GCAtomicVector<GLuint>> WebGL2RenderingContext::getUniformIndices(
 ScriptValue WebGL2RenderingContext::getActiveUniforms(
     WebGLProgram* program, GCAtomicVector<GLuint> uniformIndices, GLenum pname)
 {
-    ENTER_CONTEXT_SCOPE(scriptNull());
-
-    switch (pname) {
-    // sequence<GLboolean>
-    case GL_UNIFORM_IS_ROW_MAJOR:
-    // sequence<GLenum>
-    case GL_UNIFORM_TYPE:
-    // sequence<GLint>
-    case GL_UNIFORM_ARRAY_STRIDE:
-    case GL_UNIFORM_BLOCK_INDEX:
-    case GL_UNIFORM_MATRIX_STRIDE:
-    case GL_UNIFORM_OFFSET:
-    // sequence<GLuint>
-    case GL_UNIFORM_SIZE:
-        STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getActiveUniforms");
-        return scriptNull();
-    }
-    setGLError(GL_INVALID_ENUM);
+    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
     return scriptNull();
 }
 
