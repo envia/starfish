@@ -1479,21 +1479,29 @@ void WebGL2RenderingContext::drawArraysInstanced(GLenum mode, GLint first,
                                                  GLsizei count,
                                                  GLsizei instanceCount)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    gl()->drawArraysInstanced(mode, first, count, instanceCount);
 }
 
 void WebGL2RenderingContext::drawElementsInstanced(GLenum mode, GLsizei count,
                                                    GLenum type, GLintptr offset,
                                                    GLsizei instanceCount)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    gl()->drawElementsInstanced(mode, count, type,
+                                reinterpret_cast<void*>(offset), instanceCount);
 }
 
 void WebGL2RenderingContext::drawRangeElements(GLenum mode, GLuint start,
                                                GLuint end, GLsizei count,
                                                GLenum type, GLintptr offset)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    gl()->drawRangeElements(mode, start, end, count, type,
+                            reinterpret_cast<void*>(offset));
 }
 
 void WebGL2RenderingContext::drawBuffers(GCAtomicVector<GLenum> buffers)
