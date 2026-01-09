@@ -1456,6 +1456,7 @@ ScriptValue WebGLRenderingContext::getProgramParameter(WebGLProgram* program,
     default:
         break;
     }
+    setGLError(GL_INVALID_ENUM);
     return scriptNull();
 }
 
@@ -1542,6 +1543,7 @@ ScriptValue WebGLRenderingContext::getShaderParameter(WebGLShader* shader,
     default:
         break;
     }
+    setGLError(GL_INVALID_ENUM);
     return scriptNull();
 }
 
