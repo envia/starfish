@@ -1934,12 +1934,20 @@ Optional<GCAtomicVector<GLuint>> WebGL2RenderingContext::getUniformIndices(
     GLuint* indices = (GLuint*)malloc(sizeof(GLuint) * count);
     glGetUniformIndices(program->glObject(), count, names, indices);
     if (hasGLError()) {
+        for (GLsizei i = 0; i < count; i++) {
+            free(names[i]);
+        }
+        free(names);
+        free(indices);
         return Optional<GCAtomicVector<GLuint>>();
     }
     GCAtomicVector<GLuint> uniformIndices;
     for (GLsizei i = 0; i < count; i++) {
         uniformIndices.push_back(indices[i]);
+        free(names[i]);
     }
+    free(names);
+    free(indices);
     return uniformIndices;
 }
 
