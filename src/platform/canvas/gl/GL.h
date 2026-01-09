@@ -273,6 +273,7 @@ public:
 
     // WebGL2
     virtual void genQueries(GLsizei n, GLuint *arrays) = 0;
+    virtual GLint getFragDataLocation(GLuint program, const GLchar *name) = 0;
     virtual void getInteger64v(GLenum pname, GLint64 *data) = 0;
     virtual void genSamplers(GLsizei n, GLuint *arrays) = 0;
     virtual void genTransformFeedback(GLsizei n, GLuint *arrays) = 0;

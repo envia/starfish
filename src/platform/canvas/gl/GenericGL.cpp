@@ -862,6 +862,11 @@ public:
         glGenQueries(n, arrays);
     }
 
+    GLint getFragDataLocation(GLuint program, const GLchar *name) override
+    {
+        return glGetFragDataLocation(program, name);
+    }
+
     void getInteger64v(GLenum pname, GLint64 *data) override
     {
         glGetInteger64v(pname, data);

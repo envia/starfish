@@ -841,6 +841,11 @@ public:
         m_evasGLAPI->glEvasGLImageTargetTexture2DOES(target, image);
     }
 
+    GLint getFragDataLocation(GLuint program, const GLchar *name) override
+    {
+        return m_evasGLAPI->glGetFragDataLocation(program, name);
+    }
+
     EvasGL(void *p)
         : m_evasGLAPI(static_cast<Evas_GL_API *>(p))
     {

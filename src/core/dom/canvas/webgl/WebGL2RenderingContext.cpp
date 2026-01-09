@@ -1314,8 +1314,13 @@ void WebGL2RenderingContext::compressedTexSubImage3D(
 GLint WebGL2RenderingContext::getFragDataLocation(WebGLProgram* program,
                                                   String* name)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
-    return 0;
+    ENTER_CONTEXT_SCOPE(-1);
+
+    if (program->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return -1;
+    }
+    return gl()->getFragDataLocation(program->glObject(), CSTR(name));
 }
 
 void WebGL2RenderingContext::uniform1ui(
