@@ -1,3 +1,27 @@
+# Starfish WebGL2
+
+- [ ] Context Creation and Drawing Buffer Presentation
+- [ ] DOM Interfaces other than WebGL2RenderingContext
+- [ ] WebGL2RenderingContext: More binding points
+- [ ] WebGL2RenderingContext: Setting and getting state
+- [ ] WebGL2RenderingContext: Buffer objects
+- [ ] WebGL2RenderingContext: Framebuffer objects
+- [ ] WebGL2RenderingContext: Renderbuffer objects
+- [ ] WebGL2RenderingContext: Texture objects
+- [ ] WebGL2RenderingContext: Programs and Shaders
+- [ ] WebGL2RenderingContext: Uniforms and attributes
+- [ ] WebGL2RenderingContext: Writing to the drawing buffer
+- [ ] WebGL2RenderingContext: Reading back pixels
+- [ ] WebGL2RenderingContext: Multiple render targets
+- [ ] WebGL2RenderingContext: Query objects
+- [ ] WebGL2RenderingContext: Sampler objects
+- [ ] WebGL2RenderingContext: Sync objects
+- [ ] WebGL2RenderingContext: Transform feedback
+- [ ] WebGL2RenderingContext: Uniform Buffer objects
+- [ ] WebGL2RenderingContext: Vertex Array objects
+- [ ] Differences Between WebGL 2.0 and WebGL 1.0
+- [ ] Differences Between WebGL and OpenGL ES 3.0
+
 # Starfish
 ## Abstract
 Starfish is a lightweight Web browser engine for TV, mobile, headless and wearable devices.
