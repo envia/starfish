@@ -1962,11 +1962,24 @@ ScriptValue WebGL2RenderingContext::getActiveUniforms(
     }
     switch (pname) {
     // sequence<GLboolean>
-    case GL_UNIFORM_IS_ROW_MAJOR:
+    case GL_UNIFORM_IS_ROW_MAJOR: {
+        GLsizei count = uniformIndices.size();
+        std::vector<GLint> values(count);
+        glGetActiveUniformsiv(program->glObject(), count, uniformIndices.data(),
+                              pname, values.data());
+        return createArray(scriptBindingInstance(),
+                           std::vector<bool>(values.begin(), values.end()));
+    }
     // sequence<GLenum>
-    case GL_UNIFORM_TYPE:
-        STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getActiveUniforms");
-        return scriptNull();
+    case GL_UNIFORM_TYPE: {
+        GLsizei count = uniformIndices.size();
+        std::vector<GLint> values(count);
+        glGetActiveUniformsiv(program->glObject(), count, uniformIndices.data(),
+                              pname, values.data());
+        return createTypedArray<Escargot::Uint32ArrayObjectRef>(
+            scriptBindingInstance(),
+            std::vector<GLenum>(values.begin(), values.end()));
+    }
     // sequence<GLint>
     case GL_UNIFORM_ARRAY_STRIDE:
     case GL_UNIFORM_BLOCK_INDEX:
@@ -1980,9 +1993,15 @@ ScriptValue WebGL2RenderingContext::getActiveUniforms(
             scriptBindingInstance(), values);
     }
     // sequence<GLuint>
-    case GL_UNIFORM_SIZE:
-        STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getActiveUniforms");
-        return scriptNull();
+    case GL_UNIFORM_SIZE: {
+        GLsizei count = uniformIndices.size();
+        std::vector<GLint> values(count);
+        glGetActiveUniformsiv(program->glObject(), count, uniformIndices.data(),
+                              pname, values.data());
+        return createTypedArray<Escargot::Uint32ArrayObjectRef>(
+            scriptBindingInstance(),
+            std::vector<GLenum>(values.begin(), values.end()));
+    }
     }
     setGLError(GL_INVALID_ENUM);
     return scriptNull();
