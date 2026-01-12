@@ -648,6 +648,7 @@ public:
 
 private:
     std::unordered_map<GLuint, WebGLQuery*> m_queries;
+    std::unordered_map<GLuint, WebGLTransformFeedback*> m_transformFeedbacks;
 };
 
 } // namespace Starfish

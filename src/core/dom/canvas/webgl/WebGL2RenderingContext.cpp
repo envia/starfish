@@ -648,10 +648,18 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         // WebGLTexture
         case GL_TEXTURE_BINDING_2D_ARRAY:
         case GL_TEXTURE_BINDING_3D:
-        // WebGLTransformFeedback
-        case GL_TRANSFORM_FEEDBACK_BINDING:
             STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getParameter");
             break;
+        // WebGLTransformFeedback
+        case GL_TRANSFORM_FEEDBACK_BINDING: {
+            std::vector<GLint> values(1, 0);
+            gl()->getIntegerv(pname, &values[0]);
+            if (values[0] == 0 || m_transformFeedbacks.find(values[0]) ==
+                                      m_transformFeedbacks.end()) {
+                return scriptNull();
+            }
+            return m_transformFeedbacks[values[0]]->scriptValue();
+        }
         // WebGLVertexArrayObject
         case GL_VERTEX_ARRAY_BINDING: /* WebGL1? */ {
             GLint value = -1;
@@ -1819,26 +1827,61 @@ WebGLTransformFeedback* WebGL2RenderingContext::createTransformFeedback()
 
     GLuint tf = 0;
     gl()->genTransformFeedback(1, &tf);
-    return new WebGLTransformFeedback(scriptBindingInstance(), this, tf);
+    m_transformFeedbacks[tf] =
+        new WebGLTransformFeedback(scriptBindingInstance(), this, tf);
+    return m_transformFeedbacks[tf];
 }
 
 void WebGL2RenderingContext::deleteTransformFeedback(
     Optional<WebGLTransformFeedback*> tf)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    GLuint id = 0;
+    if (tf.hasValue()) {
+        if (tf.value()->context() != this) {
+            setGLError(GL_INVALID_OPERATION);
+            return;
+        }
+        if (tf.value()->isDeleted()) {
+            return;
+        }
+        tf.value()->markDeleted();
+        id = tf.value()->glObject();
+    }
+    glDeleteTransformFeedbacks(1, &id);
 }
 
 GLboolean WebGL2RenderingContext::isTransformFeedback(
     Optional<WebGLTransformFeedback*> tf)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
-    return false;
+    ENTER_CONTEXT_SCOPE(false);
+
+    if (!tf.hasValue() || tf.value()->context() != this ||
+        tf.value()->invalidated()) {
+        return false;
+    }
+    return glIsTransformFeedback(tf.value()->glObject());
 }
 
 void WebGL2RenderingContext::bindTransformFeedback(
     GLenum target, Optional<WebGLTransformFeedback*> tf)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    GLuint id = 0;
+    if (tf.hasValue()) {
+        if (tf.value()->context() != this) {
+            setGLError(GL_INVALID_OPERATION);
+            return;
+        }
+        if (tf.value()->isDeleted()) {
+            setGLError(GL_INVALID_OPERATION);
+            return;
+        }
+        id = tf.value()->glObject();
+    }
+    glBindTransformFeedback(target, id);
 }
 
 void WebGL2RenderingContext::beginTransformFeedback(GLenum primitiveMode)
