@@ -1260,6 +1260,10 @@ WebGLActiveInfo* WebGLRenderingContext::getActiveAttrib(WebGLProgram* program,
     m_gl->getProgramiv(program->glObject(), GL_ACTIVE_ATTRIBUTE_MAX_LENGTH,
                        &maxNameLength);
 
+    if (hasGLError()) {
+        return nullptr;
+    }
+
     GLint size;
     GLenum type;
     GLsizei length;
@@ -1293,6 +1297,10 @@ WebGLActiveInfo* WebGLRenderingContext::getActiveUniform(WebGLProgram* program,
     GLint maxNameLength;
     m_gl->getProgramiv(program->glObject(), GL_ACTIVE_UNIFORM_MAX_LENGTH,
                        &maxNameLength);
+
+    if (hasGLError()) {
+        return nullptr;
+    }
 
     GLint size;
     GLenum type;
