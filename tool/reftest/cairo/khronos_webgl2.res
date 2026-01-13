@@ -1501,8 +1501,8 @@ test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/programs/use-program-c
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/buffers/buffer-type-restrictions.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/buffers/buffer-overflow-test.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/buffers/get-buffer-sub-data.html
-# test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/buffers/one-large-uniform-buffer.html
-# test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/buffers/uniform-buffers.html
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/buffers/one-large-uniform-buffer.html
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/buffers/uniform-buffers.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/context/constants-and-properties-2.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/context/context-attributes-depth-stencil-antialias-obeyed.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/context/context-type-test-2.html
@@ -1553,8 +1553,8 @@ test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/context/context-type-
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/misc/uninitialized-test-2.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/misc/views-with-offsets.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/programs/gl-get-frag-data-location.html
-# test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/query/occlusion-query.html
-# test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/query/query.html
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/query/occlusion-query.html
+# TODO # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/query/query.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/reading/read-pixels-from-fbo-test.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/reading/read-pixels-into-pixel-pack-buffer.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/reading/read-pixels-pack-parameters.html
@@ -2459,4 +2459,4 @@ test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/sync/sync-webgl-speci
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/transform_feedback/transform_feedback.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/transform_feedback/two-unreferenced-varyings.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/transform_feedback/unwritten-output-defaults-to-zero.html
-# test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/vertex_arrays/vertex-array-object.html
+# TODO # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/vertex_arrays/vertex-array-object.html
