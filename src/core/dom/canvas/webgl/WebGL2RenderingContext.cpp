@@ -2102,8 +2102,31 @@ ScriptValue WebGL2RenderingContext::getActiveUniformBlockParameter(
 Optional<String*> WebGL2RenderingContext::getActiveUniformBlockName(
     WebGLProgram* program, GLuint uniformBlockIndex)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
-    return nullptr;
+    ENTER_CONTEXT_SCOPE(Optional<String*>());
+
+    if (program->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return Optional<String*>();
+    }
+
+    GLsizei bufSize;
+    glGetProgramiv(program->glObject(), GL_ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH,
+                   &bufSize);
+
+    if (hasGLError()) {
+        return Optional<String*>();
+    }
+
+    GLsizei length;
+    std::vector<char> uniformBlockName(bufSize);
+    glGetActiveUniformBlockName(program->glObject(), uniformBlockIndex, bufSize,
+                                &length, uniformBlockName.data());
+
+    if (hasGLError()) {
+        return Optional<String*>();
+    }
+
+    return String::createASCIIString(uniformBlockName.data(), length);
 }
 
 void WebGL2RenderingContext::uniformBlockBinding(WebGLProgram* program,
