@@ -2104,7 +2104,7 @@ Optional<String*> WebGL2RenderingContext::getActiveUniformBlockName(
 {
     ENTER_CONTEXT_SCOPE(Optional<String*>());
 
-    if (program->context() != this) {
+    if (program->context() != this || !program->linked()) {
         setGLError(GL_INVALID_OPERATION);
         return Optional<String*>();
     }

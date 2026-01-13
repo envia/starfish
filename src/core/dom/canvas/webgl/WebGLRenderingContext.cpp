@@ -1985,6 +1985,8 @@ void WebGLRenderingContext::linkProgram(WebGLProgram* program)
             link(https://registry.khronos.org/webgl/specs/latest/1.0/#6.43).
         */
         STARFISH_UNIMPLEMENTED();
+    } else {
+        program->markLinked();
     }
 }
 
