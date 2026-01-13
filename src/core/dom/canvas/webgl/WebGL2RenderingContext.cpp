@@ -2107,11 +2107,24 @@ ScriptValue WebGL2RenderingContext::getActiveUniformBlockParameter(
         return createScriptValue(static_cast<GLuint>(value));
     }
     // Uint32Array
-    case GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES:
-        STARFISH_UNIMPLEMENTED(
-            "WebGL2RenderingContext::getActiveUniformBlockParameter");
-        return scriptNull();
+    case GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES: {
+        GLint value;
+        glGetActiveUniformBlockiv(program->glObject(), uniformBlockIndex,
+                                  GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS, &value);
+
+        std::vector<GLint> params(value);
+        glGetActiveUniformBlockiv(program->glObject(), uniformBlockIndex, pname,
+                                  params.data());
+
+        return createScriptValue(
+            createTypedArray<Escargot::Uint32ArrayObjectRef>(
+                scriptBindingInstance(),
+                std::vector<uint32_t>(params.begin(), params.end())));
     }
+    }
+    // TODO: If uniformBlockIndex is not an active block uniform for program or
+    // greater than or equal to the value of ACTIVE_UNIFORM_BLOCKS, generates an
+    // INVALID_VALUE error.
     setGLError(GL_INVALID_ENUM);
     return scriptNull();
 }
