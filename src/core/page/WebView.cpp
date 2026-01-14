@@ -111,7 +111,6 @@ extern Starfish::CanvasSurface* g_surfaceForScreehShot;
 #endif
 
 namespace Starfish {
-using namespace LWE;
 #if defined(STARFISH_ENABLE_TEST)
 // should be defined in each window port
 void screenShotInRendering(WebView* wv, const char* path,
@@ -367,7 +366,7 @@ WebView::WebView(Starfish* starfish, const char* locale, const char* timezoneID,
         STARFISH_IMAGE_DECODE_THREAD_THREAD_POOL_SIZE, m_messageLoop);
 #endif
 
-    setIdleModeCheckIntervalInMS(IdleModeCheckDefaultIntervalInMS);
+    setIdleModeCheckIntervalInMS(LWE::IdleModeCheckDefaultIntervalInMS);
 }
 
 void* WebView::operator new(size_t size)
@@ -2248,8 +2247,8 @@ void WebView::addGlobalPointingEventInterceptListener(EventTarget* node)
 
     size_t sizeBefore = m_globalPointingEventListener.size();
     if (sizeBefore == 0) {
-        MouseData mdata(MouseButtonValue::NoButton,
-                        MouseButtonsValue::NoButtonDown,
+        MouseData mdata(LWE::MouseButtonValue::NoButton,
+                        LWE::MouseButtonsValue::NoButtonDown,
                         m_lastMouseMovePoint.x(), m_lastMouseMovePoint.y(), 0);
         mdata.setDefaultPrevented();
 
