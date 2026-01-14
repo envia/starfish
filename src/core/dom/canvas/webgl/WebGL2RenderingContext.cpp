@@ -25,6 +25,7 @@
 #include "binding/generated/Float32ArrayOrSequenceOfGLfloatUnion.h"
 #include "binding/generated/ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElementUnion.h"
 #include "core/dom/ExecutionContext.h"
+#include "core/dom/canvas/webgl/TexImageHelper.h"
 #include "core/dom/canvas/webgl/WebGLProgram.h"
 #include "core/dom/canvas/webgl/WebGLUniformLocation.h"
 #include "core/util/debug/Trace.h"
@@ -571,8 +572,54 @@ void WebGL2RenderingContext::texImage2D(GLenum target, GLint level,
                                         GLint internalformat, GLenum format,
                                         GLenum type, TexImageSource source)
 {
-    WebGLRenderingContext::texImage2D(target, level, internalformat, format,
-                                      type, source);
+    ENTER_CONTEXT_SCOPE();
+
+    // TODO: handle DOM exception with referring to CanvasImageSource. If this
+    // function is called with an HTMLImageElement or HTMLVideoElement whose
+    // origin differs from the origin of the containing Document, or with an
+    // HTMLCanvasElement, ImageBitmap or OffscreenCanvas whose bitmap's
+    // origin-clean flag is set to false, a SECURITY_ERR exception must be
+    // thrown. See Origin Restrictions.
+
+    if (boundTextures().find(target) == boundTextures().end() &&
+        !isBoundCubeMapTexture(target)) {
+        setGLError(
+            GL_INVALID_OPERATION,
+            StringUtils::formatString("target (0x%04X) is not bound.", target)
+                .c_str());
+        return;
+    }
+
+    if (static_cast<GLenum>(internalformat) != format) {
+        // The format, in WebGL 1, must be the same as internalformat. See:
+        // https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/texImage2D
+        // TODO: add an identifier for WebGL version and use it.
+        setGLError(GL_INVALID_OPERATION,
+                   StringUtils::formatString(
+                       "The given parameters, internal format (0x%0fX) and "
+                       "format (0x%04X) are not same.",
+                       internalformat, format)
+                       .c_str());
+        return;
+    }
+
+    handleTexImageWithImageSource(
+        format, type, source, [&](const TexImageHelper* helper) {
+            STARFISH_ASSERT(helper != nullptr);
+
+            TRACE(WEBGL_V, KV(glValueString(internalformat)),
+                  KV(glValueString(
+                      helper->dataFormat().valueOr(internalformat))));
+            TRACE(WEBGL_V, KV(glValueString(format)),
+                  KV(glValueString(helper->dataFormat().valueOr(format))));
+            TRACE(WEBGL_V, KV(glValueString(type)));
+
+            // Uploads the given image data to the currently bound texture.
+            gl()->texImage2D(
+                target, level, helper->dataFormat().valueOr(internalformat),
+                helper->sourceImage().width, helper->sourceImage().height, 0,
+                helper->dataFormat().valueOr(format), type, helper->data());
+        });
 }
 
 void WebGL2RenderingContext::texSubImage2D(

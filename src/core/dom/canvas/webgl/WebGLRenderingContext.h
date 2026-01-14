@@ -264,6 +264,8 @@ private:
         std::function<void(const std::vector<GLubyte>&)> updateBlackImage,
         std::function<void(const std::vector<GLushort>&)>
             updateTwoBytesBlackImage);
+
+protected:
     void handleTexImageWithImageSource(
         const GLenum format, const GLenum type, const TexImageSource& source,
         std::function<void(const TexImageHelper*)> updateImage);
@@ -318,10 +320,14 @@ public:
 private:
     bool checkAttribOrUniformName(String* name);
     bool isFromCurrentContext(WebGLObject* object);
-    bool isBoundCubeMapTexture(GLenum target);
 
 protected:
+    bool isBoundCubeMapTexture(GLenum target);
     bool isFromCurrentProgram(WebGLUniformLocation* uniform);
+    const GLTextureMap& boundTextures()
+    {
+        return m_boundTextures;
+    }
 
 private:
     bool isExtensionEnabled(const char* requestedName);
