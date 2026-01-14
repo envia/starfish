@@ -77,6 +77,8 @@
 
 namespace Starfish {
 
+using namespace LWE;
+
 BrowsingContext* BrowsingContext::create(WebView* webView)
 {
     STARFISH_ASSERT(webView);

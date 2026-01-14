@@ -22,7 +22,6 @@
 
 #include "StarfishConfig.h"
 #include "MouseEvent.h"
-using namespace LWE;
 
 namespace Starfish {
 

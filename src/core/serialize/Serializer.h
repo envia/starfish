@@ -26,8 +26,6 @@
 
 namespace Starfish {
 
-using namespace Escargot;
-
 class Blob;
 class ExecutionContext;
 class SerializedData;
