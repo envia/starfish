@@ -145,6 +145,11 @@ public:
     void texSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset,
                        GLenum format, GLenum type, TexImageSource source);
 
+    void uniformMatrix4fv(Optional<WebGLUniformLocation*> location,
+                          GLboolean transpose, Float32List data,
+                          unsigned long long srcOffset = 0,
+                          GLuint srcLength = 0);
+
     /* Reading back pixels */
     // WebGL1:
     void readPixels(GLint x, GLint y, GLsizei width, GLsizei height,

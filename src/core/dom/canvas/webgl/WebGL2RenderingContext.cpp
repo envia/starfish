@@ -22,6 +22,7 @@
 #include "StarfishConfig.h"
 #include "core/dom/canvas/webgl/WebGL2RenderingContext.h"
 #include "binding/generated/ArrayBufferOrSharedArrayBufferOrArrayBufferViewUnion.h"
+#include "binding/generated/Float32ArrayOrSequenceOfGLfloatUnion.h"
 #include "binding/generated/ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElementUnion.h"
 #include "core/dom/ExecutionContext.h"
 #include "core/dom/canvas/webgl/WebGLProgram.h"
@@ -404,6 +405,16 @@ void WebGL2RenderingContext::texSubImage2D(GLenum target, GLint level,
 {
     WebGLRenderingContext::texSubImage2D(target, level, xoffset, yoffset,
                                          format, type, source);
+}
+
+void WebGL2RenderingContext::uniformMatrix4fv(
+    Optional<WebGLUniformLocation*> location, GLboolean transpose,
+    Float32List data, unsigned long long srcOffset, GLuint srcLength)
+{
+    if (srcOffset != 0 || srcLength != 0) {
+        STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
+    }
+    WebGLRenderingContext::uniformMatrix4fv(location, transpose, data);
 }
 
 void WebGL2RenderingContext::readPixels(GLint x, GLint y, GLsizei width,
