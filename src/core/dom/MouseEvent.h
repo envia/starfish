@@ -22,7 +22,6 @@
 
 #include "UIEvent.h"
 #include "PlatformIntegrationData.h"
-using namespace LWE;
 
 namespace Starfish {
 
@@ -35,8 +34,8 @@ class MouseData {
     STARFISH_MAKE_STACK_ALLOCATED()
 public:
     MouseData()
-        : MouseData(MouseButtonValue::NoButton, MouseButtonsValue::NoButtonDown,
-                    0, 0, 0, timestamp())
+        : MouseData(LWE::MouseButtonValue::NoButton,
+                    LWE::MouseButtonsValue::NoButtonDown, 0, 0, 0, timestamp())
     {
     }
 

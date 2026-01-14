@@ -23,20 +23,18 @@
 #include "UIEvent.h"
 #include "PlatformIntegrationData.h"
 
-using namespace LWE;
-
 namespace Starfish {
 class PlatformKeyEventData;
 
-String* keyValueToKey(KeyValue v);
-String* keyValueToCode(KeyValue v);
-uint32_t keyValueToKeyCode(KeyValue v, bool isForVirtualKeyCode = false);
-uint32_t keyValueToCharCode(KeyValue v);
+String* keyValueToKey(LWE::KeyValue v);
+String* keyValueToCode(LWE::KeyValue v);
+uint32_t keyValueToKeyCode(LWE::KeyValue v, bool isForVirtualKeyCode = false);
+uint32_t keyValueToCharCode(LWE::KeyValue v);
 
 class KeyboardEventData {
     STARFISH_MAKE_STACK_ALLOCATED()
 public:
-    KeyboardEventData(KeyValue value = KeyValue::UnidentifiedKey)
+    KeyboardEventData(LWE::KeyValue value = LWE::KeyValue::UnidentifiedKey)
         : m_keyValue(value)
         , m_key(keyValueToKey(value))
         , m_code(keyValueToCode(value))
@@ -50,7 +48,7 @@ public:
     {
     }
 
-    KeyValue keyValue() const
+    LWE::KeyValue keyValue() const
     {
         return m_keyValue;
     }
@@ -141,7 +139,7 @@ public:
     }
 
 private:
-    KeyValue m_keyValue;
+    LWE::KeyValue m_keyValue;
     String* m_key;
     String* m_code;
     uint32_t m_location;
@@ -258,7 +256,7 @@ public:
         return m_keyboardEventData.virtualKeyCode();
     }
 
-    KeyValue keyValue() const
+    LWE::KeyValue keyValue() const
     {
         return m_keyboardEventData.keyValue();
     }
@@ -328,7 +326,7 @@ public:
 
     uint32_t keyCode() const
     {
-        if (m_keyboardEventData.keyValue() != KeyValue::UnidentifiedKey &&
+        if (m_keyboardEventData.keyValue() != LWE::KeyValue::UnidentifiedKey &&
             type()->equals(String::createASCIIString("keydown"))) {
             return m_keyboardEventData.virtualKeyCode();
         }
@@ -346,7 +344,7 @@ public:
     }
 
     // Not in IDL.
-    KeyValue keyValue() const
+    LWE::KeyValue keyValue() const
     {
         return m_keyboardEventData.keyValue();
     }

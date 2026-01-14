@@ -78,6 +78,8 @@ static constexpr char kVersion[] = "WebGL 1.0";
 
 namespace Starfish {
 
+using namespace Escargot;
+
 inline static std::string hex(GLenum name)
 {
     return StringUtils::formatString("0x%04X", name);

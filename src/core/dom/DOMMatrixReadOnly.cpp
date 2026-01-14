@@ -29,6 +29,8 @@
 
 namespace Starfish {
 
+using namespace Escargot;
+
 static bool sameValueZero(double a, double b)
 {
     // https://tc39.github.io/ecma262/#sec-samevaluezero

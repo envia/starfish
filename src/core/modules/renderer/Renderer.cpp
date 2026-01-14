@@ -51,6 +51,8 @@ int32_t g_renderingCount;
 
 namespace Starfish {
 
+using namespace LWE;
+
 const TransformationMatrix& TransformationMatrix::identityMatrix()
 {
     static const TransformationMatrix identityMatrix = {

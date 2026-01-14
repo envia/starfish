@@ -26,6 +26,8 @@
 
 namespace Starfish {
 
+using namespace Escargot;
+
 DOMMatrix* DOMMatrix::Create(DOMMatrixReadOnly* domMatrix)
 {
     STARFISH_ASSERT(domMatrix != nullptr);
