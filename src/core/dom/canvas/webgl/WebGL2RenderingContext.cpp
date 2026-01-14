@@ -25,10 +25,13 @@
 #include "binding/generated/Float32ArrayOrSequenceOfGLfloatUnion.h"
 #include "binding/generated/ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElementUnion.h"
 #include "core/dom/ExecutionContext.h"
+#include "core/dom/canvas/webgl/TexImageHelper.h"
 #include "core/dom/canvas/webgl/WebGLProgram.h"
+#include "core/dom/canvas/webgl/WebGLUniformLocation.h"
 #include "core/util/debug/Trace.h"
 #include "platform/canvas/gl/GL.h"
 #include "platform/canvas/gl/IncludeGL.h"
+#include <EscargotPublic.h>
 
 /* WebGL-specific enums */
 static constexpr GLenum kMAX_CLIENT_WAIT_TIMEOUT_WEBGL = 0x9247;
@@ -414,10 +417,32 @@ void WebGL2RenderingContext::bufferData(GLenum target, GLsizeiptr size,
     WebGLRenderingContext::bufferData(target, size, usage);
 }
 
-void WebGL2RenderingContext::bufferData(
-    GLenum target, Optional<AllowSharedBufferSource> srcData, GLenum usage)
+void WebGL2RenderingContext::bufferData(GLenum target,
+                                        Optional<AllowSharedBufferSource> data,
+                                        GLenum usage)
 {
-    WebGLRenderingContext::bufferData(target, srcData, usage);
+    ENTER_CONTEXT_SCOPE();
+
+    if (!data.hasValue()) {
+        setGLError(GL_INVALID_VALUE);
+        return;
+    }
+
+    if (data.value().isArrayBufferValue()) {
+        ScriptArrayBuffer buffer = data.value().getArrayBufferValue();
+        gl()->bufferData(target, buffer->byteLength(), buffer->rawBuffer(),
+                         usage);
+    } else if (data.value().isArrayBufferViewValue()) {
+        ScriptArrayBufferView view = data.value().getArrayBufferViewValue();
+        gl()->bufferData(target, view->byteLength(), view->rawBuffer(), usage);
+    } else if (data.value().isSharedArrayBufferValue()) {
+        ScriptSharedArrayBuffer buffer =
+            data.value().getSharedArrayBufferValue();
+        gl()->bufferData(target, buffer->byteLength(), buffer->rawBuffer(),
+                         usage);
+    } else {
+        setGLError(GL_INVALID_VALUE);
+    }
 }
 
 void WebGL2RenderingContext::bufferSubData(GLenum target,
@@ -438,11 +463,57 @@ void WebGL2RenderingContext::texImage2D(GLenum target, GLint level,
 }
 
 void WebGL2RenderingContext::texImage2D(GLenum target, GLint level,
-                                        GLint internalformat, GLenum format,
+                                        GLint internalFormat, GLenum format,
                                         GLenum type, TexImageSource source)
 {
-    WebGLRenderingContext::texImage2D(target, level, internalformat, format,
-                                      type, source);
+    ENTER_CONTEXT_SCOPE();
+
+    // TODO: handle DOM exception with referring to CanvasImageSource. If this
+    // function is called with an HTMLImageElement or HTMLVideoElement whose
+    // origin differs from the origin of the containing Document, or with an
+    // HTMLCanvasElement, ImageBitmap or OffscreenCanvas whose bitmap's
+    // origin-clean flag is set to false, a SECURITY_ERR exception must be
+    // thrown. See Origin Restrictions.
+
+    if (boundTextures().find(target) == boundTextures().end() &&
+        !isBoundCubeMapTexture(target)) {
+        setGLError(
+            GL_INVALID_OPERATION,
+            StringUtils::formatString("target (0x%04X) is not bound.", target)
+                .c_str());
+        return;
+    }
+
+    if (static_cast<GLenum>(internalFormat) != format) {
+        // The format, in WebGL 1, must be the same as internalformat. See:
+        // https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/texImage2D
+        // TODO: add an identifier for WebGL version and use it.
+        setGLError(GL_INVALID_OPERATION,
+                   StringUtils::formatString(
+                       "The given parameters, internal format (0x%0fX) and "
+                       "format (0x%04X) are not same.",
+                       internalFormat, format)
+                       .c_str());
+        return;
+    }
+
+    handleTexImageWithImageSource(
+        format, type, source, [&](const TexImageHelper* helper) {
+            STARFISH_ASSERT(helper != nullptr);
+
+            TRACE(WEBGL_V, KV(glValueString(internalFormat)),
+                  KV(glValueString(
+                      helper->dataFormat().valueOr(internalFormat))));
+            TRACE(WEBGL_V, KV(glValueString(format)),
+                  KV(glValueString(helper->dataFormat().valueOr(format))));
+            TRACE(WEBGL_V, KV(glValueString(type)));
+
+            // Uploads the given image data to the currently bound texture.
+            gl()->texImage2D(
+                target, level, helper->dataFormat().valueOr(internalFormat),
+                helper->sourceImage().width, helper->sourceImage().height, 0,
+                helper->dataFormat().valueOr(format), type, helper->data());
+        });
 }
 
 void WebGL2RenderingContext::texSubImage2D(
@@ -464,13 +535,48 @@ void WebGL2RenderingContext::texSubImage2D(GLenum target, GLint level,
 }
 
 void WebGL2RenderingContext::uniformMatrix4fv(
-    Optional<WebGLUniformLocation*> location, GLboolean transpose,
-    Float32List data, unsigned long long srcOffset, GLuint srcLength)
+    Optional<WebGLUniformLocation*> mayBeLocation, GLboolean transpose,
+    Float32List variant, unsigned long long srcOffset, GLuint srcLength)
 {
     if (srcOffset != 0 || srcLength != 0) {
         STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
     }
-    WebGLRenderingContext::uniformMatrix4fv(location, transpose, data);
+    ENTER_CONTEXT_SCOPE();
+    /* location is nullable. */
+    if (!mayBeLocation) {
+        return;
+    }
+    WebGLUniformLocation* location = mayBeLocation.value();
+    if (!isFromCurrentProgram(location)) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+    if (variant.isFloat32ArrayValue()) {
+        Escargot::Float32ArrayObjectRef* values =
+            variant.getFloat32ArrayValue();
+        const size_t arrayLength = values->arrayLength();
+        uint8_t* rawBuffer = const_cast<uint8_t*>(values->rawBuffer());
+        if (arrayLength > 0) {
+            /* count specifies the number of matrices. */
+            gl()->uniformMatrix4fv(location->location(), arrayLength / (4 * 4),
+                                   transpose,
+                                   reinterpret_cast<GLfloat*>(rawBuffer));
+        }
+    } else {
+        STARFISH_ASSERT(variant.isSequenceOfGLfloatValue());
+        const GCAtomicVector<double> v = variant.getSequenceOfGLfloatValue();
+        std::vector<GLfloat> vector;
+        vector.reserve(v.size());
+        for (const double& value : v) {
+            vector.push_back(static_cast<GLfloat>(value));
+        }
+        if (!vector.empty()) {
+            /* count specifies the number of matrices. */
+            gl()->uniformMatrix4fv(location->location(),
+                                   vector.size() / (4 * 4), transpose,
+                                   vector.data());
+        }
+    }
 }
 
 void WebGL2RenderingContext::readPixels(GLint x, GLint y, GLsizei width,
