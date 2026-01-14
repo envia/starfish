@@ -1486,8 +1486,8 @@ void BrowsingContext::dispatchKeyEvent(KeyEventKind kind,
         eventType = starfish()->staticStrings()->m_keyup.localName();
         setKeydownEventDefaultPrevented(false);
     } else if (kind == KeyEventKind::KeyEventPress) {
-        if (pkdata.keyValue() != LWE::EnterKey &&
-            !String::isASCIIPrintableKey(pkdata.keyValue())) {
+        if (pkdata.keyValue() != KeyValue::EnterKey &&
+            !String::isASCIIPrintableKey((char)pkdata.keyValue())) {
             return;
         } else if (keydownEventDefaultPrevented()) {
             return;

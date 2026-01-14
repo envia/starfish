@@ -55,7 +55,6 @@
 #define LWE_MAX_FONT_SIZE 72
 
 namespace LWEDelegate {
-using namespace LWE;
 extern Starfish::Starfish* g_starfishInstance;
 
 static int convertErrorCode(Starfish::RequestErrorType errortype)
@@ -150,7 +149,7 @@ static Starfish::WebView* createStarfishWebViewInstance(
     const char* defaultFontName, const char* locale, const char* timezoneID,
     bool useSwRenderer = false)
 {
-    if (!LWEDelegate::LWE::IsInitialized()) {
+    if (!LWE::IsInitialized()) {
         STARFISH_LOG_ERROR(
             "You must call LWE::Initialize function before using WebContainer "
             "or WebView");
@@ -175,12 +174,12 @@ static Starfish::WebView* createStarfishWebViewInstance(
     STARFISH_RELEASE_ASSERT(timezoneID != nullptr);
 
     if (useSwRenderer) {
-        LWEDelegate::g_starfishInstance->setRendererType(
+        g_starfishInstance->setRendererType(
             Starfish::StarfishRendererType::kSoftware);
     }
 
-    ::Starfish::WebView* webView = ::Starfish::WebView::create(
-        LWEDelegate::g_starfishInstance, locale, timezoneID, width, height,
+    Starfish::WebView* webView = Starfish::WebView::create(
+        g_starfishInstance, locale, timezoneID, width, height,
         LWE_DEFAULT_FONT_SIZE,
         Starfish::String::createASCIIString(defaultFontName,
                                             strlen(defaultFontName)),
@@ -1465,42 +1464,42 @@ uint32_t WebContainerImpl::GetDefaultFontSize()
     return ret;
 }
 
-void WebContainerImpl::DispatchMouseMoveEvent(MouseButtonValue button,
-                                              MouseButtonsValue buttons,
+void WebContainerImpl::DispatchMouseMoveEvent(::LWE::MouseButtonValue button,
+                                              ::LWE::MouseButtonsValue buttons,
                                               double x, double y)
 {
     ThreadedCallHelper::Instance()->PostTaskToLWEMainThreadAsync(
         m_webView->messageLoop(), [=]() -> void {
             m_webView->renderer()->dispatchMouseEvent(
-                ::Starfish::MouseEventKind::MouseEventMove,
-                ::Starfish::MouseData(button, buttons, x, y, 0,
-                                      Starfish::timestamp()));
+                Starfish::MouseEventKind::MouseEventMove,
+                Starfish::MouseData(button, buttons, x, y, 0,
+                                    Starfish::timestamp()));
         });
 }
 
-void WebContainerImpl::DispatchMouseDownEvent(MouseButtonValue button,
-                                              MouseButtonsValue buttons,
+void WebContainerImpl::DispatchMouseDownEvent(::LWE::MouseButtonValue button,
+                                              ::LWE::MouseButtonsValue buttons,
                                               double x, double y)
 {
     ThreadedCallHelper::Instance()->PostTaskToLWEMainThreadAsync(
         m_webView->messageLoop(), [=]() -> void {
             m_webView->renderer()->dispatchMouseEvent(
-                ::Starfish::MouseEventKind::MouseEventDown,
-                ::Starfish::MouseData(button, buttons, x, y, 0,
-                                      Starfish::timestamp()));
+                Starfish::MouseEventKind::MouseEventDown,
+                Starfish::MouseData(button, buttons, x, y, 0,
+                                    Starfish::timestamp()));
         });
 }
 
-void WebContainerImpl::DispatchMouseUpEvent(MouseButtonValue button,
-                                            MouseButtonsValue buttons, double x,
-                                            double y)
+void WebContainerImpl::DispatchMouseUpEvent(::LWE::MouseButtonValue button,
+                                            ::LWE::MouseButtonsValue buttons,
+                                            double x, double y)
 {
     ThreadedCallHelper::Instance()->PostTaskToLWEMainThreadAsync(
         m_webView->messageLoop(), [=]() -> void {
             m_webView->renderer()->dispatchMouseEvent(
-                ::Starfish::MouseEventKind::MouseEventUp,
-                ::Starfish::MouseData(button, buttons, x, y, 0,
-                                      Starfish::timestamp()));
+                Starfish::MouseEventKind::MouseEventUp,
+                Starfish::MouseData(button, buttons, x, y, 0,
+                                    Starfish::timestamp()));
         });
 }
 
@@ -1512,33 +1511,33 @@ void WebContainerImpl::DispatchMouseWheelEvent(double x, double y, int delta)
         });
 }
 
-void WebContainerImpl::DispatchKeyDownEvent(KeyValue keyCode)
+void WebContainerImpl::DispatchKeyDownEvent(::LWE::KeyValue keyCode)
 {
     ThreadedCallHelper::Instance()->PostTaskToLWEMainThreadAsync(
         m_webView->messageLoop(), [=]() -> void {
             m_webView->renderer()->dispatchKeyEvent(
-                ::Starfish::KeyEventKind::KeyEventDown,
-                ::Starfish::PlatformKeyEventData(keyCode));
+                Starfish::KeyEventKind::KeyEventDown,
+                Starfish::PlatformKeyEventData(keyCode));
         });
 }
 
-void WebContainerImpl::DispatchKeyPressEvent(KeyValue keyCode)
+void WebContainerImpl::DispatchKeyPressEvent(::LWE::KeyValue keyCode)
 {
     ThreadedCallHelper::Instance()->PostTaskToLWEMainThreadAsync(
         m_webView->messageLoop(), [=]() -> void {
             m_webView->renderer()->dispatchKeyEvent(
-                ::Starfish::KeyEventKind::KeyEventPress,
-                ::Starfish::PlatformKeyEventData(keyCode));
+                Starfish::KeyEventKind::KeyEventPress,
+                Starfish::PlatformKeyEventData(keyCode));
         });
 }
 
-void WebContainerImpl::DispatchKeyUpEvent(KeyValue keyCode)
+void WebContainerImpl::DispatchKeyUpEvent(::LWE::KeyValue keyCode)
 {
     ThreadedCallHelper::Instance()->PostTaskToLWEMainThreadAsync(
         m_webView->messageLoop(), [=]() -> void {
             m_webView->renderer()->dispatchKeyEvent(
-                ::Starfish::KeyEventKind::KeyEventUp,
-                ::Starfish::PlatformKeyEventData(keyCode));
+                Starfish::KeyEventKind::KeyEventUp,
+                Starfish::PlatformKeyEventData(keyCode));
         });
 }
 
@@ -1548,9 +1547,9 @@ void WebContainerImpl::DispatchCompositionStartEvent(
     ThreadedCallHelper::Instance()->PostTaskToLWEMainThreadAsync(
         m_webView->messageLoop(), [=]() -> void {
             m_webView->renderer()->dispatchCompositionEvent(
-                ::Starfish::CompositionEventKind::CompositionEventStart,
-                ::Starfish::String::fromUTF8(soFarCompositiedString.data(),
-                                             soFarCompositiedString.length()),
+                Starfish::CompositionEventKind::CompositionEventStart,
+                Starfish::String::fromUTF8(soFarCompositiedString.data(),
+                                           soFarCompositiedString.length()),
                 nullptr);
         });
 }
@@ -1561,9 +1560,9 @@ void WebContainerImpl::DispatchCompositionUpdateEvent(
     ThreadedCallHelper::Instance()->PostTaskToLWEMainThreadAsync(
         m_webView->messageLoop(), [=]() -> void {
             m_webView->renderer()->dispatchCompositionEvent(
-                ::Starfish::CompositionEventKind::CompositionEventUpdate,
-                ::Starfish::String::fromUTF8(soFarCompositiedString.data(),
-                                             soFarCompositiedString.length()),
+                Starfish::CompositionEventKind::CompositionEventUpdate,
+                Starfish::String::fromUTF8(soFarCompositiedString.data(),
+                                           soFarCompositiedString.length()),
                 nullptr);
         });
 }
@@ -1574,9 +1573,9 @@ void WebContainerImpl::DispatchCompositionEndEvent(
     ThreadedCallHelper::Instance()->PostTaskToLWEMainThreadAsync(
         m_webView->messageLoop(), [=]() -> void {
             m_webView->renderer()->dispatchCompositionEvent(
-                ::Starfish::CompositionEventKind::CompositionEventEnd,
-                ::Starfish::String::fromUTF8(soFarCompositiedString.data(),
-                                             soFarCompositiedString.length()),
+                Starfish::CompositionEventKind::CompositionEventEnd,
+                Starfish::String::fromUTF8(soFarCompositiedString.data(),
+                                           soFarCompositiedString.length()),
                 nullptr);
         });
 }
