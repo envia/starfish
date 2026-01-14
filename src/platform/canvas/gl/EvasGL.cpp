@@ -841,6 +841,42 @@ public:
         m_evasGLAPI->glEvasGLImageTargetTexture2DOES(target, image);
     }
 
+    void uniformMatrix2x3fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        m_evasGLAPI->glUniformMatrix2x3fv(location, count, transpose, value);
+    }
+
+    void uniformMatrix3x2fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        m_evasGLAPI->glUniformMatrix3x2fv(location, count, transpose, value);
+    }
+
+    void uniformMatrix2x4fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        m_evasGLAPI->glUniformMatrix2x4fv(location, count, transpose, value);
+    }
+
+    void uniformMatrix4x2fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        m_evasGLAPI->glUniformMatrix4x2fv(location, count, transpose, value);
+    }
+
+    void uniformMatrix3x4fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        m_evasGLAPI->glUniformMatrix3x4fv(location, count, transpose, value);
+    }
+
+    void uniformMatrix4x3fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        m_evasGLAPI->glUniformMatrix4x3fv(location, count, transpose, value);
+    }
+
     GLint getFragDataLocation(GLuint program, const GLchar *name) override
     {
         return m_evasGLAPI->glGetFragDataLocation(program, name);
