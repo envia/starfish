@@ -1396,13 +1396,12 @@ ScriptValue WebGLRenderingContext::getFramebufferAttachmentParameter(
 
     switch (pname) {
     case GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE: {
-        return params != 0
-                   ? Escargot::ValueRef::create(static_cast<GLenum>(params))
-                   : scriptNull();
+        return params != 0 ? ValueRef::create(static_cast<GLenum>(params))
+                           : scriptNull();
     }
     case GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL:
     case GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE:
-        return Escargot::ValueRef::create(params);
+        return ValueRef::create(params);
     case GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME: {
         Optional<WebGLFramebuffer*> webGLFramebuffer =
             m_state->webGLFramebuffer();
@@ -1458,11 +1457,11 @@ ScriptValue WebGLRenderingContext::getProgramParameter(WebGLProgram* program,
     case GL_DELETE_STATUS:
     case GL_LINK_STATUS:
     case GL_VALIDATE_STATUS:
-        return Escargot::ValueRef::create(static_cast<bool>(params));
+        return ValueRef::create(static_cast<bool>(params));
     case GL_ATTACHED_SHADERS:
     case GL_ACTIVE_ATTRIBUTES:
     case GL_ACTIVE_UNIFORMS:
-        return Escargot::ValueRef::create(static_cast<GLint>(params));
+        return ValueRef::create(static_cast<GLint>(params));
     default:
         break;
     }
@@ -1546,10 +1545,10 @@ ScriptValue WebGLRenderingContext::getShaderParameter(WebGLShader* shader,
 
     switch (pname) {
     case GL_SHADER_TYPE:
-        return Escargot::ValueRef::create(static_cast<GLenum>(params));
+        return ValueRef::create(static_cast<GLenum>(params));
     case GL_DELETE_STATUS:
     case GL_COMPILE_STATUS:
-        return Escargot::ValueRef::create(static_cast<bool>(params));
+        return ValueRef::create(static_cast<bool>(params));
     default:
         break;
     }
