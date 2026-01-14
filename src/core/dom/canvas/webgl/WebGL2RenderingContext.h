@@ -104,6 +104,11 @@ public:
     void waitSync(WebGLSync* sync, GLbitfield flags, GLint64 timeout);
     ScriptValue getSyncParameter(WebGLSync* sync, GLenum pname);
 
+    /* Transform Feedback */
+    ScriptValue getActiveUniforms(WebGLProgram* program,
+                                  GCAtomicVector<GLuint> uniformIndices,
+                                  GLenum pname);
+
     // Implement WebGL2RenderingContextOverloads
 
     // WebGL1:
