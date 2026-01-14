@@ -55,6 +55,7 @@
 #define LWE_MAX_FONT_SIZE 72
 
 namespace LWEDelegate {
+using namespace LWE;
 extern Starfish::Starfish* g_starfishInstance;
 
 static int convertErrorCode(Starfish::RequestErrorType errortype)

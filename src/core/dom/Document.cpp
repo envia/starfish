@@ -103,6 +103,7 @@
 #include "platform/network/curl/NetworkSharedResourceManager.h"
 
 namespace Starfish {
+using namespace LWE;
 #ifdef STARFISH_ENABLE_NETWORK_PROFILING
 extern uint64_t g_profilingBaseTime;
 #endif

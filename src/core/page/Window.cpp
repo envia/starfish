@@ -76,6 +76,8 @@
 
 namespace Starfish {
 
+using namespace LWE;
+
 Window* Window::create(BrowsingContext* browsingContext, ResourceURL* url,
                        uint32_t initialWidth, uint32_t initialHeight)
 {

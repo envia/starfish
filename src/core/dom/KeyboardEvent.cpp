@@ -23,6 +23,8 @@
 
 namespace Starfish {
 
+using namespace LWE;
+
 String* keyValueToKey(KeyValue v)
 {
     if (v >= AKey && v <= ZKey) {

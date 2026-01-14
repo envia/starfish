@@ -111,6 +111,7 @@ extern Starfish::CanvasSurface* g_surfaceForScreehShot;
 #endif
 
 namespace Starfish {
+using namespace LWE;
 #if defined(STARFISH_ENABLE_TEST)
 // should be defined in each window port
 void screenShotInRendering(WebView* wv, const char* path,

@@ -69,6 +69,8 @@
 
 namespace Starfish {
 
+using namespace Escargot;
+
 static inline bool stringToCanvasFillRule(String* rule, CanvasFillRule& out)
 {
     STARFISH_ASSERT(rule != nullptr);

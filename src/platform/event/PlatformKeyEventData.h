@@ -26,11 +26,11 @@ class PlatformKeyEventData {
     STARFISH_MAKE_STACK_ALLOCATED()
 public:
     PlatformKeyEventData()
-        : PlatformKeyEventData(KeyValue::UnidentifiedKey)
+        : PlatformKeyEventData(LWE::KeyValue::UnidentifiedKey)
     {
     }
 
-    PlatformKeyEventData(KeyValue value)
+    PlatformKeyEventData(LWE::KeyValue value)
         : m_eventModifierData()
         , m_keyboardEventData(value)
     {
@@ -80,7 +80,7 @@ public:
         m_eventModifierData.setMetaKey(metaKey);
     }
 
-    KeyValue keyValue() const
+    LWE::KeyValue keyValue() const
     {
         return m_keyboardEventData.keyValue();
     }

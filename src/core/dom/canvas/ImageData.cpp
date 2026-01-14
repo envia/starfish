@@ -33,6 +33,7 @@
 #include "../third_party/escargot/third_party/checked_arithmetic/CheckedArithmetic.h"
 
 namespace Starfish {
+using namespace Escargot;
 ImageData::ImageData(ExecutionContext* ownerExecutionContext)
     : ScriptWrappable(this)
     , m_executionContext(ownerExecutionContext)
