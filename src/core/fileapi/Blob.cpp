@@ -30,7 +30,7 @@ namespace Starfish {
 
 using namespace Escargot;
 
-Blob ::Blob(ExecutionContext* executionContext)
+Blob::Blob(ExecutionContext* executionContext)
     : ScriptWrappable(this)
     , m_executionContext(executionContext)
 {
