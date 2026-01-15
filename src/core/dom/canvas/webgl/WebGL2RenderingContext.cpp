@@ -25,6 +25,7 @@
 #include "binding/generated/ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElementUnion.h"
 #include "core/dom/ExecutionContext.h"
 #include "core/dom/canvas/webgl/WebGLProgram.h"
+#include "core/dom/canvas/webgl/WebGLRenderingContextState.h"
 #include "core/util/debug/Trace.h"
 #include "platform/canvas/gl/GL.h"
 #include "platform/canvas/gl/IncludeGL.h"
@@ -317,6 +318,35 @@ WebGLVertexArrayObject* WebGL2RenderingContext::createVertexArray()
     GLuint vao = 0;
     gl()->genVertexArrays(1, &vao);
     return new WebGLVertexArrayObject(scriptBindingInstance(), this, vao);
+}
+
+void WebGL2RenderingContext::bindVertexArray(
+    Optional<WebGLVertexArrayObject*> array)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    if (!array.hasValue()) {
+        glBindVertexArray(0);
+        getState()->setWebGLVertexArrayObject(nullptr);
+        return;
+    }
+
+    WebGLVertexArrayObject* value = array.value();
+
+    if (value->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    if (value->isDeleted()) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    TRACE(WEBGL, KV(value->glObject()));
+    glBindVertexArray(value->glObject());
+    value->setHasEverBound();
+    getState()->setWebGLVertexArrayObject(value);
 }
 
 // WebGL2RenderingContextOverloads

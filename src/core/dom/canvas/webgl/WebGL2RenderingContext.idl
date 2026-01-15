@@ -490,7 +490,7 @@ interface WebGL2RenderingContextBase
     WebGLVertexArrayObject createVertexArray();
     [Unimplemented] undefined deleteVertexArray(WebGLVertexArrayObject? vertexArray);
     [WebGLHandlesContextLoss, Unimplemented] GLboolean isVertexArray(WebGLVertexArrayObject? vertexArray);
-    [Unimplemented] undefined bindVertexArray(WebGLVertexArrayObject? array);
+    undefined bindVertexArray(WebGLVertexArrayObject? array);
 };
 
 // https://www.khronos.org/registry/webgl/specs/latest/2.0/#WebGL2RenderingContextOverloads
