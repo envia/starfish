@@ -32,6 +32,7 @@
 #include "core/util/debug/Trace.h"
 #include "platform/canvas/gl/GL.h"
 #include "platform/canvas/gl/IncludeGL.h"
+#include <EscargotPublic.h>
 
 /* WebGL-specific enums */
 static constexpr GLenum kMAX_CLIENT_WAIT_TIMEOUT_WEBGL = 0x9247;
@@ -373,6 +374,25 @@ void WebGL2RenderingContext::bufferSubData(GLenum target,
     WebGLRenderingContext::bufferSubData(target, dstByteOffset, srcData);
 }
 
+static bool isInternalFormatValid(GLint internalFormat, GLenum format,
+                                  GLenum type)
+{
+    if (internalFormat == GL_R8 && format == GL_RED &&
+        type == GL_UNSIGNED_BYTE) {
+        return true;
+    }
+    return false;
+}
+
+static bool isSrcDataValid(Optional<ScriptArrayBufferView> pixels, GLenum type)
+{
+    if (pixels.hasValue() && pixels.value()->isUint8ArrayObject() &&
+        type == GL_UNSIGNED_BYTE) {
+        return true;
+    }
+    return false;
+}
+
 void WebGL2RenderingContext::texImage2D(GLenum target, GLint level,
                                         GLint internalFormat, GLsizei width,
                                         GLsizei height, GLint border,
@@ -390,13 +410,18 @@ void WebGL2RenderingContext::texImage2D(GLenum target, GLint level,
         return;
     }
 
-    if (static_cast<GLenum>(internalFormat) != format) {
+    if (!isInternalFormatValid(internalFormat, format, type)) {
         setGLError(GL_INVALID_OPERATION,
                    StringUtils::formatString(
-                       "The given parameters, internal format (0x%0fX) and "
-                       "format (0x%04X) are not same.",
+                       "The given parameters, internal format (0x%0fX), format "
+                       "(0x%04X), and type (0x%04X) are not valid.",
                        internalFormat, format)
                        .c_str());
+        return;
+    }
+
+    if (!isSrcDataValid(pixels, type)) {
+        setGLError(GL_INVALID_OPERATION);
         return;
     }
 
