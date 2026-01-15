@@ -25,6 +25,8 @@
 #include "binding/generated/Float32ArrayOrSequenceOfGLfloatUnion.h"
 #include "binding/generated/ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElementUnion.h"
 #include "core/dom/ExecutionContext.h"
+#include "core/dom/canvas/webgl/TexImageHelper.h"
+#include "core/dom/canvas/webgl/WebGLExtensions.h"
 #include "core/dom/canvas/webgl/WebGLProgram.h"
 #include "core/dom/canvas/webgl/WebGLRenderingContextState.h"
 #include "core/util/debug/Trace.h"
@@ -372,13 +374,60 @@ void WebGL2RenderingContext::bufferSubData(GLenum target,
 }
 
 void WebGL2RenderingContext::texImage2D(GLenum target, GLint level,
-                                        GLint internalformat, GLsizei width,
+                                        GLint internalFormat, GLsizei width,
                                         GLsizei height, GLint border,
                                         GLenum format, GLenum type,
                                         Optional<ScriptArrayBufferView> pixels)
 {
-    WebGLRenderingContext::texImage2D(target, level, internalformat, width,
-                                      height, border, format, type, pixels);
+    ENTER_CONTEXT_SCOPE();
+
+    if (boundTextures().find(target) == boundTextures().end() &&
+        !isBoundCubeMapTexture(target)) {
+        setGLError(
+            GL_INVALID_OPERATION,
+            StringUtils::formatString("target (0x%04X) is not bound.", target)
+                .c_str());
+        return;
+    }
+
+    if (static_cast<GLenum>(internalFormat) != format) {
+        setGLError(GL_INVALID_OPERATION,
+                   StringUtils::formatString(
+                       "The given parameters, internal format (0x%0fX) and "
+                       "format (0x%04X) are not same.",
+                       internalFormat, format)
+                       .c_str());
+        return;
+    }
+
+    handleTexImageWithArrayBufferView(
+        target, level, width, height, format, type, pixels,
+        [&](const TexImageHelper* helper) {
+            STARFISH_ASSERT(helper != nullptr);
+            gl()->texImage2D(target, level, internalFormat, width, height, 0,
+                             format, type, helper->data());
+        },
+        [&](const std::vector<GLubyte>& blackData) {
+#if defined(PORT_PIXEL_ORDER_BGRA)
+            if (format == GL_RGBA) {
+                if (WebGLExtensionRegistry::instance()
+                        .hasEXT_texture_format_BGRA8888()) {
+                    // According to OpenGL ES specification, the format must
+                    // match the base internal format (no conversions from
+                    // one format to another during texture image processing
+                    // are supported.)
+                    internalFormat = GL_BGRA_EXT;
+                    format = GL_BGRA_EXT;
+                }
+            }
+#endif
+            gl()->texImage2D(target, level, internalFormat, width, height, 0,
+                             format, type, blackData.data());
+        },
+        [&](const std::vector<GLushort>& blackData) {
+            gl()->texImage2D(target, level, internalFormat, width, height, 0,
+                             format, type, blackData.data());
+        });
 }
 
 void WebGL2RenderingContext::texImage2D(GLenum target, GLint level,

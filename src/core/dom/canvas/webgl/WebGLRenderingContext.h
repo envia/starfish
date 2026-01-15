@@ -256,7 +256,7 @@ public:
                     GLenum format, GLenum type,
                     Optional<ScriptArrayBufferView> pixels);
 
-private:
+protected:
     void handleTexImageWithArrayBufferView(
         GLenum target, GLint level, GLsizei width, GLsizei height,
         GLenum format, GLenum type, Optional<ScriptArrayBufferView> pixels,
@@ -264,6 +264,8 @@ private:
         std::function<void(const std::vector<GLubyte>&)> updateBlackImage,
         std::function<void(const std::vector<GLushort>&)>
             updateTwoBytesBlackImage);
+
+private:
     void handleTexImageWithImageSource(
         const GLenum format, const GLenum type, const TexImageSource& source,
         std::function<void(const TexImageHelper*)> updateImage);
@@ -318,7 +320,15 @@ public:
 private:
     bool checkAttribOrUniformName(String* name);
     bool isFromCurrentContext(WebGLObject* object);
+
+protected:
     bool isBoundCubeMapTexture(GLenum target);
+    const GLTextureMap& boundTextures()
+    {
+        return m_boundTextures;
+    }
+
+private:
     bool isFromCurrentProgram(WebGLUniformLocation* uniform);
     bool isExtensionEnabled(const char* requestedName);
     bool isDefaultFramebufferBound();
