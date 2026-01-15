@@ -310,6 +310,15 @@ ScriptValue WebGL2RenderingContext::getSyncParameter(WebGLSync* sync,
     return scriptNull();
 }
 
+WebGLVertexArrayObject* WebGL2RenderingContext::createVertexArray()
+{
+    ENTER_CONTEXT_SCOPE(nullptr);
+
+    GLuint vao = 0;
+    gl()->genVertexArrays(1, &vao);
+    return new WebGLVertexArrayObject(scriptBindingInstance(), this, vao);
+}
+
 // WebGL2RenderingContextOverloads
 
 void WebGL2RenderingContext::bufferData(GLenum target, GLsizeiptr size,

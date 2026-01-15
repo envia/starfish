@@ -487,7 +487,7 @@ interface WebGL2RenderingContextBase
     [Unimplemented] undefined uniformBlockBinding(WebGLProgram program, GLuint uniformBlockIndex, GLuint uniformBlockBinding);
 
     /* Vertex Array Objects */
-    [Unimplemented] WebGLVertexArrayObject createVertexArray();
+    WebGLVertexArrayObject createVertexArray();
     [Unimplemented] undefined deleteVertexArray(WebGLVertexArrayObject? vertexArray);
     [WebGLHandlesContextLoss, Unimplemented] GLboolean isVertexArray(WebGLVertexArrayObject? vertexArray);
     [Unimplemented] undefined bindVertexArray(WebGLVertexArrayObject? array);

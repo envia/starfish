@@ -106,6 +106,9 @@ public:
     void waitSync(WebGLSync* sync, GLbitfield flags, GLint64 timeout);
     ScriptValue getSyncParameter(WebGLSync* sync, GLenum pname);
 
+    /* Vertex Array Objects */
+    WebGLVertexArrayObject* createVertexArray();
+
     // Implement WebGL2RenderingContextOverloads
 
     // WebGL1:
