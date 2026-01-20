@@ -1826,7 +1826,7 @@ WebGLTransformFeedback* WebGL2RenderingContext::createTransformFeedback()
     ENTER_CONTEXT_SCOPE(nullptr);
 
     GLuint tf = 0;
-    gl()->genTransformFeedback(1, &tf);
+    gl()->genTransformFeedbacks(1, &tf);
     m_transformFeedbacks[tf] =
         new WebGLTransformFeedback(scriptBindingInstance(), this, tf);
     return m_transformFeedbacks[tf];

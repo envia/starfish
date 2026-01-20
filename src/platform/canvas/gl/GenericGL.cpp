@@ -857,9 +857,9 @@ public:
 #endif
     }
 
-    void genQueries(GLsizei n, GLuint *arrays) override
+    void genQueries(GLsizei n, GLuint *ids) override
     {
-        glGenQueries(n, arrays);
+        glGenQueries(n, ids);
     }
 
     GLint getFragDataLocation(GLuint program, const GLchar *name) override
@@ -872,14 +872,14 @@ public:
         glGetInteger64v(pname, data);
     }
 
-    void genSamplers(GLsizei n, GLuint *arrays) override
+    void genSamplers(GLsizei n, GLuint *samplers) override
     {
-        glGenSamplers(n, arrays);
+        glGenSamplers(n, samplers);
     }
 
-    void genTransformFeedback(GLsizei n, GLuint *arrays) override
+    void genTransformFeedbacks(GLsizei n, GLuint *ids) override
     {
-        glGenTransformFeedbacks(n, arrays);
+        glGenTransformFeedbacks(n, ids);
     }
 
     GenericGL(Renderer *renderer)
