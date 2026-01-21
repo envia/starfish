@@ -522,10 +522,10 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
 
         switch (pname) {
         // DOMString
-        case GL_SHADING_LANGUAGE_VERSION:
+        case GL_SHADING_LANGUAGE_VERSION: /* WebGL1 */
             return createScriptValue(
                 createScriptASCIIString(kShadingLanguageVersion));
-        case GL_VERSION:
+        case GL_VERSION: /* WebGL1 */
             return createScriptValue(createScriptASCIIString(kVersion));
         // GLboolean
         case GL_RASTERIZER_DISCARD:
@@ -535,12 +535,74 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
             gl()->getBooleanv(pname, &values[0]);
             return createScriptValue(static_cast<bool>(values[0]));
         }
+        // GLenum
+        case GL_DRAW_BUFFER0:
+        case GL_DRAW_BUFFER1:
+        case GL_DRAW_BUFFER2:
+        case GL_DRAW_BUFFER3:
+        case GL_DRAW_BUFFER4:
+        case GL_DRAW_BUFFER5:
+        case GL_DRAW_BUFFER6:
+        case GL_DRAW_BUFFER7:
+        case GL_DRAW_BUFFER8:
+        case GL_DRAW_BUFFER9:
+        case GL_DRAW_BUFFER10:
+        case GL_DRAW_BUFFER11:
+        case GL_DRAW_BUFFER12:
+        case GL_DRAW_BUFFER13:
+        case GL_DRAW_BUFFER14:
+        case GL_DRAW_BUFFER15:
+        case GL_FRAGMENT_SHADER_DERIVATIVE_HINT:
+        case GL_READ_BUFFER:
+            STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getParameter");
+            break;
         // GLfloat
         case GL_MAX_TEXTURE_LOD_BIAS: {
             std::vector<GLfloat> values(1);
             gl()->getFloatv(pname, &values[0]);
             return createScriptValue(values[0]);
         }
+        // GLint
+        case GL_ALPHA_BITS: /* WebGL1 */
+        case GL_BLUE_BITS:  /* WebGL1 */
+        case GL_GREEN_BITS: /* WebGL1 */
+        case GL_RED_BITS:   /* WebGL1 */
+            // INDIGO_TODO: For RED_BITS, GREEN_BITS, BLUE_BITS, and ALPHA_BITS,
+            // if active color attachments of the draw framebuffer do not have
+            // identical formats, generates an INVALID_OPERATION error and
+            // returns 0.
+        case GL_MAX_3D_TEXTURE_SIZE:
+        case GL_MAX_ARRAY_TEXTURE_LAYERS:
+        case GL_MAX_COLOR_ATTACHMENTS:
+        case GL_MAX_COMBINED_UNIFORM_BLOCKS:
+        case GL_MAX_DRAW_BUFFERS:
+        case GL_MAX_ELEMENTS_INDICES:
+        case GL_MAX_ELEMENTS_VERTICES:
+        case GL_MAX_FRAGMENT_INPUT_COMPONENTS:
+        case GL_MAX_FRAGMENT_UNIFORM_BLOCKS:
+        case GL_MAX_FRAGMENT_UNIFORM_COMPONENTS:
+        case GL_MAX_PROGRAM_TEXEL_OFFSET:
+        case GL_MAX_SAMPLES: /* WebGL1? */
+        case GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS:
+        case GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS:
+        case GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS:
+        case GL_MAX_UNIFORM_BUFFER_BINDINGS:
+        case GL_MAX_VARYING_COMPONENTS:
+        case GL_MAX_VERTEX_OUTPUT_COMPONENTS:
+        case GL_MAX_VERTEX_UNIFORM_BLOCKS:
+        case GL_MAX_VERTEX_UNIFORM_COMPONENTS:
+        case GL_MIN_PROGRAM_TEXEL_OFFSET:
+        case GL_PACK_ROW_LENGTH:
+        case GL_PACK_SKIP_PIXELS:
+        case GL_PACK_SKIP_ROWS:
+        case GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT:
+        case GL_UNPACK_IMAGE_HEIGHT:
+        case GL_UNPACK_ROW_LENGTH:
+        case GL_UNPACK_SKIP_IMAGES:
+        case GL_UNPACK_SKIP_PIXELS:
+        case GL_UNPACK_SKIP_ROWS:
+            STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getParameter");
+            break;
         // GLint64
         case kMAX_CLIENT_WAIT_TIMEOUT_WEBGL:
             return createScriptValue(kMaxClientWaitTimeoutWebgl);
@@ -553,6 +615,27 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
             gl()->getInteger64v(pname, &values[0]);
             return createScriptValue(values[0]);
         }
+        // WebGLBuffer
+        case GL_COPY_READ_BUFFER_BINDING:
+        case GL_COPY_WRITE_BUFFER_BINDING:
+        case GL_PIXEL_PACK_BUFFER_BINDING:
+        case GL_PIXEL_UNPACK_BUFFER_BINDING:
+        case GL_TRANSFORM_FEEDBACK_BUFFER_BINDING:
+        case GL_UNIFORM_BUFFER_BINDING:
+        // WebGLFramebuffer
+        case GL_DRAW_FRAMEBUFFER_BINDING: /* WebGL1? (GL_FRAMEBUFFER_BINDING) */
+        case GL_READ_FRAMEBUFFER_BINDING:
+        // WebGLSampler
+        case GL_SAMPLER_BINDING:
+        // WebGLTexture
+        case GL_TEXTURE_BINDING_2D_ARRAY:
+        case GL_TEXTURE_BINDING_3D:
+        // WebGLTransformFeedback
+        case GL_TRANSFORM_FEEDBACK_BINDING:
+        // WebGLVertexArrayObject
+        case GL_VERTEX_ARRAY_BINDING: /* WebGL1? */
+            STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getParameter");
+            break;
         }
     }
     return WebGLRenderingContext::getParameter(pname);
