@@ -1239,10 +1239,11 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case GL_STENCIL_BACK_VALUE_MASK:
     case GL_STENCIL_BACK_WRITEMASK:
     case GL_STENCIL_VALUE_MASK:
-    case GL_STENCIL_WRITEMASK:
-        STARFISH_UNIMPLEMENTED("WebGLRenderingContext::getParameter");
-        STARFISH_UNSUPPORTED("pname: 0x%04X(%s)", pname, __PRETTY_FUNCTION__);
-        return scriptNull();
+    case GL_STENCIL_WRITEMASK: {
+        std::vector<int> values(1);
+        m_gl->getIntegerv(pname, &values[0]);
+        return ValueRef::create(static_cast<GLuint>(values[0]));
+    }
     // Int32Array (with 2 elements)
     case GL_MAX_VIEWPORT_DIMS: {
         std::vector<int> values(2);
