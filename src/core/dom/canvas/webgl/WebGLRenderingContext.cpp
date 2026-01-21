@@ -1200,10 +1200,11 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case GL_LINE_WIDTH:
     case GL_POLYGON_OFFSET_FACTOR:
     case GL_POLYGON_OFFSET_UNITS:
-    case GL_SAMPLE_COVERAGE_VALUE:
-        STARFISH_UNIMPLEMENTED("WebGLRenderingContext::getParameter");
-        STARFISH_UNSUPPORTED("pname: 0x%04X(%s)", pname, __PRETTY_FUNCTION__);
-        return scriptNull();
+    case GL_SAMPLE_COVERAGE_VALUE: {
+        std::vector<GLfloat> values(1);
+        m_gl->getFloatv(pname, &values[0]);
+        return ValueRef::create(values[0]);
+    }
     // GLint
     case GL_ALPHA_BITS: /* WebGL2 */
     case GL_BLUE_BITS:  /* WebGL2 */
