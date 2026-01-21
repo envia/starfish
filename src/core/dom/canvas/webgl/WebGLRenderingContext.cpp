@@ -1139,13 +1139,20 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     // Float32Array (with 2 elements)
     case GL_ALIASED_LINE_WIDTH_RANGE:
     case GL_ALIASED_POINT_SIZE_RANGE:
-    case GL_DEPTH_RANGE:
+    case GL_DEPTH_RANGE: {
+        std::vector<GLfloat> values(2);
+        m_gl->getFloatv(pname, &values[0]);
+        return createTypedArray<Float32ArrayObjectRef>(scriptBindingInstance(),
+                                                       values);
+    }
     // Float32Array (with 4 values)
     case GL_BLEND_COLOR:
-    case GL_COLOR_CLEAR_VALUE:
-        STARFISH_UNIMPLEMENTED("WebGLRenderingContext::getParameter");
-        STARFISH_UNSUPPORTED("pname: 0x%04X(%s)", pname, __PRETTY_FUNCTION__);
-        return scriptNull();
+    case GL_COLOR_CLEAR_VALUE: {
+        std::vector<GLfloat> values(4);
+        m_gl->getFloatv(pname, &values[0]);
+        return createTypedArray<Float32ArrayObjectRef>(scriptBindingInstance(),
+                                                       values);
+    }
     // GLboolean
     case GL_BLEND:
     case GL_CULL_FACE:
