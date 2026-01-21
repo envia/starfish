@@ -8,14 +8,14 @@
 - [ ] WebGL2RenderingContext: Framebuffer objects
 - [ ] WebGL2RenderingContext: Renderbuffer objects
 - [ ] WebGL2RenderingContext: Texture objects
-- [ ] WebGL2RenderingContext: Programs and Shaders
+- [x] WebGL2RenderingContext: Programs and Shaders
 - [ ] WebGL2RenderingContext: Uniforms and attributes
 - [ ] WebGL2RenderingContext: Writing to the drawing buffer
 - [ ] WebGL2RenderingContext: Reading back pixels
 - [ ] WebGL2RenderingContext: Multiple render targets
 - [ ] WebGL2RenderingContext: Query objects
 - [ ] WebGL2RenderingContext: Sampler objects
-- [ ] WebGL2RenderingContext: Sync objects
+- [x] WebGL2RenderingContext: Sync objects
 - [ ] WebGL2RenderingContext: Transform feedback
 - [ ] WebGL2RenderingContext: Uniform Buffer objects
 - [ ] WebGL2RenderingContext: Vertex Array objects
