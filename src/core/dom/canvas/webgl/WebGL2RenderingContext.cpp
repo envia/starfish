@@ -545,9 +545,11 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         case GL_DRAW_BUFFER14:
         case GL_DRAW_BUFFER15:
         case GL_FRAGMENT_SHADER_DERIVATIVE_HINT:
-        case GL_READ_BUFFER:
-            STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getParameter");
-            break;
+        case GL_READ_BUFFER: {
+            std::vector<GLint> values(1);
+            gl()->getIntegerv(pname, &values[0]);
+            return createScriptValue(static_cast<GLenum>(values[0]));
+        }
         // GLfloat
         case GL_MAX_TEXTURE_LOD_BIAS: {
             std::vector<GLfloat> values(1);

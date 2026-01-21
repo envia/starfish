@@ -1169,10 +1169,11 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case GL_CULL_FACE_MODE:
     case GL_DEPTH_FUNC:
     case GL_FRONT_FACE:
-    case GL_GENERATE_MIPMAP_HINT:
-        STARFISH_UNIMPLEMENTED("WebGLRenderingContext::getParameter");
-        STARFISH_UNSUPPORTED("pname: 0x%04X(%s)", pname, __PRETTY_FUNCTION__);
-        return scriptNull();
+    case GL_GENERATE_MIPMAP_HINT: {
+        std::vector<int> values(1);
+        m_gl->getIntegerv(pname, &values[0]);
+        return ValueRef::create(static_cast<GLenum>(values[0]));
+    }
     case GL_IMPLEMENTATION_COLOR_READ_FORMAT:
         // kIMPLEMENTATION_COLOR_READ_FORMAT
         return ValueRef::create(GL_RGBA);
@@ -1187,8 +1188,13 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case GL_STENCIL_FAIL:
     case GL_STENCIL_FUNC:
     case GL_STENCIL_PASS_DEPTH_FAIL:
-    case GL_STENCIL_PASS_DEPTH_PASS:
+    case GL_STENCIL_PASS_DEPTH_PASS: {
+        std::vector<int> values(1);
+        m_gl->getIntegerv(pname, &values[0]);
+        return ValueRef::create(static_cast<GLenum>(values[0]));
+    }
     case kUNPACK_COLORSPACE_CONVERSION_WEBGL:
+        return ValueRef::create(m_unpackColorspaceConversion);
     // GLfloat
     case GL_DEPTH_CLEAR_VALUE:
     case GL_LINE_WIDTH:
