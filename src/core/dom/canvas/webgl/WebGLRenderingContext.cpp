@@ -1075,7 +1075,7 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     ENTER_CONTEXT_SCOPE(scriptNull());
 
     switch (pname) {
-    case GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT: {
+    case GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT: /* ? */ {
         if (!isExtensionEnabled("EXT_texture_filter_anisotropic")) {
             setGLError(GL_INVALID_ENUM);
             return scriptNull();
