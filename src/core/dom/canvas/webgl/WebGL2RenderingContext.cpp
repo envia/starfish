@@ -573,6 +573,8 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
             // if active color attachments of the draw framebuffer do not have
             // identical formats, generates an INVALID_OPERATION error and
             // returns 0.
+            STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getParameter");
+            break;
         case GL_MAX_3D_TEXTURE_SIZE:
         case GL_MAX_ARRAY_TEXTURE_LAYERS:
         case GL_MAX_COLOR_ATTACHMENTS:
@@ -602,9 +604,11 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         case GL_UNPACK_ROW_LENGTH:
         case GL_UNPACK_SKIP_IMAGES:
         case GL_UNPACK_SKIP_PIXELS:
-        case GL_UNPACK_SKIP_ROWS:
-            STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getParameter");
-            break;
+        case GL_UNPACK_SKIP_ROWS: {
+            std::vector<GLint> values(1);
+            gl()->getIntegerv(pname, &values[0]);
+            return createScriptValue(values[0]);
+        }
         // GLint64
         case kMAX_CLIENT_WAIT_TIMEOUT_WEBGL:
             return createScriptValue(kMaxClientWaitTimeoutWebgl);
