@@ -361,6 +361,13 @@ Optional<ScriptObject> WebGLRenderingContext::getExtension(
     return object;
 }
 
+void WebGLRenderingContext::drawingBufferStorage(GLenum sizedFormat,
+                                                 unsigned long width,
+                                                 unsigned long height)
+{
+    STARFISH_UNIMPLEMENTED("WebGLRenderingContextBase");
+}
+
 void WebGLRenderingContext::activeTexture(GLenum texture)
 {
     ENTER_CONTEXT_SCOPE();

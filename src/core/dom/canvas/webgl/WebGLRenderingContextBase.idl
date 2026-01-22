@@ -507,6 +507,8 @@ interface WebGLRenderingContextBase
     sequence<DOMString>? getSupportedExtensions();
     object? getExtension(DOMString name);
 
+    undefined drawingBufferStorage(GLenum sizedFormat, unsigned long width, unsigned long height);
+
     undefined activeTexture(GLenum texture);
     undefined attachShader(WebGLProgram program, WebGLShader shader);
     undefined bindAttribLocation(WebGLProgram program, GLuint index, DOMString name);

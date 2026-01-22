@@ -90,6 +90,8 @@ public:
     bool isContextLost();
     Optional<GCVector<String*>> getSupportedExtensions();
     Optional<ScriptObject> getExtension(String* name);
+    void drawingBufferStorage(GLenum sizedFormat, unsigned long width,
+                              unsigned long height);
     void activeTexture(GLenum texture);
     void attachShader(WebGLProgram* program, WebGLShader* shader);
     void bindAttribLocation(WebGLProgram* program, GLuint index, String* name);
