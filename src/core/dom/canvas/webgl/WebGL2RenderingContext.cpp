@@ -1839,8 +1839,11 @@ void WebGL2RenderingContext::uniformBlockBinding(WebGLProgram* program,
 
 WebGLVertexArrayObject* WebGL2RenderingContext::createVertexArray()
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
-    return nullptr;
+    ENTER_CONTEXT_SCOPE(nullptr);
+
+    GLuint vao = 0;
+    gl()->genVertexArrays(1, &vao);
+    return new WebGLVertexArrayObject(scriptBindingInstance(), this, vao);
 }
 
 void WebGL2RenderingContext::deleteVertexArray(
