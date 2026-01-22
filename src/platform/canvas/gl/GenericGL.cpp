@@ -1307,10 +1307,10 @@ public:
         glGetInteger64v(pname, data);
     }
 
-    void getSynciv(GLsync sync, GLenum pname, GLsizei count, GLsizei *length,
+    void getSynciv(GLsync sync, GLenum pname, GLsizei bufSize, GLsizei *length,
                    GLint *values) override
     {
-        glGetSynciv(sync, pname, count, length, values);
+        glGetSynciv(sync, pname, bufSize, length, values);
     }
 
     void getInteger64i_v(GLenum target, GLuint index, GLint64 *data) override
@@ -1457,9 +1457,9 @@ public:
     }
 
     void getInternalformativ(GLenum target, GLenum internalformat, GLenum pname,
-                             GLsizei count, GLint *params) override
+                             GLsizei bufSize, GLint *params) override
     {
-        glGetInternalformativ(target, internalformat, pname, count, params);
+        glGetInternalformativ(target, internalformat, pname, bufSize, params);
     }
 
     GenericGL(Renderer *renderer)

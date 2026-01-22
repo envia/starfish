@@ -428,7 +428,7 @@ public:
                                   GLuint64 timeout) = 0;
     virtual void waitSync(GLsync sync, GLbitfield flags, GLuint64 timeout) = 0;
     virtual void getInteger64v(GLenum pname, GLint64 *data) = 0;
-    virtual void getSynciv(GLsync sync, GLenum pname, GLsizei count,
+    virtual void getSynciv(GLsync sync, GLenum pname, GLsizei bufSize,
                            GLsizei *length, GLint *values) = 0;
     virtual void getInteger64i_v(GLenum target, GLuint index,
                                  GLint64 *data) = 0;
@@ -477,7 +477,7 @@ public:
                               GLenum internalformat, GLsizei width,
                               GLsizei height, GLsizei depth) = 0;
     virtual void getInternalformativ(GLenum target, GLenum internalformat,
-                                     GLenum pname, GLsizei count,
+                                     GLenum pname, GLsizei bufSize,
                                      GLint *params) = 0;
 };
 
