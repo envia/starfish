@@ -272,11 +272,213 @@ public:
     }
 
     // WebGL2
+    virtual void readBuffer(GLenum src) = 0;
+    virtual void drawRangeElements(GLenum mode, GLuint start, GLuint end,
+                                   GLsizei count, GLenum type,
+                                   const void *indices) = 0;
+    virtual void texImage3D(GLenum target, GLint level, GLint internalformat,
+                            GLsizei width, GLsizei height, GLsizei depth,
+                            GLint border, GLenum format, GLenum type,
+                            const void *pixels) = 0;
+    virtual void texSubImage3D(GLenum target, GLint level, GLint xoffset,
+                               GLint yoffset, GLint zoffset, GLsizei width,
+                               GLsizei height, GLsizei depth, GLenum format,
+                               GLenum type, const void *pixels) = 0;
+    virtual void copyTexSubImage3D(GLenum target, GLint level, GLint xoffset,
+                                   GLint yoffset, GLint zoffset, GLint x,
+                                   GLint y, GLsizei width, GLsizei height) = 0;
+    virtual void compressedTexImage3D(GLenum target, GLint level,
+                                      GLenum internalformat, GLsizei width,
+                                      GLsizei height, GLsizei depth,
+                                      GLint border, GLsizei imageSize,
+                                      const void *data) = 0;
+    virtual void compressedTexSubImage3D(GLenum target, GLint level,
+                                         GLint xoffset, GLint yoffset,
+                                         GLint zoffset, GLsizei width,
+                                         GLsizei height, GLsizei depth,
+                                         GLenum format, GLsizei imageSize,
+                                         const void *data) = 0;
     virtual void genQueries(GLsizei n, GLuint *ids) = 0;
+    virtual void deleteQueries(GLsizei n, const GLuint *ids) = 0;
+    virtual GLboolean isQuery(GLuint id) = 0;
+    virtual void beginQuery(GLenum target, GLuint id) = 0;
+    virtual void endQuery(GLenum target) = 0;
+    virtual void getQueryiv(GLenum target, GLenum pname, GLint *params) = 0;
+    virtual void getQueryObjectuiv(GLuint id, GLenum pname, GLuint *params) = 0;
+    virtual GLboolean unmapBuffer(GLenum target) = 0;
+    virtual void getBufferPointerv(GLenum target, GLenum pname,
+                                   void **params) = 0;
+    virtual void drawBuffers(GLsizei n, const GLenum *bufs) = 0;
+    virtual void uniformMatrix2x3fv(GLint location, GLsizei count,
+                                    GLboolean transpose,
+                                    const GLfloat *value) = 0;
+    virtual void uniformMatrix3x2fv(GLint location, GLsizei count,
+                                    GLboolean transpose,
+                                    const GLfloat *value) = 0;
+    virtual void uniformMatrix2x4fv(GLint location, GLsizei count,
+                                    GLboolean transpose,
+                                    const GLfloat *value) = 0;
+    virtual void uniformMatrix4x2fv(GLint location, GLsizei count,
+                                    GLboolean transpose,
+                                    const GLfloat *value) = 0;
+    virtual void uniformMatrix3x4fv(GLint location, GLsizei count,
+                                    GLboolean transpose,
+                                    const GLfloat *value) = 0;
+    virtual void uniformMatrix4x3fv(GLint location, GLsizei count,
+                                    GLboolean transpose,
+                                    const GLfloat *value) = 0;
+    virtual void blitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1,
+                                 GLint srcY1, GLint dstX0, GLint dstY0,
+                                 GLint dstX1, GLint dstY1, GLbitfield mask,
+                                 GLenum filter) = 0;
+    virtual void renderbufferStorageMultisample(GLenum target, GLsizei samples,
+                                                GLenum internalformat,
+                                                GLsizei width,
+                                                GLsizei height) = 0;
+    virtual void framebufferTextureLayer(GLenum target, GLenum attachment,
+                                         GLuint texture, GLint level,
+                                         GLint layer) = 0;
+    virtual void *mapBufferRange(GLenum target, GLintptr offset,
+                                 GLsizeiptr length, GLbitfield access) = 0;
+    virtual void flushMappedBufferRange(GLenum target, GLintptr offset,
+                                        GLsizeiptr length) = 0;
+    virtual void bindVertexArray(GLuint array) = 0;
+    virtual void deleteVertexArrays(GLsizei n, const GLuint *arrays) = 0;
+    virtual GLboolean isVertexArray(GLuint array) = 0;
+    virtual void getIntegeri_v(GLenum target, GLuint index, GLint *data) = 0;
+    virtual void beginTransformFeedback(GLenum primitiveMode) = 0;
+    virtual void endTransformFeedback(void) = 0;
+    virtual void bindBufferRange(GLenum target, GLuint index, GLuint buffer,
+                                 GLintptr offset, GLsizeiptr size) = 0;
+    virtual void bindBufferBase(GLenum target, GLuint index, GLuint buffer) = 0;
+    virtual void transformFeedbackVaryings(GLuint program, GLsizei count,
+                                           const GLchar *const *varyings,
+                                           GLenum bufferMode) = 0;
+    virtual void getTransformFeedbackVarying(GLuint program, GLuint index,
+                                             GLsizei bufSize, GLsizei *length,
+                                             GLsizei *size, GLenum *type,
+                                             GLchar *name) = 0;
+    virtual void vertexAttribIPointer(GLuint index, GLint size, GLenum type,
+                                      GLsizei stride, const void *pointer) = 0;
+    virtual void getVertexAttribIiv(GLuint index, GLenum pname,
+                                    GLint *params) = 0;
+    virtual void getVertexAttribIuiv(GLuint index, GLenum pname,
+                                     GLuint *params) = 0;
+    virtual void vertexAttribI4i(GLuint index, GLint x, GLint y, GLint z,
+                                 GLint w) = 0;
+    virtual void vertexAttribI4ui(GLuint index, GLuint x, GLuint y, GLuint z,
+                                  GLuint w) = 0;
+    virtual void vertexAttribI4iv(GLuint index, const GLint *v) = 0;
+    virtual void vertexAttribI4uiv(GLuint index, const GLuint *v) = 0;
+    virtual void getUniformuiv(GLuint program, GLint location,
+                               GLuint *params) = 0;
     virtual GLint getFragDataLocation(GLuint program, const GLchar *name) = 0;
+    virtual void uniform1ui(GLint location, GLuint v0) = 0;
+    virtual void uniform2ui(GLint location, GLuint v0, GLuint v1) = 0;
+    virtual void uniform3ui(GLint location, GLuint v0, GLuint v1,
+                            GLuint v2) = 0;
+    virtual void uniform4ui(GLint location, GLuint v0, GLuint v1, GLuint v2,
+                            GLuint v3) = 0;
+    virtual void uniform1uiv(GLint location, GLsizei count,
+                             const GLuint *value) = 0;
+    virtual void uniform2uiv(GLint location, GLsizei count,
+                             const GLuint *value) = 0;
+    virtual void uniform3uiv(GLint location, GLsizei count,
+                             const GLuint *value) = 0;
+    virtual void uniform4uiv(GLint location, GLsizei count,
+                             const GLuint *value) = 0;
+    virtual void clearBufferiv(GLenum buffer, GLint drawbuffer,
+                               const GLint *value) = 0;
+    virtual void clearBufferuiv(GLenum buffer, GLint drawbuffer,
+                                const GLuint *value) = 0;
+    virtual void clearBufferfv(GLenum buffer, GLint drawbuffer,
+                               const GLfloat *value) = 0;
+    virtual void clearBufferfi(GLenum buffer, GLint drawbuffer, GLfloat depth,
+                               GLint stencil) = 0;
+    virtual const GLubyte *getStringi(GLenum name, GLuint index) = 0;
+    virtual void copyBufferSubData(GLenum readTarget, GLenum writeTarget,
+                                   GLintptr readOffset, GLintptr writeOffset,
+                                   GLsizeiptr size) = 0;
+    virtual void getUniformIndices(GLuint program, GLsizei uniformCount,
+                                   const GLchar *const *uniformNames,
+                                   GLuint *uniformIndices) = 0;
+    virtual void getActiveUniformsiv(GLuint program, GLsizei uniformCount,
+                                     const GLuint *uniformIndices, GLenum pname,
+                                     GLint *params) = 0;
+    virtual GLuint getUniformBlockIndex(GLuint program,
+                                        const GLchar *uniformBlockName) = 0;
+    virtual void getActiveUniformBlockiv(GLuint program,
+                                         GLuint uniformBlockIndex, GLenum pname,
+                                         GLint *params) = 0;
+    virtual void getActiveUniformBlockName(GLuint program,
+                                           GLuint uniformBlockIndex,
+                                           GLsizei bufSize, GLsizei *length,
+                                           GLchar *uniformBlockName) = 0;
+    virtual void uniformBlockBinding(GLuint program, GLuint uniformBlockIndex,
+                                     GLuint uniformBlockBinding) = 0;
+    virtual void drawArraysInstanced(GLenum mode, GLint first, GLsizei count,
+                                     GLsizei instancecount) = 0;
+    virtual void drawElementsInstanced(GLenum mode, GLsizei count, GLenum type,
+                                       const void *indices,
+                                       GLsizei instancecount) = 0;
+    virtual GLsync fenceSync(GLenum condition, GLbitfield flags) = 0;
+    virtual GLboolean isSync(GLsync sync) = 0;
+    virtual void deleteSync(GLsync sync) = 0;
+    virtual GLenum clientWaitSync(GLsync sync, GLbitfield flags,
+                                  GLuint64 timeout) = 0;
+    virtual void waitSync(GLsync sync, GLbitfield flags, GLuint64 timeout) = 0;
     virtual void getInteger64v(GLenum pname, GLint64 *data) = 0;
+    virtual void getSynciv(GLsync sync, GLenum pname, GLsizei bufSize,
+                           GLsizei *length, GLint *values) = 0;
+    virtual void getInteger64i_v(GLenum target, GLuint index,
+                                 GLint64 *data) = 0;
+    virtual void getBufferParameteri64v(GLenum target, GLenum pname,
+                                        GLint64 *params) = 0;
     virtual void genSamplers(GLsizei count, GLuint *samplers) = 0;
+    virtual void deleteSamplers(GLsizei count, const GLuint *samplers) = 0;
+    virtual GLboolean isSampler(GLuint sampler) = 0;
+    virtual void bindSampler(GLuint unit, GLuint sampler) = 0;
+    virtual void samplerParameteri(GLuint sampler, GLenum pname,
+                                   GLint param) = 0;
+    virtual void samplerParameteriv(GLuint sampler, GLenum pname,
+                                    const GLint *param) = 0;
+    virtual void samplerParameterf(GLuint sampler, GLenum pname,
+                                   GLfloat param) = 0;
+    virtual void samplerParameterfv(GLuint sampler, GLenum pname,
+                                    const GLfloat *param) = 0;
+    virtual void getSamplerParameteriv(GLuint sampler, GLenum pname,
+                                       GLint *params) = 0;
+    virtual void getSamplerParameterfv(GLuint sampler, GLenum pname,
+                                       GLfloat *params) = 0;
+    virtual void vertexAttribDivisor(GLuint index, GLuint divisor) = 0;
+    virtual void bindTransformFeedback(GLenum target, GLuint id) = 0;
+    virtual void deleteTransformFeedbacks(GLsizei n, const GLuint *ids) = 0;
     virtual void genTransformFeedbacks(GLsizei n, GLuint *ids) = 0;
+    virtual GLboolean isTransformFeedback(GLuint id) = 0;
+    virtual void pauseTransformFeedback(void) = 0;
+    virtual void resumeTransformFeedback(void) = 0;
+    virtual void getProgramBinary(GLuint program, GLsizei bufSize,
+                                  GLsizei *length, GLenum *binaryFormat,
+                                  void *binary) = 0;
+    virtual void programBinary(GLuint program, GLenum binaryFormat,
+                               const void *binary, GLsizei length) = 0;
+    virtual void programParameteri(GLuint program, GLenum pname,
+                                   GLint value) = 0;
+    virtual void invalidateFramebuffer(GLenum target, GLsizei numAttachments,
+                                       const GLenum *attachments) = 0;
+    virtual void invalidateSubFramebuffer(GLenum target, GLsizei numAttachments,
+                                          const GLenum *attachments, GLint x,
+                                          GLint y, GLsizei width,
+                                          GLsizei height) = 0;
+    virtual void texStorage2D(GLenum target, GLsizei levels,
+                              GLenum internalformat, GLsizei width,
+                              GLsizei height) = 0;
+    virtual void texStorage3D(GLenum target, GLsizei levels,
+                              GLenum internalformat, GLsizei width,
+                              GLsizei height, GLsizei depth) = 0;
+    virtual void getInternalformativ(GLenum target, GLenum internalformat,
+                                     GLenum pname, GLsizei bufSize,
+                                     GLint *params) = 0;
 };
 
 } // namespace Starfish

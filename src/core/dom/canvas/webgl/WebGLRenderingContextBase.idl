@@ -445,6 +445,7 @@ interface WebGLRenderingContextBase
 
     const GLenum RGBA4                          = 0x8056;
     const GLenum RGB5_A1                        = 0x8057;
+    const GLenum RGBA8                          = 0x8058;
     const GLenum RGB565                         = 0x8D62;
     const GLenum DEPTH_COMPONENT16              = 0x81A5;
     const GLenum STENCIL_INDEX8                 = 0x8D48;
@@ -496,6 +497,7 @@ interface WebGLRenderingContextBase
 
     readonly attribute GLsizei drawingBufferWidth;
     readonly attribute GLsizei drawingBufferHeight;
+    readonly attribute GLenum drawingBufferFormat;
     // attribute PredefinedColorSpace drawingBufferColorSpace = "srgb";
     // attribute PredefinedColorSpace unpackColorSpace = "srgb";
     attribute PredefinedColorSpace drawingBufferColorSpace;
@@ -506,6 +508,8 @@ interface WebGLRenderingContextBase
 
     sequence<DOMString>? getSupportedExtensions();
     object? getExtension(DOMString name);
+
+    undefined drawingBufferStorage(GLenum sizedFormat, unsigned long width, unsigned long height);
 
     undefined activeTexture(GLenum texture);
     undefined attachShader(WebGLProgram program, WebGLShader shader);
@@ -535,12 +539,12 @@ interface WebGLRenderingContextBase
     undefined copyTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset,
                                 GLint x, GLint y, GLsizei width, GLsizei height);
 
-    WebGLBuffer? createBuffer();
-    WebGLFramebuffer? createFramebuffer();
-    WebGLProgram? createProgram();
-    WebGLRenderbuffer? createRenderbuffer();
+    WebGLBuffer createBuffer();
+    WebGLFramebuffer createFramebuffer();
+    WebGLProgram createProgram();
+    WebGLRenderbuffer createRenderbuffer();
     WebGLShader? createShader(GLenum type);
-    WebGLTexture? createTexture();
+    WebGLTexture createTexture();
 
     undefined cullFace(GLenum mode);
 

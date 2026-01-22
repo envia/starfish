@@ -145,6 +145,14 @@ Optional<ScriptObject> WebGL2RenderingContext::getExtension(
     return WebGLRenderingContext::getExtension(requestedName);
 }
 
+void WebGL2RenderingContext::drawingBufferStorage(GLenum sizedFormat,
+                                                  unsigned long width,
+                                                  unsigned long height)
+{
+    STARFISH_UNIMPLEMENTED("WebGLRenderingContextBase");
+    WebGLRenderingContext::drawingBufferStorage(sizedFormat, width, height);
+}
+
 void WebGL2RenderingContext::activeTexture(GLenum texture)
 {
     STARFISH_UNIMPLEMENTED("WebGLRenderingContextBase");
@@ -1726,7 +1734,7 @@ Optional<WebGLSync*> WebGL2RenderingContext::fenceSync(GLenum condition,
 {
     ENTER_CONTEXT_SCOPE(Optional<WebGLSync*>());
 
-    GLsync sync = glFenceSync(condition, flags);
+    GLsync sync = gl()->fenceSync(condition, flags);
     return new WebGLSync(scriptBindingInstance(), this, sync);
 }
 
@@ -1738,8 +1746,7 @@ GLboolean WebGL2RenderingContext::isSync(Optional<WebGLSync*> sync)
         sync.value()->invalidated()) {
         return false;
     }
-
-    return glIsSync(sync.value()->glObject());
+    return gl()->isSync(sync.value()->glObject());
 }
 
 void WebGL2RenderingContext::deleteSync(Optional<WebGLSync*> sync)
@@ -1757,8 +1764,8 @@ void WebGL2RenderingContext::deleteSync(Optional<WebGLSync*> sync)
     if (value->isDeleted()) {
         return;
     }
-    glDeleteSync(value->glObject());
     value->markDeleted();
+    gl()->deleteSync(value->glObject());
 }
 
 GLenum WebGL2RenderingContext::clientWaitSync(WebGLSync* sync, GLbitfield flags,
@@ -1771,7 +1778,7 @@ GLenum WebGL2RenderingContext::clientWaitSync(WebGLSync* sync, GLbitfield flags,
         setGLError(GL_INVALID_OPERATION);
         return GL_WAIT_FAILED;
     }
-    return glClientWaitSync(sync->glObject(), flags, timeout);
+    return gl()->clientWaitSync(sync->glObject(), flags, timeout);
 }
 
 void WebGL2RenderingContext::waitSync(WebGLSync* sync, GLbitfield flags,
@@ -1783,7 +1790,7 @@ void WebGL2RenderingContext::waitSync(WebGLSync* sync, GLbitfield flags,
         setGLError(GL_INVALID_OPERATION);
         return;
     }
-    glWaitSync(sync->glObject(), flags, timeout);
+    gl()->waitSync(sync->glObject(), flags, timeout);
 }
 
 ScriptValue WebGL2RenderingContext::getSyncParameter(WebGLSync* sync,
@@ -1796,25 +1803,25 @@ ScriptValue WebGL2RenderingContext::getSyncParameter(WebGLSync* sync,
         return scriptNull();
     }
     switch (pname) {
+    // GLbitfield
+    case GL_SYNC_FLAGS: {
+        GLint value;
+        gl()->getSynciv(sync->glObject(), pname, 1, nullptr, &value);
+        if (hasGLError()) {
+            return scriptNull();
+        }
+        return createScriptValue(static_cast<GLbitfield>(value));
+    }
     // GLenum
     case GL_OBJECT_TYPE:
     case GL_SYNC_STATUS:
     case GL_SYNC_CONDITION: {
         GLint value;
-        glGetSynciv(sync->glObject(), pname, 1, nullptr, &value);
+        gl()->getSynciv(sync->glObject(), pname, 1, nullptr, &value);
         if (hasGLError()) {
             return scriptNull();
         }
         return createScriptValue(static_cast<GLenum>(value));
-    }
-    // GLbitfield
-    case GL_SYNC_FLAGS: {
-        GLint value;
-        glGetSynciv(sync->glObject(), pname, 1, nullptr, &value);
-        if (hasGLError()) {
-            return scriptNull();
-        }
-        return createScriptValue(static_cast<GLbitfield>(value));
     }
     }
     setGLError(GL_INVALID_ENUM);
@@ -1904,7 +1911,7 @@ Optional<WebGLActiveInfo*> WebGL2RenderingContext::getTransformFeedbackVarying(
     WebGLProgram* program, GLuint index)
 {
     STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
-    return nullptr;
+    return Optional<WebGLActiveInfo*>();
 }
 
 void WebGL2RenderingContext::pauseTransformFeedback()

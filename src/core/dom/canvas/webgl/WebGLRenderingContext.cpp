@@ -277,6 +277,13 @@ GLsizei WebGLRenderingContext::drawingBufferHeight() const
     return m_canvasSurface->bufferHeight();
 }
 
+GLenum WebGLRenderingContext::drawingBufferFormat() const
+{
+    // INDIGO_TODO
+    STARFISH_UNIMPLEMENTED("WebGLRenderingContextBase");
+    return GL_NONE;
+}
+
 static bool isPredefinedColorSpace(String* value)
 {
     STARFISH_ASSERT(value != nullptr);
@@ -359,6 +366,14 @@ Optional<ScriptObject> WebGLRenderingContext::getExtension(
     ScriptObject object = maybeGenerator.value()(scriptBindingInstance(), this);
     m_enabledExtensions.insert({ name, object });
     return object;
+}
+
+void WebGLRenderingContext::drawingBufferStorage(GLenum sizedFormat,
+                                                 unsigned long width,
+                                                 unsigned long height)
+{
+    // INDIGO_TODO
+    STARFISH_UNIMPLEMENTED("WebGLRenderingContextBase");
 }
 
 void WebGLRenderingContext::activeTexture(GLenum texture)
@@ -1080,9 +1095,9 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
             setGLError(GL_INVALID_ENUM);
             return scriptNull();
         }
-        std::vector<int> values(1);
-        m_gl->getIntegerv(pname, &values[0]);
-        return ValueRef::create(values[0]);
+        std::vector<GLfloat> values(1);
+        gl()->getFloatv(pname, &values[0]);
+        return createScriptValue(values[0]);
     }
     case GL_VERTEX_ARRAY_BINDING: /* WebGL2? */ {
         // GL_VERTEX_ARRAY_BINDING_OES

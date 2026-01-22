@@ -30,8 +30,6 @@ namespace Starfish {
 
 class Uint32ArrayOrSequenceOfGLuint;
 
-using GLint64 = long long;
-using GLuint64 = unsigned long long;
 using Uint32List = Uint32ArrayOrSequenceOfGLuint;
 
 class WebGLQuery : public WebGLObject {
@@ -122,6 +120,9 @@ public:
 
     Optional<GCVector<String*>> getSupportedExtensions();
     Optional<ScriptObject> getExtension(String* name);
+
+    void drawingBufferStorage(GLenum sizedFormat, unsigned long width,
+                              unsigned long height);
 
     void activeTexture(GLenum texture);
     void attachShader(WebGLProgram* program, WebGLShader* shader);

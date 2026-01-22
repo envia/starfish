@@ -857,9 +857,281 @@ public:
 #endif
     }
 
+    void readBuffer(GLenum src) override
+    {
+        glReadBuffer(src);
+    }
+
+    void drawRangeElements(GLenum mode, GLuint start, GLuint end, GLsizei count,
+                           GLenum type, const void *indices) override
+    {
+        glDrawRangeElements(mode, start, end, count, type, indices);
+    }
+
+    void texImage3D(GLenum target, GLint level, GLint internalformat,
+                    GLsizei width, GLsizei height, GLsizei depth, GLint border,
+                    GLenum format, GLenum type, const void *pixels) override
+    {
+        glTexImage3D(target, level, internalformat, width, height, depth,
+                     border, format, type, pixels);
+    }
+
+    void texSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset,
+                       GLint zoffset, GLsizei width, GLsizei height,
+                       GLsizei depth, GLenum format, GLenum type,
+                       const void *pixels) override
+    {
+        glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height,
+                        depth, format, type, pixels);
+    }
+
+    void copyTexSubImage3D(GLenum target, GLint level, GLint xoffset,
+                           GLint yoffset, GLint zoffset, GLint x, GLint y,
+                           GLsizei width, GLsizei height) override
+    {
+        glCopyTexSubImage3D(target, level, xoffset, yoffset, zoffset, x, y,
+                            width, height);
+    }
+
+    void compressedTexImage3D(GLenum target, GLint level, GLenum internalformat,
+                              GLsizei width, GLsizei height, GLsizei depth,
+                              GLint border, GLsizei imageSize,
+                              const void *data) override
+    {
+        glCompressedTexImage3D(target, level, internalformat, width, height,
+                               depth, border, imageSize, data);
+    }
+
+    void compressedTexSubImage3D(GLenum target, GLint level, GLint xoffset,
+                                 GLint yoffset, GLint zoffset, GLsizei width,
+                                 GLsizei height, GLsizei depth, GLenum format,
+                                 GLsizei imageSize, const void *data) override
+    {
+        glCompressedTexSubImage3D(target, level, xoffset, yoffset, zoffset,
+                                  width, height, depth, format, imageSize,
+                                  data);
+    }
+
     void genQueries(GLsizei n, GLuint *ids) override
     {
         glGenQueries(n, ids);
+    }
+
+    void deleteQueries(GLsizei n, const GLuint *ids) override
+    {
+        glDeleteQueries(n, ids);
+    }
+
+    GLboolean isQuery(GLuint id) override
+    {
+        return glIsQuery(id);
+    }
+
+    void beginQuery(GLenum target, GLuint id) override
+    {
+        glBeginQuery(target, id);
+    }
+
+    void endQuery(GLenum target) override
+    {
+        glEndQuery(target);
+    }
+
+    void getQueryiv(GLenum target, GLenum pname, GLint *params) override
+    {
+        glGetQueryiv(target, pname, params);
+    }
+
+    void getQueryObjectuiv(GLuint id, GLenum pname, GLuint *params) override
+    {
+        glGetQueryObjectuiv(id, pname, params);
+    }
+
+    GLboolean unmapBuffer(GLenum target) override
+    {
+        return glUnmapBuffer(target);
+    }
+
+    void getBufferPointerv(GLenum target, GLenum pname, void **params) override
+    {
+        glGetBufferPointerv(target, pname, params);
+    }
+
+    void drawBuffers(GLsizei n, const GLenum *bufs) override
+    {
+        glDrawBuffers(n, bufs);
+    }
+
+    void uniformMatrix2x3fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        glUniformMatrix2x3fv(location, count, transpose, value);
+    }
+
+    void uniformMatrix3x2fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        glUniformMatrix3x2fv(location, count, transpose, value);
+    }
+
+    void uniformMatrix2x4fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        glUniformMatrix2x4fv(location, count, transpose, value);
+    }
+
+    void uniformMatrix4x2fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        glUniformMatrix4x2fv(location, count, transpose, value);
+    }
+
+    void uniformMatrix3x4fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        glUniformMatrix3x4fv(location, count, transpose, value);
+    }
+
+    void uniformMatrix4x3fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        glUniformMatrix4x3fv(location, count, transpose, value);
+    }
+
+    void blitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1,
+                         GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1,
+                         GLbitfield mask, GLenum filter) override
+    {
+        glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1,
+                          dstY1, mask, filter);
+    }
+
+    void renderbufferStorageMultisample(GLenum target, GLsizei samples,
+                                        GLenum internalformat, GLsizei width,
+                                        GLsizei height) override
+    {
+        glRenderbufferStorageMultisample(target, samples, internalformat, width,
+                                         height);
+    }
+
+    void framebufferTextureLayer(GLenum target, GLenum attachment,
+                                 GLuint texture, GLint level,
+                                 GLint layer) override
+    {
+        glFramebufferTextureLayer(target, attachment, texture, level, layer);
+    }
+
+    void *mapBufferRange(GLenum target, GLintptr offset, GLsizeiptr length,
+                         GLbitfield access) override
+    {
+        return glMapBufferRange(target, offset, length, access);
+    }
+
+    void flushMappedBufferRange(GLenum target, GLintptr offset,
+                                GLsizeiptr length) override
+    {
+        glFlushMappedBufferRange(target, offset, length);
+    }
+
+    void bindVertexArray(GLuint array) override
+    {
+        glBindVertexArray(array);
+    }
+
+    void deleteVertexArrays(GLsizei n, const GLuint *arrays) override
+    {
+        glDeleteVertexArrays(n, arrays);
+    }
+
+    GLboolean isVertexArray(GLuint array) override
+    {
+        return glIsVertexArray(array);
+    }
+
+    void getIntegeri_v(GLenum target, GLuint index, GLint *data) override
+    {
+        glGetIntegeri_v(target, index, data);
+    }
+
+    void beginTransformFeedback(GLenum primitiveMode) override
+    {
+        glBeginTransformFeedback(primitiveMode);
+    }
+
+    void endTransformFeedback(void) override
+    {
+        glEndTransformFeedback();
+    }
+
+    void bindBufferRange(GLenum target, GLuint index, GLuint buffer,
+                         GLintptr offset, GLsizeiptr size) override
+    {
+        glBindBufferRange(target, index, buffer, offset, size);
+    }
+
+    void bindBufferBase(GLenum target, GLuint index, GLuint buffer) override
+    {
+        glBindBufferBase(target, index, buffer);
+    }
+
+    void transformFeedbackVaryings(GLuint program, GLsizei count,
+                                   const GLchar *const *varyings,
+                                   GLenum bufferMode) override
+    {
+        glTransformFeedbackVaryings(program, count, varyings, bufferMode);
+    }
+
+    void getTransformFeedbackVarying(GLuint program, GLuint index,
+                                     GLsizei bufSize, GLsizei *length,
+                                     GLsizei *size, GLenum *type,
+                                     GLchar *name) override
+    {
+        glGetTransformFeedbackVarying(program, index, bufSize, length, size,
+                                      type, name);
+    }
+
+    void vertexAttribIPointer(GLuint index, GLint size, GLenum type,
+                              GLsizei stride, const void *pointer) override
+    {
+        glVertexAttribIPointer(index, size, type, stride, pointer);
+    }
+
+    void getVertexAttribIiv(GLuint index, GLenum pname, GLint *params) override
+    {
+        glGetVertexAttribIiv(index, pname, params);
+    }
+
+    void getVertexAttribIuiv(GLuint index, GLenum pname,
+                             GLuint *params) override
+    {
+        glGetVertexAttribIuiv(index, pname, params);
+    }
+
+    void vertexAttribI4i(GLuint index, GLint x, GLint y, GLint z,
+                         GLint w) override
+    {
+        glVertexAttribI4i(index, x, y, z, w);
+    }
+
+    void vertexAttribI4ui(GLuint index, GLuint x, GLuint y, GLuint z,
+                          GLuint w) override
+    {
+        glVertexAttribI4ui(index, x, y, z, w);
+    }
+
+    void vertexAttribI4iv(GLuint index, const GLint *v) override
+    {
+        glVertexAttribI4iv(index, v);
+    }
+
+    void vertexAttribI4uiv(GLuint index, const GLuint *v) override
+    {
+        glVertexAttribI4uiv(index, v);
+    }
+
+    void getUniformuiv(GLuint program, GLint location, GLuint *params) override
+    {
+        glGetUniformuiv(program, location, params);
     }
 
     GLint getFragDataLocation(GLuint program, const GLchar *name) override
@@ -867,19 +1139,327 @@ public:
         return glGetFragDataLocation(program, name);
     }
 
+    void uniform1ui(GLint location, GLuint v0) override
+    {
+        glUniform1ui(location, v0);
+    }
+
+    void uniform2ui(GLint location, GLuint v0, GLuint v1) override
+    {
+        glUniform2ui(location, v0, v1);
+    }
+
+    void uniform3ui(GLint location, GLuint v0, GLuint v1, GLuint v2) override
+    {
+        glUniform3ui(location, v0, v1, v2);
+    }
+
+    void uniform4ui(GLint location, GLuint v0, GLuint v1, GLuint v2,
+                    GLuint v3) override
+    {
+        glUniform4ui(location, v0, v1, v2, v3);
+    }
+
+    void uniform1uiv(GLint location, GLsizei count,
+                     const GLuint *value) override
+    {
+        glUniform1uiv(location, count, value);
+    }
+
+    void uniform2uiv(GLint location, GLsizei count,
+                     const GLuint *value) override
+    {
+        glUniform2uiv(location, count, value);
+    }
+
+    void uniform3uiv(GLint location, GLsizei count,
+                     const GLuint *value) override
+    {
+        glUniform3uiv(location, count, value);
+    }
+
+    void uniform4uiv(GLint location, GLsizei count,
+                     const GLuint *value) override
+    {
+        glUniform4uiv(location, count, value);
+    }
+
+    void clearBufferiv(GLenum buffer, GLint drawbuffer,
+                       const GLint *value) override
+    {
+        glClearBufferiv(buffer, drawbuffer, value);
+    }
+
+    void clearBufferuiv(GLenum buffer, GLint drawbuffer,
+                        const GLuint *value) override
+    {
+        glClearBufferuiv(buffer, drawbuffer, value);
+    }
+
+    void clearBufferfv(GLenum buffer, GLint drawbuffer,
+                       const GLfloat *value) override
+    {
+        glClearBufferfv(buffer, drawbuffer, value);
+    }
+
+    void clearBufferfi(GLenum buffer, GLint drawbuffer, GLfloat depth,
+                       GLint stencil) override
+    {
+        glClearBufferfi(buffer, drawbuffer, depth, stencil);
+    }
+
+    const GLubyte *getStringi(GLenum name, GLuint index) override
+    {
+        return glGetStringi(name, index);
+    }
+
+    void copyBufferSubData(GLenum readTarget, GLenum writeTarget,
+                           GLintptr readOffset, GLintptr writeOffset,
+                           GLsizeiptr size) override
+    {
+        glCopyBufferSubData(readTarget, writeTarget, readOffset, writeOffset,
+                            size);
+    }
+
+    void getUniformIndices(GLuint program, GLsizei uniformCount,
+                           const GLchar *const *uniformNames,
+                           GLuint *uniformIndices) override
+    {
+        glGetUniformIndices(program, uniformCount, uniformNames,
+                            uniformIndices);
+    }
+
+    void getActiveUniformsiv(GLuint program, GLsizei uniformCount,
+                             const GLuint *uniformIndices, GLenum pname,
+                             GLint *params) override
+    {
+        glGetActiveUniformsiv(program, uniformCount, uniformIndices, pname,
+                              params);
+    }
+
+    GLuint getUniformBlockIndex(GLuint program,
+                                const GLchar *uniformBlockName) override
+    {
+        return glGetUniformBlockIndex(program, uniformBlockName);
+    }
+
+    void getActiveUniformBlockiv(GLuint program, GLuint uniformBlockIndex,
+                                 GLenum pname, GLint *params) override
+    {
+        glGetActiveUniformBlockiv(program, uniformBlockIndex, pname, params);
+    }
+
+    void getActiveUniformBlockName(GLuint program, GLuint uniformBlockIndex,
+                                   GLsizei bufSize, GLsizei *length,
+                                   GLchar *uniformBlockName) override
+    {
+        glGetActiveUniformBlockName(program, uniformBlockIndex, bufSize, length,
+                                    uniformBlockName);
+    }
+
+    void uniformBlockBinding(GLuint program, GLuint uniformBlockIndex,
+                             GLuint uniformBlockBinding) override
+    {
+        glUniformBlockBinding(program, uniformBlockIndex, uniformBlockBinding);
+    }
+
+    void drawArraysInstanced(GLenum mode, GLint first, GLsizei count,
+                             GLsizei instancecount) override
+    {
+        glDrawArraysInstanced(mode, first, count, instancecount);
+    }
+
+    void drawElementsInstanced(GLenum mode, GLsizei count, GLenum type,
+                               const void *indices,
+                               GLsizei instancecount) override
+    {
+        glDrawElementsInstanced(mode, count, type, indices, instancecount);
+    }
+
+    GLsync fenceSync(GLenum condition, GLbitfield flags) override
+    {
+        return glFenceSync(condition, flags);
+    }
+
+    GLboolean isSync(GLsync sync) override
+    {
+        return glIsSync(sync);
+    }
+
+    void deleteSync(GLsync sync) override
+    {
+        glDeleteSync(sync);
+    }
+
+    GLenum clientWaitSync(GLsync sync, GLbitfield flags,
+                          GLuint64 timeout) override
+    {
+        return glClientWaitSync(sync, flags, timeout);
+    }
+
+    void waitSync(GLsync sync, GLbitfield flags, GLuint64 timeout) override
+    {
+        glWaitSync(sync, flags, timeout);
+    }
+
     void getInteger64v(GLenum pname, GLint64 *data) override
     {
         glGetInteger64v(pname, data);
     }
 
-    void genSamplers(GLsizei n, GLuint *samplers) override
+    void getSynciv(GLsync sync, GLenum pname, GLsizei bufSize, GLsizei *length,
+                   GLint *values) override
     {
-        glGenSamplers(n, samplers);
+        glGetSynciv(sync, pname, bufSize, length, values);
+    }
+
+    void getInteger64i_v(GLenum target, GLuint index, GLint64 *data) override
+    {
+        glGetInteger64i_v(target, index, data);
+    }
+
+    void getBufferParameteri64v(GLenum target, GLenum pname,
+                                GLint64 *params) override
+    {
+        glGetBufferParameteri64v(target, pname, params);
+    }
+
+    void genSamplers(GLsizei count, GLuint *samplers) override
+    {
+        glGenSamplers(count, samplers);
+    }
+
+    void deleteSamplers(GLsizei count, const GLuint *samplers) override
+    {
+        glDeleteSamplers(count, samplers);
+    }
+
+    GLboolean isSampler(GLuint sampler) override
+    {
+        return glIsSampler(sampler);
+    }
+
+    void bindSampler(GLuint unit, GLuint sampler) override
+    {
+        glBindSampler(unit, sampler);
+    }
+
+    void samplerParameteri(GLuint sampler, GLenum pname, GLint param) override
+    {
+        glSamplerParameteri(sampler, pname, param);
+    }
+
+    void samplerParameteriv(GLuint sampler, GLenum pname,
+                            const GLint *param) override
+    {
+        glSamplerParameteriv(sampler, pname, param);
+    }
+
+    void samplerParameterf(GLuint sampler, GLenum pname, GLfloat param) override
+    {
+        glSamplerParameterf(sampler, pname, param);
+    }
+
+    void samplerParameterfv(GLuint sampler, GLenum pname,
+                            const GLfloat *param) override
+    {
+        glSamplerParameterfv(sampler, pname, param);
+    }
+
+    void getSamplerParameteriv(GLuint sampler, GLenum pname,
+                               GLint *params) override
+    {
+        glGetSamplerParameteriv(sampler, pname, params);
+    }
+
+    void getSamplerParameterfv(GLuint sampler, GLenum pname,
+                               GLfloat *params) override
+    {
+        glGetSamplerParameterfv(sampler, pname, params);
+    }
+
+    void vertexAttribDivisor(GLuint index, GLuint divisor) override
+    {
+        glVertexAttribDivisor(index, divisor);
+    }
+
+    void bindTransformFeedback(GLenum target, GLuint id) override
+    {
+        glBindTransformFeedback(target, id);
+    }
+
+    void deleteTransformFeedbacks(GLsizei n, const GLuint *ids) override
+    {
+        glDeleteTransformFeedbacks(n, ids);
     }
 
     void genTransformFeedbacks(GLsizei n, GLuint *ids) override
     {
         glGenTransformFeedbacks(n, ids);
+    }
+
+    GLboolean isTransformFeedback(GLuint id) override
+    {
+        return glIsTransformFeedback(id);
+    }
+
+    void pauseTransformFeedback(void) override
+    {
+        glPauseTransformFeedback();
+    }
+
+    void resumeTransformFeedback(void) override
+    {
+        glResumeTransformFeedback();
+    }
+
+    void getProgramBinary(GLuint program, GLsizei bufSize, GLsizei *length,
+                          GLenum *binaryFormat, void *binary) override
+    {
+        glGetProgramBinary(program, bufSize, length, binaryFormat, binary);
+    }
+
+    void programBinary(GLuint program, GLenum binaryFormat, const void *binary,
+                       GLsizei length) override
+    {
+        glProgramBinary(program, binaryFormat, binary, length);
+    }
+
+    void programParameteri(GLuint program, GLenum pname, GLint value) override
+    {
+        glProgramParameteri(program, pname, value);
+    }
+
+    void invalidateFramebuffer(GLenum target, GLsizei numAttachments,
+                               const GLenum *attachments) override
+    {
+        glInvalidateFramebuffer(target, numAttachments, attachments);
+    }
+
+    void invalidateSubFramebuffer(GLenum target, GLsizei numAttachments,
+                                  const GLenum *attachments, GLint x, GLint y,
+                                  GLsizei width, GLsizei height) override
+    {
+        glInvalidateSubFramebuffer(target, numAttachments, attachments, x, y,
+                                   width, height);
+    }
+
+    void texStorage2D(GLenum target, GLsizei levels, GLenum internalformat,
+                      GLsizei width, GLsizei height) override
+    {
+        glTexStorage2D(target, levels, internalformat, width, height);
+    }
+
+    void texStorage3D(GLenum target, GLsizei levels, GLenum internalformat,
+                      GLsizei width, GLsizei height, GLsizei depth) override
+    {
+        glTexStorage3D(target, levels, internalformat, width, height, depth);
+    }
+
+    void getInternalformativ(GLenum target, GLenum internalformat, GLenum pname,
+                             GLsizei bufSize, GLint *params) override
+    {
+        glGetInternalformativ(target, internalformat, pname, bufSize, params);
     }
 
     GenericGL(Renderer *renderer)
