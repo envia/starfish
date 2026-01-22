@@ -550,7 +550,7 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         case GL_TRANSFORM_FEEDBACK_PAUSED: {
             std::vector<GLboolean> values(1);
             gl()->getBooleanv(pname, &values[0]);
-            return Escargot::ValueRef::create(static_cast<bool>(values[0]));
+            return createScriptValue(static_cast<bool>(values[0]));
         }
         // GLenum
         case GL_DRAW_BUFFER0:
@@ -577,13 +577,17 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         case GL_MAX_TEXTURE_LOD_BIAS: {
             std::vector<GLfloat> values(1);
             gl()->getFloatv(pname, &values[0]);
-            return Escargot::ValueRef::create(values[0]);
+            return createScriptValue(values[0]);
         }
         // GLint
         case GL_ALPHA_BITS: /* WebGL1 */
         case GL_BLUE_BITS:  /* WebGL1 */
         case GL_GREEN_BITS: /* WebGL1 */
         case GL_RED_BITS:   /* WebGL1 */
+            // INDIGO_TODO: For RED_BITS, GREEN_BITS, BLUE_BITS, and ALPHA_BITS,
+            // if active color attachments of the draw framebuffer do not have
+            // identical formats, generates an INVALID_OPERATION error and
+            // returns 0.
             STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getParameter");
             break;
         case GL_MAX_3D_TEXTURE_SIZE:
@@ -630,7 +634,7 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         case GL_MAX_UNIFORM_BLOCK_SIZE: {
             std::vector<GLint64> values(1);
             gl()->getInteger64v(pname, &values[0]);
-            return Escargot::ValueRef::create(values[0]);
+            return createScriptValue(values[0]);
         }
         // WebGLBuffer
         case GL_COPY_READ_BUFFER_BINDING:
@@ -649,7 +653,7 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
             return buffer.value()->scriptValue();
         }
         // WebGLFramebuffer
-        case GL_DRAW_FRAMEBUFFER_BINDING: /* WebGL1 (GL_FRAMEBUFFER_BINDING) */
+        case GL_DRAW_FRAMEBUFFER_BINDING: /* WebGL1? (GL_FRAMEBUFFER_BINDING) */
         case GL_READ_FRAMEBUFFER_BINDING:
         // WebGLSampler
         case GL_SAMPLER_BINDING:

@@ -1090,7 +1090,7 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     ENTER_CONTEXT_SCOPE(scriptNull());
 
     switch (pname) {
-    case GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT: {
+    case GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT: /* ? */ {
         if (!isExtensionEnabled("EXT_texture_filter_anisotropic")) {
             setGLError(GL_INVALID_ENUM);
             return scriptNull();
@@ -1127,17 +1127,15 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
             reinterpret_cast<const char*>(glGetString(pname));
         return StringRef::createFromASCII(output.c_str(), output.length());
     }
-    case GL_SHADING_LANGUAGE_VERSION: /* WebGL2 */ {
+    case GL_SHADING_LANGUAGE_VERSION: /* WebGL2 */
         return createScriptASCIIString(kShadingLanguageVersion);
-    }
     case GL_VENDOR: {
         const std::string output =
             reinterpret_cast<const char*>(glGetString(pname));
         return StringRef::createFromASCII(output.c_str(), output.length());
     }
-    case GL_VERSION: /* WebGL2 */ {
+    case GL_VERSION: /* WebGL2 */
         return createScriptASCIIString(kVersion);
-    }
     // Float32Array (with 2 elements)
     case GL_ALIASED_LINE_WIDTH_RANGE:
     case GL_ALIASED_POINT_SIZE_RANGE:
@@ -1169,14 +1167,12 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case GL_STENCIL_TEST: {
         std::vector<GLboolean> values(1);
         m_gl->getBooleanv(pname, &values[0]);
-        return ValueRef::create(static_cast<bool>(values[0]));
+        return createScriptValue(static_cast<bool>(values[0]));
     }
-    case kUNPACK_FLIP_Y_WEBGL: {
-        return ValueRef::create(m_unpackFlipY);
-    }
-    case kUNPACK_PREMULTIPLY_ALPHA_WEBGL: {
-        return ValueRef::create(m_unpackPremultiplyAlpha);
-    }
+    case kUNPACK_FLIP_Y_WEBGL:
+        return createScriptValue(m_unpackFlipY);
+    case kUNPACK_PREMULTIPLY_ALPHA_WEBGL:
+        return createScriptValue(m_unpackPremultiplyAlpha);
     // GLenum
     case GL_ACTIVE_TEXTURE:
     case GL_BLEND_DST_ALPHA:
@@ -1193,15 +1189,13 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
         m_gl->getIntegerv(pname, &values[0]);
         return ValueRef::create(static_cast<GLenum>(values[0]));
     }
-    case GL_IMPLEMENTATION_COLOR_READ_FORMAT: {
+    case GL_IMPLEMENTATION_COLOR_READ_FORMAT:
         // kIMPLEMENTATION_COLOR_READ_FORMAT
         return ValueRef::create(GL_RGBA);
-    }
-    case GL_IMPLEMENTATION_COLOR_READ_TYPE: {
+    case GL_IMPLEMENTATION_COLOR_READ_TYPE:
         // kIMPLEMENTATION_COLOR_READ_TYPE
         // Our implementation-chosen is a combination of RGBA and UNSIGNED_BYTE.
         return ValueRef::create(GL_UNSIGNED_BYTE);
-    }
     case GL_STENCIL_BACK_FAIL:
     case GL_STENCIL_BACK_FUNC:
     case GL_STENCIL_BACK_PASS_DEPTH_FAIL:
@@ -1214,9 +1208,8 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
         m_gl->getIntegerv(pname, &values[0]);
         return ValueRef::create(static_cast<GLenum>(values[0]));
     }
-    case kUNPACK_COLORSPACE_CONVERSION_WEBGL: {
+    case kUNPACK_COLORSPACE_CONVERSION_WEBGL:
         return ValueRef::create(m_unpackColorspaceConversion);
-    }
     // GLfloat
     case GL_DEPTH_CLEAR_VALUE:
     case GL_LINE_WIDTH:
@@ -1283,6 +1276,7 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     }
     // Uint32Array
     case GL_COMPRESSED_TEXTURE_FORMATS: {
+        // INDIGO_TODO
         STARFISH_ASSERT(WebGLExtensionRegistry::instance()
                             .hasTextureCompressionExtension() == false);
         return createTypedArray<Int32ArrayObjectRef>(scriptBindingInstance(),
