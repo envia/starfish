@@ -277,6 +277,13 @@ GLsizei WebGLRenderingContext::drawingBufferHeight() const
     return m_canvasSurface->bufferHeight();
 }
 
+GLenum WebGLRenderingContext::drawingBufferFormat() const
+{
+    // INDIGO_TODO
+    STARFISH_UNIMPLEMENTED("WebGLRenderingContextBase");
+    return GL_NONE;
+}
+
 static bool isPredefinedColorSpace(String* value)
 {
     STARFISH_ASSERT(value != nullptr);
@@ -365,6 +372,7 @@ void WebGLRenderingContext::drawingBufferStorage(GLenum sizedFormat,
                                                  unsigned long width,
                                                  unsigned long height)
 {
+    // INDIGO_TODO
     STARFISH_UNIMPLEMENTED("WebGLRenderingContextBase");
 }
 
