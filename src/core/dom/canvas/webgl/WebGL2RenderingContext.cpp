@@ -1716,8 +1716,11 @@ ScriptValue WebGL2RenderingContext::getSyncParameter(WebGLSync* sync,
 
 WebGLTransformFeedback* WebGL2RenderingContext::createTransformFeedback()
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
-    return nullptr;
+    ENTER_CONTEXT_SCOPE(nullptr);
+
+    GLuint tf = 0;
+    gl()->genTransformFeedbacks(1, &tf);
+    return new WebGLTransformFeedback(scriptBindingInstance(), this, tf);
 }
 
 void WebGL2RenderingContext::deleteTransformFeedback(
