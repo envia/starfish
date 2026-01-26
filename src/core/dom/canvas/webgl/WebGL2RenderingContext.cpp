@@ -1880,7 +1880,30 @@ GLboolean WebGL2RenderingContext::isVertexArray(
 void WebGL2RenderingContext::bindVertexArray(
     Optional<WebGLVertexArrayObject*> array)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    if (!array.hasValue()) {
+        glBindVertexArray(0);
+        getState()->setWebGLVertexArrayObject(nullptr);
+        return;
+    }
+
+    WebGLVertexArrayObject* value = array.value();
+
+    if (value->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    if (value->isDeleted()) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    TRACE(WEBGL, KV(value->glObject()));
+    glBindVertexArray(value->glObject());
+    value->setHasEverBound();
+    getState()->setWebGLVertexArrayObject(value);
 }
 
 // WebGL2RenderingContextOverloads
