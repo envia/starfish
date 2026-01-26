@@ -27,6 +27,7 @@
 #include "binding/generated/Int32ArrayOrSequenceOfGLintUnion.h"
 #include "binding/generated/Uint32ArrayOrSequenceOfGLuintUnion.h"
 #include "core/dom/ExecutionContext.h"
+#include "core/dom/canvas/webgl/WebGLBuffer.h"
 #include "core/dom/canvas/webgl/WebGLProgram.h"
 #include "core/dom/canvas/webgl/WebGLRenderingContextState.h"
 #include "core/util/debug/Trace.h"
@@ -781,8 +782,69 @@ WebGLUniformLocation* WebGL2RenderingContext::getUniformLocation(
 
 ScriptValue WebGL2RenderingContext::getVertexAttrib(GLuint index, GLenum pname)
 {
-    STARFISH_UNIMPLEMENTED("WebGLRenderingContextBase");
-    return WebGLRenderingContext::getVertexAttrib(index, pname);
+    ENTER_CONTEXT_SCOPE(scriptNull());
+
+    switch (pname) {
+    // GLboolean
+    case GL_VERTEX_ATTRIB_ARRAY_ENABLED:
+    case GL_VERTEX_ATTRIB_ARRAY_INTEGER:
+    case GL_VERTEX_ATTRIB_ARRAY_NORMALIZED: {
+        GLint value = 0;
+        gl()->getVertexAttribiv(index, pname, &value);
+        return createScriptValue(static_cast<GLboolean>(value));
+    }
+    // GLenum
+    case GL_VERTEX_ATTRIB_ARRAY_TYPE: {
+        GLint value = GL_FLOAT;
+        gl()->getVertexAttribiv(index, pname, &value);
+        return createScriptValue(static_cast<GLenum>(value));
+    }
+    // GLint
+    case GL_VERTEX_ATTRIB_ARRAY_DIVISOR:
+    case GL_VERTEX_ATTRIB_ARRAY_SIZE:
+    case GL_VERTEX_ATTRIB_ARRAY_STRIDE: {
+        GLint value;
+        gl()->getVertexAttribiv(index, pname, &value);
+        return createScriptValue(value);
+    }
+    // One of Float32Array, Int32Array or Uint32Array (each with 4 elements)
+    case GL_CURRENT_VERTEX_ATTRIB: {
+        std::vector<float> values(4);
+        gl()->getVertexAttribfv(index, pname, &values[0]);
+        return createScriptValue(
+            createTypedArray<Escargot::Float32ArrayObjectRef>(
+                scriptBindingInstance(), values));
+    }
+    // WebGLBuffer
+    case GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING: /* WebGL1? */ {
+        GLint value = 0;
+        gl()->getVertexAttribiv(index, pname, &value);
+
+        TRACE(WEBGL, KV(index), KV(value));
+
+        Optional<WebGLVertexArrayObject*> maybe =
+            getState()->webGLVertexArrayObject();
+
+        if (!maybe.hasValue()) {
+            return scriptNull(); // No mention found for this in the spec.
+        }
+
+        Optional<WebGLBuffer*> maybeBuffer =
+            getState()->getBufferBoundToVertexAttributes(index);
+
+        if (!maybeBuffer.hasValue()) {
+            return scriptNull(); // No mention found for this in the spec.
+        }
+
+        TRACE(WEBGL, KV(index), KV(maybeBuffer.value()->glObject()));
+
+        STARFISH_ASSERT(index == maybeBuffer.value()->glObject());
+
+        return maybeBuffer.value()->scriptValue();
+    }
+    }
+    setGLError(GL_INVALID_ENUM);
+    return scriptNull();
 }
 
 GLintptr WebGL2RenderingContext::getVertexAttribOffset(GLuint index,
