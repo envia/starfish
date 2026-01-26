@@ -1980,7 +1980,7 @@ void WebGL2RenderingContext::bindVertexArray(
     ENTER_CONTEXT_SCOPE();
 
     if (!array.hasValue()) {
-        glBindVertexArray(0);
+        gl()->bindVertexArray(0);
         getState()->setWebGLVertexArrayObject(nullptr);
         return;
     }
@@ -1998,7 +1998,7 @@ void WebGL2RenderingContext::bindVertexArray(
     }
 
     TRACE(WEBGL, KV(value->glObject()));
-    glBindVertexArray(value->glObject());
+    gl()->bindVertexArray(value->glObject());
     value->setHasEverBound();
     getState()->setWebGLVertexArrayObject(value);
 }
