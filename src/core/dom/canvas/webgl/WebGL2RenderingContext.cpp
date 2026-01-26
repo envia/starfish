@@ -2047,8 +2047,8 @@ ScriptValue WebGL2RenderingContext::getActiveUniforms(
         gl()->getActiveUniformsiv(program->glObject(), count,
                                   uniformIndices.data(), pname, values.data());
         return createScriptValue(
-            createScriptValue(createTypedArray<Escargot::Int32ArrayObjectRef>(
-                scriptBindingInstance(), values)));
+            createTypedArray<Escargot::Int32ArrayObjectRef>(
+                scriptBindingInstance(), values));
     }
     // sequence<GLuint>
     case GL_UNIFORM_SIZE: {
