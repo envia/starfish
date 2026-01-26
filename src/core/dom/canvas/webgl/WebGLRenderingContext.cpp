@@ -431,6 +431,11 @@ void WebGLRenderingContext::bindBuffer(GLenum target,
             return;
         }
 
+	if (value->isDeleted()) {
+            setGLError(GL_INVALID_OPERATION);
+            return;
+        }
+
         m_gl->bindBuffer(target, value->glObject());
         m_state->setBoundBuffer(target, value);
 
