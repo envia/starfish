@@ -639,20 +639,17 @@ ScriptValue WebGL2RenderingContext::getParameter(GLenum pname)
         }
         // WebGLBuffer
         case GL_COPY_READ_BUFFER_BINDING:
+            return getBoundBuffer(GL_COPY_READ_BUFFER);
         case GL_COPY_WRITE_BUFFER_BINDING:
+            return getBoundBuffer(GL_COPY_WRITE_BUFFER);
         case GL_PIXEL_PACK_BUFFER_BINDING:
+            return getBoundBuffer(GL_PIXEL_PACK_BUFFER);
         case GL_PIXEL_UNPACK_BUFFER_BINDING:
+            return getBoundBuffer(GL_PIXEL_UNPACK_BUFFER);
         case GL_TRANSFORM_FEEDBACK_BUFFER_BINDING:
-            STARFISH_UNIMPLEMENTED("WebGL2RenderingContext::getParameter");
-            break;
-        case GL_UNIFORM_BUFFER_BINDING: {
-            Optional<WebGLBuffer*> buffer =
-                getState()->getBoundBuffer(GL_UNIFORM_BUFFER);
-            if (!buffer.hasValue()) {
-                return scriptNull();
-            }
-            return buffer.value()->scriptValue();
-        }
+            return getBoundBuffer(GL_TRANSFORM_FEEDBACK_BUFFER);
+        case GL_UNIFORM_BUFFER_BINDING:
+            return getBoundBuffer(GL_UNIFORM_BUFFER);
         // WebGLFramebuffer
         case GL_DRAW_FRAMEBUFFER_BINDING: /* WebGL1? (GL_FRAMEBUFFER_BINDING) */
         case GL_READ_FRAMEBUFFER_BINDING:

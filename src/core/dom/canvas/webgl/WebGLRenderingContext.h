@@ -319,6 +319,9 @@ public:
     bool executeInContextScope(std::function<void()> callback);
     WebGLRenderingContextState* getState();
 
+protected:
+    ScriptValue getBoundBuffer(GLenum target);
+
 private:
     bool checkAttribOrUniformName(String* name);
     bool isFromCurrentContext(WebGLObject* object);

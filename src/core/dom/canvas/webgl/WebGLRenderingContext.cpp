@@ -431,7 +431,7 @@ void WebGLRenderingContext::bindBuffer(GLenum target,
             return;
         }
 
-	if (value->isDeleted()) {
+        if (value->isDeleted()) {
             setGLError(GL_INVALID_OPERATION);
             return;
         }
@@ -1289,13 +1289,9 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     }
     // WebGLBuffer
     case GL_ARRAY_BUFFER_BINDING:
-    case GL_ELEMENT_ARRAY_BUFFER_BINDING: {
-        GLuint target = (pname == GL_ARRAY_BUFFER_BINDING)
-                            ? GL_ARRAY_BUFFER
-                            : GL_ELEMENT_ARRAY_BUFFER_BINDING;
-        WebGLBuffer* buffer = m_state->getBoundBuffer(target).valueOr(nullptr);
-        return buffer ? buffer->scriptValue() : scriptNull();
-    }
+        return getBoundBuffer(GL_ARRAY_BUFFER);
+    case GL_ELEMENT_ARRAY_BUFFER_BINDING:
+        return getBoundBuffer(GL_ELEMENT_ARRAY_BUFFER);
     // WebGLFramebuffer
     case GL_FRAMEBUFFER_BINDING: /* WebGL2 (GL_DRAW_FRAMEBUFFER_BINDING) */ {
         GLint value = -1;
@@ -3340,6 +3336,12 @@ bool WebGLRenderingContext::executeInContextScope(
 WebGLRenderingContextState* WebGLRenderingContext::getState()
 {
     return m_state;
+}
+
+ScriptValue WebGLRenderingContext::getBoundBuffer(GLenum target)
+{
+    WebGLBuffer* buffer = m_state->getBoundBuffer(target).valueOr(nullptr);
+    return buffer ? buffer->scriptValue() : scriptNull();
 }
 
 bool WebGLRenderingContext::checkAttribOrUniformName(String* name)
