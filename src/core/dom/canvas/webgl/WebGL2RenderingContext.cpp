@@ -2109,12 +2109,12 @@ ScriptValue WebGL2RenderingContext::getActiveUniformBlockParameter(
     // Uint32Array
     case GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES: {
         GLint value;
-        glGetActiveUniformBlockiv(program->glObject(), uniformBlockIndex,
-                                  GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS, &value);
+        gl()->getActiveUniformBlockiv(program->glObject(), uniformBlockIndex,
+                                      GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS, &value);
 
         std::vector<GLint> params(value);
-        glGetActiveUniformBlockiv(program->glObject(), uniformBlockIndex, pname,
-                                  params.data());
+        gl()->getActiveUniformBlockiv(program->glObject(), uniformBlockIndex,
+                                      pname, params.data());
 
         return createScriptValue(
             createTypedArray<Escargot::Uint32ArrayObjectRef>(
