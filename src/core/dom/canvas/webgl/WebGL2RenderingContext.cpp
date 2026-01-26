@@ -1948,7 +1948,7 @@ void WebGL2RenderingContext::deleteVertexArray(
 
     GLuint vao = value->glObject();
     TRACE(WEBGL, KV(vao));
-    glDeleteVertexArrays(1, &vao);
+    gl()->deleteVertexArrays(1, &vao);
     value->markDeleted();
 }
 
