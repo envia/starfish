@@ -1861,7 +1861,7 @@ void WebGL2RenderingContext::deleteTransformFeedback(
         tf.value()->markDeleted();
         id = tf.value()->glObject();
     }
-    glDeleteTransformFeedbacks(1, &id);
+    gl()->deleteTransformFeedbacks(1, &id);
 }
 
 GLboolean WebGL2RenderingContext::isTransformFeedback(
@@ -1873,7 +1873,7 @@ GLboolean WebGL2RenderingContext::isTransformFeedback(
         tf.value()->invalidated()) {
         return false;
     }
-    return glIsTransformFeedback(tf.value()->glObject());
+    return gl()->isTransformFeedback(tf.value()->glObject());
 }
 
 void WebGL2RenderingContext::bindTransformFeedback(
@@ -1893,7 +1893,7 @@ void WebGL2RenderingContext::bindTransformFeedback(
         }
         id = tf.value()->glObject();
     }
-    glBindTransformFeedback(target, id);
+    gl()->bindTransformFeedback(target, id);
 }
 
 void WebGL2RenderingContext::beginTransformFeedback(GLenum primitiveMode)
