@@ -81,6 +81,7 @@ public:
     GLsizei drawingBufferWidth() const;
     GLsizei drawingBufferHeight() const;
     GLenum drawingBufferFormat() const;
+
     String* drawingBufferColorSpace();
     void setDrawingBufferColorSpace(String* value);
     String* unpackColorSpace();
