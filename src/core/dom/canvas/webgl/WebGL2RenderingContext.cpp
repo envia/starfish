@@ -1570,8 +1570,9 @@ WebGLQuery* WebGL2RenderingContext::createQuery()
 
     GLuint query = 0;
     gl()->genQueries(1, &query);
-    m_queries[query] = new WebGLQuery(scriptBindingInstance(), this, query);
-    return m_queries[query];
+    m_queryObjects[query] =
+        new WebGLQuery(scriptBindingInstance(), this, query);
+    return m_queryObjects[query];
 }
 
 void WebGL2RenderingContext::deleteQuery(Optional<WebGLQuery*> query)
@@ -1597,8 +1598,7 @@ void WebGL2RenderingContext::deleteQuery(Optional<WebGLQuery*> query)
         m_activeQueries[value->target()] = 0;
     }
     gl()->deleteQueries(1, &id);
-    value->setIsActive(false);
-    m_queries.erase(id);
+    m_queryObjects.erase(id);
 }
 
 GLboolean WebGL2RenderingContext::isQuery(Optional<WebGLQuery*> query)
@@ -1609,7 +1609,7 @@ GLboolean WebGL2RenderingContext::isQuery(Optional<WebGLQuery*> query)
         query.value()->invalidated()) {
         return false;
     }
-    return query.value()->isActive();
+    return gl()->isQuery(query.value()->glObject());
 }
 
 void WebGL2RenderingContext::beginQuery(GLenum target, WebGLQuery* query)
@@ -1624,7 +1624,6 @@ void WebGL2RenderingContext::beginQuery(GLenum target, WebGLQuery* query)
     if (hasGLError()) {
         return;
     }
-    query->setIsActive(true);
     query->setTarget(target);
     m_activeQueries[target] = query->glObject();
 }
@@ -1637,7 +1636,7 @@ void WebGL2RenderingContext::endQuery(GLenum target)
     if (hasGLError()) {
         return;
     }
-    m_queries[m_activeQueries[target]]->setTarget(0);
+    m_queryObjects[m_activeQueries[target]]->setTarget(0);
     m_activeQueries[target] = 0;
 }
 
@@ -1653,10 +1652,10 @@ Optional<WebGLQuery*> WebGL2RenderingContext::getQuery(GLenum target,
         GLint query;
         gl()->getQueryiv(target, pname, &query);
         if (hasGLError() || query == 0 ||
-            m_queries.find(query) == m_queries.end()) {
+            m_queryObjects.find(query) == m_queryObjects.end()) {
             return Optional<WebGLQuery*>();
         }
-        return m_queries[query];
+        return m_queryObjects[query];
     }
     setGLError(GL_INVALID_ENUM);
     return Optional<WebGLQuery*>();

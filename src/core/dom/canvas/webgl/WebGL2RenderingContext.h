@@ -39,16 +39,6 @@ public:
     void init(ScriptBindingInstance* instance, void* domObjectPointer) override;
     bool isWebGLQuery() const override;
 
-    bool isActive() const
-    {
-        return m_isActive;
-    }
-
-    void setIsActive(bool active)
-    {
-        m_isActive = active;
-    }
-
     GLenum target() const
     {
         return m_target;
@@ -60,7 +50,6 @@ public:
     }
 
 private:
-    bool m_isActive = false;
     GLenum m_target = 0;
 };
 
@@ -660,7 +649,7 @@ public:
 
 private:
     std::unordered_map<GLenum, GLuint> m_activeQueries;
-    std::unordered_map<GLuint, WebGLQuery*> m_queries;
+    std::unordered_map<GLuint, WebGLQuery*> m_queryObjects;
     std::unordered_map<GLuint, WebGLTransformFeedback*> m_transformFeedbacks;
 };
 
