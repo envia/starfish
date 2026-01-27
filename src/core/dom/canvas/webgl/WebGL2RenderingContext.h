@@ -49,8 +49,19 @@ public:
         m_isActive = active;
     }
 
+    GLenum target() const
+    {
+        return m_target;
+    }
+
+    void setTarget(GLenum target)
+    {
+        m_target = target;
+    }
+
 private:
     bool m_isActive = false;
+    GLenum m_target = 0;
 };
 
 class WebGLSampler : public WebGLObject {
@@ -648,6 +659,7 @@ public:
                     unsigned long long dstOffset);
 
 private:
+    std::unordered_map<GLenum, GLuint> m_activeQueries;
     std::unordered_map<GLuint, WebGLQuery*> m_queries;
     std::unordered_map<GLuint, WebGLTransformFeedback*> m_transformFeedbacks;
 };

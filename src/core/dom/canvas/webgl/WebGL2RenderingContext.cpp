@@ -1589,9 +1589,14 @@ void WebGL2RenderingContext::deleteQuery(Optional<WebGLQuery*> query)
     if (value->isDeleted()) {
         return;
     }
-    GLuint id = value->glObject();
-    gl()->deleteQueries(1, &id);
     value->markDeleted();
+    GLuint id = value->glObject();
+    if (m_activeQueries[value->target()] == id) {
+        gl()->endQuery(value->target());
+        value->setTarget(0);
+        m_activeQueries[value->target()] = 0;
+    }
+    gl()->deleteQueries(1, &id);
     value->setIsActive(false);
     m_queries.erase(id);
 }
@@ -1616,7 +1621,12 @@ void WebGL2RenderingContext::beginQuery(GLenum target, WebGLQuery* query)
         return;
     }
     gl()->beginQuery(target, query->glObject());
+    if (hasGLError()) {
+        return;
+    }
     query->setIsActive(true);
+    query->setTarget(target);
+    m_activeQueries[target] = query->glObject();
 }
 
 void WebGL2RenderingContext::endQuery(GLenum target)
@@ -1624,6 +1634,11 @@ void WebGL2RenderingContext::endQuery(GLenum target)
     ENTER_CONTEXT_SCOPE();
 
     gl()->endQuery(target);
+    if (hasGLError()) {
+        return;
+    }
+    m_queries[m_activeQueries[target]]->setTarget(0);
+    m_activeQueries[target] = 0;
 }
 
 Optional<WebGLQuery*> WebGL2RenderingContext::getQuery(GLenum target,
