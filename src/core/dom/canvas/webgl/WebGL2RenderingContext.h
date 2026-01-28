@@ -49,8 +49,30 @@ public:
         m_target = target;
     }
 
+    GLuint queryResult() const
+    {
+        return m_queryResult;
+    }
+
+    void setQueryResult(GLuint queryResult)
+    {
+        m_queryResult = queryResult;
+    }
+
+    GLboolean queryResultAvailable() const
+    {
+        return m_queryResultAvailable;
+    }
+
+    void setQueryResultAvailable(GLboolean queryResultAvailable)
+    {
+        m_queryResultAvailable = queryResultAvailable;
+    }
+
 private:
-    GLenum m_target = 0;
+    GLenum m_target = GL_NONE;
+    GLuint m_queryResult = 0;
+    GLboolean m_queryResultAvailable = false;
 };
 
 class WebGLSampler : public WebGLObject {

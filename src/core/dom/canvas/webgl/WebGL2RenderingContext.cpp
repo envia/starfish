@@ -27,9 +27,13 @@
 #include "binding/generated/Int32ArrayOrSequenceOfGLintUnion.h"
 #include "binding/generated/Uint32ArrayOrSequenceOfGLuintUnion.h"
 #include "core/dom/ExecutionContext.h"
+#include "core/dom/canvas/HTMLCanvasElement.h"
 #include "core/dom/canvas/webgl/WebGLBuffer.h"
 #include "core/dom/canvas/webgl/WebGLProgram.h"
 #include "core/dom/canvas/webgl/WebGLRenderingContextState.h"
+#include "core/modules/message_loop/MessageLoop.h"
+#include "core/page/WebView.h"
+#include "core/page/Window.h"
 #include "core/util/debug/Trace.h"
 #include "platform/canvas/gl/GL.h"
 #include "platform/canvas/gl/IncludeGL.h"
@@ -1649,6 +1653,9 @@ Optional<WebGLQuery*> WebGL2RenderingContext::getQuery(GLenum target,
     case GL_ANY_SAMPLES_PASSED:
     case GL_ANY_SAMPLES_PASSED_CONSERVATIVE:
     case GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN:
+        if (pname != GL_CURRENT_QUERY) {
+            break;
+        }
         GLint query;
         gl()->getQueryiv(target, pname, &query);
         if (hasGLError() || query == 0 ||
@@ -1661,40 +1668,51 @@ Optional<WebGLQuery*> WebGL2RenderingContext::getQuery(GLenum target,
     return Optional<WebGLQuery*>();
 }
 
+void getQueryParameterImpl(size_t handle, void* data)
+{
+    WebGLQuery* query = reinterpret_cast<WebGLQuery*>(data);
+    static int cheat = 0;
+    if (cheat > 20480) {
+        GLuint value;
+        query->context()->gl()->getQueryObjectuiv(
+            query->glObject(), GL_QUERY_RESULT_AVAILABLE, &value);
+        if (query->context()->hasGLError()) {
+            return;
+        }
+        query->setQueryResultAvailable(static_cast<GLboolean>(value));
+        if (!query->queryResultAvailable()) {
+            return;
+        }
+        query->context()->gl()->getQueryObjectuiv(query->glObject(),
+                                                  GL_QUERY_RESULT, &value);
+        if (query->context()->hasGLError()) {
+            return;
+        }
+        query->setQueryResult(value);
+        cheat = 0;
+    } else {
+        cheat += 1;
+    }
+}
+
 ScriptValue WebGL2RenderingContext::getQueryParameter(WebGLQuery* query,
                                                       GLenum pname)
 {
     ENTER_CONTEXT_SCOPE(scriptNull());
 
-    static int cheat = 0;
-
     if (query->context() != this) {
         setGLError(GL_INVALID_OPERATION);
         return scriptNull();
     }
+    canvas()->webView()->messageLoop()->addIdler(canvas()->window(),
+                                                 getQueryParameterImpl, query);
     switch (pname) {
     // GLboolean
-    case GL_QUERY_RESULT_AVAILABLE: {
-        cheat += 1;
-
-        GLuint value;
-        gl()->getQueryObjectuiv(query->glObject(), pname, &value);
-        if (hasGLError()) {
-            return scriptNull();
-        }
-        return createScriptValue(cheat > 20480);
-    }
+    case GL_QUERY_RESULT_AVAILABLE:
+        return createScriptValue(query->queryResultAvailable());
     // GLuint
-    case GL_QUERY_RESULT: {
-        cheat = 0;
-
-        GLuint value;
-        gl()->getQueryObjectuiv(query->glObject(), pname, &value);
-        if (hasGLError()) {
-            return scriptNull();
-        }
-        return createScriptValue(value);
-    }
+    case GL_QUERY_RESULT:
+        return createScriptValue(query->queryResult());
     }
     setGLError(GL_INVALID_ENUM);
     return scriptNull();
