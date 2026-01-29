@@ -2457,7 +2457,7 @@ void WebGL2RenderingContext::implementUniformNfv(
     unsigned long long srcOffset, GLuint srcLength)
 {
     ENTER_CONTEXT_SCOPE();
-    if (!location) {
+    if (!location.hasValue()) {
         return;
     }
     if (!isFromCurrentProgram(location.value())) {
@@ -2467,35 +2467,40 @@ void WebGL2RenderingContext::implementUniformNfv(
     if (data.isFloat32ArrayValue()) {
         const ScriptFloat32Array values = data.getFloat32ArrayValue();
         const size_t dataLength = values->arrayLength();
-        if (srcLength == 0) {
-            srcLength = dataLength - srcOffset;
-        }
-        if (srcOffset + srcLength > dataLength) {
+        if (srcOffset >= dataLength) {
             setGLError(GL_INVALID_VALUE);
             return;
         }
-        if (srcLength > 0) {
-            /* count specifies the number of sets. */
-            (gl()->*uniformNfv)(
-                location.value()->location(), srcLength / n,
-                reinterpret_cast<const GLfloat*>(values->rawBuffer()) +
-                    srcOffset * n);
+        if (srcLength == 0) {
+            srcLength = dataLength - srcOffset;
         }
+        if (srcLength > dataLength - srcOffset || srcLength < n ||
+            srcLength % n != 0) {
+            setGLError(GL_INVALID_VALUE);
+            return;
+        }
+        /* count specifies the number of sets. */
+        (gl()->*uniformNfv)(
+            location.value()->location(), srcLength / n,
+            reinterpret_cast<const GLfloat*>(values->rawBuffer()) + srcOffset);
     } else if (data.isSequenceOfGLfloatValue()) {
         const GCAtomicVector<double> values = data.getSequenceOfGLfloatValue();
         const size_t dataLength = values.size();
-        if (srcLength == 0) {
-            srcLength = dataLength - srcOffset;
-        }
-        if (srcOffset + srcLength > dataLength) {
+        if (srcOffset >= dataLength) {
             setGLError(GL_INVALID_VALUE);
             return;
         }
-        if (srcLength > 0) {
-            const std::vector<GLfloat> floats(values.begin(), values.end());
-            (gl()->*uniformNfv)(location.value()->location(), srcLength / n,
-                                floats.data() + srcOffset * n);
+        if (srcLength == 0) {
+            srcLength = dataLength - srcOffset;
         }
+        if (srcLength > dataLength - srcOffset || srcLength < n ||
+            srcLength % n != 0) {
+            setGLError(GL_INVALID_VALUE);
+            return;
+        }
+        const std::vector<GLfloat> floats(values.begin(), values.end());
+        (gl()->*uniformNfv)(location.value()->location(), srcLength / n,
+                            floats.data() + srcOffset);
     } else {
         STARFISH_ASSERT_NOT_REACHED();
     }
