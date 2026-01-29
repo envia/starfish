@@ -2451,7 +2451,8 @@ void WebGL2RenderingContext::compressedTexSubImage2D(
     STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
 }
 
-void WebGL2RenderingContext::uniform1fv(
+void WebGL2RenderingContext::implementUniformNfv(
+    size_t n, void (GL::*uniformNfv)(GLint, GLsizei, const GLfloat*),
     Optional<WebGLUniformLocation*> location, Float32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
@@ -2475,10 +2476,10 @@ void WebGL2RenderingContext::uniform1fv(
         }
         if (srcLength > 0) {
             /* count specifies the number of sets. */
-            gl()->uniform1fv(
-                location.value()->location(), srcLength / 1,
+            (gl()->*uniformNfv)(
+                location.value()->location(), srcLength / n,
                 reinterpret_cast<const GLfloat*>(values->rawBuffer()) +
-                    srcOffset * 1);
+                    srcOffset * n);
         }
     } else if (data.isSequenceOfGLfloatValue()) {
         const GCAtomicVector<double> values = data.getSequenceOfGLfloatValue();
@@ -2492,42 +2493,44 @@ void WebGL2RenderingContext::uniform1fv(
         }
         if (srcLength > 0) {
             const std::vector<GLfloat> floats(values.begin(), values.end());
-            gl()->uniform1fv(location.value()->location(), srcLength / 1,
-                             floats.data() + srcOffset * 1);
+            (gl()->*uniformNfv)(location.value()->location(), srcLength / n,
+                                floats.data() + srcOffset * n);
         }
     } else {
         STARFISH_ASSERT_NOT_REACHED();
     }
 }
 
+void WebGL2RenderingContext::uniform1fv(
+    Optional<WebGLUniformLocation*> location, Float32List data,
+    unsigned long long srcOffset, GLuint srcLength)
+{
+    implementUniformNfv(1, &GL::uniform1fv, location, data, srcOffset,
+                        srcLength);
+}
+
 void WebGL2RenderingContext::uniform2fv(
     Optional<WebGLUniformLocation*> location, Float32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    if (srcOffset != 0 || srcLength != 0) {
-        STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
-    }
-    WebGLRenderingContext::uniform2fv(location, data);
+    implementUniformNfv(2, &GL::uniform2fv, location, data, srcOffset,
+                        srcLength);
 }
 
 void WebGL2RenderingContext::uniform3fv(
     Optional<WebGLUniformLocation*> location, Float32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    if (srcOffset != 0 || srcLength != 0) {
-        STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
-    }
-    WebGLRenderingContext::uniform3fv(location, data);
+    implementUniformNfv(3, &GL::uniform3fv, location, data, srcOffset,
+                        srcLength);
 }
 
 void WebGL2RenderingContext::uniform4fv(
     Optional<WebGLUniformLocation*> location, Float32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    if (srcOffset != 0 || srcLength != 0) {
-        STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
-    }
-    WebGLRenderingContext::uniform4fv(location, data);
+    implementUniformNfv(4, &GL::uniform4fv, location, data, srcOffset,
+                        srcLength);
 }
 
 void WebGL2RenderingContext::uniform1iv(

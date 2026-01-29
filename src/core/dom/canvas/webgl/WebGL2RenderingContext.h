@@ -669,6 +669,12 @@ public:
                     GLenum format, GLenum type, ScriptArrayBufferView dstData,
                     unsigned long long dstOffset);
 
+protected:
+    void implementUniformNfv(
+        size_t n, void (GL::*uniformNfv)(GLint, GLsizei, const GLfloat*),
+        Optional<WebGLUniformLocation*> location, Float32List data,
+        unsigned long long srcOffset, GLuint srcLength);
+
 private:
     std::unordered_map<GLenum, GLuint> m_activeQueries;
     std::unordered_map<GLuint, WebGLQuery*> m_queryObjects;
