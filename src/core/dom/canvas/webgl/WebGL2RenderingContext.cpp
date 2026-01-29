@@ -1383,26 +1383,78 @@ GLint WebGL2RenderingContext::getFragDataLocation(WebGLProgram* program,
 void WebGL2RenderingContext::uniform1ui(
     Optional<WebGLUniformLocation*> location, GLuint v0)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    if (!location.hasValue()) {
+        return;
+    }
+
+    WebGLUniformLocation* uniform = location.value();
+
+    if (!isFromCurrentProgram(uniform)) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    gl()->uniform1i(uniform->location(), v0);
 }
 
 void WebGL2RenderingContext::uniform2ui(
     Optional<WebGLUniformLocation*> location, GLuint v0, GLuint v1)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    if (!location.hasValue()) {
+        return;
+    }
+
+    WebGLUniformLocation* uniform = location.value();
+
+    if (!isFromCurrentProgram(uniform)) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    gl()->uniform2i(uniform->location(), v0, v1);
 }
 
 void WebGL2RenderingContext::uniform3ui(
     Optional<WebGLUniformLocation*> location, GLuint v0, GLuint v1, GLuint v2)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    if (!location.hasValue()) {
+        return;
+    }
+
+    WebGLUniformLocation* uniform = location.value();
+
+    if (!isFromCurrentProgram(uniform)) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    gl()->uniform3i(uniform->location(), v0, v1, v2);
 }
 
 void WebGL2RenderingContext::uniform4ui(
     Optional<WebGLUniformLocation*> location, GLuint v0, GLuint v1, GLuint v2,
     GLuint v3)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    if (!location.hasValue()) {
+        return;
+    }
+
+    WebGLUniformLocation* uniform = location.value();
+
+    if (!isFromCurrentProgram(uniform)) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    gl()->uniform4i(uniform->location(), v0, v1, v2, v3);
 }
 
 void WebGL2RenderingContext::uniform1uiv(
