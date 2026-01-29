@@ -1668,7 +1668,7 @@ Optional<WebGLQuery*> WebGL2RenderingContext::getQuery(GLenum target,
     return Optional<WebGLQuery*>();
 }
 
-void getQueryParameterImpl(size_t handle, void* data)
+static void getQueryParameterImpl(size_t handle, void* data)
 {
     WebGLQuery* query = reinterpret_cast<WebGLQuery*>(data);
     static int cheat = 0;
