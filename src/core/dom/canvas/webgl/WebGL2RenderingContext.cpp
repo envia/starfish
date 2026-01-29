@@ -2455,37 +2455,45 @@ void WebGL2RenderingContext::uniform1fv(
     Optional<WebGLUniformLocation*> location, Float32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    if (srcOffset != 0 || srcLength != 0) {
-        STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
-    }
     ENTER_CONTEXT_SCOPE();
     if (!location) {
         return;
     }
-    WebGLUniformLocation* value = location.value();
-    if (!isFromCurrentProgram(value)) {
+    if (!isFromCurrentProgram(location.value())) {
         setGLError(GL_INVALID_OPERATION);
         return;
     }
     if (data.isFloat32ArrayValue()) {
-        Escargot::Float32ArrayObjectRef* values = data.getFloat32ArrayValue();
-        const size_t arrayLength = values->arrayLength();
-        uint8_t* rawBuffer = const_cast<uint8_t*>(values->rawBuffer());
-        if (arrayLength > 0) {
-            /* count specifies the number of matrices. */
-            gl()->uniform1fv(value->location(), arrayLength / 1,
-                             reinterpret_cast<GLfloat*>(rawBuffer));
+        const ScriptFloat32Array values = data.getFloat32ArrayValue();
+        const size_t dataLength = values->arrayLength();
+        if (srcLength == 0) {
+            srcLength = dataLength - srcOffset;
+        }
+        if (srcOffset + srcLength > dataLength) {
+            setGLError(GL_INVALID_VALUE);
+            return;
+        }
+        if (srcLength > 0) {
+            /* count specifies the number of sets. */
+            gl()->uniform1fv(
+                location.value()->location(), srcLength / 1,
+                reinterpret_cast<const GLfloat*>(values->rawBuffer()) +
+                    srcOffset * 1);
         }
     } else if (data.isSequenceOfGLfloatValue()) {
-        const GCAtomicVector<double> v = data.getSequenceOfGLfloatValue();
-        std::vector<GLfloat> vector;
-        vector.reserve(v.size());
-        for (const double& value : v) {
-            vector.push_back(static_cast<GLfloat>(value));
+        const GCAtomicVector<double> values = data.getSequenceOfGLfloatValue();
+        const size_t dataLength = values.size();
+        if (srcLength == 0) {
+            srcLength = dataLength - srcOffset;
         }
-        if (!vector.empty()) {
-            gl()->uniform1fv(value->location(), vector.size() / 1,
-                             vector.data());
+        if (srcOffset + srcLength > dataLength) {
+            setGLError(GL_INVALID_VALUE);
+            return;
+        }
+        if (srcLength > 0) {
+            const std::vector<GLfloat> floats(values.begin(), values.end());
+            gl()->uniform1fv(location.value()->location(), srcLength / 1,
+                             floats.data() + srcOffset * 1);
         }
     } else {
         STARFISH_ASSERT_NOT_REACHED();
