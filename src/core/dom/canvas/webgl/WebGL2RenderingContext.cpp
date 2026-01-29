@@ -31,12 +31,14 @@
 #include "core/dom/canvas/webgl/WebGLBuffer.h"
 #include "core/dom/canvas/webgl/WebGLProgram.h"
 #include "core/dom/canvas/webgl/WebGLRenderingContextState.h"
+#include "core/dom/canvas/webgl/WebGLUniformLocation.h"
 #include "core/modules/message_loop/MessageLoop.h"
 #include "core/page/WebView.h"
 #include "core/page/Window.h"
 #include "core/util/debug/Trace.h"
 #include "platform/canvas/gl/GL.h"
 #include "platform/canvas/gl/IncludeGL.h"
+#include <EscargotPublic.h>
 
 /* WebGL-specific enums */
 static constexpr GLenum kMAX_CLIENT_WAIT_TIMEOUT_WEBGL = 0x9247;
@@ -2456,7 +2458,38 @@ void WebGL2RenderingContext::uniform1fv(
     if (srcOffset != 0 || srcLength != 0) {
         STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
     }
-    WebGLRenderingContext::uniform1fv(location, data);
+    ENTER_CONTEXT_SCOPE();
+    if (!location) {
+        return;
+    }
+    WebGLUniformLocation* value = location.value();
+    if (!isFromCurrentProgram(value)) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+    if (data.isFloat32ArrayValue()) {
+        Escargot::Float32ArrayObjectRef* values = data.getFloat32ArrayValue();
+        const size_t arrayLength = values->arrayLength();
+        uint8_t* rawBuffer = const_cast<uint8_t*>(values->rawBuffer());
+        if (arrayLength > 0) {
+            /* count specifies the number of matrices. */
+            gl()->uniform1fv(value->location(), arrayLength / 1,
+                             reinterpret_cast<GLfloat*>(rawBuffer));
+        }
+    } else if (data.isSequenceOfGLfloatValue()) {
+        const GCAtomicVector<double> v = data.getSequenceOfGLfloatValue();
+        std::vector<GLfloat> vector;
+        vector.reserve(v.size());
+        for (const double& value : v) {
+            vector.push_back(static_cast<GLfloat>(value));
+        }
+        if (!vector.empty()) {
+            gl()->uniform1fv(value->location(), vector.size() / 1,
+                             vector.data());
+        }
+    } else {
+        STARFISH_ASSERT_NOT_REACHED();
+    }
 }
 
 void WebGL2RenderingContext::uniform2fv(
