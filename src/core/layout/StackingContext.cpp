@@ -424,6 +424,29 @@ bool StackingContext::needsRepaintingWhenScrolling()
     return false;
 }
 
+bool StackingContext::needsToDrawScrollbar()
+{
+    // can't scroll
+    if (!m_owner->isFrameBlockBox()) {
+        return false;
+    }
+
+    if (!m_owner->node() || !m_owner->node()->isElement()) {
+        return false;
+    }
+
+    auto frame = m_owner->asFrameBlockBox();
+    bool hasVerticalScroll =
+        frame->hasBiggerContentThanFrameHeight() &&
+        frame->appliedOverflowY() >= OverflowValue::AutoOverflow &&
+        frame->height();
+    bool hasHorizontalScroll =
+        frame->hasBiggerContentThanFrameWidth() &&
+        frame->appliedOverflowX() >= OverflowValue::AutoOverflow &&
+        frame->width();
+    return hasVerticalScroll || hasHorizontalScroll;
+}
+
 bool StackingContext::inScrollActive()
 {
     bool nonVisibleOverflowValueApplied =
@@ -2582,8 +2605,8 @@ void StackingContext::compositeScrollbar(Compositor* compositor)
                               ->contentDocument()
                               ->browsingContext();
                 {
-                    ComputeOverflow<Compositor> r(compositor, this,
-                                                  parent()->owner());
+                    ComputeOverflow<Compositor, true> r(compositor, this,
+                                                        parent()->owner());
                     compositor->translate(
                         m_owner->borderLeft() + m_owner->paddingLeft(),
                         m_owner->borderTop() + m_owner->paddingTop());
@@ -2601,8 +2624,9 @@ void StackingContext::compositeScrollbar(Compositor* compositor)
             }
         }
     } else if (!isRootContext()) {
-        if (m_owner->shouldApplyOverflow() && m_owner->node() &&
-            m_owner->node()->isElement() && m_owner->isFrameBlockBox()) {
+        if (needsToDrawScrollbar()) {
+            auto parentBox = parent() ? parent()->owner() : nullptr;
+            ComputeOverflow<Compositor, true> r(compositor, this, parentBox);
             Scrolling::paintScrollbars<Compositor*>(
                 m_owner->node()->asElement()->rareMembers()
                     ? m_owner->node()->asElement()->rareMembers()->m_scrolling
@@ -2715,12 +2739,25 @@ void StackingContext::compositeStackingContext(Compositor* compositor)
                     fullRect = m_owner->makeRect(BoxValue::PaddingBoxBoxValue);
                 }
 
-                auto clr = owner()->style()->backgroundColor();
-                if (!clr.isTransparent()) {
-                    compositor->save();
-                    compositor->setFillColor(clr);
-                    compositor->drawRect(fullRect);
-                    compositor->restore();
+                if (inScrollWithGraphicsBufferActive()) {
+                    auto clr = owner()->style()->backgroundColor();
+                    if (!clr.isTransparent()) {
+                        compositor->save();
+                        compositor->setFillColor(clr);
+                        compositor->drawRect(fullRect);
+                        compositor->restore();
+                    }
+                }
+
+                if ((!owner()->style()->outlineWidth().isZero()) &&
+                    (owner()->style()->outlineStyle() !=
+                     BorderStyleValue::NoneBorderStyleValue)) {
+                    fullRect.setX(fullRect.x() - owner()->outlineThickness());
+                    fullRect.setY(fullRect.y() - owner()->outlineThickness());
+                    fullRect.setWidth(fullRect.width() +
+                                      owner()->outlineThickness() * 2);
+                    fullRect.setHeight(fullRect.height() +
+                                       owner()->outlineThickness() * 2);
                 }
 
                 compositor->clip(fullRect);
