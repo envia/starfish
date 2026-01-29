@@ -670,6 +670,10 @@ public:
                     unsigned long long dstOffset);
 
 protected:
+    void implementUniformNuiv(
+        size_t n, void (GL::*uniformNuiv)(GLint, GLsizei, const GLuint*),
+        Optional<WebGLUniformLocation*> location, Uint32List data,
+        unsigned long long srcOffset, GLuint srcLength);
     void implementUniformNfv(
         size_t n, void (GL::*uniformNfv)(GLint, GLsizei, const GLfloat*),
         Optional<WebGLUniformLocation*> location, Float32List data,
