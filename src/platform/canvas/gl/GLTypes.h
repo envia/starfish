@@ -37,7 +37,6 @@ typedef uint32_t GLuint;
 typedef float GLfloat;
 typedef float GLclampf;
 typedef int32_t GLfixed;
-typedef struct __GLsync *GLsync;
 #if !defined(_EVAS_GL_H) || !defined(STARFISH_TIZEN)
 typedef int64_t GLint64;
 typedef uint64_t GLuint64;
