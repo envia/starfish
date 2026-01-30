@@ -72,10 +72,6 @@ static const GLenum kBROWSER_DEFAULT_WEBGL = 0x9244;
 static const GLenum kIMPLEMENTATION_COLOR_READ_TYPE = 0x8B9A;
 static const GLenum kIMPLEMENTATION_COLOR_READ_FORMAT = 0x8B9B;
 
-/* WebGL constants */
-static constexpr char kShadingLanguageVersion[] = "WebGL GLSL ES 1.0";
-static constexpr char kVersion[] = "WebGL 1.0";
-
 namespace Starfish {
 
 inline static std::string hex(GLenum name)
@@ -1071,7 +1067,6 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     ENTER_CONTEXT_SCOPE(scriptNull());
 
     switch (pname) {
-    // GLint
     case GL_ALPHA_BITS:
     case GL_BLUE_BITS:
     case GL_DEPTH_BITS:
@@ -1110,7 +1105,6 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
         m_gl->getIntegerv(pname, &values[0]);
         return ValueRef::create(values[0]);
     }
-    // WebGLProgram
     case GL_CURRENT_PROGRAM: {
         GLint value = -1;
         m_gl->getIntegerv(pname, &value);
@@ -1122,7 +1116,6 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
         STARFISH_ASSERT(static_cast<GLint>(maybe.value()->glObject()) == value);
         return maybe.value()->scriptValue();
     }
-    // WebGLFramebuffer
     case GL_FRAMEBUFFER_BINDING: {
         GLint value = -1;
         m_gl->getIntegerv(pname, &value);
@@ -1139,7 +1132,6 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
         STARFISH_ASSERT(static_cast<GLint>(maybe.value()->glObject()) == value);
         return maybe.value()->scriptValue();
     }
-    // WebGLVertexArrayObjectOES
     case GL_VERTEX_ARRAY_BINDING: {
         // GL_VERTEX_ARRAY_BINDING_OES
         if (!isExtensionEnabled("OES_vertex_array_object")) {
@@ -1162,7 +1154,6 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
         STARFISH_ASSERT(static_cast<GLint>(maybe.value()->glObject()) == value);
         return maybe.value()->scriptValue();
     }
-    // WebGLBuffer
     case GL_ARRAY_BUFFER_BINDING:
     case GL_ELEMENT_ARRAY_BUFFER_BINDING: {
         GLuint target = (pname == GL_ARRAY_BUFFER_BINDING)
@@ -1171,7 +1162,6 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
         WebGLBuffer* buffer = m_state->getBoundBuffer(target).valueOr(nullptr);
         return buffer ? buffer->scriptValue() : scriptNull();
     }
-    // GLenum
     case kIMPLEMENTATION_COLOR_READ_TYPE: {
         // Our implementation-chosen is a combination of RGBA and UNSIGNED_BYTE.
         return ValueRef::create(GL_UNSIGNED_BYTE);
@@ -1179,25 +1169,20 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case kIMPLEMENTATION_COLOR_READ_FORMAT: {
         return ValueRef::create(GL_RGBA);
     }
-    // DOMString
-    case GL_SHADING_LANGUAGE_VERSION:
-        return createScriptASCIIString(kShadingLanguageVersion);
-    case GL_VERSION:
-        return createScriptASCIIString(kVersion);
     case GL_RENDERER:
+    case GL_SHADING_LANGUAGE_VERSION:
+    case GL_VERSION:
     case GL_VENDOR: {
         const std::string output =
             reinterpret_cast<const char*>(glGetString(pname));
         return StringRef::createFromASCII(output.c_str(), output.length());
     }
-    // Int32Array (with 2 elements)
     case GL_MAX_VIEWPORT_DIMS: {
         std::vector<int> values(2);
         m_gl->getIntegerv(pname, &values[0]);
         return createTypedArray<Int32ArrayObjectRef>(scriptBindingInstance(),
                                                      values);
     }
-    // Int32Array (with 4 elements)
     case GL_SCISSOR_BOX:
     case GL_VIEWPORT: {
         std::vector<int> values(4);
@@ -1205,7 +1190,6 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
         return createTypedArray<Int32ArrayObjectRef>(scriptBindingInstance(),
                                                      values);
     }
-    // Uint32Array
     case GL_COMPRESSED_TEXTURE_FORMATS: {
         STARFISH_ASSERT(WebGLExtensionRegistry::instance()
                             .hasTextureCompressionExtension() == false);
