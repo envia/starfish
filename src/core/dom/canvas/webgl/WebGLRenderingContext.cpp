@@ -840,6 +840,7 @@ void WebGLRenderingContext::disableVertexAttribArray(GLuint index)
     ENTER_CONTEXT_SCOPE();
 
     m_gl->disableVertexAttribArray(index);
+    m_activeArrays.erase(index);
 }
 
 void WebGLRenderingContext::drawArrays(GLenum mode, GLint first, GLsizei count)
@@ -858,6 +859,19 @@ void WebGLRenderingContext::drawArrays(GLenum mode, GLint first, GLsizei count)
         // If the CURRENT_PROGRAM is null, an INVALID_OPERATION error will be
         // generated.
         setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    for (GLuint array : m_activeArrays) {
+        // If a vertex attribute is enabled as an array via
+        // enableVertexAttribArray but no buffer is bound to that attribute
+        // (generally via bindBuffer and vertexAttribPointer), then draw
+        // commands (drawArrays or drawElements) will generate an
+        // INVALID_OPERATION error.
+        if (!m_state->getBufferBoundToVertexAttributes(array)) {
+            setGLError(GL_INVALID_OPERATION);
+            return;
+        }
     }
 
     m_gl->drawArrays(mode, first, count);
@@ -911,6 +925,7 @@ void WebGLRenderingContext::enableVertexAttribArray(GLuint index)
         Checking.
     */
     m_gl->enableVertexAttribArray(index);
+    m_activeArrays.insert(index);
 }
 
 void WebGLRenderingContext::finish()

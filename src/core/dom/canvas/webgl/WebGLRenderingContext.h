@@ -341,6 +341,7 @@ private:
     bool m_hasPendingJobsBetweenFrames;
     uint32_t m_pendingClearMask;
 
+    std::unordered_set<GLuint> m_activeArrays;
     GLErrorSet m_GLErrors;
     GLTextureMap m_boundTextures;
     bool m_unpackFlipY;
