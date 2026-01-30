@@ -857,11 +857,6 @@ public:
 #endif
     }
 
-    void getInteger64v(GLenum pname, GLint64 *data) override
-    {
-        glGetInteger64v(pname, data);
-    }
-
     GenericGL(Renderer *renderer)
     {
         m_eglGetCurrentDisplayProc =

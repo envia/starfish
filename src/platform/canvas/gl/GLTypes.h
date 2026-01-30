@@ -38,8 +38,6 @@ typedef float GLfloat;
 typedef float GLclampf;
 typedef int32_t GLfixed;
 #if !defined(_EVAS_GL_H) || !defined(STARFISH_TIZEN)
-typedef int64_t GLint64;
-typedef uint64_t GLuint64;
 #endif
 
 #if defined(STARFISH_WINDOWS)
