@@ -2571,6 +2571,10 @@ void WebGLRenderingContext::readPixels(GLint x, GLint y, GLsizei width,
         }
 
         size_t bytesPerPixel = Pixel::getBytesPerPixel(format, type);
+        if (bytesPerPixel == 0) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
         size_t byteLengthOfPixels = width * height * bytesPerPixel;
         size_t byteLengthOfView = pixels->byteLength();
 
@@ -2826,6 +2830,7 @@ void WebGLRenderingContext::handleTexImageWithArrayBufferView(
         // the specified width, height, format, type, and pixel storage
         // parameters, generates an INVALID_OPERATION error.
         size_t bytesPerPixel = Pixel::getBytesPerPixel(format, type);
+        STARFISH_ASSERT(bytesPerPixel != 0);
         size_t byteLengthOfPixels = width * height * bytesPerPixel;
         size_t byteLengthOfView = pixels->byteLength();
 
@@ -2853,6 +2858,7 @@ void WebGLRenderingContext::handleTexImageWithArrayBufferView(
         // initializing the texture to black by gl.texImage2D(..., null).
 
         const size_t bytesPerPixel = Pixel::getBytesPerPixel(format, type);
+        STARFISH_ASSERT(bytesPerPixel != 0);
         size_t byteLengthOfPixels = width * height * bytesPerPixel;
 
         TRACE(WEBGL_V, KV(glValueString(format)), KV(glValueString(type)));
@@ -2972,6 +2978,7 @@ void WebGLRenderingContext::handleTexImageWithImageSource(
     }
 
     size_t bytesPerPixel = Pixel::getBytesPerPixel(format, type);
+    STARFISH_ASSERT(bytesPerPixel != 0);
     size_t byteLengthOfPixels = width * height * bytesPerPixel;
     stride = bytesPerPixel * width;
 
