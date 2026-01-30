@@ -91,8 +91,6 @@ public:
 
     ScriptValue getParameter(GLenum pname);
 
-    ScriptValue getProgramParameter(WebGLProgram* program, GLenum pname);
-
     // Implement WebGL2RenderingContextBase
 
     /* Programs and shaders */
