@@ -674,9 +674,10 @@ protected:
         size_t n, void (GL::*uniformNuiv)(GLint, GLsizei, const GLuint*),
         Optional<WebGLUniformLocation*> location, Uint32List data,
         unsigned long long srcOffset, GLuint srcLength);
-    template <size_t N, void (GL::*UniformNfv)(GLint, GLsizei, const GLfloat*)>
+    template <size_t N, void (GL::*UniformNfv)(GLint, GLsizei, const GLfloat*),
+              typename SrcType>
     void implementUniformNfv(Optional<WebGLUniformLocation*> location,
-                             Float32List data, unsigned long long srcOffset,
+                             SrcType data, unsigned long long srcOffset,
                              GLuint srcLength);
 
 private:

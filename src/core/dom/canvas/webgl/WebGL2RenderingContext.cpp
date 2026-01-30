@@ -2561,9 +2561,10 @@ void WebGL2RenderingContext::compressedTexSubImage2D(
     STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
 }
 
-template <size_t N, void (GL::*UniformNfv)(GLint, GLsizei, const GLfloat*)>
+template <size_t N, void (GL::*UniformNfv)(GLint, GLsizei, const GLfloat*),
+          typename SrcType>
 void WebGL2RenderingContext::implementUniformNfv(
-    Optional<WebGLUniformLocation*> location, Float32List data,
+    Optional<WebGLUniformLocation*> location, SrcType data,
     unsigned long long srcOffset, GLuint srcLength)
 {
     static_assert(N != 0);
