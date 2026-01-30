@@ -2561,11 +2561,12 @@ void WebGL2RenderingContext::compressedTexSubImage2D(
     STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
 }
 
+template <size_t N, void (GL::*UniformNfv)(GLint, GLsizei, const GLfloat*)>
 void WebGL2RenderingContext::implementUniformNfv(
-    size_t n, void (GL::*uniformNfv)(GLint, GLsizei, const GLfloat*),
     Optional<WebGLUniformLocation*> location, Float32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
+    static_assert(N != 0);
     ENTER_CONTEXT_SCOPE();
     if (!location.hasValue()) {
         return;
@@ -2584,14 +2585,14 @@ void WebGL2RenderingContext::implementUniformNfv(
         if (srcLength == 0) {
             srcLength = dataLength - srcOffset;
         }
-        if (srcLength > dataLength - srcOffset || srcLength < n ||
-            srcLength % n != 0) {
+        if (srcLength > dataLength - srcOffset || srcLength < N ||
+            srcLength % N != 0) {
             setGLError(GL_INVALID_VALUE);
             return;
         }
         /* count specifies the number of sets. */
-        (gl()->*uniformNfv)(
-            location.value()->location(), srcLength / n,
+        (gl()->*UniformNfv)(
+            location.value()->location(), srcLength / N,
             reinterpret_cast<const GLfloat*>(values->rawBuffer()) + srcOffset);
     } else if (data.isSequenceOfGLfloatValue()) {
         const GCAtomicVector<double> values = data.getSequenceOfGLfloatValue();
@@ -2603,13 +2604,13 @@ void WebGL2RenderingContext::implementUniformNfv(
         if (srcLength == 0) {
             srcLength = dataLength - srcOffset;
         }
-        if (srcLength > dataLength - srcOffset || srcLength < n ||
-            srcLength % n != 0) {
+        if (srcLength > dataLength - srcOffset || srcLength < N ||
+            srcLength % N != 0) {
             setGLError(GL_INVALID_VALUE);
             return;
         }
         const std::vector<GLfloat> floats(values.begin(), values.end());
-        (gl()->*uniformNfv)(location.value()->location(), srcLength / n,
+        (gl()->*UniformNfv)(location.value()->location(), srcLength / N,
                             floats.data() + srcOffset);
     } else {
         STARFISH_ASSERT_NOT_REACHED();
@@ -2620,32 +2621,32 @@ void WebGL2RenderingContext::uniform1fv(
     Optional<WebGLUniformLocation*> location, Float32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    implementUniformNfv(1, &GL::uniform1fv, location, data, srcOffset,
-                        srcLength);
+    implementUniformNfv<1, &GL::uniform1fv>(location, data, srcOffset,
+                                            srcLength);
 }
 
 void WebGL2RenderingContext::uniform2fv(
     Optional<WebGLUniformLocation*> location, Float32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    implementUniformNfv(2, &GL::uniform2fv, location, data, srcOffset,
-                        srcLength);
+    implementUniformNfv<2, &GL::uniform2fv>(location, data, srcOffset,
+                                            srcLength);
 }
 
 void WebGL2RenderingContext::uniform3fv(
     Optional<WebGLUniformLocation*> location, Float32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    implementUniformNfv(3, &GL::uniform3fv, location, data, srcOffset,
-                        srcLength);
+    implementUniformNfv<3, &GL::uniform3fv>(location, data, srcOffset,
+                                            srcLength);
 }
 
 void WebGL2RenderingContext::uniform4fv(
     Optional<WebGLUniformLocation*> location, Float32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    implementUniformNfv(4, &GL::uniform4fv, location, data, srcOffset,
-                        srcLength);
+    implementUniformNfv<4, &GL::uniform4fv>(location, data, srcOffset,
+                                            srcLength);
 }
 
 void WebGL2RenderingContext::uniform1iv(
