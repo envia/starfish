@@ -301,8 +301,7 @@ if __name__ == "__main__":
     test_functions = []
     for key, value in list(locals().items()):
         if callable(value) and value.__module__ == __name__:
-            if key not in ["file_len", "print_columns", "print_table",
-                           "run_test", "run_vendor_test_khronos"]:
+            if key != "run_test" and key != "file_len":
                 test_functions.append(key)
     print_columns(sorted(test_functions), 4)
 
