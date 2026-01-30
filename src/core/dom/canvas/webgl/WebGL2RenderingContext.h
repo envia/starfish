@@ -93,9 +93,6 @@ public:
 
     // Implement WebGL2RenderingContextBase
 
-    /* Programs and shaders */
-    GLint getFragDataLocation(WebGLProgram* program, String* name);
-
     /* Sync objects */
     Optional<WebGLSync*> fenceSync(GLenum condition, GLbitfield flags);
     GLboolean isSync(Optional<WebGLSync*> sync);
