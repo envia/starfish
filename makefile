@@ -14,3 +14,5 @@ binding_generator/scripts/starfish_code_generator.py:
 
 clean:
 	rm -rf Starfish out/webgl2
+	rm -rf tool/__pycache__ tool/drivers/basics/__pycache__
+
