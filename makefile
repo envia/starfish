@@ -1,4 +1,4 @@
-.PHONY: all try clean
+.PHONY: all try clean revert reland
 
 all: binding_generator/scripts/starfish_code_generator.py out/webgl2
 	ninja -C out/webgl2 starfish.executable
@@ -15,3 +15,9 @@ binding_generator/scripts/starfish_code_generator.py:
 clean:
 	rm -rf Starfish out/webgl2
 	rm -rf tool/__pycache__ tool/drivers/basics/__pycache__
+
+revert:
+	git -C test am ../0001-Revert-Update-WebGL-2-tests-to-ensure-termination.patch
+
+reland:
+	git -C test reset --hard master
