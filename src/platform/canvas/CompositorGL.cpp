@@ -1228,6 +1228,20 @@ CompositorContext* CompositorFactory::initCompositorContextGl(
     CompositorContextGL* compositorContext = new CompositorContextGL(renderer);
     GL* gl = renderer->gl();
 
+    {
+        const GLubyte* glString;
+        glString = gl->getString(GL_EXTENSIONS);
+        STARFISH_LOG_WARN("GL_EXTENSIONS %s", glString);
+        glString = gl->getString(GL_RENDERER);
+        STARFISH_LOG_WARN("GL_RENDERER %s", glString);
+        glString = gl->getString(GL_SHADING_LANGUAGE_VERSION);
+        STARFISH_LOG_WARN("GL_SHADING_LANGUAGE_VERSION %s", glString);
+        glString = gl->getString(GL_VENDOR);
+        STARFISH_LOG_WARN("GL_VENDOR %s", glString);
+        glString = gl->getString(GL_VERSION);
+        STARFISH_LOG_WARN("GL_VERSION %s", glString);
+    }
+
     if (g_needsCheckCompatibility) {
         GLint siz;
         gl->getIntegerv(GL_MAX_TEXTURE_SIZE, &siz);
