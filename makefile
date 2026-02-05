@@ -16,8 +16,8 @@ clean:
 	rm -rf Starfish out/webgl2
 	rm -rf tool/__pycache__ tool/drivers/basics/__pycache__
 
-revert:
+revert: binding_generator/scripts/starfish_code_generator.py
 	git -C test am ../0001-Revert-Update-WebGL-2-tests-to-ensure-termination.patch > /dev/null 2>&1 || git -C test am --abort
 
-reland:
+reland: binding_generator/scripts/starfish_code_generator.py
 	git -C test reset --hard master
