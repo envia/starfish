@@ -526,7 +526,28 @@ void WebGL2RenderingContext::bufferData(GLenum target, GLsizeiptr size,
 void WebGL2RenderingContext::bufferData(
     GLenum target, Optional<AllowSharedBufferSource> srcData, GLenum usage)
 {
-    WebGLRenderingContext::bufferData(target, srcData, usage);
+    ENTER_CONTEXT_SCOPE();
+
+    if (!srcData.hasValue()) {
+        setGLError(GL_INVALID_VALUE);
+        return;
+    }
+
+    if (srcData.value().isArrayBufferValue()) {
+        ScriptArrayBuffer buffer = srcData.value().getArrayBufferValue();
+        gl()->bufferData(target, buffer->byteLength(), buffer->rawBuffer(),
+                         usage);
+    } else if (srcData.value().isArrayBufferViewValue()) {
+        ScriptArrayBufferView view = srcData.value().getArrayBufferViewValue();
+        gl()->bufferData(target, view->byteLength(), view->rawBuffer(), usage);
+    } else if (srcData.value().isSharedArrayBufferValue()) {
+        ScriptSharedArrayBuffer buffer =
+            srcData.value().getSharedArrayBufferValue();
+        gl()->bufferData(target, buffer->byteLength(), buffer->rawBuffer(),
+                         usage);
+    } else {
+        setGLError(GL_INVALID_VALUE);
+    }
 }
 
 void WebGL2RenderingContext::bufferSubData(GLenum target,
