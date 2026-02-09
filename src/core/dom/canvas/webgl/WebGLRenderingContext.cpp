@@ -1348,6 +1348,7 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
         return scriptNull();
     default:
         STARFISH_UNSUPPORTED("pname: 0x%04X(%s)", pname, __PRETTY_FUNCTION__);
+        setGLError(GL_INVALID_ENUM);
         return scriptNull();
     }
     return scriptNull();
