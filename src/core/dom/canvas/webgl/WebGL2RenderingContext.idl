@@ -397,6 +397,7 @@ interface WebGL2RenderingContextBase
                                           optional GLuint srcLength = 0);
     [Unimplemented] undefined uniform4uiv(WebGLUniformLocation? location, Uint32List data, optional unsigned long long srcOffset = 0,
                                           optional GLuint srcLength = 0);
+
     [Unimplemented] undefined uniformMatrix3x2fv(WebGLUniformLocation? location, GLboolean transpose, Float32List data,
                                                  optional unsigned long long srcOffset = 0, optional GLuint srcLength = 0);
     [Unimplemented] undefined uniformMatrix4x2fv(WebGLUniformLocation? location, GLboolean transpose, Float32List data,
