@@ -2715,44 +2715,90 @@ void WebGL2RenderingContext::uniform4fv(
                                             srcLength);
 }
 
+void WebGL2RenderingContext::implementUniformNiv(
+    size_t n, void (GL::*uniformNiv)(GLint, GLsizei, const GLint*),
+    Optional<WebGLUniformLocation*> location, Int32List data,
+    unsigned long long srcOffset, GLuint srcLength)
+{
+    ENTER_CONTEXT_SCOPE();
+    if (!location) {
+        return;
+    }
+    if (!isFromCurrentProgram(location.value())) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+    if (data.isInt32ArrayValue()) {
+        const ScriptInt32Array values = data.getInt32ArrayValue();
+        const size_t dataLength = values->arrayLength();
+        if (srcOffset >= dataLength) {
+            setGLError(GL_INVALID_VALUE);
+            return;
+        }
+        if (srcLength == 0) {
+            srcLength = dataLength - srcOffset;
+        }
+        if (srcLength > dataLength - srcOffset || srcLength < n ||
+            srcLength % n != 0) {
+            setGLError(GL_INVALID_VALUE);
+            return;
+        }
+        /* count specifies the number of sets. */
+        (gl()->*uniformNiv)(
+            location.value()->location(), srcLength / n,
+            reinterpret_cast<const GLint*>(values->rawBuffer()) + srcOffset);
+    } else if (data.isSequenceOfGLintValue()) {
+        GCAtomicVector<int32_t> values = data.getSequenceOfGLintValue();
+        const size_t dataLength = values.size();
+        if (srcOffset >= dataLength) {
+            setGLError(GL_INVALID_VALUE);
+            return;
+        }
+        if (srcLength == 0) {
+            srcLength = dataLength - srcOffset;
+        }
+        if (srcLength > dataLength - srcOffset || srcLength < n ||
+            srcLength % n != 0) {
+            setGLError(GL_INVALID_VALUE);
+            return;
+        }
+        (gl()->*uniformNiv)(location.value()->location(), srcLength / n,
+                            values.data() + srcOffset);
+    } else {
+        STARFISH_ASSERT_NOT_REACHED();
+    }
+}
+
 void WebGL2RenderingContext::uniform1iv(
     Optional<WebGLUniformLocation*> location, Int32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    if (srcOffset != 0 || srcLength != 0) {
-        STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
-    }
-    WebGLRenderingContext::uniform1iv(location, data);
+    implementUniformNiv(1, &GL::uniform1iv, location, data, srcOffset,
+                        srcLength);
 }
 
 void WebGL2RenderingContext::uniform2iv(
     Optional<WebGLUniformLocation*> location, Int32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    if (srcOffset != 0 || srcLength != 0) {
-        STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
-    }
-    WebGLRenderingContext::uniform2iv(location, data);
+    implementUniformNiv(2, &GL::uniform2iv, location, data, srcOffset,
+                        srcLength);
 }
 
 void WebGL2RenderingContext::uniform3iv(
     Optional<WebGLUniformLocation*> location, Int32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    if (srcOffset != 0 || srcLength != 0) {
-        STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
-    }
-    WebGLRenderingContext::uniform3iv(location, data);
+    implementUniformNiv(3, &GL::uniform3iv, location, data, srcOffset,
+                        srcLength);
 }
 
 void WebGL2RenderingContext::uniform4iv(
     Optional<WebGLUniformLocation*> location, Int32List data,
     unsigned long long srcOffset, GLuint srcLength)
 {
-    if (srcOffset != 0 || srcLength != 0) {
-        STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
-    }
-    WebGLRenderingContext::uniform4iv(location, data);
+    implementUniformNiv(4, &GL::uniform4iv, location, data, srcOffset,
+                        srcLength);
 }
 
 void WebGL2RenderingContext::uniformMatrix2fv(
