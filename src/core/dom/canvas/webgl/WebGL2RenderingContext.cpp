@@ -1543,46 +1543,111 @@ void WebGL2RenderingContext::uniform4uiv(
                          srcLength);
 }
 
+void WebGL2RenderingContext::implementUniformMatrixMxNfv(
+    size_t m, size_t n,
+    void (GL::*uniformMatrixMxNfv)(GLint, GLsizei, GLboolean, const GLfloat*),
+    Optional<WebGLUniformLocation*> location, GLboolean transpose,
+    Float32List data, unsigned long long srcOffset, GLuint srcLength)
+{
+    ENTER_CONTEXT_SCOPE();
+    /* location is nullable. */
+    if (!location.hasValue()) {
+        return;
+    }
+    if (!isFromCurrentProgram(location.value())) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+    if (data.isFloat32ArrayValue()) {
+        const ScriptFloat32Array values = data.getFloat32ArrayValue();
+        const size_t dataLength = values->arrayLength();
+        if (srcOffset >= dataLength) {
+            setGLError(GL_INVALID_VALUE);
+            return;
+        }
+        if (srcLength == 0) {
+            srcLength = dataLength - srcOffset;
+        }
+        if (srcLength > dataLength - srcOffset || srcLength < n ||
+            srcLength % n != 0) {
+            setGLError(GL_INVALID_VALUE);
+            return;
+        }
+        /* count specifies the number of matrices. */
+        (gl()->*uniformMatrixMxNfv)(
+            location.value()->location(), srcLength / (m * n), transpose,
+            reinterpret_cast<const GLfloat*>(values->rawBuffer()) + srcOffset);
+    } else if (data.isSequenceOfGLfloatValue()) {
+        const GCAtomicVector<double> values = data.getSequenceOfGLfloatValue();
+        const size_t dataLength = values.size();
+        if (srcOffset >= dataLength) {
+            setGLError(GL_INVALID_VALUE);
+            return;
+        }
+        if (srcLength == 0) {
+            srcLength = dataLength - srcOffset;
+        }
+        if (srcLength > dataLength - srcOffset || srcLength < n ||
+            srcLength % n != 0) {
+            setGLError(GL_INVALID_VALUE);
+            return;
+        }
+        const std::vector<GLfloat> floats(values.begin(), values.end());
+        /* count specifies the number of matrices. */
+        (gl()->*uniformMatrixMxNfv)(location.value()->location(),
+                                    srcLength / (m * n), transpose,
+                                    floats.data() + srcOffset);
+    } else {
+        STARFISH_ASSERT_NOT_REACHED();
+    }
+}
+
 void WebGL2RenderingContext::uniformMatrix3x2fv(
     Optional<WebGLUniformLocation*> location, GLboolean transpose,
     Float32List data, unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    implementUniformMatrixMxNfv(3, 2, &GL::uniformMatrix3x2fv, location,
+                                transpose, data, srcOffset, srcLength);
 }
 
 void WebGL2RenderingContext::uniformMatrix4x2fv(
     Optional<WebGLUniformLocation*> location, GLboolean transpose,
     Float32List data, unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    implementUniformMatrixMxNfv(4, 2, &GL::uniformMatrix4x2fv, location,
+                                transpose, data, srcOffset, srcLength);
 }
 
 void WebGL2RenderingContext::uniformMatrix2x3fv(
     Optional<WebGLUniformLocation*> location, GLboolean transpose,
     Float32List data, unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    implementUniformMatrixMxNfv(2, 3, &GL::uniformMatrix2x3fv, location,
+                                transpose, data, srcOffset, srcLength);
 }
 
 void WebGL2RenderingContext::uniformMatrix4x3fv(
     Optional<WebGLUniformLocation*> location, GLboolean transpose,
     Float32List data, unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    implementUniformMatrixMxNfv(4, 3, &GL::uniformMatrix4x3fv, location,
+                                transpose, data, srcOffset, srcLength);
 }
 
 void WebGL2RenderingContext::uniformMatrix2x4fv(
     Optional<WebGLUniformLocation*> location, GLboolean transpose,
     Float32List data, unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    implementUniformMatrixMxNfv(2, 4, &GL::uniformMatrix2x4fv, location,
+                                transpose, data, srcOffset, srcLength);
 }
 
 void WebGL2RenderingContext::uniformMatrix3x4fv(
     Optional<WebGLUniformLocation*> location, GLboolean transpose,
     Float32List data, unsigned long long srcOffset, GLuint srcLength)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    implementUniformMatrixMxNfv(3, 4, &GL::uniformMatrix3x4fv, location,
+                                transpose, data, srcOffset, srcLength);
 }
 
 void WebGL2RenderingContext::vertexAttribI4i(GLuint index, GLint x, GLint y,
@@ -2694,30 +2759,24 @@ void WebGL2RenderingContext::uniformMatrix2fv(
     Optional<WebGLUniformLocation*> location, GLboolean transpose,
     Float32List data, unsigned long long srcOffset, GLuint srcLength)
 {
-    if (srcOffset != 0 || srcLength != 0) {
-        STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
-    }
-    WebGLRenderingContext::uniformMatrix2fv(location, transpose, data);
+    implementUniformMatrixMxNfv(2, 2, &GL::uniformMatrix2fv, location,
+                                transpose, data, srcOffset, srcLength);
 }
 
 void WebGL2RenderingContext::uniformMatrix3fv(
     Optional<WebGLUniformLocation*> location, GLboolean transpose,
     Float32List data, unsigned long long srcOffset, GLuint srcLength)
 {
-    if (srcOffset != 0 || srcLength != 0) {
-        STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
-    }
-    WebGLRenderingContext::uniformMatrix3fv(location, transpose, data);
+    implementUniformMatrixMxNfv(3, 3, &GL::uniformMatrix3fv, location,
+                                transpose, data, srcOffset, srcLength);
 }
 
 void WebGL2RenderingContext::uniformMatrix4fv(
     Optional<WebGLUniformLocation*> location, GLboolean transpose,
     Float32List data, unsigned long long srcOffset, GLuint srcLength)
 {
-    if (srcOffset != 0 || srcLength != 0) {
-        STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
-    }
-    WebGLRenderingContext::uniformMatrix4fv(location, transpose, data);
+    implementUniformMatrixMxNfv(4, 4, &GL::uniformMatrix4fv, location,
+                                transpose, data, srcOffset, srcLength);
 }
 
 void WebGL2RenderingContext::readPixels(GLint x, GLint y, GLsizei width,

@@ -677,6 +677,12 @@ protected:
     void implementUniformNfv(Optional<WebGLUniformLocation*> location,
                              SrcType data, unsigned long long srcOffset,
                              GLuint srcLength);
+    void implementUniformMatrixMxNfv(
+        size_t m, size_t n,
+        void (GL::*uniformMatrixMxNfv)(GLint, GLsizei, GLboolean,
+                                       const GLfloat*),
+        Optional<WebGLUniformLocation*> location, GLboolean transpose,
+        Float32List data, unsigned long long srcOffset, GLuint srcLength);
 
 private:
     std::unordered_map<GLenum, GLuint> m_activeQueries;
