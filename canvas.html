@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="">
+<head>
+<title>Canvas Demo</title>
+<script>
+function log(msg) {
+  var d = document.createElement("div");
+  d.appendChild(document.createTextNode(msg));
+  document.body.appendChild(d);
+}
+
+function draw() {
+  var c = document.createElement("canvas");
+  var ctx = c.getContext("2d");
+  ctx.canvas.width = 256;
+  ctx.canvas.height = 256;
+  ctx.font = "bold 200px sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.lineWidth = 2;
+  ctx.strokeText("2", 128, 128);
+  ctx.strokeRect(0, 0, 256, 256);
+  document.body.appendChild(c);
+}
+</script>
+</head>
+<body onload="draw()"></body>
+</html>
