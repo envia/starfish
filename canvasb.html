@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="">
+<head>
+<title>Canvas Demo</title>
+<script>
+function log(msg) {
+  var d = document.createElement("div");
+  d.appendChild(document.createTextNode(msg));
+  document.body.appendChild(d);
+}
+
+function draw() {
+  var c = document.createElement("canvas");
+  var ctx = c.getContext("2d");
+  ctx.canvas.width = 256;
+  ctx.canvas.height = 256;
+  ctx.rect(0, 0, 256, 256);
+  ctx.fillStyle = "rgba(80, 96, 112, 128)";
+  ctx.fill();
+  document.body.appendChild(c);
+}
+</script>
+</head>
+<body onload="draw()"></body>
+</html>
