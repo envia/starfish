@@ -19,9 +19,8 @@ function startLogo(canvas) {
   var ctx = document.createElement("canvas").getContext("2d");
   ctx.canvas.width = 256;
   ctx.canvas.height = 256;
-  ctx.rect(0, 0, 256, 256);
   ctx.fillStyle = "rgba(80, 96, 112, 0.5)";
-  ctx.fill();
+  ctx.fillRect(0, 0, 256, 256);
 
   var tex = twgl.createTexture(gl, {
     src: ctx.canvas,
