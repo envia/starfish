@@ -16,6 +16,7 @@ function startLogo(canvas) {
 
   var bufferInfo = twgl.primitives.createCubeBufferInfo(gl, 2);
 
+  setTimeout(() => {
   var ctx = document.createElement("canvas").getContext("2d");
   ctx.canvas.width = 256;
   ctx.canvas.height = 256;
@@ -31,6 +32,7 @@ function startLogo(canvas) {
     min: gl.LINEAR_MIPMAP_LINEAR,
     premultiplyAlpha: true,
   });
+  }, 1);
 
   var eye = [1, 4, -6];
   var target = [0, 0, 0];
