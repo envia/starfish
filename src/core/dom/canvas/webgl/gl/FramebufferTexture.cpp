@@ -37,13 +37,6 @@ static bool createFrameBufferObject(GL* gl, const unsigned width,
                                     const bool needDepthBuffer,
                                     const bool needStencilBuffer)
 {
-    GLint oldTextureId = 0;
-    gl->getIntegerv(GL_TEXTURE_BINDING_2D, &oldTextureId);
-    GLint oldFbo = 0;
-    gl->getIntegerv(GL_FRAMEBUFFER_BINDING, &oldFbo);
-    GLint oldRbo = 0;
-    gl->getIntegerv(GL_RENDERBUFFER_BINDING, &oldRbo);
-
     // 1. Create a framebuffer object
     gl->genFramebuffers(1, &outFbo);
     gl->bindFramebuffer(GL_FRAMEBUFFER, outFbo);
@@ -107,9 +100,9 @@ static bool createFrameBufferObject(GL* gl, const unsigned width,
         return false;
     }
 
-    gl->bindTexture(GL_TEXTURE_2D, oldTextureId);
-    gl->bindFramebuffer(GL_FRAMEBUFFER, oldFbo);
-    gl->bindRenderbuffer(GL_RENDERBUFFER, oldRbo);
+    gl->bindTexture(GL_TEXTURE_2D, 0);
+    gl->bindFramebuffer(GL_FRAMEBUFFER, 0);
+    gl->bindRenderbuffer(GL_RENDERBUFFER, 0);
 
     return true;
 }
