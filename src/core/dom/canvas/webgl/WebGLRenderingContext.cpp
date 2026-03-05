@@ -225,6 +225,10 @@ void WebGLRenderingContext::onResize()
     // bind default frame buffer
     GLContextScope contextScope(m_context);
     m_gl->bindFramebuffer(GL_FRAMEBUFFER, m_framebufferTexture->fbo());
+    // bind texture
+    if (m_boundTextures.find(GL_TEXTURE_2D) != m_boundTextures.end()) {
+	m_gl->bindTexture(GL_TEXTURE_2D, m_boundTextures[GL_TEXTURE_2D]);
+    }
 }
 
 #define ENTER_CONTEXT_SCOPE_IMPL(bailoutValue, ...) \
