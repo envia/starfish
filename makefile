@@ -1,4 +1,4 @@
-.PHONY: all try clean revert reland webgl1 webgl2
+.PHONY: all try clean revert reland submodule webgl1 webgl2
 
 all: binding_generator/scripts/starfish_code_generator.py out/webgl2
 	ninja -C out/webgl2 starfish.executable
@@ -21,6 +21,9 @@ revert: binding_generator/scripts/starfish_code_generator.py
 
 reland: binding_generator/scripts/starfish_code_generator.py
 	git -C test reset --hard master
+
+submodule:
+	git submodule update --init --recursive
 
 webgl1:
 	./tool/test_runner.py vendor_test_khronos
