@@ -68,6 +68,10 @@ size_t Pixel::getBytesPerPixel(GLenum format, GLenum type)
         }
     }
 
+    if (type == GL_UNSIGNED_BYTE && format == GL_RED) {
+        return 1;
+    }
+
     STARFISH_UNIMPLEMENTED("format: 0x%04X, type: 0x%04X", format, type);
     return 0;
 }

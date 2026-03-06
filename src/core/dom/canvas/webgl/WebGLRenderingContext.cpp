@@ -3033,7 +3033,6 @@ void WebGLRenderingContext::texImage2D(GLenum target, GLint level,
                        "format (0x%04X) are not same.",
                        internalFormat, format)
                        .c_str());
-        return;
     }
 
     handleTexImageWithArrayBufferView(
