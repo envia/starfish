@@ -1734,7 +1734,8 @@ ScriptValue WebGLRenderingContext::getVertexAttrib(GLuint index, GLenum pname)
 
         TRACE(WEBGL, KV(index), KV(maybeBuffer.value()->glObject()));
 
-        STARFISH_ASSERT(index == maybeBuffer.value()->glObject());
+        STARFISH_ASSERT(static_cast<GLuint>(value) ==
+                        maybeBuffer.value()->glObject());
 
         return maybeBuffer.value()->scriptValue();
     }
