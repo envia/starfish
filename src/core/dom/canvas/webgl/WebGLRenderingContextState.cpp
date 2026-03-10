@@ -32,8 +32,12 @@ WebGLRenderingContextState::WebGLRenderingContextState()
 Optional<WebGLBuffer*>
 WebGLRenderingContextState::getBufferBoundToVertexAttributes(GLuint index)
 {
-    const auto& iter = m_buffersBoundToVertexAttributes.find(index);
-    if (iter == m_buffersBoundToVertexAttributes.end()) {
+    GLuint vao = 0;
+    if (m_webGLVertexArrayObjectOES.hasValue()) {
+        vao = m_webGLVertexArrayObjectOES.value()->glObject();
+    }
+    const auto& iter = m_buffersBoundToVertexAttributes[vao].find(index);
+    if (iter == m_buffersBoundToVertexAttributes[vao].end()) {
         return nullptr;
     }
 
@@ -44,10 +48,14 @@ WebGLRenderingContextState::getBufferBoundToVertexAttributes(GLuint index)
 void WebGLRenderingContextState::setBufferBoundToVertexAttributes(
     GLuint index, Optional<WebGLBuffer*> maybe)
 {
+    GLuint vao = 0;
+    if (m_webGLVertexArrayObjectOES.hasValue()) {
+        vao = m_webGLVertexArrayObjectOES.value()->glObject();
+    }
     if (maybe.hasValue()) {
-        m_buffersBoundToVertexAttributes.insert_or_assign(index, maybe.value());
+        m_buffersBoundToVertexAttributes[vao][index] = maybe.value();
     } else {
-        m_buffersBoundToVertexAttributes.erase(index);
+        m_buffersBoundToVertexAttributes[vao].erase(index);
     }
 }
 
