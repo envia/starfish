@@ -1172,8 +1172,12 @@ ScriptValue WebGLRenderingContext::getParameter(GLenum pname)
     case GL_ELEMENT_ARRAY_BUFFER_BINDING: {
         GLuint target = (pname == GL_ARRAY_BUFFER_BINDING)
                             ? GL_ARRAY_BUFFER
-                            : GL_ELEMENT_ARRAY_BUFFER_BINDING;
+                            : GL_ELEMENT_ARRAY_BUFFER;
         WebGLBuffer* buffer = m_state->getBoundBuffer(target).valueOr(nullptr);
+        GLint value = 0;
+        m_gl->getIntegerv(pname, &value);
+        STARFISH_ASSERT((value == 0 && buffer == nullptr) ||
+                        (static_cast<GLuint>(value) == buffer->glObject()));
         return buffer ? buffer->scriptValue() : scriptNull();
     }
     // GLenum
