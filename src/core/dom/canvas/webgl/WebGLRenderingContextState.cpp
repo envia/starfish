@@ -21,6 +21,7 @@
 
 #include "StarfishConfig.h"
 #include "WebGLRenderingContextState.h"
+#include "core/dom/canvas/webgl/WebGL2RenderingContext.h"
 #include "core/dom/canvas/webgl/WebGLOES_VertexArrayObject.h"
 
 namespace Starfish {
@@ -33,7 +34,9 @@ Optional<WebGLBuffer*>
 WebGLRenderingContextState::getBufferBoundToVertexAttributes(GLuint index)
 {
     GLuint vao = 0;
-    if (m_webGLVertexArrayObjectOES.hasValue()) {
+    if (m_webGLVertexArrayObject.hasValue()) {
+        vao = m_webGLVertexArrayObject.value()->glObject();
+    } else if (m_webGLVertexArrayObjectOES.hasValue()) {
         vao = m_webGLVertexArrayObjectOES.value()->glObject();
     }
     const auto& iter = m_buffersBoundToVertexAttributes[vao].find(index);
@@ -49,7 +52,9 @@ void WebGLRenderingContextState::setBufferBoundToVertexAttributes(
     GLuint index, Optional<WebGLBuffer*> maybe)
 {
     GLuint vao = 0;
-    if (m_webGLVertexArrayObjectOES.hasValue()) {
+    if (m_webGLVertexArrayObject.hasValue()) {
+        vao = m_webGLVertexArrayObject.value()->glObject();
+    } else if (m_webGLVertexArrayObjectOES.hasValue()) {
         vao = m_webGLVertexArrayObjectOES.value()->glObject();
     }
     if (maybe.hasValue()) {
@@ -62,7 +67,9 @@ void WebGLRenderingContextState::setBufferBoundToVertexAttributes(
 Optional<WebGLBuffer*> WebGLRenderingContextState::getBoundBuffer(GLuint target)
 {
     GLuint vao = 0;
-    if (m_webGLVertexArrayObjectOES.hasValue()) {
+    if (m_webGLVertexArrayObject.hasValue()) {
+        vao = m_webGLVertexArrayObject.value()->glObject();
+    } else if (m_webGLVertexArrayObjectOES.hasValue()) {
         vao = m_webGLVertexArrayObjectOES.value()->glObject();
     }
     const auto& iter = m_buffersBound[vao].find(target);
@@ -78,7 +85,9 @@ void WebGLRenderingContextState::setBoundBuffer(GLenum target,
                                                 Optional<WebGLBuffer*> maybe)
 {
     GLuint vao = 0;
-    if (m_webGLVertexArrayObjectOES.hasValue()) {
+    if (m_webGLVertexArrayObject.hasValue()) {
+        vao = m_webGLVertexArrayObject.value()->glObject();
+    } else if (m_webGLVertexArrayObjectOES.hasValue()) {
         vao = m_webGLVertexArrayObjectOES.value()->glObject();
     }
     if (maybe.hasValue()) {
