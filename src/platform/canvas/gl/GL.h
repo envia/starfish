@@ -36,9 +36,7 @@ public:
     static GL *create(Renderer *renderer);
     static GL *createGeneric(Renderer *renderer);
 
-    virtual ~GL()
-    {
-    }
+    virtual ~GL() = default;
 
     virtual void activeTexture(GLenum texture) = 0;
     virtual void attachShader(GLuint program, GLuint shader) = 0;
