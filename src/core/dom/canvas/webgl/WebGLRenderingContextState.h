@@ -65,7 +65,12 @@ public:
     void setBufferBoundToVertexAttributes(GLuint index,
                                           Optional<WebGLBuffer*> maybe);
 
+    void deleteVertexArray(GLuint vao);
+    void deleteVertexArrayOES(GLuint vao);
+
 private:
+    GLuint vertexArray();
+
     // Define variables
 #define V(Constructor, Type, MemberName) Type m_##MemberName;
     STATEFUL_VALUES(V);

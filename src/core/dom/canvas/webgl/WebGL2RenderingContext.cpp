@@ -432,6 +432,7 @@ void WebGL2RenderingContext::deleteVertexArray(
     TRACE(WEBGL, KV(vao));
     gl()->deleteVertexArrays(1, &vao);
     value->markDeleted();
+    getState()->deleteVertexArray(vao);
 }
 
 GLboolean WebGL2RenderingContext::isVertexArray(

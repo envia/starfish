@@ -26,19 +26,12 @@
 
 namespace Starfish {
 
-WebGLRenderingContextState::WebGLRenderingContextState()
-{
-}
+WebGLRenderingContextState::WebGLRenderingContextState() = default;
 
 Optional<WebGLBuffer*>
 WebGLRenderingContextState::getBufferBoundToVertexAttributes(GLuint index)
 {
-    GLuint vao = 0;
-    if (m_webGLVertexArrayObject.hasValue()) {
-        vao = m_webGLVertexArrayObject.value()->glObject();
-    } else if (m_webGLVertexArrayObjectOES.hasValue()) {
-        vao = m_webGLVertexArrayObjectOES.value()->glObject();
-    }
+    GLuint vao = vertexArray();
     const auto& iter = m_buffersBoundToVertexAttributes[vao].find(index);
     if (iter == m_buffersBoundToVertexAttributes[vao].end()) {
         return nullptr;
@@ -51,12 +44,7 @@ WebGLRenderingContextState::getBufferBoundToVertexAttributes(GLuint index)
 void WebGLRenderingContextState::setBufferBoundToVertexAttributes(
     GLuint index, Optional<WebGLBuffer*> maybe)
 {
-    GLuint vao = 0;
-    if (m_webGLVertexArrayObject.hasValue()) {
-        vao = m_webGLVertexArrayObject.value()->glObject();
-    } else if (m_webGLVertexArrayObjectOES.hasValue()) {
-        vao = m_webGLVertexArrayObjectOES.value()->glObject();
-    }
+    GLuint vao = vertexArray();
     if (maybe.hasValue()) {
         m_buffersBoundToVertexAttributes[vao][index] = maybe.value();
     } else {
@@ -66,12 +54,7 @@ void WebGLRenderingContextState::setBufferBoundToVertexAttributes(
 
 Optional<WebGLBuffer*> WebGLRenderingContextState::getBoundBuffer(GLuint target)
 {
-    GLuint vao = 0;
-    if (m_webGLVertexArrayObject.hasValue()) {
-        vao = m_webGLVertexArrayObject.value()->glObject();
-    } else if (m_webGLVertexArrayObjectOES.hasValue()) {
-        vao = m_webGLVertexArrayObjectOES.value()->glObject();
-    }
+    GLuint vao = vertexArray();
     const auto& iter = m_buffersBound[vao].find(target);
     if (iter == m_buffersBound[vao].end()) {
         return nullptr;
@@ -84,17 +67,45 @@ Optional<WebGLBuffer*> WebGLRenderingContextState::getBoundBuffer(GLuint target)
 void WebGLRenderingContextState::setBoundBuffer(GLenum target,
                                                 Optional<WebGLBuffer*> maybe)
 {
-    GLuint vao = 0;
-    if (m_webGLVertexArrayObject.hasValue()) {
-        vao = m_webGLVertexArrayObject.value()->glObject();
-    } else if (m_webGLVertexArrayObjectOES.hasValue()) {
-        vao = m_webGLVertexArrayObjectOES.value()->glObject();
-    }
+    GLuint vao = vertexArray();
     if (maybe.hasValue()) {
         m_buffersBound[vao][target] = maybe.value();
     } else {
         m_buffersBound[vao].erase(target);
     }
+}
+
+void WebGLRenderingContextState::deleteVertexArray(GLuint vao)
+{
+    STARFISH_ASSERT(vao != 0);
+    if (m_webGLVertexArrayObject.hasValue() &&
+        m_webGLVertexArrayObject.value()->glObject() == vao) {
+        m_webGLVertexArrayObject = nullptr;
+    }
+    m_buffersBound.erase(vao);
+    m_buffersBoundToVertexAttributes.erase(vao);
+}
+
+void WebGLRenderingContextState::deleteVertexArrayOES(GLuint vao)
+{
+    STARFISH_ASSERT(vao != 0);
+    if (m_webGLVertexArrayObjectOES.hasValue() &&
+        m_webGLVertexArrayObjectOES.value()->glObject() == vao) {
+        m_webGLVertexArrayObjectOES = nullptr;
+    }
+    m_buffersBound.erase(vao);
+    m_buffersBoundToVertexAttributes.erase(vao);
+}
+
+GLuint WebGLRenderingContextState::vertexArray()
+{
+    if (m_webGLVertexArrayObject.hasValue()) {
+        return m_webGLVertexArrayObject.value()->glObject();
+    }
+    if (m_webGLVertexArrayObjectOES.hasValue()) {
+        return m_webGLVertexArrayObjectOES.value()->glObject();
+    }
+    return 0;
 }
 
 } // namespace Starfish
