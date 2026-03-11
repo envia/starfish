@@ -111,9 +111,7 @@ WebGLRenderingContext::WebGLRenderingContext(HTMLCanvasElement* canvasElement)
         NULL, NULL, NULL);
 }
 
-WebGLRenderingContext::~WebGLRenderingContext()
-{
-}
+WebGLRenderingContext::~WebGLRenderingContext() = default;
 
 ScriptBindingInstance* WebGLRenderingContext::scriptBindingInstance()
 {

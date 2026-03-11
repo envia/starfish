@@ -24,9 +24,7 @@
 
 namespace Starfish {
 
-WebGLRenderingContextState::WebGLRenderingContextState()
-{
-}
+WebGLRenderingContextState::WebGLRenderingContextState() = default;
 
 Optional<WebGLBuffer*>
 WebGLRenderingContextState::getBufferBoundToVertexAttributes(GLuint index)
