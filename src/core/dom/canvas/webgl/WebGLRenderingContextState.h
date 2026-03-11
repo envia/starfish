@@ -30,12 +30,14 @@ namespace Starfish {
 class WebGLBuffer;
 
 #define STATEFUL_VALUES(V)                                             \
+    V(WebGLVertexArrayObject, Optional<WebGLVertexArrayObject*>,       \
+      webGLVertexArrayObject)                                          \
+    V(WebGLVertexArrayObjectOES, Optional<WebGLVertexArrayObjectOES*>, \
+      webGLVertexArrayObjectOES)                                       \
     V(WebGLFramebuffer, Optional<WebGLFramebuffer*>, webGLFramebuffer) \
     V(WebGLProgram, Optional<WebGLProgram*>, webGLProgram)
 
 // Forward declarations
-class WebGLVertexArrayObject;
-class WebGLVertexArrayObjectOES;
 #define V(Constructor, _, __) class Constructor;
 STATEFUL_VALUES(V);
 #undef V
@@ -44,24 +46,7 @@ class WebGLRenderingContextState : public gc {
 public:
     WebGLRenderingContextState();
 
-    // Define functions
-    Optional<WebGLVertexArrayObject*> webGLVertexArrayObject() const
-    {
-        return m_webGLVertexArrayObject;
-    }
-    void setWebGLVertexArrayObject(Optional<WebGLVertexArrayObject*> value)
-    {
-        m_webGLVertexArrayObject = value;
-    }
-    Optional<WebGLVertexArrayObjectOES*> webGLVertexArrayObjectOES() const
-    {
-        return m_webGLVertexArrayObjectOES;
-    }
-    void setWebGLVertexArrayObjectOES(
-        Optional<WebGLVertexArrayObjectOES*> value)
-    {
-        m_webGLVertexArrayObjectOES = value;
-    }
+// Define functions
 #define V(Constructor, Type, MemberName)          \
     DEFINE_GETTER(Type, MemberName);              \
     DEFINE_SETTER(Type, MemberName, Constructor); \
@@ -82,8 +67,6 @@ public:
 
 private:
     // Define variables
-    Optional<WebGLVertexArrayObject*> m_webGLVertexArrayObject;
-    Optional<WebGLVertexArrayObjectOES*> m_webGLVertexArrayObjectOES;
 #define V(Constructor, Type, MemberName) Type m_##MemberName;
     STATEFUL_VALUES(V);
 #undef V
