@@ -26,9 +26,7 @@
 #include "core/util/String.h"
 #include <unordered_map>
 
-namespace Starfish {
-
-size_t Pixel::getBytesPerPixel(GLenum format, GLenum type)
+static size_t getBytesPerPixelWebGL1(GLenum format, GLenum type)
 {
     // Format      Type                Bytes per Pixel
     // ------------------------------------------------
@@ -68,11 +66,31 @@ size_t Pixel::getBytesPerPixel(GLenum format, GLenum type)
         }
     }
 
+    STARFISH_UNIMPLEMENTED("format: 0x%04X, type: 0x%04X", format, type);
+    return 0;
+}
+
+static size_t getBytesPerPixelWebGL2(GLenum format, GLenum type)
+{
     if (type == GL_UNSIGNED_BYTE && format == GL_RED) {
         return 1;
     }
 
     STARFISH_UNIMPLEMENTED("format: 0x%04X, type: 0x%04X", format, type);
+    return 0;
+}
+
+namespace Starfish {
+
+size_t Pixel::getBytesPerPixel(GLenum format, GLenum type, int webGLVersion)
+{
+    if (webGLVersion == 1) {
+        return getBytesPerPixelWebGL1(format, type);
+    }
+    if (webGLVersion == 2) {
+        return getBytesPerPixelWebGL2(format, type);
+    }
+    STARFISH_ASSERT_NOT_REACHED();
     return 0;
 }
 
