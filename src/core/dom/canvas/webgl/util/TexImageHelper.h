@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2026-present Samsung Electronics Co., Ltd
+ * Copyright (c) 2019-present Samsung Electronics Co., Ltd
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -22,9 +22,14 @@
 
 #if defined(STARFISH_ENABLE_CANVAS) && defined(STARFISH_ENABLE_WEBGL)
 
-#include "core/modules/canvas/image/NativeImageData.h"
+#include "StarfishBase.h"
+#include "platform/canvas/gl/GLTypes.h"
+#include <cstddef>
+#include <vector>
 
 namespace Starfish {
+
+class NativeImageData;
 
 class TexImageHelper final {
 public:
@@ -66,5 +71,6 @@ private:
 
 } // namespace Starfish
 
-#endif
-#endif
+#endif // defined(STARFISH_ENABLE_CANVAS) && defined(STARFISH_ENABLE_WEBGL)
+
+#endif // __StarfishTexImageHelper__
