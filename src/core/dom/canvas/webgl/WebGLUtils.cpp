@@ -70,10 +70,20 @@ static size_t getBytesPerPixelWebGL1(GLenum format, GLenum type)
     return 0;
 }
 
+struct Combination {
+    GLenum format;
+    GLenum type;
+    size_t bytes_per_pixel;
+};
+
+static const Combination tableWebGL2[] = { { GL_UNSIGNED_BYTE, GL_RED, 1 } };
+
 static size_t getBytesPerPixelWebGL2(GLenum format, GLenum type)
 {
-    if (type == GL_UNSIGNED_BYTE && format == GL_RED) {
-        return 1;
+    for (const Combination& combination : tableWebGL2) {
+        if (combination.format == format && combination.type == type) {
+            return combination.bytes_per_pixel;
+        }
     }
 
     STARFISH_UNIMPLEMENTED("format: 0x%04X, type: 0x%04X", format, type);
