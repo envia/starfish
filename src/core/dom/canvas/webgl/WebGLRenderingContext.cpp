@@ -31,7 +31,7 @@
 #include "core/util/debug/Trace.h"
 #include "core/util/String.h"
 #include "core/dom/canvas/webgl/gl/GLContext.h"
-#include "core/dom/canvas/webgl/TexImageHelper.h"
+#include "core/dom/canvas/webgl/util/TexImageHelper.h"
 #include "core/dom/canvas/webgl/WebGLActiveInfo.h"
 #include "core/dom/canvas/webgl/WebGLBuffer.h"
 #include "core/dom/canvas/webgl/WebGLShader.h"
