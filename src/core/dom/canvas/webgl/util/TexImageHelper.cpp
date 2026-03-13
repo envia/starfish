@@ -57,9 +57,7 @@ TexImageHelper::TexImageHelper(NativeImageData* imageData, GLenum format)
     m_isNativeImageDataUsed = true;
 }
 
-TexImageHelper::~TexImageHelper()
-{
-}
+TexImageHelper::~TexImageHelper() = default;
 
 void TexImageHelper::draw(const bool needsFlipY,
                           const bool needsPremultiplyAlpha, const GLenum type)
@@ -173,4 +171,4 @@ unsigned char TexImageHelper::multiplyAlpha(unsigned char color, float alpha)
 
 } // namespace Starfish
 
-#endif
+#endif // defined(STARFISH_ENABLE_CANVAS) && defined(STARFISH_ENABLE_WEBGL)
