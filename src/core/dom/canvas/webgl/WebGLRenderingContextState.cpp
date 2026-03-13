@@ -82,7 +82,7 @@ void WebGLRenderingContextState::deleteVertexArray(GLuint vao)
     STARFISH_ASSERT(vao != 0);
     if (m_webGLVertexArrayObject.hasValue() &&
         m_webGLVertexArrayObject.value()->glObject() == vao) {
-        m_webGLVertexArrayObject= nullptr;
+        m_webGLVertexArrayObject = nullptr;
     }
     m_buffersBound.erase(vao);
     m_buffersBoundToVertexAttributes.erase(vao);
