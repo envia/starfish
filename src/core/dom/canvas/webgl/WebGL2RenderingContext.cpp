@@ -386,8 +386,23 @@ static bool isInternalFormatValid(GLint internalFormat, GLenum format,
 
 static bool isSrcDataValid(Optional<ScriptArrayBufferView> pixels, GLenum type)
 {
-    if (pixels.hasValue() && pixels.value()->isUint8ArrayObject() &&
-        type == GL_UNSIGNED_BYTE) {
+    if (pixels.hasValue() &&
+        ((pixels.value()->isInt8ArrayObject() && type == GL_BYTE) ||
+         (pixels.value()->isUint8ArrayObject() && type == GL_UNSIGNED_BYTE) ||
+         (pixels.value()->isUint8ClampedArrayObject() &&
+          type == GL_UNSIGNED_BYTE) ||
+         (pixels.value()->isInt16ArrayObject() && type == GL_SHORT) ||
+         (pixels.value()->isUint16ArrayObject() &&
+          (type == GL_UNSIGNED_SHORT || type == GL_UNSIGNED_SHORT_5_6_5 ||
+           type == GL_UNSIGNED_SHORT_5_5_5_1 ||
+           type == GL_UNSIGNED_SHORT_4_4_4_4 || type == GL_HALF_FLOAT)) ||
+         (pixels.value()->isInt32ArrayObject() && type == GL_INT) ||
+         (pixels.value()->isUint32ArrayObject() &&
+          (type == GL_UNSIGNED_INT || type == GL_UNSIGNED_INT_5_9_9_9_REV ||
+           type == GL_UNSIGNED_INT_2_10_10_10_REV ||
+           type == GL_UNSIGNED_INT_10F_11F_11F_REV ||
+           type == GL_UNSIGNED_INT_24_8)) ||
+         (pixels.value()->isFloat32ArrayObject() && type == GL_FLOAT))) {
         return true;
     }
     return false;
