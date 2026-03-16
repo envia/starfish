@@ -45,7 +45,7 @@ size_t Pixel::getBytesPerPixel(GLenum format, GLenum type)
     // Refs: Table 3.4: Valid pixel format and type combinations.
     // https://registry.khronos.org/OpenGL/specs/es/2.0/es_full_spec_2.0.pdf
 
-    if (type == GL_UNSIGNED_BYTE || type == GL_FLOAT) {
+    if (type == GL_UNSIGNED_BYTE) {
         if (format == GL_RGBA || format == GL_BGRA_EXT) {
             return 4;
         } else if (format == GL_RGB) {
