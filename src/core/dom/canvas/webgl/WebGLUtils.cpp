@@ -76,7 +76,72 @@ struct Combination {
     size_t bytes_per_pixel;
 };
 
-static const Combination tableWebGL2[] = { { GL_UNSIGNED_BYTE, GL_RED, 1 } };
+// https://registry.khronos.org/OpenGL/specs/es/3.0/es_spec_3.0.pdf
+static const Combination tableWebGL2[] = {
+    // Table 3.2: Valid combinations of format, type, and sized internalformat.
+    { GL_UNSIGNED_BYTE, GL_RGBA, 4 },
+    { GL_BYTE, GL_RGBA, 4 },
+    { GL_UNSIGNED_SHORT_4_4_4_4, GL_RGBA, 2 },
+    { GL_UNSIGNED_SHORT_5_5_5_1, GL_RGBA, 2 },
+    { GL_UNSIGNED_INT_2_10_10_10_REV, GL_RGBA, 4 },
+    { GL_HALF_FLOAT, GL_RGBA, 8 },
+    { GL_FLOAT, GL_RGBA, 16 },
+    { GL_UNSIGNED_BYTE, GL_RGBA_INTEGER, 4 },
+    { GL_BYTE, GL_RGBA_INTEGER, 4 },
+    { GL_UNSIGNED_SHORT, GL_RGBA_INTEGER, 8 },
+    { GL_SHORT, GL_RGBA_INTEGER, 8 },
+    { GL_UNSIGNED_INT, GL_RGBA_INTEGER, 16 },
+    { GL_INT, GL_RGBA_INTEGER, 16 },
+    { GL_UNSIGNED_INT_2_10_10_10_REV, GL_RGBA_INTEGER, 4 },
+    { GL_UNSIGNED_BYTE, GL_RGB, 3 },
+    { GL_BYTE, GL_RGB, 3 },
+    { GL_UNSIGNED_SHORT_5_6_5, GL_RGB, 2 },
+    { GL_UNSIGNED_INT_10F_11F_11F_REV, GL_RGB, 4 },
+    { GL_UNSIGNED_INT_5_9_9_9_REV, GL_RGB, 4 },
+    { GL_HALF_FLOAT, GL_RGB, 6 },
+    { GL_FLOAT, GL_RGB, 12 },
+    { GL_UNSIGNED_BYTE, GL_RGB_INTEGER, 3 },
+    { GL_BYTE, GL_RGB_INTEGER, 3 },
+    { GL_UNSIGNED_SHORT, GL_RGB_INTEGER, 6 },
+    { GL_SHORT, GL_RGB_INTEGER, 6 },
+    { GL_UNSIGNED_INT, GL_RGB_INTEGER, 12 },
+    { GL_INT, GL_RGB_INTEGER, 12 },
+    { GL_UNSIGNED_BYTE, GL_RG, 2 },
+    { GL_BYTE, GL_RG, 2 },
+    { GL_HALF_FLOAT, GL_RG, 4 },
+    { GL_FLOAT, GL_RG, 8 },
+    { GL_UNSIGNED_BYTE, GL_RG_INTEGER, 2 },
+    { GL_BYTE, GL_RG_INTEGER, 2 },
+    { GL_UNSIGNED_SHORT, GL_RG_INTEGER, 4 },
+    { GL_SHORT, GL_RG_INTEGER, 4 },
+    { GL_UNSIGNED_INT, GL_RG_INTEGER, 8 },
+    { GL_INT, GL_RG_INTEGER, 8 },
+    { GL_UNSIGNED_BYTE, GL_RED, 1 },
+    { GL_BYTE, GL_RED, 1 },
+    { GL_HALF_FLOAT, GL_RED, 2 },
+    { GL_FLOAT, GL_RED, 4 },
+    { GL_UNSIGNED_BYTE, GL_RED_INTEGER, 1 },
+    { GL_BYTE, GL_RED_INTEGER, 1 },
+    { GL_UNSIGNED_SHORT, GL_RED_INTEGER, 2 },
+    { GL_SHORT, GL_RED_INTEGER, 2 },
+    { GL_UNSIGNED_INT, GL_RED_INTEGER, 4 },
+    { GL_INT, GL_RED_INTEGER, 4 },
+    { GL_UNSIGNED_SHORT, GL_DEPTH_COMPONENT, 2 },
+    { GL_UNSIGNED_INT, GL_DEPTH_COMPONENT, 4 },
+    { GL_FLOAT, GL_DEPTH_COMPONENT, 4 },
+    { GL_UNSIGNED_INT_24_8, GL_DEPTH_STENCIL, 4 },
+    { GL_FLOAT_32_UNSIGNED_INT_24_8_REV, GL_DEPTH_STENCIL, 8 },
+    // Table 3.3: Valid combinations of format, type, and unsized
+    // internalformat.
+    { GL_UNSIGNED_BYTE, GL_RGBA, 4 },
+    { GL_UNSIGNED_SHORT_4_4_4_4, GL_RGBA, 2 },
+    { GL_UNSIGNED_SHORT_5_5_5_1, GL_RGBA, 2 },
+    { GL_UNSIGNED_BYTE, GL_RGB, 3 },
+    { GL_UNSIGNED_SHORT_5_6_5, GL_RGB, 2 },
+    { GL_UNSIGNED_BYTE, GL_LUMINANCE_ALPHA, 2 },
+    { GL_UNSIGNED_BYTE, GL_LUMINANCE, 1 },
+    { GL_UNSIGNED_BYTE, GL_ALPHA, 1 },
+};
 
 static size_t getBytesPerPixelWebGL2(GLenum format, GLenum type)
 {
