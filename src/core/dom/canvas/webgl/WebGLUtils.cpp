@@ -24,6 +24,7 @@
 #include "platform/canvas/gl/IncludeGL.h"
 #include "core/util/debug/Trace.h"
 #include "core/util/String.h"
+#include <map>
 #include <unordered_map>
 
 namespace Starfish {
@@ -68,8 +69,12 @@ size_t Pixel::getBytesPerPixel(GLenum format, GLenum type)
         }
     }
 
-    if (type == GL_UNSIGNED_BYTE && format == GL_RED) {
-        return 1;
+    const std::map<std::pair<GLenum, GLenum>, size_t> webgl2 = {
+        { { GL_RED, GL_UNSIGNED_BYTE }, 1 },
+    };
+    auto pair = webgl2.find(std::make_pair(format, type));
+    if (pair != webgl2.end()) {
+        return pair->second;
     }
 
     STARFISH_UNIMPLEMENTED("format: 0x%04X, type: 0x%04X", format, type);
