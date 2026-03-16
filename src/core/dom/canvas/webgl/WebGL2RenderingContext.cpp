@@ -380,7 +380,11 @@ struct Combination {
     GLenum type;
 };
 
+// https://www.khronos.org/opengles/sdk/docs/man3/html/glTexImage2D.xhtml
+// https://www.khronos.org/registry/OpenGL-Refpages/es3.0/html/glTexImage2D.xhtml
+// https://registry.khronos.org/OpenGL-Refpages/es3.0/html/glTexImage2D.xhtml
 static const Combination combinations[] = {
+    // Table 1. Unsized Internal Formats
     { GL_RGB, GL_RGB, GL_UNSIGNED_BYTE },
     { GL_RGB, GL_RGB, GL_UNSIGNED_SHORT_5_6_5 },
     { GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE },
@@ -389,6 +393,7 @@ static const Combination combinations[] = {
     { GL_LUMINANCE_ALPHA, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE },
     { GL_LUMINANCE, GL_LUMINANCE, GL_UNSIGNED_BYTE },
     { GL_ALPHA, GL_ALPHA, GL_UNSIGNED_BYTE },
+    // Table 2. Sized Internal Formats
     { GL_R8, GL_RED, GL_UNSIGNED_BYTE },
     { GL_R8_SNORM, GL_RED, GL_BYTE },
     { GL_R16F, GL_RED, GL_HALF_FLOAT },
