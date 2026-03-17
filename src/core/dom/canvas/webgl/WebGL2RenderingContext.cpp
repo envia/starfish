@@ -45,6 +45,7 @@ static constexpr GLenum kMAX_CLIENT_WAIT_TIMEOUT_WEBGL = 0x9247;
 
 /* WebGL constants */
 static constexpr GLint64 kMaxClientWaitTimeoutWebgl = 0;
+static constexpr GLsizei kMaximumSupportedStride = 255;
 static constexpr char kShadingLanguageVersion[] = "WebGL GLSL ES 3.00";
 static constexpr char kVersion[] = "WebGL 2.0";
 
@@ -1747,7 +1748,50 @@ void WebGL2RenderingContext::vertexAttribIPointer(GLuint index, GLint size,
                                                   GLenum type, GLsizei stride,
                                                   GLintptr offset)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    switch (type) {
+    case GL_SHORT:
+    case GL_UNSIGNED_SHORT:
+        if (offset % 2 != 0 || stride % 2 != 0) {
+            setGLError(GL_INVALID_OPERATION);
+            return;
+        }
+        break;
+    case GL_INT:
+    case GL_UNSIGNED_INT:
+        if (offset % 4 != 0 || stride % 4 != 0) {
+            setGLError(GL_INVALID_OPERATION);
+            return;
+        }
+        break;
+    default:
+        break;
+    }
+
+    if (offset < 0) {
+        setGLError(GL_INVALID_VALUE);
+        return;
+    }
+
+    if (!getState()->getBoundBuffer(GL_ARRAY_BUFFER).hasValue() &&
+        offset != 0) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    if (stride > kMaximumSupportedStride) {
+        setGLError(GL_INVALID_VALUE);
+        return;
+    }
+
+    gl()->vertexAttribIPointer(index, size, type, stride,
+                               reinterpret_cast<const void*>(offset));
+    if (hasGLError()) {
+        return;
+    }
+    getState()->setBufferBoundToVertexAttributes(
+        index, getState()->getBoundBuffer(GL_ARRAY_BUFFER));
 }
 
 void WebGL2RenderingContext::vertexAttribDivisor(GLuint index, GLuint divisor)
