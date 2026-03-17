@@ -311,7 +311,7 @@ public:
     // Use setGLError only on WebGLRenderingContext and GLExtensions.
     void setGLError(GLenum code, const char* message = nullptr);
     bool hasGLError();
-    void updateGLError();
+    bool updateGLError();
     bool executeInContextScope(std::function<void()> callback);
     WebGLRenderingContextState* getState();
 
