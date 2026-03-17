@@ -2395,9 +2395,25 @@ void WebGLRenderingContext::vertexAttribPointer(GLuint index, GLint size,
 {
     ENTER_CONTEXT_SCOPE();
 
-    if (stride > kMaximumSupportedStride) {
-        // In WebGL, the maximum supported stride is 255
-        setGLError(GL_INVALID_VALUE);
+    switch (type) {
+    case GL_BYTE:
+    case GL_UNSIGNED_BYTE:
+        break;
+    case GL_SHORT:
+    case GL_UNSIGNED_SHORT:
+        if (offset % 2 != 0 || stride % 2 != 0) {
+            setGLError(GL_INVALID_OPERATION);
+            return;
+        }
+        break;
+    case GL_FLOAT:
+        if (offset % 4 != 0 || stride % 4 != 0) {
+            setGLError(GL_INVALID_OPERATION);
+            return;
+        }
+        break;
+    default:
+        setGLError(GL_INVALID_ENUM);
         return;
     }
 
@@ -2408,8 +2424,17 @@ void WebGLRenderingContext::vertexAttribPointer(GLuint index, GLint size,
         return;
     }
 
-    m_state->setBufferBoundToVertexAttributes(
-        index, m_state->getBoundBuffer(GL_ARRAY_BUFFER));
+    if (!getState()->getBoundBuffer(GL_ARRAY_BUFFER).hasValue() &&
+        offset != 0) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    if (stride > kMaximumSupportedStride) {
+        // In WebGL, the maximum supported stride is 255
+        setGLError(GL_INVALID_VALUE);
+        return;
+    }
 
     /*
         The following errors are handled in GLES3.
@@ -2428,6 +2453,11 @@ void WebGLRenderingContext::vertexAttribPointer(GLuint index, GLint size,
     */
     m_gl->vertexAttribPointer(index, size, type, normalized, stride,
                               reinterpret_cast<void*>(offset));
+    if (updateGLError()) {
+        return;
+    }
+    m_state->setBufferBoundToVertexAttributes(
+        index, m_state->getBoundBuffer(GL_ARRAY_BUFFER));
 }
 
 void WebGLRenderingContext::viewport(uint32_t x, uint32_t y, uint32_t width,
