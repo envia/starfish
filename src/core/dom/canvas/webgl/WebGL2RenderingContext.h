@@ -23,6 +23,7 @@
 #if defined(STARFISH_ENABLE_CANVAS) && defined(STARFISH_ENABLE_WEBGL)
 
 #include "core/dom/canvas/webgl/WebGLRenderingContext.h"
+#include "platform/canvas/gl/IncludeGL.h"
 
 namespace Starfish {
 
@@ -689,6 +690,7 @@ protected:
         Float32List data, unsigned long long srcOffset, GLuint srcLength);
 
 private:
+    GLenum m_currentVertexAttribType = GL_FLOAT;
     std::unordered_map<GLenum, GLuint> m_activeQueries;
     std::unordered_map<GLuint, WebGLQuery*> m_queryObjects;
     std::unordered_map<GLuint, WebGLTransformFeedback*> m_transformFeedbacks;
