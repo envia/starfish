@@ -117,7 +117,7 @@ ScriptBindingInstance* WebGL2RenderingContext::scriptBindingInstance()
 #define ENTER_CONTEXT_SCOPE(bailoutValue, ...)       \
     ENTER_CONTEXT_SCOPE_IMPL(bailoutValue);          \
     auto onScopeLeave = OnScopeLeave::create([&]() { \
-        if (hasGLError()) {                          \
+        if (updateGLError()) {                       \
             TRACE(WEBGL,                             \
                   "\033[33m"                         \
                   "GL error detected."               \
@@ -728,7 +728,7 @@ ScriptValue WebGL2RenderingContext::getProgramParameter(WebGLProgram* program,
     GLint params = 0;
     gl()->getProgramiv(program->glObject(), pname, &params);
 
-    if (hasGLError()) {
+    if (updateGLError()) {
         return scriptNull();
     }
 
@@ -1787,7 +1787,7 @@ void WebGL2RenderingContext::vertexAttribIPointer(GLuint index, GLint size,
 
     gl()->vertexAttribIPointer(index, size, type, stride,
                                reinterpret_cast<const void*>(offset));
-    if (hasGLError()) {
+    if (updateGLError()) {
         return;
     }
     getState()->setBufferBoundToVertexAttributes(
@@ -1917,7 +1917,7 @@ void WebGL2RenderingContext::beginQuery(GLenum target, WebGLQuery* query)
         return;
     }
     gl()->beginQuery(target, query->glObject());
-    if (hasGLError()) {
+    if (updateGLError()) {
         return;
     }
     query->setTarget(target);
@@ -1929,7 +1929,7 @@ void WebGL2RenderingContext::endQuery(GLenum target)
     ENTER_CONTEXT_SCOPE();
 
     gl()->endQuery(target);
-    if (hasGLError()) {
+    if (updateGLError()) {
         return;
     }
     m_queryObjects[m_activeQueries[target]]->setTarget(0);
@@ -1950,7 +1950,7 @@ Optional<WebGLQuery*> WebGL2RenderingContext::getQuery(GLenum target,
         }
         GLint query;
         gl()->getQueryiv(target, pname, &query);
-        if (hasGLError() || query == 0 ||
+        if (updateGLError() || query == 0 ||
             m_queryObjects.find(query) == m_queryObjects.end()) {
             return Optional<WebGLQuery*>();
         }
@@ -1968,7 +1968,7 @@ static void getQueryParameterImpl(size_t handle, void* data)
         GLuint value;
         query->context()->gl()->getQueryObjectuiv(
             query->glObject(), GL_QUERY_RESULT_AVAILABLE, &value);
-        if (query->context()->hasGLError()) {
+        if (query->context()->updateGLError()) {
             return;
         }
         query->setQueryResultAvailable(static_cast<GLboolean>(value));
@@ -1977,7 +1977,7 @@ static void getQueryParameterImpl(size_t handle, void* data)
         }
         query->context()->gl()->getQueryObjectuiv(query->glObject(),
                                                   GL_QUERY_RESULT, &value);
-        if (query->context()->hasGLError()) {
+        if (query->context()->updateGLError()) {
             return;
         }
         query->setQueryResult(value);
@@ -2133,7 +2133,7 @@ ScriptValue WebGL2RenderingContext::getSyncParameter(WebGLSync* sync,
     case GL_SYNC_FLAGS: {
         GLint value;
         gl()->getSynciv(sync->glObject(), pname, 1, nullptr, &value);
-        if (hasGLError()) {
+        if (updateGLError()) {
             return scriptNull();
         }
         return createScriptValue(static_cast<GLbitfield>(value));
@@ -2144,7 +2144,7 @@ ScriptValue WebGL2RenderingContext::getSyncParameter(WebGLSync* sync,
     case GL_SYNC_CONDITION: {
         GLint value;
         gl()->getSynciv(sync->glObject(), pname, 1, nullptr, &value);
-        if (hasGLError()) {
+        if (updateGLError()) {
             return scriptNull();
         }
         return createScriptValue(static_cast<GLenum>(value));
@@ -2309,7 +2309,7 @@ Optional<GCAtomicVector<GLuint>> WebGL2RenderingContext::getUniformIndices(
     }
     GLuint* indices = (GLuint*)malloc(sizeof(GLuint) * count);
     gl()->getUniformIndices(program->glObject(), count, names, indices);
-    if (hasGLError()) {
+    if (updateGLError()) {
         for (GLsizei i = 0; i < count; i++) {
             free(names[i]);
         }
@@ -2464,7 +2464,7 @@ Optional<String*> WebGL2RenderingContext::getActiveUniformBlockName(
     gl()->getProgramiv(program->glObject(),
                        GL_ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH, &bufSize);
 
-    if (hasGLError()) {
+    if (updateGLError()) {
         return Optional<String*>();
     }
 
@@ -2473,7 +2473,7 @@ Optional<String*> WebGL2RenderingContext::getActiveUniformBlockName(
     gl()->getActiveUniformBlockName(program->glObject(), uniformBlockIndex,
                                     bufSize, &length, uniformBlockName.data());
 
-    if (hasGLError()) {
+    if (updateGLError()) {
         return Optional<String*>();
     }
 
