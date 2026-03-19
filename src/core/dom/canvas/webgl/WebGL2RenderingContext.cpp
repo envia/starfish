@@ -1796,7 +1796,9 @@ void WebGL2RenderingContext::vertexAttribIPointer(GLuint index, GLint size,
 
 void WebGL2RenderingContext::vertexAttribDivisor(GLuint index, GLuint divisor)
 {
-    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    ENTER_CONTEXT_SCOPE();
+
+    gl()->vertexAttribDivisor(index, divisor);
 }
 
 void WebGL2RenderingContext::drawArraysInstanced(GLenum mode, GLint first,
