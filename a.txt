@@ -1,0 +1,17 @@
+0:
+http://localhost:11010/conformance/attribs/gl-enable-vertex-attrib.html
+http://localhost:11010/conformance/attribs/gl-bindAttribLocation-aliasing.html
+http://localhost:11010/conformance/attribs/gl-bindAttribLocation-matrix.html
+http://localhost:11010/conformance/attribs/gl-vertexattribpointer.html
+http://localhost:11010/conformance/more/functions/vertexAttribBadArgs.html
+http://localhost:11010/conformance/more/functions/vertexAttribPointerBadArgs.html
+1:
+http://localhost:11010/conformance/attribs/gl-enable-vertex-attrib.html
+http://localhost:11010/conformance/attribs/gl-bindAttribLocation-matrix.html
+http://localhost:11010/conformance/attribs/gl-bindAttribLocation-aliasing.html
+http://localhost:11010/conformance/attribs/gl-vertexattribpointer.html
+http://localhost:11010/conformance/more/functions/vertexAttribPointerBadArgs.html
+2:
+http://localhost:11010/conformance/attribs/gl-enable-vertex-attrib.html
+http://localhost:11010/conformance/attribs/gl-bindAttribLocation-matrix.html
+http://localhost:11010/conformance/attribs/gl-bindAttribLocation-aliasing.html
