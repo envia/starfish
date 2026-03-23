@@ -1754,23 +1754,23 @@ ScriptValue WebGLRenderingContext::getTexParameter(GLenum target, GLenum pname)
 ScriptValue WebGLRenderingContext::getUniform(WebGLProgram* program,
                                               WebGLUniformLocation* location)
 {
-    ENTER_CONTEXT_SCOPE(nullptr);
+    ENTER_CONTEXT_SCOPE(scriptNull());
 
     if (!isFromCurrentContext(program)) {
         setGLError(GL_INVALID_OPERATION);
-        return nullptr;
+        return scriptNull();
     }
 
     if (location->program()->context() != this) {
         setGLError(GL_INVALID_OPERATION);
-        return nullptr;
+        return scriptNull();
     }
 
     STARFISH_UNIMPLEMENTED(
         "TODO: Return the uniform value at the passed location in the passed "
         "program.");
 
-    return nullptr;
+    return scriptNull();
 }
 
 WebGLUniformLocation* WebGLRenderingContext::getUniformLocation(
