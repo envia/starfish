@@ -2339,6 +2339,8 @@ void WebGLRenderingContext::vertexAttribPointer(GLuint index, GLint size,
 
     if (!getState()->getBoundBuffer(GL_ARRAY_BUFFER).hasValue() &&
         offset != 0) {
+        // If no WebGLBuffer is bound to the ARRAY_BUFFER target and offset is
+        // non-zero, an INVALID_OPERATION error will be generated.
         setGLError(GL_INVALID_OPERATION);
         return;
     }
