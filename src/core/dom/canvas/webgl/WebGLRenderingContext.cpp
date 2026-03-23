@@ -1766,10 +1766,203 @@ ScriptValue WebGLRenderingContext::getUniform(WebGLProgram* program,
         return scriptNull();
     }
 
-    STARFISH_UNIMPLEMENTED(
-        "TODO: Return the uniform value at the passed location in the passed "
-        "program.");
-
+    GLint size;
+    GLenum type = GL_NONE;
+    m_gl->getActiveUniform(program->glObject(), 0, 0, nullptr, &size, &type,
+                           nullptr);
+    switch (type) {
+    case GL_FLOAT: {
+        GLfloat value;
+        m_gl->getUniformfv(program->glObject(), location->location(), &value);
+        return createScriptValue(value);
+    }
+    case GL_FLOAT_VEC2: {
+        std::vector<GLfloat> values(2);
+        m_gl->getUniformfv(program->glObject(), location->location(),
+                           &values[0]);
+        return createTypedArray<Float32ArrayObjectRef>(scriptBindingInstance(),
+                                                       values);
+    }
+    case GL_FLOAT_VEC3: {
+        std::vector<GLfloat> values(3);
+        m_gl->getUniformfv(program->glObject(), location->location(),
+                           &values[0]);
+        return createTypedArray<Float32ArrayObjectRef>(scriptBindingInstance(),
+                                                       values);
+    }
+    case GL_FLOAT_VEC4: {
+        std::vector<GLfloat> values(4);
+        m_gl->getUniformfv(program->glObject(), location->location(),
+                           &values[0]);
+        return createTypedArray<Float32ArrayObjectRef>(scriptBindingInstance(),
+                                                       values);
+    }
+    case GL_INT: {
+        GLint value;
+        m_gl->getUniformiv(program->glObject(), location->location(), &value);
+        return createScriptValue(value);
+    }
+    case GL_INT_VEC2: {
+        std::vector<GLint> values(2);
+        m_gl->getUniformiv(program->glObject(), location->location(),
+                           &values[0]);
+        return createTypedArray<Int32ArrayObjectRef>(scriptBindingInstance(),
+                                                     values);
+    }
+    case GL_INT_VEC3: {
+        std::vector<GLint> values(3);
+        m_gl->getUniformiv(program->glObject(), location->location(),
+                           &values[0]);
+        return createTypedArray<Int32ArrayObjectRef>(scriptBindingInstance(),
+                                                     values);
+    }
+    case GL_INT_VEC4: {
+        std::vector<GLint> values(4);
+        m_gl->getUniformiv(program->glObject(), location->location(),
+                           &values[0]);
+        return createTypedArray<Int32ArrayObjectRef>(scriptBindingInstance(),
+                                                     values);
+    }
+    case GL_UNSIGNED_INT: {
+        GLuint value;
+        m_gl->getUniformuiv(program->glObject(), location->location(), &value);
+        return createScriptValue(value);
+    }
+    case GL_UNSIGNED_INT_VEC2: {
+        std::vector<GLuint> values(2);
+        m_gl->getUniformuiv(program->glObject(), location->location(),
+                            &values[0]);
+        return createTypedArray<Uint32ArrayObjectRef>(scriptBindingInstance(),
+                                                      values);
+    }
+    case GL_UNSIGNED_INT_VEC3: {
+        std::vector<GLuint> values(3);
+        m_gl->getUniformuiv(program->glObject(), location->location(),
+                            &values[0]);
+        return createTypedArray<Uint32ArrayObjectRef>(scriptBindingInstance(),
+                                                      values);
+    }
+    case GL_UNSIGNED_INT_VEC4: {
+        std::vector<GLuint> values(4);
+        m_gl->getUniformuiv(program->glObject(), location->location(),
+                            &values[0]);
+        return createTypedArray<Uint32ArrayObjectRef>(scriptBindingInstance(),
+                                                      values);
+    }
+    case GL_BOOL: {
+        GLint value;
+        m_gl->getUniformiv(program->glObject(), location->location(), &value);
+        return createScriptValue(static_cast<bool>(value));
+    }
+    case GL_BOOL_VEC2: {
+        std::vector<GLint> values(2);
+        m_gl->getUniformiv(program->glObject(), location->location(),
+                           &values[0]);
+        return createScriptValue(
+            createArray(scriptBindingInstance(),
+                        std::vector<bool>(values.begin(), values.end())));
+    }
+    case GL_BOOL_VEC3: {
+        std::vector<GLint> values(3);
+        m_gl->getUniformiv(program->glObject(), location->location(),
+                           &values[0]);
+        return createScriptValue(
+            createArray(scriptBindingInstance(),
+                        std::vector<bool>(values.begin(), values.end())));
+    }
+    case GL_BOOL_VEC4: {
+        std::vector<GLint> values(4);
+        m_gl->getUniformiv(program->glObject(), location->location(),
+                           &values[0]);
+        return createScriptValue(
+            createArray(scriptBindingInstance(),
+                        std::vector<bool>(values.begin(), values.end())));
+    }
+    case GL_FLOAT_MAT2: {
+        std::vector<GLfloat> values(4);
+        m_gl->getUniformfv(program->glObject(), location->location(),
+                           &values[0]);
+        return createTypedArray<Float32ArrayObjectRef>(scriptBindingInstance(),
+                                                       values);
+    }
+    case GL_FLOAT_MAT3: {
+        std::vector<GLfloat> values(9);
+        m_gl->getUniformfv(program->glObject(), location->location(),
+                           &values[0]);
+        return createTypedArray<Float32ArrayObjectRef>(scriptBindingInstance(),
+                                                       values);
+    }
+    case GL_FLOAT_MAT4: {
+        std::vector<GLfloat> values(16);
+        m_gl->getUniformfv(program->glObject(), location->location(),
+                           &values[0]);
+        return createTypedArray<Float32ArrayObjectRef>(scriptBindingInstance(),
+                                                       values);
+    }
+    case GL_FLOAT_MAT2x3: {
+        std::vector<GLfloat> values(6);
+        m_gl->getUniformfv(program->glObject(), location->location(),
+                           &values[0]);
+        return createTypedArray<Float32ArrayObjectRef>(scriptBindingInstance(),
+                                                       values);
+    }
+    case GL_FLOAT_MAT2x4: {
+        std::vector<GLfloat> values(8);
+        m_gl->getUniformfv(program->glObject(), location->location(),
+                           &values[0]);
+        return createTypedArray<Float32ArrayObjectRef>(scriptBindingInstance(),
+                                                       values);
+    }
+    case GL_FLOAT_MAT3x2: {
+        std::vector<GLfloat> values(6);
+        m_gl->getUniformfv(program->glObject(), location->location(),
+                           &values[0]);
+        return createTypedArray<Float32ArrayObjectRef>(scriptBindingInstance(),
+                                                       values);
+    }
+    case GL_FLOAT_MAT3x4: {
+        std::vector<GLfloat> values(12);
+        m_gl->getUniformfv(program->glObject(), location->location(),
+                           &values[0]);
+        return createTypedArray<Float32ArrayObjectRef>(scriptBindingInstance(),
+                                                       values);
+    }
+    case GL_FLOAT_MAT4x2: {
+        std::vector<GLfloat> values(18);
+        m_gl->getUniformfv(program->glObject(), location->location(),
+                           &values[0]);
+        return createTypedArray<Float32ArrayObjectRef>(scriptBindingInstance(),
+                                                       values);
+    }
+    case GL_FLOAT_MAT4x3: {
+        std::vector<GLfloat> values(12);
+        m_gl->getUniformfv(program->glObject(), location->location(),
+                           &values[0]);
+        return createTypedArray<Float32ArrayObjectRef>(scriptBindingInstance(),
+                                                       values);
+    }
+    case GL_SAMPLER_2D:
+    case GL_SAMPLER_3D:
+    case GL_SAMPLER_CUBE:
+    case GL_SAMPLER_2D_SHADOW:
+    case GL_SAMPLER_2D_ARRAY:
+    case GL_SAMPLER_2D_ARRAY_SHADOW:
+    case GL_SAMPLER_CUBE_SHADOW:
+    case GL_INT_SAMPLER_2D:
+    case GL_INT_SAMPLER_3D:
+    case GL_INT_SAMPLER_CUBE:
+    case GL_INT_SAMPLER_2D_ARRAY:
+    case GL_UNSIGNED_INT_SAMPLER_2D:
+    case GL_UNSIGNED_INT_SAMPLER_3D:
+    case GL_UNSIGNED_INT_SAMPLER_CUBE:
+    case GL_UNSIGNED_INT_SAMPLER_2D_ARRAY: {
+        GLint value;
+        m_gl->getUniformiv(program->glObject(), location->location(), &value);
+        return createScriptValue(value);
+    }
+    default:
+        break;
+    }
     return scriptNull();
 }
 
