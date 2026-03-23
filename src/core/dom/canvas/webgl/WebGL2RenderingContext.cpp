@@ -1590,8 +1590,8 @@ void WebGL2RenderingContext::implementUniformMatrixMxNfv(
         if (srcLength == 0) {
             srcLength = dataLength - srcOffset;
         }
-        if (srcLength > dataLength - srcOffset || srcLength < n ||
-            srcLength % n != 0) {
+        if (srcLength > dataLength - srcOffset || srcLength < (m * n) ||
+            srcLength % (m * n) != 0) {
             setGLError(GL_INVALID_VALUE);
             return;
         }
@@ -1609,8 +1609,8 @@ void WebGL2RenderingContext::implementUniformMatrixMxNfv(
         if (srcLength == 0) {
             srcLength = dataLength - srcOffset;
         }
-        if (srcLength > dataLength - srcOffset || srcLength < n ||
-            srcLength % n != 0) {
+        if (srcLength > dataLength - srcOffset || srcLength < (m * n) ||
+            srcLength % (m * n) != 0) {
             setGLError(GL_INVALID_VALUE);
             return;
         }
