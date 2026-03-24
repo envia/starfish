@@ -1766,10 +1766,49 @@ ScriptValue WebGLRenderingContext::getUniform(WebGLProgram* program,
         return scriptNull();
     }
 
-    GLint size;
+    GLint count = 0;
+    m_gl->getProgramiv(program->glObject(), GL_ACTIVE_UNIFORMS, &count);
+    GLint maxNameLength = 0;
+    m_gl->getProgramiv(program->glObject(), GL_ACTIVE_UNIFORM_MAX_LENGTH,
+                       &maxNameLength);
     GLenum type = GL_NONE;
-    m_gl->getActiveUniform(program->glObject(), 0, 0, nullptr, &size, &type,
-                           nullptr);
+    for (GLint index = 0; index < count; index++) {
+        GLint uniformSize;
+        GLenum uniformType;
+        GLsizei nameLength;
+        std::vector<char> name;
+        name.resize(maxNameLength, '\0');
+        m_gl->getActiveUniform(program->glObject(), index, maxNameLength,
+                               &nameLength, &uniformSize, &uniformType,
+                               &name[0]);
+        if (uniformSize > 1) {
+            std::string arrayName(&name[0]);
+            if (arrayName.length() > 3 &&
+                arrayName.substr(arrayName.length() - 3, arrayName.length()) ==
+                    "[0]") {
+                arrayName = arrayName.substr(0, arrayName.length() - 3);
+            }
+            for (GLint arrayIndex = 0; arrayIndex < uniformSize; arrayIndex++) {
+                std::string elementName =
+                    arrayName + "[" + std::to_string(arrayIndex) + "]";
+                GLint uniformLocation = m_gl->getUniformLocation(
+                    program->glObject(), elementName.data());
+                if (uniformLocation == location->location()) {
+                    type = uniformType;
+                    break;
+                }
+            }
+        } else {
+            GLint uniformLocation =
+                m_gl->getUniformLocation(program->glObject(), &name[0]);
+            if (uniformLocation == location->location()) {
+                type = uniformType;
+            }
+        }
+        if (type != GL_NONE) {
+            break;
+        }
+    }
     switch (type) {
     case GL_FLOAT: {
         GLfloat value;
