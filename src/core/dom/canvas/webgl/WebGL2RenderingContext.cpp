@@ -27,6 +27,7 @@
 #include "core/dom/canvas/webgl/WebGLBuffer.h"
 #include "core/dom/canvas/webgl/WebGLProgram.h"
 #include "core/dom/canvas/webgl/WebGLRenderingContextState.h"
+#include "core/dom/canvas/webgl/WebGLUniformLocation.h"
 #include "core/util/debug/Trace.h"
 #include "platform/canvas/gl/GL.h"
 #include "platform/canvas/gl/IncludeGL.h"
@@ -302,6 +303,83 @@ GLint WebGL2RenderingContext::getFragDataLocation(WebGLProgram* program,
         return -1;
     }
     return gl()->getFragDataLocation(program->glObject(), CSTR(name));
+}
+
+void WebGL2RenderingContext::uniform1ui(
+    Optional<WebGLUniformLocation*> location, GLuint v0)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    if (!location.hasValue()) {
+        return;
+    }
+
+    WebGLUniformLocation* uniform = location.value();
+
+    if (!isFromCurrentProgram(uniform)) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    gl()->uniform1i(uniform->location(), v0);
+}
+
+void WebGL2RenderingContext::uniform2ui(
+    Optional<WebGLUniformLocation*> location, GLuint v0, GLuint v1)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    if (!location.hasValue()) {
+        return;
+    }
+
+    WebGLUniformLocation* uniform = location.value();
+
+    if (!isFromCurrentProgram(uniform)) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    gl()->uniform2i(uniform->location(), v0, v1);
+}
+
+void WebGL2RenderingContext::uniform3ui(
+    Optional<WebGLUniformLocation*> location, GLuint v0, GLuint v1, GLuint v2)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    if (!location.hasValue()) {
+        return;
+    }
+
+    WebGLUniformLocation* uniform = location.value();
+
+    if (!isFromCurrentProgram(uniform)) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    gl()->uniform3i(uniform->location(), v0, v1, v2);
+}
+
+void WebGL2RenderingContext::uniform4ui(
+    Optional<WebGLUniformLocation*> location, GLuint v0, GLuint v1, GLuint v2,
+    GLuint v3)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    if (!location.hasValue()) {
+        return;
+    }
+
+    WebGLUniformLocation* uniform = location.value();
+
+    if (!isFromCurrentProgram(uniform)) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    gl()->uniform4i(uniform->location(), v0, v1, v2, v3);
 }
 
 Optional<WebGLSync*> WebGL2RenderingContext::fenceSync(GLenum condition,
