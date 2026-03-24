@@ -846,6 +846,42 @@ public:
         m_evasGLAPI->glEvasGLImageTargetTexture2DOES(target, image);
     }
 
+    void uniformMatrix2x3fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        m_evasGLAPI->glUniformMatrix2x3fv(location, count, transpose, value);
+    }
+
+    void uniformMatrix3x2fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        m_evasGLAPI->glUniformMatrix3x2fv(location, count, transpose, value);
+    }
+
+    void uniformMatrix2x4fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        m_evasGLAPI->glUniformMatrix2x4fv(location, count, transpose, value);
+    }
+
+    void uniformMatrix4x2fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        m_evasGLAPI->glUniformMatrix4x2fv(location, count, transpose, value);
+    }
+
+    void uniformMatrix3x4fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        m_evasGLAPI->glUniformMatrix3x4fv(location, count, transpose, value);
+    }
+
+    void uniformMatrix4x3fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        m_evasGLAPI->glUniformMatrix4x3fv(location, count, transpose, value);
+    }
+
     void bindVertexArray(GLuint array) override
     {
         m_evasGLAPI->glBindVertexArray(array);
@@ -864,6 +900,30 @@ public:
     GLint getFragDataLocation(GLuint program, const GLchar *name) override
     {
         return m_evasGLAPI->glGetFragDataLocation(program, name);
+    }
+
+    void uniform1uiv(GLint location, GLsizei count,
+                     const GLuint *value) override
+    {
+        m_evasGLAPI->glUniform1uiv(location, count, value);
+    }
+
+    void uniform2uiv(GLint location, GLsizei count,
+                     const GLuint *value) override
+    {
+        m_evasGLAPI->glUniform2uiv(location, count, value);
+    }
+
+    void uniform3uiv(GLint location, GLsizei count,
+                     const GLuint *value) override
+    {
+        m_evasGLAPI->glUniform3uiv(location, count, value);
+    }
+
+    void uniform4uiv(GLint location, GLsizei count,
+                     const GLuint *value) override
+    {
+        m_evasGLAPI->glUniform4uiv(location, count, value);
     }
 
     GLsync fenceSync(GLenum condition, GLbitfield flags) override

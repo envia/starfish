@@ -273,10 +273,36 @@ public:
     }
 
     // WebGL2
+    virtual void uniformMatrix2x3fv(GLint location, GLsizei count,
+                                    GLboolean transpose,
+                                    const GLfloat *value) = 0;
+    virtual void uniformMatrix3x2fv(GLint location, GLsizei count,
+                                    GLboolean transpose,
+                                    const GLfloat *value) = 0;
+    virtual void uniformMatrix2x4fv(GLint location, GLsizei count,
+                                    GLboolean transpose,
+                                    const GLfloat *value) = 0;
+    virtual void uniformMatrix4x2fv(GLint location, GLsizei count,
+                                    GLboolean transpose,
+                                    const GLfloat *value) = 0;
+    virtual void uniformMatrix3x4fv(GLint location, GLsizei count,
+                                    GLboolean transpose,
+                                    const GLfloat *value) = 0;
+    virtual void uniformMatrix4x3fv(GLint location, GLsizei count,
+                                    GLboolean transpose,
+                                    const GLfloat *value) = 0;
     virtual void bindVertexArray(GLuint array) = 0;
     virtual void deleteVertexArrays(GLsizei n, const GLuint *arrays) = 0;
     virtual GLboolean isVertexArray(GLuint array) = 0;
     virtual GLint getFragDataLocation(GLuint program, const GLchar *name) = 0;
+    virtual void uniform1uiv(GLint location, GLsizei count,
+                             const GLuint *value) = 0;
+    virtual void uniform2uiv(GLint location, GLsizei count,
+                             const GLuint *value) = 0;
+    virtual void uniform3uiv(GLint location, GLsizei count,
+                             const GLuint *value) = 0;
+    virtual void uniform4uiv(GLint location, GLsizei count,
+                             const GLuint *value) = 0;
     virtual GLsync fenceSync(GLenum condition, GLbitfield flags) = 0;
     virtual GLboolean isSync(GLsync sync) = 0;
     virtual void deleteSync(GLsync sync) = 0;

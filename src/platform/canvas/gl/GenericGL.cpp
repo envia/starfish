@@ -862,6 +862,42 @@ public:
 #endif
     }
 
+    void uniformMatrix2x3fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        glUniformMatrix2x3fv(location, count, transpose, value);
+    }
+
+    void uniformMatrix3x2fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        glUniformMatrix3x2fv(location, count, transpose, value);
+    }
+
+    void uniformMatrix2x4fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        glUniformMatrix2x4fv(location, count, transpose, value);
+    }
+
+    void uniformMatrix4x2fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        glUniformMatrix4x2fv(location, count, transpose, value);
+    }
+
+    void uniformMatrix3x4fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        glUniformMatrix3x4fv(location, count, transpose, value);
+    }
+
+    void uniformMatrix4x3fv(GLint location, GLsizei count, GLboolean transpose,
+                            const GLfloat *value) override
+    {
+        glUniformMatrix4x3fv(location, count, transpose, value);
+    }
+
     void bindVertexArray(GLuint array) override
     {
         glBindVertexArray(array);
@@ -880,6 +916,30 @@ public:
     GLint getFragDataLocation(GLuint program, const GLchar *name) override
     {
         return glGetFragDataLocation(program, name);
+    }
+
+    void uniform1uiv(GLint location, GLsizei count,
+                     const GLuint *value) override
+    {
+        glUniform1uiv(location, count, value);
+    }
+
+    void uniform2uiv(GLint location, GLsizei count,
+                     const GLuint *value) override
+    {
+        glUniform2uiv(location, count, value);
+    }
+
+    void uniform3uiv(GLint location, GLsizei count,
+                     const GLuint *value) override
+    {
+        glUniform3uiv(location, count, value);
+    }
+
+    void uniform4uiv(GLint location, GLsizei count,
+                     const GLuint *value) override
+    {
+        glUniform4uiv(location, count, value);
     }
 
     GLsync fenceSync(GLenum condition, GLbitfield flags) override

@@ -111,6 +111,43 @@ public:
     /* Programs and shaders */
     GLint getFragDataLocation(WebGLProgram* program, String* name);
 
+    /* Uniforms */
+    void uniform1uiv(Optional<WebGLUniformLocation*> location, Uint32List data,
+                     unsigned long long srcOffset = 0, GLuint srcLength = 0);
+    void uniform2uiv(Optional<WebGLUniformLocation*> location, Uint32List data,
+                     unsigned long long srcOffset = 0, GLuint srcLength = 0);
+    void uniform3uiv(Optional<WebGLUniformLocation*> location, Uint32List data,
+                     unsigned long long srcOffset = 0, GLuint srcLength = 0);
+    void uniform4uiv(Optional<WebGLUniformLocation*> location, Uint32List data,
+                     unsigned long long srcOffset = 0, GLuint srcLength = 0);
+
+    void uniformMatrix3x2fv(Optional<WebGLUniformLocation*> location,
+                            GLboolean transpose, Float32List data,
+                            unsigned long long srcOffset = 0,
+                            GLuint srcLength = 0);
+    void uniformMatrix4x2fv(Optional<WebGLUniformLocation*> location,
+                            GLboolean transpose, Float32List data,
+                            unsigned long long srcOffset = 0,
+                            GLuint srcLength = 0);
+
+    void uniformMatrix2x3fv(Optional<WebGLUniformLocation*> location,
+                            GLboolean transpose, Float32List data,
+                            unsigned long long srcOffset = 0,
+                            GLuint srcLength = 0);
+    void uniformMatrix4x3fv(Optional<WebGLUniformLocation*> location,
+                            GLboolean transpose, Float32List data,
+                            unsigned long long srcOffset = 0,
+                            GLuint srcLength = 0);
+
+    void uniformMatrix2x4fv(Optional<WebGLUniformLocation*> location,
+                            GLboolean transpose, Float32List data,
+                            unsigned long long srcOffset = 0,
+                            GLuint srcLength = 0);
+    void uniformMatrix3x4fv(Optional<WebGLUniformLocation*> location,
+                            GLboolean transpose, Float32List data,
+                            unsigned long long srcOffset = 0,
+                            GLuint srcLength = 0);
+
     /* Sync objects */
     Optional<WebGLSync*> fenceSync(GLenum condition, GLbitfield flags);
     GLboolean isSync(Optional<WebGLSync*> sync);
@@ -147,11 +184,63 @@ public:
     void texSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset,
                        GLenum format, GLenum type, TexImageSource source);
 
+    void uniform1fv(Optional<WebGLUniformLocation*> location, Float32List data,
+                    unsigned long long srcOffset = 0, GLuint srcLength = 0);
+    void uniform2fv(Optional<WebGLUniformLocation*> location, Float32List data,
+                    unsigned long long srcOffset = 0, GLuint srcLength = 0);
+    void uniform3fv(Optional<WebGLUniformLocation*> location, Float32List data,
+                    unsigned long long srcOffset = 0, GLuint srcLength = 0);
+    void uniform4fv(Optional<WebGLUniformLocation*> location, Float32List data,
+                    unsigned long long srcOffset = 0, GLuint srcLength = 0);
+
+    void uniform1iv(Optional<WebGLUniformLocation*> location, Int32List data,
+                    unsigned long long srcOffset = 0, GLuint srcLength = 0);
+    void uniform2iv(Optional<WebGLUniformLocation*> location, Int32List data,
+                    unsigned long long srcOffset = 0, GLuint srcLength = 0);
+    void uniform3iv(Optional<WebGLUniformLocation*> location, Int32List data,
+                    unsigned long long srcOffset = 0, GLuint srcLength = 0);
+    void uniform4iv(Optional<WebGLUniformLocation*> location, Int32List data,
+                    unsigned long long srcOffset = 0, GLuint srcLength = 0);
+
+    void uniformMatrix2fv(Optional<WebGLUniformLocation*> location,
+                          GLboolean transpose, Float32List data,
+                          unsigned long long srcOffset = 0,
+                          GLuint srcLength = 0);
+    void uniformMatrix3fv(Optional<WebGLUniformLocation*> location,
+                          GLboolean transpose, Float32List data,
+                          unsigned long long srcOffset = 0,
+                          GLuint srcLength = 0);
+    void uniformMatrix4fv(Optional<WebGLUniformLocation*> location,
+                          GLboolean transpose, Float32List data,
+                          unsigned long long srcOffset = 0,
+                          GLuint srcLength = 0);
+
     /* Reading back pixels */
     // WebGL1:
     void readPixels(GLint x, GLint y, GLsizei width, GLsizei height,
                     GLenum format, GLenum type,
                     Optional<ScriptArrayBufferView> dstData);
+
+protected:
+    void implementUniformNiv(
+        size_t n, void (GL::*uniformNiv)(GLint, GLsizei, const GLint*),
+        Optional<WebGLUniformLocation*> location, Int32List data,
+        unsigned long long srcOffset, GLuint srcLength);
+    void implementUniformMatrixMxNfv(
+        size_t m, size_t n,
+        void (GL::*uniformMatrixMxNfv)(GLint, GLsizei, GLboolean,
+                                       const GLfloat*),
+        Optional<WebGLUniformLocation*> location, GLboolean transpose,
+        Float32List data, unsigned long long srcOffset, GLuint srcLength);
+    template <size_t N, void (GL::*UniformNfv)(GLint, GLsizei, const GLfloat*),
+              typename SrcType>
+    void implementUniformNfv(Optional<WebGLUniformLocation*> location,
+                             SrcType data, unsigned long long srcOffset,
+                             GLuint srcLength);
+    void implementUniformNuiv(
+        size_t n, void (GL::*uniformNuiv)(GLint, GLsizei, const GLuint*),
+        Optional<WebGLUniformLocation*> location, Uint32List data,
+        unsigned long long srcOffset, GLuint srcLength);
 };
 
 } // namespace Starfish
