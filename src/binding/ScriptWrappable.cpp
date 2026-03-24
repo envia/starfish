@@ -2103,6 +2103,9 @@ unsigned arrayBufferViewSize(ScriptArrayBufferView buffer)
 template ScriptArrayBufferView createTypedArray<Int32ArrayObjectRef>(
     ScriptBindingInstance* instance, const std::vector<int>& vector);
 
+template ScriptArrayBufferView createTypedArray<Uint32ArrayObjectRef>(
+    ScriptBindingInstance* instance, const std::vector<unsigned int>& vector);
+
 template ScriptArrayBufferView createTypedArray<Float32ArrayObjectRef>(
     ScriptBindingInstance* instance, const std::vector<float>& vector);
 
@@ -2131,6 +2134,36 @@ ScriptArrayBufferView createTypedArray(ScriptBindingInstance* instance,
                },
                &vector)
         .result->asArrayBufferView();
+}
+
+template ScriptArrayObject createArray(ScriptBindingInstance* instance,
+                                       const std::vector<bool>& vector);
+
+// ScriptValue = Escargot::ValueRef*
+// ScriptArrayObject = Escargot::ArrayObjectRef*
+template <typename U>
+ScriptArrayObject createArray(ScriptBindingInstance* instance,
+                              const std::vector<U>& vector)
+{
+    return Evaluator::execute(
+               instance->scriptContext(),
+               [](ExecutionStateRef* state,
+                  const std::vector<U>* vector) -> ValueRef* {
+                   const size_t arrayLength = vector->size();
+
+                   Escargot::ValueVectorRef* valueVector =
+                       Escargot::ValueVectorRef::create(arrayLength);
+                   for (size_t i = 0; i < arrayLength; ++i) {
+                       valueVector->set(i, ValueRef::create(vector->at(i)));
+                   }
+
+                   // create(ExecutionStateRef* state)
+                   // create(ExecutionStateRef* state, const uint64_t size)
+                   // create(ExecutionStateRef* state, ValueVectorRef* source)
+                   return Escargot::ArrayObjectRef::create(state, valueVector);
+               },
+               &vector)
+        .result->asArrayObject();
 }
 
 void detachArrayBuffer(ScriptBindingInstance* instance,
