@@ -2462,20 +2462,26 @@ Optional<String*> WebGL2RenderingContext::getActiveUniformBlockName(
         return Optional<String*>();
     }
 
-    GLsizei bufSize;
-    gl()->getProgramiv(program->glObject(),
-                       GL_ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH, &bufSize);
-
-    if (updateGLError()) {
+    GLint count = 0;
+    gl()->getProgramiv(program->glObject(), GL_ACTIVE_UNIFORM_BLOCKS, &count);
+    if (uniformBlockIndex >= static_cast<GLuint>(count)) {
         return Optional<String*>();
     }
 
-    GLsizei length;
+    GLsizei bufSize = 0;
+    gl()->getProgramiv(program->glObject(),
+                       GL_ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH, &bufSize);
+
+    if (updateGLError() || bufSize == 0) {
+        return Optional<String*>();
+    }
+
+    GLsizei length = 0;
     std::vector<char> uniformBlockName(bufSize);
     gl()->getActiveUniformBlockName(program->glObject(), uniformBlockIndex,
                                     bufSize, &length, uniformBlockName.data());
 
-    if (updateGLError()) {
+    if (updateGLError() || length == 0) {
         return Optional<String*>();
     }
 
