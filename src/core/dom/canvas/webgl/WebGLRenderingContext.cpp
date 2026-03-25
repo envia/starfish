@@ -1751,11 +1751,54 @@ ScriptValue WebGLRenderingContext::getTexParameter(GLenum target, GLenum pname)
     return createScriptValue(static_cast<GLenum>(params));
 }
 
+GLenum WebGLRenderingContext::getUniformType(WebGLProgram* program,
+                                             WebGLUniformLocation* location)
+{
+    ENTER_CONTEXT_SCOPE(GL_NONE);
+
+    GLint count = 0;
+    m_gl->getProgramiv(program->glObject(), GL_ACTIVE_UNIFORMS, &count);
+    GLint maxNameLength = 0;
+    m_gl->getProgramiv(program->glObject(), GL_ACTIVE_UNIFORM_MAX_LENGTH,
+                       &maxNameLength);
+    for (GLint index = 0; index < count; index++) {
+        GLint size;
+        GLenum type;
+        GLsizei length;
+        std::vector<char> name;
+        name.resize(maxNameLength, '\0');
+        m_gl->getActiveUniform(program->glObject(), index, maxNameLength,
+                               &length, &size, &type, &name[0]);
+        if (size > 1) {
+            std::string arrayName(&name[0]);
+            if (arrayName.length() > 3 &&
+                arrayName.substr(arrayName.length() - 3, arrayName.length()) ==
+                    "[0]") {
+                arrayName = arrayName.substr(0, arrayName.length() - 3);
+            }
+            for (GLint arrayIndex = 0; arrayIndex < size; arrayIndex++) {
+                std::string elementName =
+                    arrayName + "[" + std::to_string(arrayIndex) + "]";
+                GLint uniformLocation = m_gl->getUniformLocation(
+                    program->glObject(), elementName.data());
+                if (uniformLocation == location->location()) {
+                    return type;
+                }
+            }
+        } else {
+            GLint uniformLocation =
+                m_gl->getUniformLocation(program->glObject(), &name[0]);
+            if (uniformLocation == location->location()) {
+                return type;
+            }
+        }
+    }
+    return GL_NONE;
+}
+
 ScriptValue WebGLRenderingContext::getUniform(WebGLProgram* program,
                                               WebGLUniformLocation* location)
 {
-    ENTER_CONTEXT_SCOPE(scriptNull());
-
     if (!isFromCurrentContext(program)) {
         setGLError(GL_INVALID_OPERATION);
         return scriptNull();
@@ -1766,49 +1809,10 @@ ScriptValue WebGLRenderingContext::getUniform(WebGLProgram* program,
         return scriptNull();
     }
 
-    GLint count = 0;
-    m_gl->getProgramiv(program->glObject(), GL_ACTIVE_UNIFORMS, &count);
-    GLint maxNameLength = 0;
-    m_gl->getProgramiv(program->glObject(), GL_ACTIVE_UNIFORM_MAX_LENGTH,
-                       &maxNameLength);
-    GLenum type = GL_NONE;
-    for (GLint index = 0; index < count; index++) {
-        GLint uniformSize;
-        GLenum uniformType;
-        GLsizei nameLength;
-        std::vector<char> name;
-        name.resize(maxNameLength, '\0');
-        m_gl->getActiveUniform(program->glObject(), index, maxNameLength,
-                               &nameLength, &uniformSize, &uniformType,
-                               &name[0]);
-        if (uniformSize > 1) {
-            std::string arrayName(&name[0]);
-            if (arrayName.length() > 3 &&
-                arrayName.substr(arrayName.length() - 3, arrayName.length()) ==
-                    "[0]") {
-                arrayName = arrayName.substr(0, arrayName.length() - 3);
-            }
-            for (GLint arrayIndex = 0; arrayIndex < uniformSize; arrayIndex++) {
-                std::string elementName =
-                    arrayName + "[" + std::to_string(arrayIndex) + "]";
-                GLint uniformLocation = m_gl->getUniformLocation(
-                    program->glObject(), elementName.data());
-                if (uniformLocation == location->location()) {
-                    type = uniformType;
-                    break;
-                }
-            }
-        } else {
-            GLint uniformLocation =
-                m_gl->getUniformLocation(program->glObject(), &name[0]);
-            if (uniformLocation == location->location()) {
-                type = uniformType;
-            }
-        }
-        if (type != GL_NONE) {
-            break;
-        }
-    }
+    GLenum type = getUniformType(program, location);
+
+    ENTER_CONTEXT_SCOPE(scriptNull());
+
     switch (type) {
     case GL_FLOAT: {
         GLfloat value;
