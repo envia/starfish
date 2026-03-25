@@ -321,7 +321,7 @@ void WebGL2RenderingContext::uniform1ui(
         return;
     }
 
-    gl()->uniform1i(uniform->location(), v0);
+    gl()->uniform1ui(uniform->location(), v0);
 }
 
 void WebGL2RenderingContext::uniform2ui(
@@ -340,7 +340,7 @@ void WebGL2RenderingContext::uniform2ui(
         return;
     }
 
-    gl()->uniform2i(uniform->location(), v0, v1);
+    gl()->uniform2ui(uniform->location(), v0, v1);
 }
 
 void WebGL2RenderingContext::uniform3ui(
@@ -359,7 +359,7 @@ void WebGL2RenderingContext::uniform3ui(
         return;
     }
 
-    gl()->uniform3i(uniform->location(), v0, v1, v2);
+    gl()->uniform3ui(uniform->location(), v0, v1, v2);
 }
 
 void WebGL2RenderingContext::uniform4ui(
@@ -379,7 +379,7 @@ void WebGL2RenderingContext::uniform4ui(
         return;
     }
 
-    gl()->uniform4i(uniform->location(), v0, v1, v2, v3);
+    gl()->uniform4ui(uniform->location(), v0, v1, v2, v3);
 }
 
 Optional<WebGLSync*> WebGL2RenderingContext::fenceSync(GLenum condition,
