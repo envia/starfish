@@ -330,6 +330,9 @@ private:
 protected:
     GLenum getUniformType(WebGLProgram* program,
                           WebGLUniformLocation* location);
+    Optional<ScriptValue> getUniformImpl(WebGLProgram* program,
+                                         WebGLUniformLocation* location,
+                                         GLenum type);
 
 private:
     bool m_hasPendingJobsBetweenFrames;
