@@ -1712,8 +1712,8 @@ GLenum WebGLRenderingContext::getUniformType(WebGLProgram* program,
     return GL_NONE;
 }
 
-Optional<ScriptValue> WebGLRenderingContext::getUniformImpl(WebGLProgram* program,
-                                              WebGLUniformLocation* location, GLenum type)
+Optional<ScriptValue> WebGLRenderingContext::getUniformImpl(
+    WebGLProgram* program, WebGLUniformLocation* location, GLenum type)
 {
     ENTER_CONTEXT_SCOPE(Optional<ScriptValue>());
 
