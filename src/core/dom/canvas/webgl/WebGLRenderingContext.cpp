@@ -1967,7 +1967,7 @@ ScriptValue WebGLRenderingContext::getUniform(WebGLProgram* program,
                                                        values);
     }
     case GL_FLOAT_MAT4x2: {
-        std::vector<GLfloat> values(18);
+        std::vector<GLfloat> values(8);
         m_gl->getUniformfv(program->glObject(), location->location(),
                            &values[0]);
         return createTypedArray<Float32ArrayObjectRef>(scriptBindingInstance(),
