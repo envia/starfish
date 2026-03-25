@@ -669,6 +669,10 @@ public:
                     unsigned long long dstOffset);
 
 protected:
+    Optional<ScriptValue> getUniformImpl(WebGLProgram* program,
+                                         WebGLUniformLocation* location,
+                                         GLenum type);
+
     void implementUniformNiv(
         size_t n, void (GL::*uniformNiv)(GLint, GLsizei, const GLint*),
         Optional<WebGLUniformLocation*> location, Int32List data,

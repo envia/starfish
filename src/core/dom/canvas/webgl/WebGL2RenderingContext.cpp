@@ -801,11 +801,32 @@ ScriptValue WebGL2RenderingContext::getTexParameter(GLenum target, GLenum pname)
     return WebGLRenderingContext::getTexParameter(target, pname);
 }
 
+Optional<ScriptValue> WebGL2RenderingContext::getUniformImpl(
+    WebGLProgram* program, WebGLUniformLocation* location, GLenum type)
+{
+    return Optional<ScriptValue>();
+}
+
 ScriptValue WebGL2RenderingContext::getUniform(WebGLProgram* program,
                                                WebGLUniformLocation* location)
 {
-    STARFISH_UNIMPLEMENTED("WebGLRenderingContextBase");
-    return WebGLRenderingContext::getUniform(program, location);
+    if (!isFromCurrentContext(program)) {
+        setGLError(GL_INVALID_OPERATION);
+        return scriptNull();
+    }
+
+    if (location->program()->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return scriptNull();
+    }
+
+    GLenum type = getUniformType(program, location);
+    Optional<ScriptValue> uniform = getUniformImpl(program, location, type);
+    if (uniform.hasValue()) {
+        return uniform.value();
+    }
+    uniform = WebGLRenderingContext::getUniformImpl(program, location, type);
+    return uniform.valueOr(scriptNull());
 }
 
 WebGLUniformLocation* WebGL2RenderingContext::getUniformLocation(

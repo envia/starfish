@@ -1796,22 +1796,10 @@ GLenum WebGLRenderingContext::getUniformType(WebGLProgram* program,
     return GL_NONE;
 }
 
-ScriptValue WebGLRenderingContext::getUniform(WebGLProgram* program,
-                                              WebGLUniformLocation* location)
+Optional<ScriptValue> WebGLRenderingContext::getUniformImpl(
+    WebGLProgram* program, WebGLUniformLocation* location, GLenum type)
 {
-    if (!isFromCurrentContext(program)) {
-        setGLError(GL_INVALID_OPERATION);
-        return scriptNull();
-    }
-
-    if (location->program()->context() != this) {
-        setGLError(GL_INVALID_OPERATION);
-        return scriptNull();
-    }
-
-    GLenum type = getUniformType(program, location);
-
-    ENTER_CONTEXT_SCOPE(scriptNull());
+    ENTER_CONTEXT_SCOPE(Optional<ScriptValue>());
 
     switch (type) {
     case GL_FLOAT: {
@@ -2006,7 +1994,25 @@ ScriptValue WebGLRenderingContext::getUniform(WebGLProgram* program,
     default:
         break;
     }
-    return scriptNull();
+    return Optional<ScriptValue>();
+}
+
+ScriptValue WebGLRenderingContext::getUniform(WebGLProgram* program,
+                                              WebGLUniformLocation* location)
+{
+    if (!isFromCurrentContext(program)) {
+        setGLError(GL_INVALID_OPERATION);
+        return scriptNull();
+    }
+
+    if (location->program()->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return scriptNull();
+    }
+
+    GLenum type = getUniformType(program, location);
+    Optional<ScriptValue> uniform = getUniformImpl(program, location, type);
+    return uniform.valueOr(scriptNull());
 }
 
 WebGLUniformLocation* WebGLRenderingContext::getUniformLocation(
