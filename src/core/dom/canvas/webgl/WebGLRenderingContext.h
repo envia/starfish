@@ -256,7 +256,7 @@ public:
                     GLenum format, GLenum type,
                     Optional<ScriptArrayBufferView> pixels);
 
-private:
+protected:
     void handleTexImageWithArrayBufferView(
         GLenum target, GLint level, GLsizei width, GLsizei height,
         GLenum format, GLenum type, Optional<ScriptArrayBufferView> pixels,
@@ -320,11 +320,7 @@ private:
 
 protected:
     bool isFromCurrentContext(WebGLObject* object);
-
-private:
     bool isBoundCubeMapTexture(GLenum target);
-
-protected:
     bool isFromCurrentProgram(WebGLUniformLocation* uniform);
 
 private:
@@ -341,6 +337,11 @@ protected:
     Optional<ScriptValue> getUniformImpl(WebGLProgram* program,
                                          WebGLUniformLocation* location,
                                          GLenum type);
+
+    const GLTextureMap& boundTextures() const
+    {
+        return m_boundTextures;
+    }
 
     void implementUniformNfv(
         size_t n, void (GL::*uniformNfv)(GLint, GLsizei, const GLfloat*),
