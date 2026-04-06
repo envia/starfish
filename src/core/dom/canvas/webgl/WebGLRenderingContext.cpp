@@ -2122,7 +2122,7 @@ void WebGLRenderingContext::linkProgram(WebGLProgram* program)
     m_gl->getProgramiv(program->glObject(), GL_ACTIVE_ATTRIBUTE_MAX_LENGTH,
                        &maxNameLength);
 
-    std::vector<std::tuple<std::string, GLenum, GLint, GLuint>> activeAttribs;
+    std::vector<std::tuple<std::string, GLuint, GLint>> activeAttribs;
     for (GLint i = 0; i < numActiveAttribs; ++i) {
         GLint size = 0;
         GLenum type = 0;
@@ -2151,15 +2151,14 @@ void WebGLRenderingContext::linkProgram(WebGLProgram* program)
             m_gl->getAttribLocation(program->glObject(), name.c_str());
         if (location >= 0) {
             activeAttribs.push_back(std::make_tuple(
-                name, type, numLocations, static_cast<GLuint>(location)));
+                name, static_cast<GLuint>(location), numLocations));
         }
     }
 
     for (const auto& attrib : activeAttribs) {
         const std::string& name = std::get<0>(attrib);
-        GLenum type = std::get<1>(attrib);
+        GLuint location = std::get<1>(attrib);
         GLint numLocations = std::get<2>(attrib);
-        GLuint location = std::get<3>(attrib);
 
         if (location + numLocations > static_cast<GLuint>(maxVertexAttribs)) {
             program->setLinkFailed(true);
@@ -2172,8 +2171,8 @@ void WebGLRenderingContext::linkProgram(WebGLProgram* program)
                 continue;
             }
 
+            GLuint otherLocation = std::get<1>(other);
             GLint otherNumLocations = std::get<2>(other);
-            GLuint otherLocation = std::get<3>(other);
 
             if (otherLocation >= location &&
                 otherLocation < location + static_cast<GLuint>(numLocations)) {
