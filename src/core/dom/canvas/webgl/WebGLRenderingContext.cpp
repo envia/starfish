@@ -397,6 +397,10 @@ void WebGLRenderingContext::bindAttribLocation(WebGLProgram* program,
     }
 
     m_gl->bindAttribLocation(program->glObject(), index, CSTR(name));
+    if (hasNewGLError()) {
+        return;
+    }
+    program->bindAttribLocation(name->toUTF8NonGCString(), index);
 }
 
 void WebGLRenderingContext::bindBuffer(GLenum target,
@@ -1479,7 +1483,12 @@ ScriptValue WebGLRenderingContext::getProgramParameter(WebGLProgram* program,
 
     switch (pname) {
     case GL_DELETE_STATUS:
+        return Escargot::ValueRef::create(static_cast<bool>(params));
     case GL_LINK_STATUS:
+        if (program->linkFailed()) {
+            return Escargot::ValueRef::create(false);
+        }
+        return Escargot::ValueRef::create(static_cast<bool>(params));
     case GL_VALIDATE_STATUS:
         return Escargot::ValueRef::create(static_cast<bool>(params));
     case GL_ATTACHED_SHADERS:
@@ -2095,6 +2104,14 @@ void WebGLRenderingContext::linkProgram(WebGLProgram* program)
             link(https://registry.khronos.org/webgl/specs/latest/1.0/#6.43).
         */
         STARFISH_UNIMPLEMENTED();
+    }
+
+    GLint linkStatus = 0;
+    m_gl->getProgramiv(program->glObject(), GL_LINK_STATUS, &linkStatus);
+    if (linkStatus == GL_TRUE) {
+        if (program->hasAliasedAttribLocations()) {
+            program->setLinkFailed(true);
+        }
     }
 }
 

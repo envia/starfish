@@ -23,6 +23,7 @@
 #if defined(STARFISH_ENABLE_CANVAS) && defined(STARFISH_ENABLE_WEBGL)
 
 #include "core/dom/canvas/webgl/WebGLObject.h"
+#include <unordered_map>
 
 namespace Starfish {
 
@@ -42,8 +43,32 @@ public:
         return m_webGLShaders;
     }
 
+    void bindAttribLocation(const std::string& name, GLuint location);
+
+    const std::unordered_map<std::string, GLuint>& attribLocationBindings()
+        const
+    {
+        return m_attribLocationBindings;
+    }
+
+    bool hasAliasedAttribLocations() const;
+
+    void setLinkFailed(bool linkFailed)
+    {
+        m_linkFailed = linkFailed;
+    }
+
+    bool linkFailed() const
+    {
+        return m_linkFailed;
+    }
+
 private:
     GCVector<WebGLShader*> m_webGLShaders;
+    // Map from attribute name to location index set by bindAttribLocation
+    std::unordered_map<std::string, GLuint> m_attribLocationBindings;
+    // Flag to indicate link status was invalidated due to WebGL constraints
+    bool m_linkFailed = false;
 };
 } // namespace Starfish
 
