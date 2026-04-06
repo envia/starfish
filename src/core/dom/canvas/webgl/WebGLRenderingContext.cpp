@@ -397,10 +397,6 @@ void WebGLRenderingContext::bindAttribLocation(WebGLProgram* program,
     }
 
     m_gl->bindAttribLocation(program->glObject(), index, CSTR(name));
-    if (hasNewGLError()) {
-        return;
-    }
-    program->bindAttribLocation(name->toUTF8NonGCString(), index);
 }
 
 void WebGLRenderingContext::bindBuffer(GLenum target,
@@ -2106,11 +2102,76 @@ void WebGLRenderingContext::linkProgram(WebGLProgram* program)
         STARFISH_UNIMPLEMENTED();
     }
 
+    program->setLinkFailed(false);
+
     GLint linkStatus = 0;
     m_gl->getProgramiv(program->glObject(), GL_LINK_STATUS, &linkStatus);
-    if (linkStatus == GL_TRUE) {
-        if (program->hasAliasedAttribLocations()) {
-            program->setLinkFailed(true);
+    if (linkStatus != GL_TRUE) {
+        program->setLinkFailed(true);
+        return;
+    }
+
+    GLint maxVertexAttribs = 0;
+    m_gl->getIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxVertexAttribs);
+
+    GLint numActiveAttribs = 0;
+    m_gl->getProgramiv(program->glObject(), GL_ACTIVE_ATTRIBUTES,
+                       &numActiveAttribs);
+
+    GLint maxNameLength = 0;
+    m_gl->getProgramiv(program->glObject(), GL_ACTIVE_ATTRIBUTE_MAX_LENGTH,
+                       &maxNameLength);
+
+    std::vector<std::tuple<std::string, GLenum, GLint, GLuint>> activeAttribs;
+    for (GLint i = 0; i < numActiveAttribs; ++i) {
+        GLint size = 0;
+        GLenum type = 0;
+        GLsizei length = 0;
+        std::vector<char> nameBuf(maxNameLength, '\0');
+        m_gl->getActiveAttrib(program->glObject(), i, maxNameLength, &length,
+                              &size, &type, &nameBuf[0]);
+        std::string name(nameBuf.data(), length);
+
+        GLint numLocations = 1;
+        switch (type) {
+        case GL_FLOAT_MAT2:
+            numLocations = 2;
+            break;
+        case GL_FLOAT_MAT3:
+            numLocations = 3;
+            break;
+        case GL_FLOAT_MAT4:
+            numLocations = 4;
+            break;
+        default:
+            break;
+        }
+
+        GLint location =
+            m_gl->getAttribLocation(program->glObject(), name.c_str());
+        if (location >= 0) {
+            activeAttribs.push_back(std::make_tuple(
+                name, type, numLocations, static_cast<GLuint>(location)));
+        }
+    }
+
+    for (const auto& attrib : activeAttribs) {
+        const std::string& name = std::get<0>(attrib);
+        GLenum type = std::get<1>(attrib);
+        GLint numLocations = std::get<2>(attrib);
+        GLuint location = std::get<3>(attrib);
+
+        for (const auto& other : activeAttribs) {
+            const std::string& otherName = std::get<0>(other);
+            if (otherName == name) {
+                continue;
+            }
+
+            GLuint otherLocation = std::get<3>(other);
+            if (otherLocation == location) {
+                program->setLinkFailed(true);
+                return;
+            }
         }
     }
 }

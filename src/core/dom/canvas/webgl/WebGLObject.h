@@ -46,17 +46,17 @@ public:
         return m_glObject;
     }
 
-    WebGLRenderingContext* context() const
+    WebGLRenderingContext* context()
     {
         return m_context;
     }
 
-    bool invalidated() const
+    bool invalidated()
     {
         return m_invalidated;
     }
 
-    bool isDeleted() const
+    bool isDeleted()
     {
         return m_deleted;
     }
