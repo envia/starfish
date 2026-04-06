@@ -2161,6 +2161,11 @@ void WebGLRenderingContext::linkProgram(WebGLProgram* program)
         GLint numLocations = std::get<2>(attrib);
         GLuint location = std::get<3>(attrib);
 
+        if (location + numLocations > static_cast<GLuint>(maxVertexAttribs)) {
+            program->setLinkFailed(true);
+            return;
+        }
+
         for (const auto& other : activeAttribs) {
             const std::string& otherName = std::get<0>(other);
             if (otherName == name) {
@@ -2170,11 +2175,10 @@ void WebGLRenderingContext::linkProgram(WebGLProgram* program)
             GLint otherNumLocations = std::get<2>(other);
             GLuint otherLocation = std::get<3>(other);
 
-            for (GLint offset = 0; offset < numLocations; ++offset) {
-                if (otherLocation == location + offset) {
-                    program->setLinkFailed(true);
-                    return;
-                }
+            if (otherLocation >= location &&
+                otherLocation < location + static_cast<GLuint>(numLocations)) {
+                program->setLinkFailed(true);
+                return;
             }
         }
     }
