@@ -2730,6 +2730,11 @@ void WebGLRenderingContext::compressedTexSubImage2D(
     setGLError(GL_INVALID_ENUM);
 }
 
+size_t WebGLRenderingContext::getBytesPerPixel(GLenum format, GLenum type)
+{
+    return Pixel::getBytesPerPixel(format, type, 1);
+}
+
 void WebGLRenderingContext::readPixels(GLint x, GLint y, GLsizei width,
                                        GLsizei height, GLenum format,
                                        GLenum type,
@@ -2782,7 +2787,7 @@ void WebGLRenderingContext::readPixels(GLint x, GLint y, GLsizei width,
             return;
         }
 
-        size_t bytesPerPixel = Pixel::getBytesPerPixel(format, type);
+        size_t bytesPerPixel = getBytesPerPixel(format, type);
         size_t byteLengthOfPixels = width * height * bytesPerPixel;
         size_t byteLengthOfView = pixels->byteLength();
 
@@ -2878,7 +2883,7 @@ void WebGLRenderingContext::handleTexImageWithArrayBufferView(
         // If pixels is non-null but its size is less than what is required by
         // the specified width, height, format, type, and pixel storage
         // parameters, generates an INVALID_OPERATION error.
-        size_t bytesPerPixel = Pixel::getBytesPerPixel(format, type);
+        size_t bytesPerPixel = getBytesPerPixel(format, type);
         size_t byteLengthOfPixels = width * height * bytesPerPixel;
         size_t byteLengthOfView = pixels->byteLength();
 
@@ -2905,7 +2910,7 @@ void WebGLRenderingContext::handleTexImageWithArrayBufferView(
         // Refs: conformance/resources/tex-image-and-sub-image-2d-with-image.js,
         // initializing the texture to black by gl.texImage2D(..., null).
 
-        const size_t bytesPerPixel = Pixel::getBytesPerPixel(format, type);
+        const size_t bytesPerPixel = getBytesPerPixel(format, type);
         size_t byteLengthOfPixels = width * height * bytesPerPixel;
 
         TRACE(WEBGL_V, KV(glValueString(format)), KV(glValueString(type)));
@@ -3024,7 +3029,7 @@ void WebGLRenderingContext::handleTexImageWithImageSource(
         return;
     }
 
-    size_t bytesPerPixel = Pixel::getBytesPerPixel(format, type);
+    size_t bytesPerPixel = getBytesPerPixel(format, type);
     size_t byteLengthOfPixels = width * height * bytesPerPixel;
     stride = bytesPerPixel * width;
 

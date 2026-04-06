@@ -242,6 +242,9 @@ protected:
         size_t n, void (GL::*uniformNuiv)(GLint, GLsizei, const GLuint*),
         Optional<WebGLUniformLocation*> location, Uint32List data,
         unsigned long long srcOffset, GLuint srcLength);
+
+private:
+    size_t getBytesPerPixel(GLenum format, GLenum type) override;
 };
 
 } // namespace Starfish

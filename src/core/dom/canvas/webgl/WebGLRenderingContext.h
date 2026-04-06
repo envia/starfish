@@ -330,6 +330,7 @@ private:
     GLint getCurrentProgram();
     void completePendingJobs();
     void setPendingClearMask(uint32_t mask);
+    virtual size_t getBytesPerPixel(GLenum format, GLenum type);
 
 protected:
     GLenum getUniformType(WebGLProgram* program,

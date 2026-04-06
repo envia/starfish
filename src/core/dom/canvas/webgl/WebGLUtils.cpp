@@ -26,9 +26,7 @@
 #include "core/util/String.h"
 #include <unordered_map>
 
-namespace Starfish {
-
-size_t Pixel::getBytesPerPixel(GLenum format, GLenum type)
+static size_t getBytesPerPixelWebGL1(GLenum format, GLenum type)
 {
     // Format      Type                Bytes per Pixel
     // ------------------------------------------------
@@ -69,6 +67,105 @@ size_t Pixel::getBytesPerPixel(GLenum format, GLenum type)
     }
 
     STARFISH_UNIMPLEMENTED("format: 0x%04X, type: 0x%04X", format, type);
+    STARFISH_ASSERT_NOT_REACHED();
+    return 0;
+}
+
+struct Combination {
+    GLenum format;
+    GLenum type;
+    size_t bytes_per_pixel;
+};
+
+// https://registry.khronos.org/OpenGL/specs/es/3.0/es_spec_3.0.pdf
+static const Combination tableWebGL2[] = {
+    // Table 3.2: Valid combinations of format, type, and sized internalformat.
+    { GL_RGBA, GL_UNSIGNED_BYTE, 4 },
+    { GL_RGBA, GL_BYTE, 4 },
+    { GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, 2 },
+    { GL_RGBA, GL_UNSIGNED_SHORT_5_5_5_1, 2 },
+    { GL_RGBA, GL_UNSIGNED_INT_2_10_10_10_REV, 4 },
+    { GL_RGBA, GL_HALF_FLOAT, 8 },
+    { GL_RGBA, GL_FLOAT, 16 },
+    { GL_RGBA_INTEGER, GL_UNSIGNED_BYTE, 4 },
+    { GL_RGBA_INTEGER, GL_BYTE, 4 },
+    { GL_RGBA_INTEGER, GL_UNSIGNED_SHORT, 8 },
+    { GL_RGBA_INTEGER, GL_SHORT, 8 },
+    { GL_RGBA_INTEGER, GL_UNSIGNED_INT, 16 },
+    { GL_RGBA_INTEGER, GL_INT, 16 },
+    { GL_RGBA_INTEGER, GL_UNSIGNED_INT_2_10_10_10_REV, 4 },
+    { GL_RGB, GL_UNSIGNED_BYTE, 3 },
+    { GL_RGB, GL_BYTE, 3 },
+    { GL_RGB, GL_UNSIGNED_SHORT_5_6_5, 2 },
+    { GL_RGB, GL_UNSIGNED_INT_10F_11F_11F_REV, 4 },
+    { GL_RGB, GL_UNSIGNED_INT_5_9_9_9_REV, 4 },
+    { GL_RGB, GL_HALF_FLOAT, 6 },
+    { GL_RGB, GL_FLOAT, 12 },
+    { GL_RGB_INTEGER, GL_UNSIGNED_BYTE, 3 },
+    { GL_RGB_INTEGER, GL_BYTE, 3 },
+    { GL_RGB_INTEGER, GL_UNSIGNED_SHORT, 6 },
+    { GL_RGB_INTEGER, GL_SHORT, 6 },
+    { GL_RGB_INTEGER, GL_UNSIGNED_INT, 12 },
+    { GL_RGB_INTEGER, GL_INT, 12 },
+    { GL_RG, GL_UNSIGNED_BYTE, 2 },
+    { GL_RG, GL_BYTE, 2 },
+    { GL_RG, GL_HALF_FLOAT, 4 },
+    { GL_RG, GL_FLOAT, 8 },
+    { GL_RG_INTEGER, GL_UNSIGNED_BYTE, 2 },
+    { GL_RG_INTEGER, GL_BYTE, 2 },
+    { GL_RG_INTEGER, GL_UNSIGNED_SHORT, 4 },
+    { GL_RG_INTEGER, GL_SHORT, 4 },
+    { GL_RG_INTEGER, GL_UNSIGNED_INT, 8 },
+    { GL_RG_INTEGER, GL_INT, 8 },
+    { GL_RED, GL_UNSIGNED_BYTE, 1 },
+    { GL_RED, GL_BYTE, 1 },
+    { GL_RED, GL_HALF_FLOAT, 2 },
+    { GL_RED, GL_FLOAT, 4 },
+    { GL_RED_INTEGER, GL_UNSIGNED_BYTE, 1 },
+    { GL_RED_INTEGER, GL_BYTE, 1 },
+    { GL_RED_INTEGER, GL_UNSIGNED_SHORT, 2 },
+    { GL_RED_INTEGER, GL_SHORT, 2 },
+    { GL_RED_INTEGER, GL_UNSIGNED_INT, 4 },
+    { GL_RED_INTEGER, GL_INT, 4 },
+    { GL_DEPTH_COMPONENT, GL_UNSIGNED_SHORT, 2 },
+    { GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, 4 },
+    { GL_DEPTH_COMPONENT, GL_FLOAT, 4 },
+    { GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, 4 },
+    { GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, 8 },
+    // Table 3.3: Valid combinations of format, type, and unsized
+    // internalformat.
+    { GL_RGBA, GL_UNSIGNED_BYTE, 4 },
+    { GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, 2 },
+    { GL_RGBA, GL_UNSIGNED_SHORT_5_5_5_1, 2 },
+    { GL_RGB, GL_UNSIGNED_BYTE, 3 },
+    { GL_RGB, GL_UNSIGNED_SHORT_5_6_5, 2 },
+    { GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 2 },
+    { GL_LUMINANCE, GL_UNSIGNED_BYTE, 1 },
+    { GL_ALPHA, GL_UNSIGNED_BYTE, 1 },
+};
+
+static size_t getBytesPerPixelWebGL2(GLenum format, GLenum type)
+{
+    for (const Combination& combination : tableWebGL2) {
+        if (combination.format == format && combination.type == type) {
+            return combination.bytes_per_pixel;
+        }
+    }
+
+    STARFISH_UNIMPLEMENTED("format: 0x%04X, type: 0x%04X", format, type);
+    return 0;
+}
+
+namespace Starfish {
+
+size_t Pixel::getBytesPerPixel(GLenum format, GLenum type, int webGLVersion)
+{
+    if (webGLVersion == 1) {
+        return getBytesPerPixelWebGL1(format, type);
+    }
+    if (webGLVersion == 2) {
+        return getBytesPerPixelWebGL2(format, type);
+    }
     STARFISH_ASSERT_NOT_REACHED();
     return 0;
 }
