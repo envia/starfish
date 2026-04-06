@@ -2167,10 +2167,14 @@ void WebGLRenderingContext::linkProgram(WebGLProgram* program)
                 continue;
             }
 
+            GLint otherNumLocations = std::get<2>(other);
             GLuint otherLocation = std::get<3>(other);
-            if (otherLocation == location) {
-                program->setLinkFailed(true);
-                return;
+
+            for (GLint offset = 0; offset < numLocations; ++offset) {
+                if (otherLocation == location + offset) {
+                    program->setLinkFailed(true);
+                    return;
+                }
             }
         }
     }
