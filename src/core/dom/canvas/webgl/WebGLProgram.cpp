@@ -46,6 +46,11 @@ void WebGLProgram::removeDetachedShader(WebGLShader* shader)
     }
 }
 
+void WebGLProgram::bindAttribLocation(const std::string& name, GLuint location)
+{
+    m_attribLocationBindings[name] = location;
+}
+
 } // namespace Starfish
 
 #endif

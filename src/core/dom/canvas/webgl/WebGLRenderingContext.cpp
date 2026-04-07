@@ -396,6 +396,8 @@ void WebGLRenderingContext::bindAttribLocation(WebGLProgram* program,
         return;
     }
 
+    std::string nameStr = name->toUTF8NonGCString();
+    program->bindAttribLocation(nameStr, index);
     m_gl->bindAttribLocation(program->glObject(), index, CSTR(name));
 }
 
@@ -1458,7 +1460,13 @@ ScriptValue WebGLRenderingContext::getProgramParameter(WebGLProgram* program,
 
     switch (pname) {
     case GL_DELETE_STATUS:
+        return Escargot::ValueRef::create(static_cast<bool>(params));
     case GL_LINK_STATUS:
+        // WebGL-specific: return false if link failed due to attribute binding conflicts
+        if (program->webglLinkFailed()) {
+            return Escargot::ValueRef::create(false);
+        }
+        return Escargot::ValueRef::create(static_cast<bool>(params));
     case GL_VALIDATE_STATUS:
         return Escargot::ValueRef::create(static_cast<bool>(params));
     case GL_ATTACHED_SHADERS:
@@ -2052,6 +2060,9 @@ void WebGLRenderingContext::linkProgram(WebGLProgram* program)
         return;
     }
 
+    // Reset WebGL link failure flag
+    program->setWebGLLinkFailed(false);
+
     /*
         NOTE: No idea to handle the following for now. It may already be handled
         in GLES3: 6.26 Packing Restrictions for Uniforms and Varyings: The WebGL
@@ -2074,6 +2085,130 @@ void WebGLRenderingContext::linkProgram(WebGLProgram* program)
             link(https://registry.khronos.org/webgl/specs/latest/1.0/#6.43).
         */
         STARFISH_UNIMPLEMENTED();
+    }
+
+    // WebGL spec: "LinkProgram will fail if the attribute bindings assigned by
+    // bindAttribLocation do not leave enough space to assign a location for an
+    // active matrix attribute which requires multiple contiguous generic attributes."
+    GLint linkStatus = 0;
+    m_gl->getProgramiv(program->glObject(), GL_LINK_STATUS, &linkStatus);
+    if (linkStatus == GL_TRUE) {
+        GLint maxVertexAttribs = 0;
+        m_gl->getIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxVertexAttribs);
+
+        GLint numActiveAttribs = 0;
+        m_gl->getProgramiv(program->glObject(), GL_ACTIVE_ATTRIBUTES, &numActiveAttribs);
+
+        GLint maxNameLength = 0;
+        m_gl->getProgramiv(program->glObject(), GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxNameLength);
+
+        const auto& bindings = program->getAttribLocationBindings();
+
+        // Build a map of all active attributes and their assigned locations
+        std::vector<std::tuple<std::string, GLenum, GLint, GLuint>> activeAttribs;
+        for (GLint i = 0; i < numActiveAttribs; ++i) {
+            GLint size = 0;
+            GLenum type = 0;
+            GLsizei length = 0;
+            std::vector<char> nameBuf(maxNameLength, '\0');
+            m_gl->getActiveAttrib(program->glObject(), i, maxNameLength, &length, &size, &type, &nameBuf[0]);
+            std::string name(nameBuf.data(), length);
+
+            // Determine the number of locations this attribute occupies
+            GLint numLocations = 1;
+            switch (type) {
+            case GL_FLOAT_MAT2:
+                numLocations = 2;
+                break;
+            case GL_FLOAT_MAT3:
+                numLocations = 3;
+                break;
+            case GL_FLOAT_MAT4:
+                numLocations = 4;
+                break;
+            default:
+                break;
+            }
+
+            // Get the actual location assigned by the linker or binding
+            GLint location = m_gl->getAttribLocation(program->glObject(), name.c_str());
+            if (location >= 0) {
+                activeAttribs.push_back(std::make_tuple(name, type, numLocations, static_cast<GLuint>(location)));
+            }
+        }
+
+        // Check for conflicts between attribute locations
+        for (const auto& attrib : activeAttribs) {
+            const std::string& name = std::get<0>(attrib);
+            GLenum type = std::get<1>(attrib);
+            GLint numLocations = std::get<2>(attrib);
+            GLuint location = std::get<3>(attrib);
+
+            // Check if this matrix attribute has enough room
+            if (numLocations > 1) {
+                if (location + numLocations > static_cast<GLuint>(maxVertexAttribs)) {
+                    // Not enough room for the matrix attribute
+                    program->setWebGLLinkFailed(true);
+                    return;
+                }
+            }
+
+            // Check for conflicts with other attributes
+            for (const auto& other : activeAttribs) {
+                const std::string& otherName = std::get<0>(other);
+                if (otherName == name) {
+                    continue; // Skip self
+                }
+
+                GLuint otherLocation = std::get<3>(other);
+                GLint otherNumLocations = std::get<2>(other);
+
+                // Check if the other attribute's location falls within this attribute's range
+                if (numLocations > 1) {
+                    for (GLint offset = 0; offset < numLocations; ++offset) {
+                        if (otherLocation == location + offset) {
+                            // Conflict! Another attribute is in the matrix's range
+                            program->setWebGLLinkFailed(true);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Check if the bindAttribLocation bindings conflict with each other for matrix attributes
+        for (const auto& binding : bindings) {
+            const std::string& name = binding.first;
+            GLuint location = binding.second;
+
+            // Find if this is a matrix attribute
+            GLenum attribType = GL_NONE;
+            GLint numLocations = 1;
+            for (const auto& attrib : activeAttribs) {
+                if (std::get<0>(attrib) == name) {
+                    attribType = std::get<1>(attrib);
+                    numLocations = std::get<2>(attrib);
+                    break;
+                }
+            }
+
+            // If this is a matrix attribute, check for conflicts with other bindings
+            if (numLocations > 1) {
+                for (const auto& otherBinding : bindings) {
+                    if (otherBinding.first == name) {
+                        continue;
+                    }
+                    GLuint otherLocation = otherBinding.second;
+
+                    // Check if the other binding falls within the matrix's range
+                    if (otherLocation >= location && otherLocation < location + static_cast<GLuint>(numLocations)) {
+                        // Conflict! Another attribute binding overlaps with the matrix's range
+                        program->setWebGLLinkFailed(true);
+                        return;
+                    }
+                }
+            }
+        }
     }
 }
 
