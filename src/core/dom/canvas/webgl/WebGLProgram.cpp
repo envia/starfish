@@ -23,6 +23,7 @@
 #include "WebGLProgram.h"
 #include "WebGLRenderingContext.h"
 #include "platform/canvas/gl/GL.h"
+#include "platform/canvas/gl/IncludeGL.h"
 
 namespace Starfish {
 
