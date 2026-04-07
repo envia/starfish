@@ -396,6 +396,9 @@ void WebGLRenderingContext::bindAttribLocation(WebGLProgram* program,
         return;
     }
 
+    // Track the binding for aliasing detection
+    program->bindAttribLocation(index, name->toUTF8NonGCString());
+
     m_gl->bindAttribLocation(program->glObject(), index, CSTR(name));
 }
 
@@ -1458,8 +1461,14 @@ ScriptValue WebGLRenderingContext::getProgramParameter(WebGLProgram* program,
 
     switch (pname) {
     case GL_DELETE_STATUS:
-    case GL_LINK_STATUS:
     case GL_VALIDATE_STATUS:
+        return Escargot::ValueRef::create(static_cast<bool>(params));
+    case GL_LINK_STATUS:
+        // Return false if link status was invalidated due to WebGL constraints
+        // (e.g., attribute aliasing)
+        if (program->isLinkStatusInvalidated()) {
+            return Escargot::ValueRef::create(false);
+        }
         return Escargot::ValueRef::create(static_cast<bool>(params));
     case GL_ATTACHED_SHADERS:
     case GL_ACTIVE_ATTRIBUTES:
@@ -2074,6 +2083,24 @@ void WebGLRenderingContext::linkProgram(WebGLProgram* program)
             link(https://registry.khronos.org/webgl/specs/latest/1.0/#6.43).
         */
         STARFISH_UNIMPLEMENTED();
+    }
+
+    // WebGL spec: Check for aliased attribute locations after linking.
+    // If two active attributes are bound to the same location, linking must fail.
+    GLint linkStatus = 0;
+    m_gl->getProgramiv(program->glObject(), GL_LINK_STATUS, &linkStatus);
+    if (linkStatus == GL_TRUE) {
+        if (program->hasAliasedAttribLocations()) {
+            // Link should fail when active attributes are aliased to the same location
+            // We need to invalidate the program by re-linking with a dummy shader
+            // or marking it as invalid. The simplest approach is to just mark
+            // that the link status should be reported as false.
+            // According to WebGL spec, if aliasing is detected, link must fail.
+            // We set the program's internal state to indicate this failure.
+            // Since we can't change the GL link status, we'll handle this in
+            // getProgramParameter for GL_LINK_STATUS.
+            program->setLinkStatusInvalidated(true);
+        }
     }
 }
 
