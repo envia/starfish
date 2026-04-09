@@ -697,6 +697,66 @@ void WebGL2RenderingContext::uniformMatrix3x4fv(
                                 transpose, data, srcOffset, srcLength);
 }
 
+ScriptValue WebGL2RenderingContext::getActiveUniforms(
+    WebGLProgram* program, GCAtomicVector<GLuint> uniformIndices, GLenum pname)
+{
+    ENTER_CONTEXT_SCOPE(scriptNull());
+
+    if (program->context() != this) {
+        setGLError(GL_INVALID_OPERATION);
+        return scriptNull();
+    }
+    switch (pname) {
+    // sequence<GLboolean>
+    case GL_UNIFORM_IS_ROW_MAJOR: {
+        GLsizei count = uniformIndices.size();
+        std::vector<GLint> values(count);
+        gl()->getActiveUniformsiv(program->glObject(), count,
+                                  uniformIndices.data(), pname, values.data());
+        return createScriptValue(
+            createArray(scriptBindingInstance(),
+                        std::vector<bool>(values.begin(), values.end())));
+    }
+    // sequence<GLenum>
+    case GL_UNIFORM_TYPE: {
+        GLsizei count = uniformIndices.size();
+        std::vector<GLint> values(count);
+        gl()->getActiveUniformsiv(program->glObject(), count,
+                                  uniformIndices.data(), pname, values.data());
+        return createScriptValue(
+            createTypedArray<Escargot::Uint32ArrayObjectRef>(
+                scriptBindingInstance(),
+                std::vector<GLenum>(values.begin(), values.end())));
+    }
+    // sequence<GLint>
+    case GL_UNIFORM_ARRAY_STRIDE:
+    case GL_UNIFORM_BLOCK_INDEX:
+    case GL_UNIFORM_MATRIX_STRIDE:
+    case GL_UNIFORM_OFFSET: {
+        GLsizei count = uniformIndices.size();
+        std::vector<GLint> values(count);
+        gl()->getActiveUniformsiv(program->glObject(), count,
+                                  uniformIndices.data(), pname, values.data());
+        return createScriptValue(
+            createTypedArray<Escargot::Int32ArrayObjectRef>(
+                scriptBindingInstance(), values));
+    }
+    // sequence<GLuint>
+    case GL_UNIFORM_SIZE: {
+        GLsizei count = uniformIndices.size();
+        std::vector<GLint> values(count);
+        gl()->getActiveUniformsiv(program->glObject(), count,
+                                  uniformIndices.data(), pname, values.data());
+        return createScriptValue(
+            createTypedArray<Escargot::Uint32ArrayObjectRef>(
+                scriptBindingInstance(),
+                std::vector<GLenum>(values.begin(), values.end())));
+    }
+    }
+    setGLError(GL_INVALID_ENUM);
+    return scriptNull();
+}
+
 Optional<WebGLSync*> WebGL2RenderingContext::fenceSync(GLenum condition,
                                                        GLbitfield flags)
 {
