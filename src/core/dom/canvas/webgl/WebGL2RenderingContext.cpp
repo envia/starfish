@@ -984,7 +984,7 @@ struct Combination {
 // https://www.khronos.org/opengles/sdk/docs/man3/html/glTexImage2D.xhtml
 // https://www.khronos.org/registry/OpenGL-Refpages/es3.0/html/glTexImage2D.xhtml
 // https://registry.khronos.org/OpenGL-Refpages/es3.0/html/glTexImage2D.xhtml
-static const Combination combinations[] = {
+static const Combination combinationsArrayBufferView[] = {
     // Table 1. Unsized Internal Formats
     { GL_RGB, GL_RGB, GL_UNSIGNED_BYTE },
     { GL_RGB, GL_RGB, GL_UNSIGNED_SHORT_5_6_5 },
@@ -1065,10 +1065,55 @@ static const Combination combinations[] = {
       GL_FLOAT_32_UNSIGNED_INT_24_8_REV },
 };
 
+static const Combination combinationsTexImageSource[] = {
+    { GL_RGB, GL_RGB, GL_UNSIGNED_BYTE },
+    { GL_RGB, GL_RGB, GL_UNSIGNED_SHORT_5_6_5 },
+    { GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE },
+    { GL_RGBA, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4 },
+    { GL_RGBA, GL_RGBA, GL_UNSIGNED_SHORT_5_5_5_1 },
+    { GL_LUMINANCE_ALPHA, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE },
+    { GL_LUMINANCE, GL_LUMINANCE, GL_UNSIGNED_BYTE },
+    { GL_ALPHA, GL_ALPHA, GL_UNSIGNED_BYTE },
+    { GL_R8, GL_RED, GL_UNSIGNED_BYTE },
+    { GL_R16F, GL_RED, GL_HALF_FLOAT },
+    { GL_R16F, GL_RED, GL_FLOAT },
+    { GL_R32F, GL_RED, GL_FLOAT },
+    { GL_R8UI, GL_RED_INTEGER, GL_UNSIGNED_BYTE },
+    { GL_RG8, GL_RG, GL_UNSIGNED_BYTE },
+    { GL_RG16F, GL_RG, GL_HALF_FLOAT },
+    { GL_RG16F, GL_RG, GL_FLOAT },
+    { GL_RG32F, GL_RG, GL_FLOAT },
+    { GL_RG8UI, GL_RG_INTEGER, GL_UNSIGNED_BYTE },
+    { GL_RGB8, GL_RGB, GL_UNSIGNED_BYTE },
+    { GL_SRGB8, GL_RGB, GL_UNSIGNED_BYTE },
+    { GL_RGB565, GL_RGB, GL_UNSIGNED_BYTE },
+    { GL_RGB565, GL_RGB, GL_UNSIGNED_SHORT_5_6_5 },
+    { GL_R11F_G11F_B10F, GL_RGB, GL_UNSIGNED_INT_10F_11F_11F_REV },
+    { GL_R11F_G11F_B10F, GL_RGB, GL_HALF_FLOAT },
+    { GL_R11F_G11F_B10F, GL_RGB, GL_FLOAT },
+    { GL_RGB9_E5, GL_RGB, GL_HALF_FLOAT },
+    { GL_RGB9_E5, GL_RGB, GL_FLOAT },
+    { GL_RGB16F, GL_RGB, GL_HALF_FLOAT },
+    { GL_RGB16F, GL_RGB, GL_FLOAT },
+    { GL_RGB32F, GL_RGB, GL_FLOAT },
+    { GL_RGB8UI, GL_RGB_INTEGER, GL_UNSIGNED_BYTE },
+    { GL_RGBA8, GL_RGBA, GL_UNSIGNED_BYTE },
+    { GL_SRGB8_ALPHA8, GL_RGBA, GL_UNSIGNED_BYTE },
+    { GL_RGB5_A1, GL_RGBA, GL_UNSIGNED_BYTE },
+    { GL_RGB5_A1, GL_RGBA, GL_UNSIGNED_SHORT_5_5_5_1 },
+    { GL_RGB10_A2, GL_RGBA, GL_UNSIGNED_INT_2_10_10_10_REV },
+    { GL_RGBA4, GL_RGBA, GL_UNSIGNED_BYTE },
+    { GL_RGBA4, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4 },
+    { GL_RGBA16F, GL_RGBA, GL_HALF_FLOAT },
+    { GL_RGBA16F, GL_RGBA, GL_FLOAT },
+    { GL_RGBA32F, GL_RGBA, GL_FLOAT },
+    { GL_RGBA8UI, GL_RGBA_INTEGER, GL_UNSIGNED_BYTE },
+};
+
 static bool isInternalformatValid(GLint internalformat, GLenum format,
                                   GLenum type)
 {
-    for (const Combination& combination : combinations) {
+    for (const Combination& combination : combinationsArrayBufferView) {
         if (internalformat == combination.internalformat &&
             format == combination.format && type == combination.type) {
             return true;
