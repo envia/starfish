@@ -264,6 +264,8 @@ protected:
         unsigned long long srcOffset, GLuint srcLength);
 
 private:
+    size_t getBytesPerPixel(GLenum format, GLenum type) override;
+
     GLenum m_currentVertexAttribType = GL_FLOAT;
 };
 

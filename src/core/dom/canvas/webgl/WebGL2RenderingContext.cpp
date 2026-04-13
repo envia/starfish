@@ -1056,6 +1056,11 @@ void WebGL2RenderingContext::bufferSubData(GLenum target,
     WebGLRenderingContext::bufferSubData(target, dstByteOffset, srcData);
 }
 
+size_t WebGL2RenderingContext::getBytesPerPixel(GLenum format, GLenum type)
+{
+    return Pixel::getBytesPerPixel(format, type, 2);
+}
+
 void WebGL2RenderingContext::texImage2D(GLenum target, GLint level,
                                         GLint internalformat, GLsizei width,
                                         GLsizei height, GLint border,

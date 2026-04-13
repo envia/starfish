@@ -358,6 +358,8 @@ protected:
         Float32List data, unsigned long long srcOffset, GLuint srcLength);
 
 private:
+    virtual size_t getBytesPerPixel(GLenum format, GLenum type);
+
     bool m_hasPendingJobsBetweenFrames;
     uint32_t m_pendingClearMask;
 
