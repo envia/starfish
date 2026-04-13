@@ -266,6 +266,7 @@ protected:
 private:
     bool checkInternalFormat(GLint internalFormat, GLenum format,
                              GLenum type) override;
+    bool checkSrcData(ScriptArrayBufferView srcData, GLenum type) override;
 
     GLenum m_currentVertexAttribType = GL_FLOAT;
 };
