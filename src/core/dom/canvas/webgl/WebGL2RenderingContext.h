@@ -694,6 +694,8 @@ protected:
         Float32List data, unsigned long long srcOffset, GLuint srcLength);
 
 private:
+    Optional<ScriptValue> getParameterImpl(GLenum pname);
+
     GLenum m_currentVertexAttribType = GL_FLOAT;
     std::unordered_map<GLenum, GLuint> m_activeQueries;
     std::unordered_map<GLuint, WebGLQuery*> m_queryObjects;
