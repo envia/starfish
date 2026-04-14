@@ -264,6 +264,8 @@ protected:
         unsigned long long srcOffset, GLuint srcLength);
 
 private:
+    Optional<ScriptValue> getParameterImpl(GLenum pname);
+
     bool checkInternalFormat(GLint internalFormat, GLenum format,
                              GLenum type) override;
     bool isSrcDataValid(ScriptArrayBufferView srcData, GLenum type) override;
