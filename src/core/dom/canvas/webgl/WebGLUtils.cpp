@@ -84,7 +84,7 @@ struct Combination {
 };
 
 // https://registry.khronos.org/OpenGL/specs/es/3.0/es_spec_3.0.pdf
-static const Combination tableWebGL2[] = {
+static const Combination combinationsWebGL2[] = {
     // Table 3.2: Valid combinations of format, type, and sized internalformat.
     { GL_RGBA, GL_UNSIGNED_BYTE, 4, GL_RGBA8 },
     { GL_RGBA, GL_UNSIGNED_BYTE, 4, GL_RGB5_A1 },
@@ -169,7 +169,7 @@ static const Combination tableWebGL2[] = {
 static bool isInternalFormatValidWebGL2(GLint internalFormat, GLenum format,
                                         GLenum type)
 {
-    for (const Combination& combination : tableWebGL2) {
+    for (const Combination& combination : combinationsWebGL2) {
         if (combination.internalFormat == internalFormat &&
             combination.format == format && combination.type == type) {
             return true;
@@ -180,7 +180,7 @@ static bool isInternalFormatValidWebGL2(GLint internalFormat, GLenum format,
 
 static size_t getBytesPerPixelWebGL2(GLenum format, GLenum type)
 {
-    for (const Combination& combination : tableWebGL2) {
+    for (const Combination& combination : combinationsWebGL2) {
         if (combination.format == format && combination.type == type) {
             return combination.bytesPerPixel;
         }
