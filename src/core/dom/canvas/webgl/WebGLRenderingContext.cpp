@@ -3002,8 +3002,8 @@ private:
     Optional<GLenum> m_dataFormat;
 };
 
-bool WebGLRenderingContext::checkSrcData(ScriptArrayBufferView srcData,
-                                         GLenum type)
+bool WebGLRenderingContext::isSrcDataValid(ScriptArrayBufferView srcData,
+                                           GLenum type)
 {
     if (type == GL_UNSIGNED_BYTE && (!srcData->isUint8ArrayObject() &&
                                      !srcData->isUint8ClampedArrayObject())) {
@@ -3035,7 +3035,7 @@ void WebGLRenderingContext::handleTexImageWithArrayBufferView(
     if (pixels.hasValue()) {
         ArrayBufferViewRef* pixelsView = pixels.getValue();
 
-        if (!checkSrcData(pixelsView, type)) {
+        if (!isSrcDataValid(pixelsView, type)) {
             setGLError(GL_INVALID_OPERATION);
             return;
         }
@@ -3212,7 +3212,7 @@ void WebGLRenderingContext::handleTexImageWithImageSource(
 bool WebGLRenderingContext::checkInternalFormat(GLint internalFormat,
                                                 GLenum format, GLenum type)
 {
-    if (static_cast<GLenum>(internalFormat) != format) {
+    if (!Pixel::isInternalFormatValid(internalFormat, format, type, 1)) {
         // The format, in WebGL 1, must be the same as internalFormat. See:
         // https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/texImage2D
         // WebGL 2 checks combination of internalFormat, format, and type.
