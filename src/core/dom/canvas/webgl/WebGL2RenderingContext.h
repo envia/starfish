@@ -264,6 +264,8 @@ protected:
         unsigned long long srcOffset, GLuint srcLength);
 
 private:
+    Optional<ScriptValue> getParameterImpl(GLenum pname);
+
     GLenum m_currentVertexAttribType = GL_FLOAT;
 };
 
