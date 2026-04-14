@@ -1056,12 +1056,6 @@ void WebGL2RenderingContext::bufferSubData(GLenum target,
     WebGLRenderingContext::bufferSubData(target, dstByteOffset, srcData);
 }
 
-struct Combination {
-    GLint internalFormat;
-    GLenum format;
-    GLenum type;
-};
-
 bool WebGL2RenderingContext::checkInternalFormat(GLint internalFormat,
                                                  GLenum format, GLenum type)
 {
