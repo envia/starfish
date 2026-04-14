@@ -259,6 +259,8 @@ public:
                     Optional<ScriptArrayBufferView> dstData);
 
 protected:
+    Optional<ScriptValue> getParameterImpl(GLenum pname);
+
     Optional<ScriptValue> getUniformImpl(WebGLProgram* program,
                                          WebGLUniformLocation* location,
                                          GLenum type);
