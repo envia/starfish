@@ -3219,7 +3219,7 @@ bool WebGLRenderingContext::checkInternalFormat(GLint internalFormat,
         setGLError(GL_INVALID_OPERATION,
                    StringUtils::formatString(
                        "The given parameters, internal format (0x%04X) and "
-                       "format (0x%04X) are not same.",
+                       "format (0x%04X), are not the same.",
                        internalFormat, format)
                        .c_str());
         return false;

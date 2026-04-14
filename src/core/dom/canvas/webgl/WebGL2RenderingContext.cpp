@@ -1069,7 +1069,7 @@ bool WebGL2RenderingContext::checkInternalFormat(GLint internalFormat,
         setGLError(GL_INVALID_OPERATION,
                    StringUtils::formatString(
                        "The given parameters, internal format (0x%04X), format "
-                       "(0x%04X), and type (0x%04X) are not valid.",
+                       "(0x%04X), and type (0x%04X), are not valid.",
                        internalFormat, format, type)
                        .c_str());
         return false;
