@@ -340,7 +340,7 @@ ScriptValue WebGL2RenderingContext::getUniform(WebGLProgram* program,
         return scriptNull();
     }
 
-    if (location->program()->context() != this) {
+    if (!isFromCurrentContext(location->program()) {
         setGLError(GL_INVALID_OPERATION);
         return scriptNull();
     }
