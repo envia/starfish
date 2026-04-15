@@ -365,7 +365,7 @@ ScriptValue WebGL2RenderingContext::getVertexAttrib(GLuint index, GLenum pname)
     case GL_VERTEX_ATTRIB_ARRAY_NORMALIZED: {
         GLint value = 0;
         gl()->getVertexAttribiv(index, pname, &value);
-        return createScriptValue(static_cast<GLboolean>(value));
+        return createScriptValue(static_cast<bool>(value));
     }
     // GLenum
     case GL_VERTEX_ATTRIB_ARRAY_TYPE: {
