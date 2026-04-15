@@ -1590,7 +1590,7 @@ test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/sync/sync-webgl-speci
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/textures/misc/copy-texture-image.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/textures/misc/copy-texture-image-luma-format.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/textures/misc/copy-texture-image-webgl-specific.html
-# test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/textures/misc/gl-get-tex-parameter.html
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/textures/misc/gl-get-tex-parameter.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/textures/misc/mipmap-fbo.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/textures/misc/tex-3d-size-limit.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/textures/misc/tex-image-and-sub-image-with-array-buffer-view-sub-source.html
