@@ -336,6 +336,11 @@ private:
     void setPendingClearMask(uint32_t mask);
 
 protected:
+    GLTextureMap& boundTextures()
+    {
+        return m_boundTextures;
+    }
+
     GLenum getUniformType(WebGLProgram* program,
                           WebGLUniformLocation* location);
     Optional<ScriptValue> getUniformImpl(WebGLProgram* program,

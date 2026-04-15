@@ -105,6 +105,8 @@ public:
 
     ScriptValue getProgramParameter(WebGLProgram* program, GLenum pname);
 
+    ScriptValue getTexParameter(GLenum target, GLenum pname);
+
     ScriptValue getUniform(WebGLProgram* program,
                            WebGLUniformLocation* location);
 
