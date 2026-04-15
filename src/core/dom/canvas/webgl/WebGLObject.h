@@ -71,9 +71,9 @@ public:
     END_IMPLEMENT_NEW_WITH_GC_DESC();
 
 private:
-    ScriptBindingInstance* m_scriptBindingInstance;
-    WebGLRenderingContext* m_context;
-    GLuint m_glObject;
+    ScriptBindingInstance* const m_scriptBindingInstance;
+    WebGLRenderingContext* const m_context;
+    const GLuint m_glObject;
     bool m_invalidated = false;
     bool m_deleted = false;
 };
