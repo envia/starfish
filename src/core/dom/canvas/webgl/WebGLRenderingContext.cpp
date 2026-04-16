@@ -1418,9 +1418,7 @@ ScriptValue WebGLRenderingContext::getFramebufferAttachmentParameter(
 
     switch (pname) {
     case GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE: {
-        return params != 0
-                   ? Escargot::ValueRef::create(static_cast<GLenum>(params))
-                   : scriptNull();
+        return Escargot::ValueRef::create(static_cast<GLenum>(params));
     }
     case GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL:
     case GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE:
