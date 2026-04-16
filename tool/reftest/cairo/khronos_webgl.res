@@ -623,7 +623,7 @@ test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/rendering/vertex-textu
 # test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/state/gl-get-calls.html
 test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/state/gl-geterror.html
 test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/state/gl-getstring.html
-# test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/state/gl-object-get-calls.html
+test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/state/gl-object-get-calls.html
 # test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/state/state-uneffected-after-compositing.html
 test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/textures/compressed-tex-image.html
 test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/textures/copy-tex-image-2d-formats.html
