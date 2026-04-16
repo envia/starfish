@@ -1941,12 +1941,16 @@ ScriptValue WebGLRenderingContext::getVertexAttrib(GLuint index, GLenum pname)
 
         TRACE(WEBGL, KV(index), KV(value));
 
+        Optional<WebGLVertexArrayObjectOES*> maybe =
+            m_state->webGLVertexArrayObjectOES();
+
         Optional<WebGLBuffer*> maybeBuffer =
             m_state->getBufferBoundToVertexAttributes(index);
 
         // For conformance/state/gl-object-get-calls.html in
         // test/cairo/reftest/vendor/khronos/webgl/1.0.3.
-        if (!maybeBuffer.hasValue() || maybeBuffer.value()->isDeleted()) {
+        if ((!maybeBuffer.hasValue()) ||
+            ((!maybe.hasValue()) && maybeBuffer.value()->isDeleted())) {
             return scriptNull();
         }
 
