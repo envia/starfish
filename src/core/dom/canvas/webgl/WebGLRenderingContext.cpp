@@ -1906,15 +1906,14 @@ ScriptValue WebGLRenderingContext::getVertexAttrib(GLuint index, GLenum pname)
         Optional<WebGLVertexArrayObjectOES*> maybe =
             m_state->webGLVertexArrayObjectOES();
 
-        if (!maybe.hasValue()) {
-            return scriptNull(); // No mention found for this in the spec.
-        }
-
         Optional<WebGLBuffer*> maybeBuffer =
             m_state->getBufferBoundToVertexAttributes(index);
 
-        if (!maybeBuffer.hasValue()) {
-            return scriptNull(); // No mention found for this in the spec.
+        // For conformance/state/gl-object-get-calls.html in
+        // test/cairo/reftest/vendor/khronos/webgl/1.0.3.
+        if ((!maybeBuffer.hasValue()) ||
+            ((!maybe.hasValue()) && maybeBuffer.value()->isDeleted())) {
+            return scriptNull();
         }
 
         TRACE(WEBGL, KV(index), KV(maybeBuffer.value()->glObject()));
