@@ -586,7 +586,7 @@ test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/programs/use-program-c
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/textures/misc/texture-upload-size.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/textures/misc/mipmap-fbo.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/textures/misc/texture-draw-with-2d-and-cube.html
-test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/textures/canvas/tex-2d-rgb-rgb-unsigned_byte.html
+# test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/textures/canvas/tex-2d-rgb-rgb-unsigned_byte.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/textures/canvas/tex-2d-rgb-rgb-unsigned_short_5_6_5.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/textures/canvas/tex-2d-rgba-rgba-unsigned_byte.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/textures/canvas/tex-2d-rgba-rgba-unsigned_short_4_4_4_4.html
