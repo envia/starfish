@@ -1065,6 +1065,7 @@ static const Combination combinationsArrayBufferView[] = {
       GL_FLOAT_32_UNSIGNED_INT_24_8_REV },
 };
 
+// https://registry.khronos.org/webgl/specs/latest/2.0/#TEXTURE_TYPES_FORMATS_FROM_DOM_ELEMENTS_TABLE
 static const Combination combinationsTexImageSource[] = {
     { GL_RGB, GL_RGB, GL_UNSIGNED_BYTE },
     { GL_RGB, GL_RGB, GL_UNSIGNED_SHORT_5_6_5 },
