@@ -3286,7 +3286,7 @@ void WebGLRenderingContext::texImage2D(GLenum target, GLint level,
         },
         [&](const std::vector<GLubyte>& blackData) {
 #if defined(PORT_PIXEL_ORDER_BGRA)
-            if (format == GL_RGBA) {
+            if (format == GL_RGBA || format == GL_RGB) {
                 if (WebGLExtensionRegistry::instance()
                         .hasEXT_texture_format_BGRA8888()) {
                     // According to OpenGL ES specification, the format must
