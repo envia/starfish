@@ -2946,14 +2946,7 @@ public:
 
 #if defined(PORT_PIXEL_ORDER_BGRA)
         if (m_isNativeImageDataUsed) {
-            // NativeImageData is formatted as BGRA.
-            if (WebGLExtensionRegistry::instance()
-                    .hasEXT_texture_format_BGRA8888()) {
-                m_dataFormat = GL_BGRA_EXT;
-                needsColorConversion = false;
-            } else {
-                needsColorConversion = true;
-            }
+            needsColorConversion = true;
         }
 #endif
         if (!needsFlipY && !needsPremultiplyAlpha && !needsColorConversion) {
@@ -3285,19 +3278,6 @@ void WebGLRenderingContext::texImage2D(GLenum target, GLint level,
                              format, type, helper->data());
         },
         [&](const std::vector<GLubyte>& blackData) {
-#if defined(PORT_PIXEL_ORDER_BGRA)
-            if (format == GL_RGBA) {
-                if (WebGLExtensionRegistry::instance()
-                        .hasEXT_texture_format_BGRA8888()) {
-                    // According to OpenGL ES specification, the format must
-                    // match the base internal format (no conversions from
-                    // one format to another during texture image processing
-                    // are supported.)
-                    internalFormat = GL_BGRA_EXT;
-                    format = GL_BGRA_EXT;
-                }
-            }
-#endif
             m_gl->texImage2D(target, level, internalFormat, width, height, 0,
                              format, type, blackData.data());
         },
@@ -3367,18 +3347,6 @@ void WebGLRenderingContext::texSubImage2D(
                                 format, type, helper->data());
         },
         [&](const std::vector<GLubyte>& blackData) {
-#if defined(PORT_PIXEL_ORDER_BGRA)
-            if (format == GL_RGBA) {
-                if (WebGLExtensionRegistry::instance()
-                        .hasEXT_texture_format_BGRA8888()) {
-                    // According to OpenGL ES specification, the format must
-                    // match the base internal format (no conversions from
-                    // one format to another during texture image processing
-                    // are supported.)
-                    format = GL_BGRA_EXT;
-                }
-            }
-#endif
             m_gl->texSubImage2D(target, level, xoffset, yoffset, width, height,
                                 format, type, blackData.data());
         },
