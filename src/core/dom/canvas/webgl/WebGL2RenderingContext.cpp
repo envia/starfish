@@ -122,6 +122,47 @@ ScriptBindingInstance* WebGL2RenderingContext::scriptBindingInstance()
     });
 #endif
 
+ScriptValue WebGL2RenderingContext::getBufferParameter(GLenum target,
+                                                       GLenum pname)
+{
+    ENTER_CONTEXT_SCOPE(scriptNull());
+
+    // For conformance2/state/gl-object-get-calls.html in
+    // test/cairo/reftest/vendor/khronos/webgl/2.0.0.
+    if (target != GL_ARRAY_BUFFER && target != GL_COPY_READ_BUFFER &&
+        target != GL_COPY_WRITE_BUFFER && target != GL_ELEMENT_ARRAY_BUFFER &&
+        target != GL_PIXEL_PACK_BUFFER && target != GL_PIXEL_UNPACK_BUFFER &&
+        target != GL_TRANSFORM_FEEDBACK_BUFFER && target != GL_UNIFORM_BUFFER) {
+        setGLError(GL_INVALID_ENUM);
+        return scriptNull();
+    }
+
+    switch (pname) {
+    // GLint
+    case GL_BUFFER_SIZE: {
+        GLint value = -1;
+        gl()->getBufferParameteriv(target, pname, &value);
+        if (hasNewGLError()) {
+            return scriptNull();
+        }
+        return createScriptValue(static_cast<GLsizeiptr>(value));
+    }
+    // GLenum
+    case GL_BUFFER_USAGE: {
+        GLint value = -1;
+        gl()->getBufferParameteriv(target, pname, &value);
+        if (hasNewGLError()) {
+            return scriptNull();
+        }
+        return createScriptValue(static_cast<GLenum>(value));
+    }
+    default:
+        break;
+    }
+    setGLError(GL_INVALID_ENUM);
+    return scriptNull();
+}
+
 Optional<ScriptValue> WebGL2RenderingContext::getParameterImpl(GLenum pname)
 {
     ENTER_CONTEXT_SCOPE(Optional<ScriptValue>());

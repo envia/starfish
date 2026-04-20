@@ -101,6 +101,7 @@ public:
 
     // Implement WebGLRenderingContextBase
 
+    ScriptValue getBufferParameter(GLenum target, GLenum pname);
     ScriptValue getParameter(GLenum pname);
 
     ScriptValue getProgramParameter(WebGLProgram* program, GLenum pname);
