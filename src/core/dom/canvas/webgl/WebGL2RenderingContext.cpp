@@ -582,6 +582,56 @@ ScriptValue WebGL2RenderingContext::getVertexAttrib(GLuint index, GLenum pname)
     return scriptNull();
 }
 
+void WebGL2RenderingContext::texParameterf(GLenum target, GLenum pname,
+                                           GLfloat param)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    if (pname != GL_TEXTURE_BASE_LEVEL && pname != GL_TEXTURE_COMPARE_FUNC &&
+        pname != GL_TEXTURE_COMPARE_MODE && pname != GL_TEXTURE_MAG_FILTER &&
+        pname != GL_TEXTURE_MAX_LEVEL && pname != GL_TEXTURE_MAX_LOD &&
+        pname != GL_TEXTURE_MIN_FILTER && pname != GL_TEXTURE_MIN_LOD &&
+        pname != GL_TEXTURE_WRAP_R && pname != GL_TEXTURE_WRAP_S &&
+        pname != GL_TEXTURE_WRAP_T) {
+        setGLError(GL_INVALID_ENUM);
+        return;
+    }
+
+    if (boundTextures().find(target) == boundTextures().end()) {
+        // If an attempt is made to call this function with no WebGLTexture
+        // bound, an INVALID_OPERATION error is generated.
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    gl()->texParameterf(target, pname, param);
+}
+
+void WebGL2RenderingContext::texParameteri(GLenum target, GLenum pname,
+                                           GLint param)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    if (pname != GL_TEXTURE_BASE_LEVEL && pname != GL_TEXTURE_COMPARE_FUNC &&
+        pname != GL_TEXTURE_COMPARE_MODE && pname != GL_TEXTURE_MAG_FILTER &&
+        pname != GL_TEXTURE_MAX_LEVEL && pname != GL_TEXTURE_MAX_LOD &&
+        pname != GL_TEXTURE_MIN_FILTER && pname != GL_TEXTURE_MIN_LOD &&
+        pname != GL_TEXTURE_WRAP_R && pname != GL_TEXTURE_WRAP_S &&
+        pname != GL_TEXTURE_WRAP_T) {
+        setGLError(GL_INVALID_ENUM);
+        return;
+    }
+
+    if (boundTextures().find(target) == boundTextures().end()) {
+        // If an attempt is made to call this function with no WebGLTexture
+        // bound, an INVALID_OPERATION error is generated.
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    gl()->texParameteri(target, pname, param);
+}
+
 // WebGL2RenderingContextBase
 
 GLint WebGL2RenderingContext::getFragDataLocation(WebGLProgram* program,
