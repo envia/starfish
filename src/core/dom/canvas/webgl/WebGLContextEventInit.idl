@@ -1,0 +1,7 @@
+// https://registry.khronos.org/webgl/specs/latest/1.0/#5.15
+
+// EventInit is defined in the DOM4 specification.
+[STARFISH_ENABLE_WEBGL, Unimplemented]
+dictionary WebGLContextEventInit : EventInit {
+    DOMString statusMessage = "";
+};

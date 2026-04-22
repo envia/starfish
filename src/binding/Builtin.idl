@@ -13,3 +13,8 @@ callback VoidFunction = void ();
 
 // https://drafts.csswg.org/cssom/#typedefdef-cssomstring
 typedef USVString CSSOMString;
+
+// https://webidl.spec.whatwg.org/#ref-for-AllowSharedBufferSource
+// FIXME: Support [AllowShared] by binding_generator
+// typedef (ArrayBuffer or SharedArrayBuffer or [AllowShared] ArrayBufferView) AllowSharedBufferSource;
+typedef (ArrayBuffer or SharedArrayBuffer or ArrayBufferView) AllowSharedBufferSource;

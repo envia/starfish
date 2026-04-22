@@ -2,4 +2,5 @@
 
 [STARFISH_ENABLE_WEBGL, Exposed=(Window,Worker)]
 interface WebGLObject {
+    [Unimplemented] attribute USVString label;
 };
