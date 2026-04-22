@@ -47,11 +47,6 @@ typedef unrestricted float GLclampf;
 [STARFISH_ENABLE_WEBGL]
 enum WebGLPowerPreference { "default", "low-power", "high-performance" };
 
-typedef (ImageBitmap or
-         ImageData or
-         HTMLImageElement or
-         HTMLCanvasElement or
-         HTMLVideoElement) TexImageSource;
 // typedef (ImageBitmap or
 //          ImageData or
 //          HTMLImageElement or
@@ -59,6 +54,11 @@ typedef (ImageBitmap or
 //          HTMLVideoElement or
 //          OffscreenCanvas or
 //          VideoFrame) TexImageSource;
+typedef (ImageBitmap or
+         ImageData or
+         HTMLImageElement or
+         HTMLCanvasElement or
+         HTMLVideoElement) TexImageSource;
 
 // typedef ([AllowShared] Float32Array or sequence<GLfloat>) Float32List;
 // typedef ([AllowShared] Int32Array or sequence<GLint>) Int32List;
@@ -445,6 +445,7 @@ interface WebGLRenderingContextBase
 
     const GLenum RGBA4                          = 0x8056;
     const GLenum RGB5_A1                        = 0x8057;
+    const GLenum RGBA8                          = 0x8058;
     const GLenum RGB565                         = 0x8D62;
     const GLenum DEPTH_COMPONENT16              = 0x81A5;
     const GLenum STENCIL_INDEX8                 = 0x8D48;
@@ -496,8 +497,10 @@ interface WebGLRenderingContextBase
 
     readonly attribute GLsizei drawingBufferWidth;
     readonly attribute GLsizei drawingBufferHeight;
-    // attribute PredefinedColorSpace drawingBufferColorSpace = "srgb";
-    // attribute PredefinedColorSpace unpackColorSpace = "srgb";
+    [Unimplemented] readonly attribute GLenum drawingBufferFormat;
+
+    /* Upon context creation, drawingBufferColorSpace and unpackColorSpace both
+       default to the value "srgb". */
     attribute PredefinedColorSpace drawingBufferColorSpace;
     attribute PredefinedColorSpace unpackColorSpace;
 
@@ -506,6 +509,8 @@ interface WebGLRenderingContextBase
 
     sequence<DOMString>? getSupportedExtensions();
     object? getExtension(DOMString name);
+
+    [Unimplemented] undefined drawingBufferStorage(GLenum sizedFormat, unsigned long width, unsigned long height);
 
     undefined activeTexture(GLenum texture);
     undefined attachShader(WebGLProgram program, WebGLShader shader);
@@ -521,7 +526,7 @@ interface WebGLRenderingContextBase
     undefined blendFuncSeparate(GLenum srcRGB, GLenum dstRGB,
                                 GLenum srcAlpha, GLenum dstAlpha);
 
-    [WebGLHandlesContextLoss]  GLenum checkFramebufferStatus(GLenum target);
+    [WebGLHandlesContextLoss] GLenum checkFramebufferStatus(GLenum target);
     undefined clear(GLbitfield mask);
     undefined clearColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
     undefined clearDepth(GLclampf depth);
@@ -535,12 +540,12 @@ interface WebGLRenderingContextBase
     undefined copyTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset,
                                 GLint x, GLint y, GLsizei width, GLsizei height);
 
-    WebGLBuffer? createBuffer();
-    WebGLFramebuffer? createFramebuffer();
-    WebGLProgram? createProgram();
-    WebGLRenderbuffer? createRenderbuffer();
+    WebGLBuffer createBuffer();
+    WebGLFramebuffer createFramebuffer();
+    WebGLProgram createProgram();
+    WebGLRenderbuffer createRenderbuffer();
     WebGLShader? createShader(GLenum type);
-    WebGLTexture? createTexture();
+    WebGLTexture createTexture();
 
     undefined cullFace(GLenum mode);
 
@@ -577,12 +582,12 @@ interface WebGLRenderingContextBase
     WebGLActiveInfo? getActiveUniform(WebGLProgram program, GLuint index);
     sequence<WebGLShader>? getAttachedShaders(WebGLProgram program);
 
-    [WebGLHandlesContextLoss]  GLint getAttribLocation(WebGLProgram program, DOMString name);
+    [WebGLHandlesContextLoss] GLint getAttribLocation(WebGLProgram program, DOMString name);
 
     any getBufferParameter(GLenum target, GLenum pname);
     any getParameter(GLenum pname);
 
-    [WebGLHandlesContextLoss]  GLenum getError();
+    [WebGLHandlesContextLoss] GLenum getError();
 
     any getFramebufferAttachmentParameter(GLenum target, GLenum attachment,
                                           GLenum pname);
@@ -603,16 +608,16 @@ interface WebGLRenderingContextBase
 
     any getVertexAttrib(GLuint index, GLenum pname);
 
-    [WebGLHandlesContextLoss]  GLintptr getVertexAttribOffset(GLuint index, GLenum pname);
+    [WebGLHandlesContextLoss] GLintptr getVertexAttribOffset(GLuint index, GLenum pname);
 
     undefined hint(GLenum target, GLenum mode);
-    [WebGLHandlesContextLoss]  GLboolean isBuffer(WebGLBuffer? buffer);
-    [WebGLHandlesContextLoss]  GLboolean isEnabled(GLenum cap);
-    [WebGLHandlesContextLoss]  GLboolean isFramebuffer(WebGLFramebuffer? framebuffer);
-    [WebGLHandlesContextLoss]  GLboolean isProgram(WebGLProgram? program);
-    [WebGLHandlesContextLoss]  GLboolean isRenderbuffer(WebGLRenderbuffer? renderbuffer);
-    [WebGLHandlesContextLoss]  GLboolean isShader(WebGLShader? shader);
-    [WebGLHandlesContextLoss]  GLboolean isTexture(WebGLTexture? texture);
+    [WebGLHandlesContextLoss] GLboolean isBuffer(WebGLBuffer? buffer);
+    [WebGLHandlesContextLoss] GLboolean isEnabled(GLenum cap);
+    [WebGLHandlesContextLoss] GLboolean isFramebuffer(WebGLFramebuffer? framebuffer);
+    [WebGLHandlesContextLoss] GLboolean isProgram(WebGLProgram? program);
+    [WebGLHandlesContextLoss] GLboolean isRenderbuffer(WebGLRenderbuffer? renderbuffer);
+    [WebGLHandlesContextLoss] GLboolean isShader(WebGLShader? shader);
+    [WebGLHandlesContextLoss] GLboolean isTexture(WebGLTexture? texture);
     undefined lineWidth(GLfloat width);
     undefined linkProgram(WebGLProgram program);
     undefined pixelStorei(GLenum pname, GLint param);
