@@ -98,7 +98,7 @@ def case_runner(tc):
     # open_subprocess raises before returning (e.g. Popen fails to launch).
     starfish_output = starfish_err = b""
     try:
-        starfish_output, starfish_err, elapsed_time = open_subprocess(starfish_command, timeout)
+        starfish_output, starfish_err, elapsed_time = open_subprocess(starfish_command, 864)
         starfish_output = str(starfish_output, 'utf-8')
         starfish_err = str(starfish_err, 'utf-8')
         if "[STARFISH_TEST] Got signal" in starfish_output :
