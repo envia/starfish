@@ -1,4 +1,4 @@
-.PHONY: all try clean revert reland submodule webgl1 webgl2
+.PHONY: all try clean revert reland submodule webgl1 webgl2 webglsdk webglall
 
 all: binding_generator/scripts/starfish_code_generator.py out/webgl2
 	ninja -C out/webgl2 starfish.executable
@@ -33,3 +33,5 @@ webgl2:
 
 webglsdk:
 	./tool/test_runner.py vendor_test_khronossdk
+
+webglall: webgl1 webgl2 webglsdk
