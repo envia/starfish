@@ -1,4 +1,5 @@
 // https://registry.khronos.org/webgl/specs/latest/1.0/#5.1
+
 [STARFISH_ENABLE_WEBGL]
 typedef unsigned long  GLenum;
 
@@ -46,6 +47,8 @@ typedef unrestricted float GLclampf;
 // section of the specification.
 [STARFISH_ENABLE_WEBGL]
 enum WebGLPowerPreference { "default", "low-power", "high-performance" };
+
+// https://registry.khronos.org/webgl/specs/latest/1.0/#5.14
 
 // typedef (ImageBitmap or
 //          ImageData or

@@ -1,5 +1,6 @@
 // https://registry.khronos.org/webgl/specs/latest/1.0/#5.2
 
+// https://www.khronos.org/registry/webgl/specs/latest/1.0/#WebGLContextAttributes
 [STARFISH_ENABLE_WEBGL]
 dictionary WebGLContextAttributes {
     boolean alpha = true;
