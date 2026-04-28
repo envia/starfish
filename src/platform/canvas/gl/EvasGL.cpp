@@ -1036,6 +1036,20 @@ public:
         m_evasGLAPI->glGetSynciv(sync, pname, bufSize, length, values);
     }
 
+    void texStorage2D(GLenum target, GLsizei levels, GLenum internalformat,
+                      GLsizei width, GLsizei height) override
+    {
+        m_evasGLAPI->glTexStorage2D(target, levels, internalformat, width,
+                                    height);
+    }
+
+    void texStorage3D(GLenum target, GLsizei levels, GLenum internalformat,
+                      GLsizei width, GLsizei height, GLsizei depth) override
+    {
+        m_evasGLAPI->glTexStorage3D(target, levels, internalformat, width,
+                                    height, depth);
+    }
+
     EvasGL(void *p)
         : m_evasGLAPI(static_cast<Evas_GL_API *>(p))
     {

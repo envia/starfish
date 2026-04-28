@@ -341,10 +341,10 @@ interface WebGL2RenderingContextBase
                                                              GLsizei width, GLsizei height);
 
     /* Texture objects */
-    [Unimplemented] undefined texStorage2D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width,
-                                           GLsizei height);
-    [Unimplemented] undefined texStorage3D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width,
-                                           GLsizei height, GLsizei depth);
+    undefined texStorage2D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width,
+                           GLsizei height);
+    undefined texStorage3D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width,
+                           GLsizei height, GLsizei depth);
 
     [Unimplemented] undefined texImage3D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height,
                                          GLsizei depth, GLint border, GLenum format, GLenum type, GLintptr pboOffset);

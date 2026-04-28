@@ -1052,6 +1052,18 @@ public:
         glGetSynciv(sync, pname, bufSize, length, values);
     }
 
+    void texStorage2D(GLenum target, GLsizei levels, GLenum internalformat,
+                      GLsizei width, GLsizei height) override
+    {
+        glTexStorage2D(target, levels, internalformat, width, height);
+    }
+
+    void texStorage3D(GLenum target, GLsizei levels, GLenum internalformat,
+                      GLsizei width, GLsizei height, GLsizei depth) override
+    {
+        glTexStorage3D(target, levels, internalformat, width, height, depth);
+    }
+
     GenericGL(Renderer *renderer)
     {
         m_eglGetCurrentDisplayProc =
