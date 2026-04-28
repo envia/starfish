@@ -30,3 +30,6 @@ webgl1:
 
 webgl2:
 	./tool/test_runner.py vendor_test_khronos2
+
+webglsdk:
+	./tool/test_runner.py vendor_test_khronossdk
