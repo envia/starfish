@@ -362,6 +362,11 @@ protected:
         Float32List data, unsigned long long srcOffset, GLuint srcLength);
 
 private:
+    virtual int webGLVersion() const
+    {
+        return 1;
+    }
+
     virtual bool checkInternalFormat(GLint internalFormat, GLenum format,
                                      GLenum type);
     virtual bool isSrcDataValid(ScriptArrayBufferView srcData, GLenum type);
