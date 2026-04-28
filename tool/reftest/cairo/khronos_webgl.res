@@ -32,7 +32,7 @@ test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/canvas/rapid-resizing.
 # test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/canvas/texture-bindings-unaffected-on-resize.html
 test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/canvas/to-data-url-test.html
 test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/canvas/viewport-unchanged-upon-resize.html
-test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/context/constants-and-properties.html
+# test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/context/constants-and-properties.html # @ignore The test does not meet the latest specification.
 # test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/context/context-attribute-preserve-drawing-buffer.html
 # test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/context/context-attributes-alpha-depth-stencil-antialias.html
 test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/context/context-creation-and-destruction.html
