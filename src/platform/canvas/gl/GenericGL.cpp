@@ -1090,6 +1090,12 @@ public:
         glInvalidateFramebuffer(target, numAttachments, attachments);
     }
 
+    void texStorage3D(GLenum target, GLsizei levels, GLenum internalformat,
+                      GLsizei width, GLsizei height, GLsizei depth) override
+    {
+        glTexStorage3D(target, levels, internalformat, width, height, depth);
+    }
+
     GenericGL(Renderer *renderer)
     {
 #if defined(STARFISH_WINDOWS)

@@ -720,6 +720,24 @@ void WebGL2RenderingContext::getBufferSubData(GLenum target,
     glUnmapBuffer(target);
 }
 
+void WebGL2RenderingContext::texStorage2D(GLenum target, GLsizei levels,
+                                          GLenum internalformat, GLsizei width,
+                                          GLsizei height)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    gl()->texStorage2D(target, levels, internalformat, width, height);
+}
+
+void WebGL2RenderingContext::texStorage3D(GLenum target, GLsizei levels,
+                                          GLenum internalformat, GLsizei width,
+                                          GLsizei height, GLsizei depth)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    gl()->texStorage3D(target, levels, internalformat, width, height, depth);
+}
+
 GLint WebGL2RenderingContext::getFragDataLocation(WebGLProgram* program,
                                                   String* name)
 {

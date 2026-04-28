@@ -346,6 +346,9 @@ public:
 
     virtual void invalidateFramebuffer(GLenum target, GLsizei numAttachments,
                                        const GLenum *attachments) = 0;
+    virtual void texStorage3D(GLenum target, GLsizei levels,
+                              GLenum internalformat, GLsizei width,
+                              GLsizei height, GLsizei depth) = 0;
 };
 
 } // namespace Starfish

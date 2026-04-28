@@ -3373,7 +3373,8 @@ void WebGLRenderingContext::handleTexImageWithArrayBufferView(
             return;
         }
 
-        if ((type == GL_FLOAT) && !isExtensionEnabled("OES_texture_float")) {
+        if (webGLVersion() == 1 && type == GL_FLOAT &&
+            !isExtensionEnabled("OES_texture_float")) {
             setGLError(GL_INVALID_ENUM);
             return;
         }

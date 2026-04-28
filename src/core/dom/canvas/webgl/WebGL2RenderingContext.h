@@ -136,6 +136,12 @@ public:
                           ScriptArrayBufferView dstBuffer,
                           unsigned long long dstOffset = 0, GLuint length = 0);
 
+    /* Texture objects */
+    void texStorage2D(GLenum target, GLsizei levels, GLenum internalformat,
+                      GLsizei width, GLsizei height);
+    void texStorage3D(GLenum target, GLsizei levels, GLenum internalformat,
+                      GLsizei width, GLsizei height, GLsizei depth);
+
     /* Programs and shaders */
     GLint getFragDataLocation(WebGLProgram* program, String* name);
 
