@@ -1,37 +1,42 @@
-// https://registry.khronos.org/webgl/specs/latest/2.0/#3
+// https://registry.khronos.org/webgl/specs/latest/2.0/#4
 
-// https://registry.khronos.org/webgl/specs/latest/2.0/#3.1
+// https://registry.khronos.org/webgl/specs/latest/2.0/#4.1
 [STARFISH_ENABLE_WEBGL]
 typedef long long GLint64;
 [STARFISH_ENABLE_WEBGL]
 typedef unsigned long long GLuint64;
 
-// https://registry.khronos.org/webgl/specs/latest/2.0/#3.2
+// https://registry.khronos.org/webgl/specs/latest/2.0/#4.2
+// https://registry.khronos.org/webgl/specs/latest/2.0/#WebGLQuery
 [STARFISH_ENABLE_WEBGL, Exposed=(Window,Worker)]
 interface WebGLQuery : WebGLObject {
 };
 
-// https://registry.khronos.org/webgl/specs/latest/2.0/#3.3
+// https://registry.khronos.org/webgl/specs/latest/2.0/#4.3
+// https://registry.khronos.org/webgl/specs/latest/2.0/#WebGLSampler
 [STARFISH_ENABLE_WEBGL, Exposed=(Window,Worker)]
 interface WebGLSampler : WebGLObject {
 };
 
-// https://registry.khronos.org/webgl/specs/latest/2.0/#3.4
+// https://registry.khronos.org/webgl/specs/latest/2.0/#4.4
+// https://registry.khronos.org/webgl/specs/latest/2.0/#WebGLSync
 [STARFISH_ENABLE_WEBGL, Exposed=(Window,Worker)]
 interface WebGLSync : WebGLObject {
 };
 
-// https://registry.khronos.org/webgl/specs/latest/2.0/#3.5
+// https://registry.khronos.org/webgl/specs/latest/2.0/#4.5
+// https://registry.khronos.org/webgl/specs/latest/2.0/#WebGLTransformFeedback
 [STARFISH_ENABLE_WEBGL, Exposed=(Window,Worker)]
 interface WebGLTransformFeedback : WebGLObject {
 };
 
-// https://registry.khronos.org/webgl/specs/latest/2.0/#3.6
+// https://registry.khronos.org/webgl/specs/latest/2.0/#4.6
+// https://registry.khronos.org/webgl/specs/latest/2.0/#WebGLVertexArrayObject
 [STARFISH_ENABLE_WEBGL, Exposed=(Window,Worker)]
 interface WebGLVertexArrayObject : WebGLObject {
 };
 
-// https://registry.khronos.org/webgl/specs/latest/2.0/#3.7
+// https://registry.khronos.org/webgl/specs/latest/2.0/#4.7
 
 // FIXME: Support [AllowShared] by binding_generator
 // typedef ([AllowShared] Uint32Array or sequence<GLuint>) Uint32List;
