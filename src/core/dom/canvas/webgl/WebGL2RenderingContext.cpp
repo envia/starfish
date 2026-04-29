@@ -652,6 +652,115 @@ void WebGL2RenderingContext::texStorage3D(GLenum target, GLsizei levels,
     gl()->texStorage3D(target, levels, internalformat, width, height, depth);
 }
 
+void WebGL2RenderingContext::texImage3D(GLenum target, GLint level,
+                                        GLint internalformat, GLsizei width,
+                                        GLsizei height, GLsizei depth,
+                                        GLint border, GLenum format,
+                                        GLenum type, GLintptr pboOffset)
+{
+    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+}
+
+void WebGL2RenderingContext::texImage3D(GLenum target, GLint level,
+                                        GLint internalformat, GLsizei width,
+                                        GLsizei height, GLsizei depth,
+                                        GLint border, GLenum format,
+                                        GLenum type, TexImageSource source)
+{
+    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+}
+
+void WebGL2RenderingContext::texImage3D(GLenum target, GLint level,
+                                        GLint internalformat, GLsizei width,
+                                        GLsizei height, GLsizei depth,
+                                        GLint border, GLenum format,
+                                        GLenum type,
+                                        ScriptArrayBufferView srcData)
+{
+    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+}
+
+void WebGL2RenderingContext::texImage3D(
+    GLenum target, GLint level, GLint internalformat, GLsizei width,
+    GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type,
+    ScriptArrayBufferView srcData, unsigned long long srcOffset)
+{
+    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+}
+
+void WebGL2RenderingContext::texSubImage3D(GLenum target, GLint level,
+                                           GLint xoffset, GLint yoffset,
+                                           GLint zoffset, GLsizei width,
+                                           GLsizei height, GLsizei depth,
+                                           GLenum format, GLenum type,
+                                           GLintptr pboOffset)
+{
+    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+}
+
+void WebGL2RenderingContext::texSubImage3D(GLenum target, GLint level,
+                                           GLint xoffset, GLint yoffset,
+                                           GLint zoffset, GLsizei width,
+                                           GLsizei height, GLsizei depth,
+                                           GLenum format, GLenum type,
+                                           TexImageSource source)
+{
+    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+    glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height,
+                    depth, format, type, nullptr);
+}
+
+void WebGL2RenderingContext::texSubImage3D(
+    GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset,
+    GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type,
+    ScriptArrayBufferView srcData, unsigned long long srcOffset)
+{
+    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+}
+
+void WebGL2RenderingContext::copyTexSubImage3D(GLenum target, GLint level,
+                                               GLint xoffset, GLint yoffset,
+                                               GLint zoffset, GLint x, GLint y,
+                                               GLsizei width, GLsizei height)
+{
+    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+}
+
+void WebGL2RenderingContext::compressedTexImage3D(GLenum target, GLint level,
+                                                  GLenum internalformat,
+                                                  GLsizei width, GLsizei height,
+                                                  GLsizei depth, GLint border,
+                                                  GLsizei imageSize,
+                                                  GLintptr offset)
+{
+    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+}
+
+void WebGL2RenderingContext::compressedTexImage3D(
+    GLenum target, GLint level, GLenum internalformat, GLsizei width,
+    GLsizei height, GLsizei depth, GLint border, ScriptArrayBufferView srcData,
+    unsigned long long srcOffset, GLuint srcLengthOverride)
+{
+    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+}
+
+void WebGL2RenderingContext::compressedTexSubImage3D(
+    GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset,
+    GLsizei width, GLsizei height, GLsizei depth, GLenum format,
+    GLsizei imageSize, GLintptr offset)
+{
+    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+}
+
+void WebGL2RenderingContext::compressedTexSubImage3D(
+    GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset,
+    GLsizei width, GLsizei height, GLsizei depth, GLenum format,
+    ScriptArrayBufferView srcData, unsigned long long srcOffset,
+    GLuint srcLengthOverride)
+{
+    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+}
+
 GLint WebGL2RenderingContext::getFragDataLocation(WebGLProgram* program,
                                                   String* name)
 {

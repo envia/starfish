@@ -1601,7 +1601,7 @@ test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/textures/misc/gl-get-
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/textures/misc/tex-mipmap-levels.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/textures/misc/tex-new-formats.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/textures/misc/tex-storage-2d.html
-# test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/textures/misc/tex-storage-and-subimage-3d.html
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/textures/misc/tex-storage-and-subimage-3d.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/textures/misc/tex-storage-compressed-formats.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/textures/misc/tex-unpack-params.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/textures/misc/texel-fetch-undefined.html

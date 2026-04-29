@@ -135,6 +135,58 @@ public:
     void texStorage3D(GLenum target, GLsizei levels, GLenum internalformat,
                       GLsizei width, GLsizei height, GLsizei depth);
 
+    void texImage3D(GLenum target, GLint level, GLint internalformat,
+                    GLsizei width, GLsizei height, GLsizei depth, GLint border,
+                    GLenum format, GLenum type, GLintptr pboOffset);
+    void texImage3D(GLenum target, GLint level, GLint internalformat,
+                    GLsizei width, GLsizei height, GLsizei depth, GLint border,
+                    GLenum format, GLenum type, TexImageSource source);
+    void texImage3D(GLenum target, GLint level, GLint internalformat,
+                    GLsizei width, GLsizei height, GLsizei depth, GLint border,
+                    GLenum format, GLenum type, ScriptArrayBufferView srcData);
+    void texImage3D(GLenum target, GLint level, GLint internalformat,
+                    GLsizei width, GLsizei height, GLsizei depth, GLint border,
+                    GLenum format, GLenum type, ScriptArrayBufferView srcData,
+                    unsigned long long srcOffset);
+
+    void texSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset,
+                       GLint zoffset, GLsizei width, GLsizei height,
+                       GLsizei depth, GLenum format, GLenum type,
+                       GLintptr pboOffset);
+    void texSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset,
+                       GLint zoffset, GLsizei width, GLsizei height,
+                       GLsizei depth, GLenum format, GLenum type,
+                       TexImageSource source);
+    void texSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset,
+                       GLint zoffset, GLsizei width, GLsizei height,
+                       GLsizei depth, GLenum format, GLenum type,
+                       ScriptArrayBufferView srcData,
+                       unsigned long long srcOffset = 0);
+
+    void copyTexSubImage3D(GLenum target, GLint level, GLint xoffset,
+                           GLint yoffset, GLint zoffset, GLint x, GLint y,
+                           GLsizei width, GLsizei height);
+
+    void compressedTexImage3D(GLenum target, GLint level, GLenum internalformat,
+                              GLsizei width, GLsizei height, GLsizei depth,
+                              GLint border, GLsizei imageSize, GLintptr offset);
+    void compressedTexImage3D(GLenum target, GLint level, GLenum internalformat,
+                              GLsizei width, GLsizei height, GLsizei depth,
+                              GLint border, ScriptArrayBufferView srcData,
+                              unsigned long long srcOffset = 0,
+                              GLuint srcLengthOverride = 0);
+
+    void compressedTexSubImage3D(GLenum target, GLint level, GLint xoffset,
+                                 GLint yoffset, GLint zoffset, GLsizei width,
+                                 GLsizei height, GLsizei depth, GLenum format,
+                                 GLsizei imageSize, GLintptr offset);
+    void compressedTexSubImage3D(GLenum target, GLint level, GLint xoffset,
+                                 GLint yoffset, GLint zoffset, GLsizei width,
+                                 GLsizei height, GLsizei depth, GLenum format,
+                                 ScriptArrayBufferView srcData,
+                                 unsigned long long srcOffset = 0,
+                                 GLuint srcLengthOverride = 0);
+
     /* Programs and shaders */
     GLint getFragDataLocation(WebGLProgram* program, String* name);
 
