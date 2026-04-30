@@ -659,6 +659,10 @@ void WebGL2RenderingContext::texImage3D(GLenum target, GLint level,
                                         GLenum type, GLintptr pboOffset)
 {
     STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+
+    STARFISH_LOG_WARN("nullptr");
+    glTexImage3D(target, level, internalformat, width, height, depth, border,
+                 format, type, nullptr);
 }
 
 void WebGL2RenderingContext::texImage3D(GLenum target, GLint level,
@@ -668,6 +672,31 @@ void WebGL2RenderingContext::texImage3D(GLenum target, GLint level,
                                         GLenum type, TexImageSource source)
 {
     STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+
+    if (source.isNoneValue()) {
+        STARFISH_UNIMPLEMENTED("None");
+    } else if (source.isImageBitmapValue()) {
+        STARFISH_UNIMPLEMENTED("ImageBitmap");
+    } else if (source.isImageDataValue()) {
+        STARFISH_UNIMPLEMENTED("ImageData");
+    } else if (source.isHTMLImageElementValue()) {
+        STARFISH_UNIMPLEMENTED("HTMLImageElement");
+    } else if (source.isHTMLCanvasElementValue()) {
+        STARFISH_UNIMPLEMENTED("HTMLCanvasElement");
+    }
+#ifdef STARFISH_ENABLE_MULTIMEDIA
+    else if (source.isHTMLVideoElementValue()) {
+        STARFISH_UNIMPLEMENTED("HTMLVideoElement");
+    }
+#endif
+    else {
+        STARFISH_ASSERT_NOT_REACHED();
+        return;
+    }
+
+    STARFISH_LOG_WARN("nullptr");
+    glTexImage3D(target, level, internalformat, width, height, depth, border,
+                 format, type, nullptr);
 }
 
 void WebGL2RenderingContext::texImage3D(GLenum target, GLint level,
@@ -678,6 +707,14 @@ void WebGL2RenderingContext::texImage3D(GLenum target, GLint level,
                                         ScriptArrayBufferView srcData)
 {
     STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+
+    if (!isSrcDataValid(srcData, type)) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    glTexImage3D(target, level, internalformat, width, height, depth, border,
+                 format, type, srcData->rawBuffer());
 }
 
 void WebGL2RenderingContext::texImage3D(
@@ -686,6 +723,15 @@ void WebGL2RenderingContext::texImage3D(
     ScriptArrayBufferView srcData, unsigned long long srcOffset)
 {
     STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+
+    if (!isSrcDataValid(srcData, type)) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    STARFISH_LOG_WARN("srcOffset=%lld", srcOffset);
+    glTexImage3D(target, level, internalformat, width, height, depth, border,
+                 format, type, srcData->rawBuffer() + srcOffset);
 }
 
 void WebGL2RenderingContext::texSubImage3D(GLenum target, GLint level,
@@ -696,6 +742,10 @@ void WebGL2RenderingContext::texSubImage3D(GLenum target, GLint level,
                                            GLintptr pboOffset)
 {
     STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+
+    STARFISH_LOG_WARN("nullptr");
+    glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height,
+                    depth, format, type, nullptr);
 }
 
 void WebGL2RenderingContext::texSubImage3D(GLenum target, GLint level,
@@ -706,6 +756,29 @@ void WebGL2RenderingContext::texSubImage3D(GLenum target, GLint level,
                                            TexImageSource source)
 {
     STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+
+    if (source.isNoneValue()) {
+        STARFISH_UNIMPLEMENTED("None");
+    } else if (source.isImageBitmapValue()) {
+        STARFISH_UNIMPLEMENTED("ImageBitmap");
+    } else if (source.isImageDataValue()) {
+        STARFISH_UNIMPLEMENTED("ImageData");
+    } else if (source.isHTMLImageElementValue()) {
+        STARFISH_UNIMPLEMENTED("HTMLImageElement");
+    } else if (source.isHTMLCanvasElementValue()) {
+        STARFISH_UNIMPLEMENTED("HTMLCanvasElement");
+    }
+#ifdef STARFISH_ENABLE_MULTIMEDIA
+    else if (source.isHTMLVideoElementValue()) {
+        STARFISH_UNIMPLEMENTED("HTMLVideoElement");
+    }
+#endif
+    else {
+        STARFISH_ASSERT_NOT_REACHED();
+        return;
+    }
+
+    STARFISH_LOG_WARN("nullptr");
     glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height,
                     depth, format, type, nullptr);
 }
@@ -716,6 +789,15 @@ void WebGL2RenderingContext::texSubImage3D(
     ScriptArrayBufferView srcData, unsigned long long srcOffset)
 {
     STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+
+    if (!isSrcDataValid(srcData, type)) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    STARFISH_LOG_WARN("srcOffset=%lld", srcOffset);
+    glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height,
+                    depth, format, type, srcData->rawBuffer() + srcOffset);
 }
 
 void WebGL2RenderingContext::copyTexSubImage3D(GLenum target, GLint level,

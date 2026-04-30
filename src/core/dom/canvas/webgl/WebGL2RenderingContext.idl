@@ -348,9 +348,9 @@ interface WebGL2RenderingContextBase
 
     undefined texImage3D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height,
                          GLsizei depth, GLint border, GLenum format, GLenum type, GLintptr pboOffset);
-    undefined texImage3D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height,
-                         GLsizei depth, GLint border, GLenum format, GLenum type,
-                         TexImageSource source); // May throw DOMException
+    [Unimplemented] undefined texImage3D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height,
+                                         GLsizei depth, GLint border, GLenum format, GLenum type,
+                                         TexImageSource source); // May throw DOMException
     undefined texImage3D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height,
                          GLsizei depth, GLint border, GLenum format, GLenum type, [AllowShared] ArrayBufferView? srcData);
     undefined texImage3D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height,
@@ -360,9 +360,9 @@ interface WebGL2RenderingContextBase
     undefined texSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset,
                             GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type,
                             GLintptr pboOffset);
-    undefined texSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset,
-                            GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type,
-                            TexImageSource source); // May throw DOMException
+    [Unimplemented] undefined texSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset,
+                                            GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type,
+                                            TexImageSource source); // May throw DOMException
     undefined texSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset,
                             GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type,
                             [AllowShared] ArrayBufferView? srcData, optional unsigned long long srcOffset = 0);
