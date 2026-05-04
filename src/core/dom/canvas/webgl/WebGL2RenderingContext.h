@@ -129,6 +129,14 @@ public:
 
     // Implement WebGL2RenderingContextBase
 
+    /* Buffer objects */
+    void copyBufferSubData(GLenum readTarget, GLenum writeTarget,
+                           GLintptr readOffset, GLintptr writeOffset,
+                           GLsizeiptr size);
+    void getBufferSubData(GLenum target, GLintptr srcByteOffset,
+                          ScriptArrayBufferView dstBuffer,
+                          unsigned long long dstOffset = 0, GLuint length = 0);
+
     /* Texture objects */
     void texStorage2D(GLenum target, GLsizei levels, GLenum internalformat,
                       GLsizei width, GLsizei height);
@@ -270,6 +278,13 @@ public:
                     GLenum usage);
     void bufferSubData(GLenum target, GLintptr dstByteOffset,
                        AllowSharedBufferSource srcData);
+
+    // WebGL2:
+    void bufferData(GLenum target, ScriptArrayBufferView srcData, GLenum usage,
+                    unsigned long long srcOffset, GLuint length = 0);
+    void bufferSubData(GLenum target, GLintptr dstByteOffset,
+                       ScriptArrayBufferView srcData,
+                       unsigned long long srcOffset, GLuint length = 0);
 
     // WebGL1 legacy entrypoints:
     void texImage2D(GLenum target, GLint level, GLint internalformat,

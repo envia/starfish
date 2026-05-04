@@ -634,6 +634,24 @@ void WebGL2RenderingContext::texParameteri(GLenum target, GLenum pname,
 
 // WebGL2RenderingContextBase
 
+void WebGL2RenderingContext::copyBufferSubData(GLenum readTarget,
+                                               GLenum writeTarget,
+                                               GLintptr readOffset,
+                                               GLintptr writeOffset,
+                                               GLsizeiptr size)
+{
+    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+}
+
+void WebGL2RenderingContext::getBufferSubData(GLenum target,
+                                              GLintptr srcByteOffset,
+                                              ScriptArrayBufferView dstBuffer,
+                                              unsigned long long dstOffset,
+                                              GLuint length)
+{
+    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextBase");
+}
+
 void WebGL2RenderingContext::texStorage2D(GLenum target, GLsizei levels,
                                           GLenum internalformat, GLsizei width,
                                           GLsizei height)
@@ -1510,6 +1528,24 @@ void WebGL2RenderingContext::bufferSubData(GLenum target,
                                            AllowSharedBufferSource srcData)
 {
     WebGLRenderingContext::bufferSubData(target, dstByteOffset, srcData);
+}
+
+void WebGL2RenderingContext::bufferData(GLenum target,
+                                        ScriptArrayBufferView srcData,
+                                        GLenum usage,
+                                        unsigned long long srcOffset,
+                                        GLuint length)
+{
+    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
+}
+
+void WebGL2RenderingContext::bufferSubData(GLenum target,
+                                           GLintptr dstByteOffset,
+                                           ScriptArrayBufferView srcData,
+                                           unsigned long long srcOffset,
+                                           GLuint length)
+{
+    STARFISH_UNIMPLEMENTED("WebGL2RenderingContextOverloads");
 }
 
 bool WebGL2RenderingContext::checkInternalFormat(GLint internalFormat,
