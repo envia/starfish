@@ -122,6 +122,13 @@ ScriptBindingInstance* WebGL2RenderingContext::scriptBindingInstance()
     });
 #endif
 
+ScriptValue WebGL2RenderingContext::getBufferParameter(GLenum target,
+                                                       GLenum pname)
+{
+    // TODO
+    return WebGLRenderingContext::getBufferParameter(target, pname);
+}
+
 Optional<ScriptValue> WebGL2RenderingContext::getParameterImpl(GLenum pname)
 {
     ENTER_CONTEXT_SCOPE(Optional<ScriptValue>());
@@ -487,6 +494,75 @@ ScriptValue WebGL2RenderingContext::getVertexAttrib(GLuint index, GLenum pname)
 }
 
 // WebGL2RenderingContextBase
+
+void WebGL2RenderingContext::copyBufferSubData(GLenum readTarget,
+                                               GLenum writeTarget,
+                                               GLintptr readOffset,
+                                               GLintptr writeOffset,
+                                               GLsizeiptr size)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    // TODO
+
+    glCopyBufferSubData(readTarget, writeTarget, readOffset, writeOffset, size);
+}
+
+void WebGL2RenderingContext::getBufferSubData(GLenum target,
+                                              GLintptr srcByteOffset,
+                                              ScriptArrayBufferView dstBuffer,
+                                              unsigned long long dstOffset,
+                                              GLuint length)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    size_t dstLength = dstBuffer->isDataViewObject() ? dstBuffer->byteLength()
+                                                     : dstBuffer->arrayLength();
+
+    unsigned long long copyLength =
+        (length == 0) ? dstLength - dstOffset : length;
+
+    if (copyLength == 0) {
+        return;
+    }
+
+    size_t elementSize =
+        dstBuffer->isDataViewObject()
+            ? 1
+            : dstBuffer->byteLength() / dstBuffer->arrayLength();
+
+    unsigned long long copyByteLength = copyLength * elementSize;
+
+    if (!getState()->getBoundBuffer(target).hasValue()) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    // TODO: If target is TRANSFORM_FEEDBACK_BUFFER, and any transform feedback
+    // object is currently active, generates an INVALID_OPERATION error.
+
+    GLint bufSize;
+    gl()->getBufferParameteriv(target, GL_BUFFER_SIZE, &bufSize);
+    if (hasNewGLError() || bufSize < 0) {
+        return;
+    }
+    if (dstOffset > dstLength || copyLength > dstLength - dstOffset ||
+        srcByteOffset < 0 || srcByteOffset > bufSize ||
+        copyByteLength >
+            static_cast<unsigned long long>(bufSize - srcByteOffset)) {
+        setGLError(GL_INVALID_VALUE);
+        return;
+    }
+
+    void* src = glMapBufferRange(target, srcByteOffset, copyByteLength,
+                                 GL_MAP_READ_BIT);
+    if (hasNewGLError() || src == nullptr) {
+        return;
+    }
+    memcpy(dstBuffer->rawBuffer() + dstOffset * elementSize, src,
+           copyByteLength);
+    glUnmapBuffer(target);
+}
 
 GLint WebGL2RenderingContext::getFragDataLocation(WebGLProgram* program,
                                                   String* name)
@@ -1155,6 +1231,90 @@ void WebGL2RenderingContext::bufferSubData(GLenum target,
                                            AllowSharedBufferSource srcData)
 {
     WebGLRenderingContext::bufferSubData(target, dstByteOffset, srcData);
+}
+
+void WebGL2RenderingContext::bufferData(GLenum target,
+                                        ScriptArrayBufferView srcData,
+                                        GLenum usage,
+                                        unsigned long long srcOffset,
+                                        GLuint length)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    size_t srcLength = srcData->isDataViewObject() ? srcData->byteLength()
+                                                   : srcData->arrayLength();
+
+    unsigned long long copyLength =
+        (length == 0) ? srcLength - srcOffset : length;
+
+    if (copyLength == 0) {
+        return;
+    }
+
+    size_t elementSize = srcData->isDataViewObject()
+                             ? 1
+                             : srcData->byteLength() / srcData->arrayLength();
+
+    unsigned long long copyByteLength = copyLength * elementSize;
+
+    if (!getState()->getBoundBuffer(target).hasValue()) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    if (srcOffset > srcLength || copyLength > srcLength - srcOffset) {
+        setGLError(GL_INVALID_VALUE);
+        return;
+    }
+
+    gl()->bufferData(target, copyByteLength,
+                     srcData->rawBuffer() + srcOffset * elementSize, usage);
+}
+
+void WebGL2RenderingContext::bufferSubData(GLenum target,
+                                           GLintptr dstByteOffset,
+                                           ScriptArrayBufferView srcData,
+                                           unsigned long long srcOffset,
+                                           GLuint length)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    size_t srcLength = srcData->isDataViewObject() ? srcData->byteLength()
+                                                   : srcData->arrayLength();
+
+    unsigned long long copyLength =
+        (length == 0) ? srcLength - srcOffset : length;
+
+    if (copyLength == 0) {
+        return;
+    }
+
+    size_t elementSize = srcData->isDataViewObject()
+                             ? 1
+                             : srcData->byteLength() / srcData->arrayLength();
+
+    unsigned long long copyByteLength = copyLength * elementSize;
+
+    if (!getState()->getBoundBuffer(target).hasValue()) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    GLint bufSize;
+    gl()->getBufferParameteriv(target, GL_BUFFER_SIZE, &bufSize);
+    if (hasNewGLError() || bufSize < 0) {
+        return;
+    }
+    if (dstByteOffset < 0 || dstByteOffset > bufSize ||
+        copyByteLength >
+            static_cast<unsigned long long>(bufSize - dstByteOffset) ||
+        srcOffset > srcLength || copyLength > srcLength - srcOffset) {
+        setGLError(GL_INVALID_VALUE);
+        return;
+    }
+
+    gl()->bufferSubData(target, dstByteOffset, copyByteLength,
+                        srcData->rawBuffer() + srcOffset * elementSize);
 }
 
 bool WebGL2RenderingContext::checkInternalFormat(GLint internalFormat,
