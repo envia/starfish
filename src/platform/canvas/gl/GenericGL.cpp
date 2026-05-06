@@ -1052,6 +1052,12 @@ public:
         glGetSynciv(sync, pname, bufSize, length, values);
     }
 
+    void getBufferParameteri64v(GLenum target, GLenum pname,
+                                GLint64 *params) override
+    {
+        glGetBufferParameteri64v(target, pname, params);
+    }
+
     void texStorage2D(GLenum target, GLsizei levels, GLenum internalformat,
                       GLsizei width, GLsizei height) override
     {

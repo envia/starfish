@@ -1078,8 +1078,6 @@ ScriptValue WebGLRenderingContext::getBufferParameter(GLenum target,
 {
     ENTER_CONTEXT_SCOPE(scriptNull());
 
-    // For conformance/state/gl-object-get-calls.html in
-    // test/cairo/reftest/vendor/khronos/webgl/1.0.3.
     if (target != GL_ARRAY_BUFFER && target != GL_ELEMENT_ARRAY_BUFFER) {
         setGLError(GL_INVALID_ENUM);
         return scriptNull();
@@ -1088,21 +1086,21 @@ ScriptValue WebGLRenderingContext::getBufferParameter(GLenum target,
     switch (pname) {
     // GLint
     case GL_BUFFER_SIZE: {
-        GLint value = -1;
-        m_gl->getBufferParameteriv(target, pname, &value);
+        GLint value;
+        gl()->getBufferParameteriv(target, pname, &value);
         if (hasNewGLError()) {
             return scriptNull();
         }
-        return ValueRef::create(value);
+        return createScriptValue(value);
     }
     // GLenum
     case GL_BUFFER_USAGE: {
-        GLint value = -1;
-        m_gl->getBufferParameteriv(target, pname, &value);
+        GLint value;
+        gl()->getBufferParameteriv(target, pname, &value);
         if (hasNewGLError()) {
             return scriptNull();
         }
-        return ValueRef::create(static_cast<GLenum>(value));
+        return createScriptValue(static_cast<GLenum>(value));
     }
     default:
         break;

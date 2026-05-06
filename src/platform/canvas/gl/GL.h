@@ -335,6 +335,8 @@ public:
     virtual void getInteger64v(GLenum pname, GLint64 *data) = 0;
     virtual void getSynciv(GLsync sync, GLenum pname, GLsizei bufSize,
                            GLsizei *length, GLint *values) = 0;
+    virtual void getBufferParameteri64v(GLenum target, GLenum pname,
+                                        GLint64 *params) = 0;
     virtual void texStorage2D(GLenum target, GLsizei levels,
                               GLenum internalformat, GLsizei width,
                               GLsizei height) = 0;
