@@ -125,8 +125,40 @@ ScriptBindingInstance* WebGL2RenderingContext::scriptBindingInstance()
 ScriptValue WebGL2RenderingContext::getBufferParameter(GLenum target,
                                                        GLenum pname)
 {
-    // TODO
-    return WebGLRenderingContext::getBufferParameter(target, pname);
+    ENTER_CONTEXT_SCOPE(scriptNull());
+
+    if (target != GL_ARRAY_BUFFER && target != GL_COPY_READ_BUFFER &&
+        target != GL_COPY_WRITE_BUFFER && target != GL_ELEMENT_ARRAY_BUFFER &&
+        target != GL_PIXEL_PACK_BUFFER && target != GL_PIXEL_UNPACK_BUFFER &&
+        target != GL_TRANSFORM_FEEDBACK_BUFFER && target != GL_UNIFORM_BUFFER) {
+        setGLError(GL_INVALID_ENUM);
+        return scriptNull();
+    }
+
+    switch (pname) {
+    // GLsizeiptr
+    case GL_BUFFER_SIZE: {
+        GLint64 value;
+        gl()->getBufferParameteri64v(target, pname, &value);
+        if (hasNewGLError()) {
+            return scriptNull();
+        }
+        return createScriptValue(static_cast<GLsizeiptr>(value));
+    }
+    // GLenum
+    case GL_BUFFER_USAGE: {
+        GLint value;
+        gl()->getBufferParameteriv(target, pname, &value);
+        if (hasNewGLError()) {
+            return scriptNull();
+        }
+        return createScriptValue(static_cast<GLenum>(value));
+    }
+    default:
+        break;
+    }
+    setGLError(GL_INVALID_ENUM);
+    return scriptNull();
 }
 
 Optional<ScriptValue> WebGL2RenderingContext::getParameterImpl(GLenum pname)
@@ -541,8 +573,8 @@ void WebGL2RenderingContext::getBufferSubData(GLenum target,
     // TODO: If target is TRANSFORM_FEEDBACK_BUFFER, and any transform feedback
     // object is currently active, generates an INVALID_OPERATION error.
 
-    GLint bufSize;
-    gl()->getBufferParameteriv(target, GL_BUFFER_SIZE, &bufSize);
+    GLint64 bufSize;
+    gl()->getBufferParameteri64v(target, GL_BUFFER_SIZE, &bufSize);
     if (hasNewGLError() || bufSize < 0) {
         return;
     }
@@ -1300,8 +1332,8 @@ void WebGL2RenderingContext::bufferSubData(GLenum target,
         return;
     }
 
-    GLint bufSize;
-    gl()->getBufferParameteriv(target, GL_BUFFER_SIZE, &bufSize);
+    GLint64 bufSize;
+    gl()->getBufferParameteri64v(target, GL_BUFFER_SIZE, &bufSize);
     if (hasNewGLError() || bufSize < 0) {
         return;
     }
