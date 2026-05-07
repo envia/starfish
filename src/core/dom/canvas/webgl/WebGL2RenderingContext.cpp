@@ -738,10 +738,7 @@ void WebGL2RenderingContext::copyBufferSubData(GLenum readTarget,
         WebGLBuffer* readBuffer =
             getState()->getBoundBuffer(readTarget).valueOr(nullptr);
         if (readBuffer != nullptr) {
-            GLenum initialType = readBuffer->target();
-            if (initialType == GL_ELEMENT_ARRAY_BUFFER) {
-                readTargetType = GL_ELEMENT_ARRAY_BUFFER;
-            }
+            readTargetType = readBuffer->target();
         }
     }
 
@@ -751,10 +748,7 @@ void WebGL2RenderingContext::copyBufferSubData(GLenum readTarget,
         WebGLBuffer* writeBuffer =
             getState()->getBoundBuffer(writeTarget).valueOr(nullptr);
         if (writeBuffer != nullptr) {
-            GLenum initialType = writeBuffer->target();
-            if (initialType == GL_ELEMENT_ARRAY_BUFFER) {
-                writeTargetType = GL_ELEMENT_ARRAY_BUFFER;
-            }
+            writeTargetType = writeBuffer->target();
         }
     }
 
