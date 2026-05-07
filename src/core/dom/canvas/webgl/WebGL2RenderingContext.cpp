@@ -122,6 +122,53 @@ ScriptBindingInstance* WebGL2RenderingContext::scriptBindingInstance()
     });
 #endif
 
+void WebGL2RenderingContext::bindBuffer(GLenum target,
+                                        Optional<WebGLBuffer*> buffer)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    if (target != GL_ARRAY_BUFFER && target != GL_COPY_READ_BUFFER &&
+        target != GL_COPY_WRITE_BUFFER && target != GL_ELEMENT_ARRAY_BUFFER &&
+        target != GL_PIXEL_PACK_BUFFER && target != GL_PIXEL_UNPACK_BUFFER &&
+        target != GL_TRANSFORM_FEEDBACK_BUFFER && target != GL_UNIFORM_BUFFER) {
+        setGLError(GL_INVALID_ENUM);
+        return;
+    }
+
+    if (buffer.hasValue()) {
+        WebGLBuffer* value = buffer.value();
+
+        if (!isFromCurrentContext(value)) {
+            setGLError(GL_INVALID_OPERATION);
+            return;
+        }
+
+        if (value->isDeleted()) {
+            setGLError(GL_INVALID_OPERATION);
+            return;
+        }
+
+        if (value->target() != GL_NONE &&
+            ((value->target() == GL_ELEMENT_ARRAY_BUFFER &&
+              target != GL_ELEMENT_ARRAY_BUFFER &&
+              target != GL_COPY_READ_BUFFER &&
+              target != GL_COPY_WRITE_BUFFER) ||
+             (value->target() != GL_ELEMENT_ARRAY_BUFFER &&
+              target == GL_ELEMENT_ARRAY_BUFFER))) {
+            setGLError(GL_INVALID_OPERATION);
+            return;
+        }
+
+        gl()->bindBuffer(target, value->glObject());
+        getState()->setBoundBuffer(target, value);
+
+        value->setTargetOnce(target);
+    } else {
+        gl()->bindBuffer(target, 0);
+        getState()->setBoundBuffer(target, nullptr);
+    }
+}
+
 ScriptValue WebGL2RenderingContext::getBufferParameter(GLenum target,
                                                        GLenum pname)
 {
