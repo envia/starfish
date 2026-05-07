@@ -101,6 +101,10 @@ public:
 
     // Implement WebGLRenderingContextBase
 
+    void bindBuffer(GLenum target, Optional<WebGLBuffer*> buffer);
+    void bindFramebuffer(GLenum target, Optional<WebGLFramebuffer*> buffer);
+    void bindTexture(GLenum target, Optional<WebGLTexture*> texture);
+
     ScriptValue getBufferParameter(GLenum target, GLenum pname);
     ScriptValue getParameter(GLenum pname);
 
