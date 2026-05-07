@@ -284,3 +284,4 @@ private:
 #endif // defined(STARFISH_ENABLE_CANVAS) && defined(STARFISH_ENABLE_WEBGL)
 
 #endif // __StarfishWebGL2RenderingContext__
+
