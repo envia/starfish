@@ -732,7 +732,39 @@ void WebGL2RenderingContext::copyBufferSubData(GLenum readTarget,
 {
     ENTER_CONTEXT_SCOPE();
 
-    // TODO
+    GLenum readTargetType = readTarget;
+    if (readTargetType == GL_COPY_READ_BUFFER ||
+        readTargetType == GL_COPY_WRITE_BUFFER) {
+        WebGLBuffer* readBuffer =
+            getState()->getBoundBuffer(readTarget).valueOr(nullptr);
+        if (readBuffer != nullptr) {
+            GLenum initialType = readBuffer->target();
+            if (initialType == GL_ELEMENT_ARRAY_BUFFER) {
+                readTargetType = GL_ELEMENT_ARRAY_BUFFER;
+            }
+        }
+    }
+
+    GLenum writeTargetType = writeTarget;
+    if (writeTargetType == GL_COPY_READ_BUFFER ||
+        writeTargetType == GL_COPY_WRITE_BUFFER) {
+        WebGLBuffer* writeBuffer =
+            getState()->getBoundBuffer(writeTarget).valueOr(nullptr);
+        if (writeBuffer != nullptr) {
+            GLenum initialType = writeBuffer->target();
+            if (initialType == GL_ELEMENT_ARRAY_BUFFER) {
+                writeTargetType = GL_ELEMENT_ARRAY_BUFFER;
+            }
+        }
+    }
+
+    if ((readTargetType == GL_ELEMENT_ARRAY_BUFFER &&
+         writeTargetType != GL_ELEMENT_ARRAY_BUFFER) ||
+        (writeTargetType == GL_ELEMENT_ARRAY_BUFFER &&
+         readTargetType != GL_ELEMENT_ARRAY_BUFFER)) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
 
     glCopyBufferSubData(readTarget, writeTarget, readOffset, writeOffset, size);
 }
