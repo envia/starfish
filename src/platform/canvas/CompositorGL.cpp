@@ -1649,7 +1649,10 @@ public:
                 STARFISH_RELEASE_ASSERT(false);
             }
 
-            // 2. Add the texture info newly created to the fragement list.
+            // 2. Store the FBO ID for reading pixels later
+            m_fbo = SurfaceCreationScope::delegate()->fbo();
+
+            // 3. Add the texture info newly created to the fragement list.
             CanvasSurfaceTextureInfo::CanvasSurfaceTextureInfoFragment fragment;
             fragment.textureWidth = m_bufferWidth;
             fragment.textureHeight = m_bufferHeight;
@@ -1661,7 +1664,7 @@ public:
             fragment.sharedTexture = true;
             m_textureFragments.push_back(fragment);
 
-            // 3. Set the dimension of the fragment list.
+            // 4. Set the dimension of the fragment list.
             m_wTextureCount = m_hTextureCount = 1;
 
             return;
@@ -1897,6 +1900,18 @@ public:
                 m_buffer =
                     (unsigned char*)calloc(1, m_bufferStride * m_bufferHeight);
                 STARFISH_RELEASE_ASSERT(m_buffer);
+            }
+
+            // For WebGL framebuffer, read pixels from the FBO
+            if (m_isFrameBuffer && m_fbo != 0) {
+                m_renderer->makeCurrent();
+                GLint oldFbo;
+                gl()->getIntegerv(GL_FRAMEBUFFER_BINDING, &oldFbo);
+                gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, m_fbo);
+                gl()->pixelStorei(GL_PACK_ALIGNMENT, 1);
+                gl()->readPixels(0, 0, m_bufferWidth, m_bufferHeight, GL_RGBA,
+                                 GL_UNSIGNED_BYTE, m_buffer);
+                gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, oldFbo);
             }
         }
 
@@ -2209,6 +2224,7 @@ protected:
     bool m_isFrameBuffer{ false };
     bool m_isEGLImageExternal;
     bool m_isEGLBufferOwner;
+    GLuint m_fbo{ 0 };
 #if defined(STARFISH_TIZEN) && defined(PORT_WEBVIEW_BRIDGE_EFL)
     tbm_surface_h m_tbmSurface;
     void* m_eglImage;
