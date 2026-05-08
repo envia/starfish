@@ -123,8 +123,9 @@ ScriptBindingInstance* WebGL2RenderingContext::scriptBindingInstance()
     });
 #endif
 
-void WebGL2RenderingContext::bindBuffer(GLenum target,
-                                        Optional<WebGLBuffer*> buffer)
+void WebGL2RenderingContext::implementBindBuffer(
+    GLenum target, Optional<WebGLBuffer*> buffer,
+    std::function<void(GLenum target, GLuint buffer)> bindBufferFunction)
 {
     ENTER_CONTEXT_SCOPE();
 
@@ -160,14 +161,28 @@ void WebGL2RenderingContext::bindBuffer(GLenum target,
             return;
         }
 
-        gl()->bindBuffer(target, value->glObject());
+        bindBufferFunction(target, value->glObject());
+        if (hasNewGLError()) {
+            return;
+        }
         getState()->setBoundBuffer(target, value);
 
         value->setTargetOnce(target);
     } else {
-        gl()->bindBuffer(target, 0);
+        bindBufferFunction(target, 0);
+        if (hasNewGLError()) {
+            return;
+        }
         getState()->setBoundBuffer(target, nullptr);
     }
+}
+
+void WebGL2RenderingContext::bindBuffer(GLenum target,
+                                        Optional<WebGLBuffer*> buffer)
+{
+    implementBindBuffer(target, buffer, [this](GLenum target, GLuint buffer) {
+        gl()->bindBuffer(target, buffer);
+    });
 }
 
 void WebGL2RenderingContext::bindFramebuffer(
@@ -1076,6 +1091,26 @@ ScriptValue WebGL2RenderingContext::getSyncParameter(WebGLSync* sync,
     }
     setGLError(GL_INVALID_ENUM);
     return scriptNull();
+}
+
+void WebGL2RenderingContext::bindBufferBase(GLenum target, GLuint index,
+                                            Optional<WebGLBuffer*> buffer)
+{
+    implementBindBuffer(target, buffer,
+                        [this, index](GLenum target, GLuint buffer) {
+                            gl()->bindBufferBase(target, index, buffer);
+                        });
+}
+
+void WebGL2RenderingContext::bindBufferRange(GLenum target, GLuint index,
+                                             Optional<WebGLBuffer*> buffer,
+                                             GLintptr offset, GLsizeiptr size)
+{
+    implementBindBuffer(
+        target, buffer,
+        [this, index, offset, size](GLenum target, GLuint buffer) {
+            gl()->bindBufferRange(target, index, buffer, offset, size);
+        });
 }
 
 ScriptValue WebGL2RenderingContext::getActiveUniforms(
