@@ -33,6 +33,7 @@
 #include "core/modules/renderer/Renderer.h"
 #include "core/modules/canvas/CompositorFactory.h"
 #include "core/dom/canvas/webgl/gl/SurfaceCreationScope.h"
+#include "core/dom/canvas/webgl/gl/FramebufferTexture.h"
 
 #if defined(STARFISH_USE_FFMPEG_MEDIAPLAYER)
 #include "platform/multimedia/MediaPlayerLinux.h"
@@ -2095,6 +2096,11 @@ public:
             // 3. Set the dimension of the fragment list.
             m_wTextureCount = m_hTextureCount = 1;
 
+            // 4. Store the FBO ID for reading pixels later.
+            m_fbo = static_cast<FramebufferTexture*>(
+                        SurfaceCreationScope::delegate().get())
+                        ->fbo();
+
             return;
         }
 
@@ -2328,6 +2334,31 @@ public:
                 m_buffer =
                     (unsigned char*)calloc(1, m_bufferStride * m_bufferHeight);
                 STARFISH_RELEASE_ASSERT(m_buffer);
+            }
+
+            if (m_isFrameBuffer && m_fbo != 0) {
+                m_renderer->makeCurrent();
+                GLint oldFbo;
+                gl()->getIntegerv(GL_FRAMEBUFFER_BINDING, &oldFbo);
+                gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, m_fbo);
+                gl()->pixelStorei(GL_PACK_ALIGNMENT, 1);
+#if defined(PORT_PIXEL_ORDER_RGBA)
+                gl()->readPixels(0, 0, m_bufferWidth, m_bufferHeight, GL_RGBA,
+                                 GL_UNSIGNED_BYTE, m_buffer);
+#else
+                gl()->readPixels(0, 0, m_bufferWidth, m_bufferHeight,
+                                 GL_BGRA_EXT, GL_UNSIGNED_BYTE, m_buffer);
+#endif
+                gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, oldFbo);
+
+                for (size_t y = 0; y < m_bufferHeight / 2; y++) {
+                    unsigned char* topRow = m_buffer + y * m_bufferStride;
+                    unsigned char* bottomRow =
+                        m_buffer + (m_bufferHeight - 1 - y) * m_bufferStride;
+                    for (size_t x = 0; x < m_bufferStride; x++) {
+                        std::swap(topRow[x], bottomRow[x]);
+                    }
+                }
             }
         }
 
@@ -2640,6 +2671,7 @@ protected:
     bool m_isFrameBuffer{ false };
     bool m_isEGLImageExternal;
     bool m_isEGLBufferOwner;
+    GLuint m_fbo{ 0 };
 #if defined(STARFISH_TIZEN) && defined(PORT_WEBVIEW_BRIDGE_EFL)
     tbm_surface_h m_tbmSurface;
     void* m_eglImage;
