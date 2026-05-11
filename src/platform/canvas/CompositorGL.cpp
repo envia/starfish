@@ -1909,9 +1909,26 @@ public:
                 gl()->getIntegerv(GL_FRAMEBUFFER_BINDING, &oldFbo);
                 gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, m_fbo);
                 gl()->pixelStorei(GL_PACK_ALIGNMENT, 1);
+#if defined(PORT_PIXEL_ORDER_RGBA)
                 gl()->readPixels(0, 0, m_bufferWidth, m_bufferHeight, GL_RGBA,
                                  GL_UNSIGNED_BYTE, m_buffer);
+#else
+                gl()->readPixels(0, 0, m_bufferWidth, m_bufferHeight,
+                                 GL_BGRA_EXT, GL_UNSIGNED_BYTE, m_buffer);
+#endif
                 gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, oldFbo);
+
+                // Flip the image vertically because OpenGL's coordinate system
+                // has origin at bottom-left while canvas/image has origin at
+                // top-left
+                for (size_t y = 0; y < m_bufferHeight / 2; ++y) {
+                    uint8_t* topRow = m_buffer + y * m_bufferStride;
+                    uint8_t* bottomRow =
+                        m_buffer + (m_bufferHeight - 1 - y) * m_bufferStride;
+                    for (size_t x = 0; x < m_bufferWidth * 4; ++x) {
+                        std::swap(topRow[x], bottomRow[x]);
+                    }
+                }
             }
         }
 
