@@ -47,8 +47,7 @@
 
 namespace std {
 template <>
-struct tuple_size<Clipper2Lib::PointD> : integral_constant<size_t, 2> {
-};
+struct tuple_size<Clipper2Lib::PointD> : integral_constant<size_t, 2> {};
 
 template <>
 struct tuple_element<0, Clipper2Lib::PointD> {
@@ -1907,26 +1906,75 @@ public:
                 m_renderer->makeCurrent();
                 GLint oldFbo;
                 gl()->getIntegerv(GL_FRAMEBUFFER_BINDING, &oldFbo);
-                gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, m_fbo);
                 gl()->pixelStorei(GL_PACK_ALIGNMENT, 1);
-#if defined(PORT_PIXEL_ORDER_RGBA)
-                gl()->readPixels(0, 0, m_bufferWidth, m_bufferHeight, GL_RGBA,
-                                 GL_UNSIGNED_BYTE, m_buffer);
-#else
-                gl()->readPixels(0, 0, m_bufferWidth, m_bufferHeight,
-                                 GL_BGRA_EXT, GL_UNSIGNED_BYTE, m_buffer);
-#endif
-                gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, oldFbo);
 
-                // Flip the image vertically because OpenGL's coordinate system
-                // has origin at bottom-left while canvas/image has origin at
-                // top-left
-                for (size_t y = 0; y < m_bufferHeight / 2; ++y) {
-                    uint8_t* topRow = m_buffer + y * m_bufferStride;
-                    uint8_t* bottomRow =
-                        m_buffer + (m_bufferHeight - 1 - y) * m_bufferStride;
-                    for (size_t x = 0; x < m_bufferWidth * 4; ++x) {
-                        std::swap(topRow[x], bottomRow[x]);
+                // Use glBlitFramebuffer to flip the image vertically during
+                // blit. OpenGL's coordinate system has origin at bottom-left
+                // while canvas/image has origin at top-left. By blitting with
+                // inverted source Y coordinates, we get the flipped image
+                // directly without CPU-side row swapping.
+                if (g_isSupportPixelStoreiUnpackingOfPixelDataFromMemory) {
+                    // OpenGL ES 3.0+ path: use glBlitFramebuffer for
+                    // GPU-accelerated flip
+                    GLuint tempFbo, tempTexture;
+                    gl()->genTextures(1, &tempTexture);
+                    gl()->bindTexture(GL_TEXTURE_2D, tempTexture);
+                    gl()->texImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_bufferWidth,
+                                     m_bufferHeight, 0, GL_RGBA,
+                                     GL_UNSIGNED_BYTE, nullptr);
+                    gl()->texParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                                        GL_LINEAR);
+                    gl()->texParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+                                        GL_LINEAR);
+
+                    gl()->genFramebuffers(1, &tempFbo);
+                    gl()->bindFramebuffer(GL_DRAW_FRAMEBUFFER, tempFbo);
+                    gl()->framebufferTexture2D(GL_DRAW_FRAMEBUFFER,
+                                               GL_COLOR_ATTACHMENT0,
+                                               GL_TEXTURE_2D, tempTexture, 0);
+
+                    gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, m_fbo);
+                    // Blit with Y flip: srcY goes from height to 0 (inverted)
+                    gl()->blitFramebuffer(0, m_bufferHeight, m_bufferWidth, 0,
+                                          0, 0, m_bufferWidth, m_bufferHeight,
+                                          GL_COLOR_BUFFER_BIT, GL_LINEAR);
+
+                    // Now read pixels from the temp FBO (which has flipped
+                    // image)
+                    gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, tempFbo);
+#if defined(PORT_PIXEL_ORDER_RGBA)
+                    gl()->readPixels(0, 0, m_bufferWidth, m_bufferHeight,
+                                     GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
+#else
+                    gl()->readPixels(0, 0, m_bufferWidth, m_bufferHeight,
+                                     GL_BGRA_EXT, GL_UNSIGNED_BYTE, m_buffer);
+#endif
+
+                    // Cleanup temporary FBO and texture
+                    gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, oldFbo);
+                    gl()->deleteFramebuffers(1, &tempFbo);
+                    gl()->deleteTextures(1, &tempTexture);
+                } else {
+                    // OpenGL ES 2.0 fallback: read pixels and flip on CPU
+                    gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, m_fbo);
+#if defined(PORT_PIXEL_ORDER_RGBA)
+                    gl()->readPixels(0, 0, m_bufferWidth, m_bufferHeight,
+                                     GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
+#else
+                    gl()->readPixels(0, 0, m_bufferWidth, m_bufferHeight,
+                                     GL_BGRA_EXT, GL_UNSIGNED_BYTE, m_buffer);
+#endif
+                    gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, oldFbo);
+
+                    // Flip the image vertically on CPU
+                    for (size_t y = 0; y < m_bufferHeight / 2; ++y) {
+                        uint8_t* topRow = m_buffer + y * m_bufferStride;
+                        uint8_t* bottomRow =
+                            m_buffer +
+                            (m_bufferHeight - 1 - y) * m_bufferStride;
+                        for (size_t x = 0; x < m_bufferWidth * 4; ++x) {
+                            std::swap(topRow[x], bottomRow[x]);
+                        }
                     }
                 }
             }

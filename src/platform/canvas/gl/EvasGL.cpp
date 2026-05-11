@@ -1036,6 +1036,14 @@ public:
         m_evasGLAPI->glGetSynciv(sync, pname, bufSize, length, values);
     }
 
+    void blitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1,
+                         GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1,
+                         GLbitfield mask, GLenum filter) override
+    {
+        m_evasGLAPI->glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0,
+                                       dstX1, dstY1, mask, filter);
+    }
+
     EvasGL(void *p)
         : m_evasGLAPI(static_cast<Evas_GL_API *>(p))
     {

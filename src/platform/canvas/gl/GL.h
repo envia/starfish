@@ -335,6 +335,15 @@ public:
     virtual void getInteger64v(GLenum pname, GLint64 *data) = 0;
     virtual void getSynciv(GLsync sync, GLenum pname, GLsizei bufSize,
                            GLsizei *length, GLint *values) = 0;
+
+    // OpenGL ES 3.0+ methods
+    virtual void blitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1,
+                                 GLint srcY1, GLint dstX0, GLint dstY0,
+                                 GLint dstX1, GLint dstY1, GLbitfield mask,
+                                 GLenum filter)
+    {
+        // Default implementation does nothing (for OpenGL ES 2.0 compatibility)
+    }
 };
 
 } // namespace Starfish
