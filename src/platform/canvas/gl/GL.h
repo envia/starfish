@@ -336,14 +336,10 @@ public:
     virtual void getSynciv(GLsync sync, GLenum pname, GLsizei bufSize,
                            GLsizei *length, GLint *values) = 0;
 
-    // OpenGL ES 3.0+ methods
-    virtual void blitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1,
-                                 GLint srcY1, GLint dstX0, GLint dstY0,
-                                 GLint dstX1, GLint dstY1, GLbitfield mask,
-                                 GLenum filter)
-    {
-        // Default implementation does nothing (for OpenGL ES 2.0 compatibility)
-    }
+    // Buffer mapping for PBO
+    virtual void *mapBufferRange(GLenum target, GLintptr offset,
+                                 GLsizeiptr length, GLbitfield access) = 0;
+    virtual GLboolean unmapBuffer(GLenum target) = 0;
 };
 
 } // namespace Starfish

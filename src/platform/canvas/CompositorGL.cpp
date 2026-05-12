@@ -1496,7 +1496,22 @@ public:
 
             if (m_isEGLImageExternal) {
             } else {
-                free(m_buffer);
+                // Clean up PBO if it exists (framebuffer case)
+                if (m_pbo != 0) {
+                    if (ret) {
+                        gl()->bindBuffer(GL_PIXEL_PACK_BUFFER, m_pbo);
+                        if (m_buffer) {
+                            gl()->unmapBuffer(GL_PIXEL_PACK_BUFFER);
+                        }
+                        gl()->bindBuffer(GL_PIXEL_PACK_BUFFER, 0);
+                        gl()->deleteBuffers(1, &m_pbo);
+                        m_pbo = 0;
+                    }
+                } else if (m_buffer) {
+                    // Free calloc'd buffer (non-framebuffer case)
+                    free(m_buffer);
+                    m_buffer = nullptr;
+                }
             }
 
             if (ret) {
@@ -1896,86 +1911,68 @@ public:
             }
         } else {
             if (!m_buffer) {
-                m_buffer =
-                    (unsigned char*)calloc(1, m_bufferStride * m_bufferHeight);
-                STARFISH_RELEASE_ASSERT(m_buffer);
-            }
+                // For WebGL framebuffer, use PBO for reading pixels from GPU
+                if (m_isFrameBuffer && m_fbo != 0) {
+                    m_renderer->makeCurrent();
 
-            // For WebGL framebuffer, read pixels from the FBO
-            if (m_isFrameBuffer && m_fbo != 0) {
-                m_renderer->makeCurrent();
-                GLint oldFbo;
-                gl()->getIntegerv(GL_FRAMEBUFFER_BINDING, &oldFbo);
-                gl()->pixelStorei(GL_PACK_ALIGNMENT, 1);
+                    // Create PBO if not exists
+                    if (m_pbo == 0) {
+                        gl()->genBuffers(1, &m_pbo);
+                        STARFISH_RELEASE_ASSERT(m_pbo != 0);
+                    }
 
-                // Use glBlitFramebuffer to flip the image vertically during
-                // blit. OpenGL's coordinate system has origin at bottom-left
-                // while canvas/image has origin at top-left. By blitting with
-                // inverted source Y coordinates, we get the flipped image
-                // directly without CPU-side row swapping.
-                if (g_isSupportPixelStoreiUnpackingOfPixelDataFromMemory) {
-                    // OpenGL ES 3.0+ path: use glBlitFramebuffer for
-                    // GPU-accelerated flip
-                    GLuint tempFbo, tempTexture;
-                    gl()->genTextures(1, &tempTexture);
-                    gl()->bindTexture(GL_TEXTURE_2D, tempTexture);
-                    gl()->texImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_bufferWidth,
-                                     m_bufferHeight, 0, GL_RGBA,
-                                     GL_UNSIGNED_BYTE, nullptr);
-                    gl()->texParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                                        GL_LINEAR);
-                    gl()->texParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
-                                        GL_LINEAR);
+                    // Bind PBO and allocate storage
+                    gl()->bindBuffer(GL_PIXEL_PACK_BUFFER, m_pbo);
+                    gl()->bufferData(GL_PIXEL_PACK_BUFFER,
+                                     m_bufferStride * m_bufferHeight, nullptr,
+                                     GL_STREAM_READ);
 
-                    gl()->genFramebuffers(1, &tempFbo);
-                    gl()->bindFramebuffer(GL_DRAW_FRAMEBUFFER, tempFbo);
-                    gl()->framebufferTexture2D(GL_DRAW_FRAMEBUFFER,
-                                               GL_COLOR_ATTACHMENT0,
-                                               GL_TEXTURE_2D, tempTexture, 0);
-
+                    // Read pixels from the FBO into PBO
+                    GLint oldFbo;
+                    gl()->getIntegerv(GL_FRAMEBUFFER_BINDING, &oldFbo);
                     gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, m_fbo);
-                    // Blit with Y flip: srcY goes from height to 0 (inverted)
-                    gl()->blitFramebuffer(0, m_bufferHeight, m_bufferWidth, 0,
-                                          0, 0, m_bufferWidth, m_bufferHeight,
-                                          GL_COLOR_BUFFER_BIT, GL_LINEAR);
-
-                    // Now read pixels from the temp FBO (which has flipped
-                    // image)
-                    gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, tempFbo);
+                    gl()->pixelStorei(GL_PACK_ALIGNMENT, 1);
 #if defined(PORT_PIXEL_ORDER_RGBA)
                     gl()->readPixels(0, 0, m_bufferWidth, m_bufferHeight,
-                                     GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
+                                     GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 #else
                     gl()->readPixels(0, 0, m_bufferWidth, m_bufferHeight,
-                                     GL_BGRA_EXT, GL_UNSIGNED_BYTE, m_buffer);
-#endif
-
-                    // Cleanup temporary FBO and texture
-                    gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, oldFbo);
-                    gl()->deleteFramebuffers(1, &tempFbo);
-                    gl()->deleteTextures(1, &tempTexture);
-                } else {
-                    // OpenGL ES 2.0 fallback: read pixels and flip on CPU
-                    gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, m_fbo);
-#if defined(PORT_PIXEL_ORDER_RGBA)
-                    gl()->readPixels(0, 0, m_bufferWidth, m_bufferHeight,
-                                     GL_RGBA, GL_UNSIGNED_BYTE, m_buffer);
-#else
-                    gl()->readPixels(0, 0, m_bufferWidth, m_bufferHeight,
-                                     GL_BGRA_EXT, GL_UNSIGNED_BYTE, m_buffer);
+                                     GL_BGRA_EXT, GL_UNSIGNED_BYTE, nullptr);
 #endif
                     gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, oldFbo);
 
-                    // Flip the image vertically on CPU
-                    for (size_t y = 0; y < m_bufferHeight / 2; ++y) {
-                        uint8_t* topRow = m_buffer + y * m_bufferStride;
-                        uint8_t* bottomRow =
+                    // Map the PBO buffer for reading
+                    m_buffer = (unsigned char*)gl()->mapBufferRange(
+                        GL_PIXEL_PACK_BUFFER, 0,
+                        m_bufferStride * m_bufferHeight,
+                        GL_MAP_READ_BIT | GL_MAP_WRITE_BIT);
+                    STARFISH_RELEASE_ASSERT(m_buffer);
+
+                    // Unbind PBO
+                    gl()->bindBuffer(GL_PIXEL_PACK_BUFFER, 0);
+
+                    // OpenGL stores pixels with origin at bottom-left, but
+                    // HTML5 Canvas expects origin at top-left. Flip the image
+                    // vertically.
+                    unsigned char* tempRow =
+                        (unsigned char*)malloc(m_bufferStride);
+                    STARFISH_RELEASE_ASSERT(tempRow);
+                    for (size_t y = 0; y < m_bufferHeight / 2; y++) {
+                        unsigned char* topRow = m_buffer + y * m_bufferStride;
+                        unsigned char* bottomRow =
                             m_buffer +
                             (m_bufferHeight - 1 - y) * m_bufferStride;
-                        for (size_t x = 0; x < m_bufferWidth * 4; ++x) {
-                            std::swap(topRow[x], bottomRow[x]);
-                        }
+                        memcpy(tempRow, topRow, m_bufferStride);
+                        memcpy(topRow, bottomRow, m_bufferStride);
+                        memcpy(bottomRow, tempRow, m_bufferStride);
                     }
+                    free(tempRow);
+                } else {
+                    // For non-framebuffer case, use calloc like before
+                    // since we're just creating a CPU-side buffer
+                    m_buffer = (unsigned char*)calloc(1, m_bufferStride *
+                                                             m_bufferHeight);
+                    STARFISH_RELEASE_ASSERT(m_buffer);
                 }
             }
         }
@@ -2221,7 +2218,17 @@ public:
 
         if (!(m_flag & (CanvasSurface::PreferEGLImage |
                         CanvasSurface::PreferRetainCPUBufferWhenUnmap))) {
-            free(m_buffer);
+            // Unmap and delete PBO for framebuffer case
+            if (m_pbo != 0) {
+                gl()->bindBuffer(GL_PIXEL_PACK_BUFFER, m_pbo);
+                gl()->unmapBuffer(GL_PIXEL_PACK_BUFFER);
+                gl()->bindBuffer(GL_PIXEL_PACK_BUFFER, 0);
+                gl()->deleteBuffers(1, &m_pbo);
+                m_pbo = 0;
+            } else if (m_buffer) {
+                // For non-framebuffer case, free the calloc'd buffer
+                free(m_buffer);
+            }
             m_buffer = nullptr;
         }
     }
@@ -2290,6 +2297,7 @@ protected:
     bool m_isEGLImageExternal;
     bool m_isEGLBufferOwner;
     GLuint m_fbo{ 0 };
+    GLuint m_pbo{ 0 };
 #if defined(STARFISH_TIZEN) && defined(PORT_WEBVIEW_BRIDGE_EFL)
     tbm_surface_h m_tbmSurface;
     void* m_eglImage;

@@ -1052,12 +1052,15 @@ public:
         glGetSynciv(sync, pname, bufSize, length, values);
     }
 
-    void blitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1,
-                         GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1,
-                         GLbitfield mask, GLenum filter) override
+    void *mapBufferRange(GLenum target, GLintptr offset, GLsizeiptr length,
+                         GLbitfield access) override
     {
-        glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1,
-                          dstY1, mask, filter);
+        return glMapBufferRange(target, offset, length, access);
+    }
+
+    GLboolean unmapBuffer(GLenum target) override
+    {
+        return glUnmapBuffer(target);
     }
 
     GenericGL(Renderer *renderer)
