@@ -1941,6 +1941,117 @@ public:
 #endif
                     gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, oldFbo);
 
+                    // OpenGL stores pixels with origin at bottom-left, but
+                    // HTML5 Canvas expects origin at top-left. We flip the
+                    // image in GPU by rendering to a temporary FBO with
+                    // Y-flipped texture coordinates, then read from that FBO
+                    // instead.
+
+                    // Create a temporary FBO and texture for the flip
+                    GLuint tempFBO, tempTexture;
+                    gl()->genFramebuffers(1, &tempFBO);
+                    gl()->genTextures(1, &tempTexture);
+                    gl()->bindFramebuffer(GL_FRAMEBUFFER, tempFBO);
+                    gl()->bindTexture(GL_TEXTURE_2D, tempTexture);
+#if defined(PORT_PIXEL_ORDER_RGBA)
+                    gl()->texImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_bufferWidth,
+                                     m_bufferHeight, 0, GL_RGBA,
+                                     GL_UNSIGNED_BYTE, nullptr);
+#else
+                    gl()->texImage2D(GL_TEXTURE_2D, 0, GL_BGRA_EXT,
+                                     m_bufferWidth, m_bufferHeight, 0,
+                                     GL_BGRA_EXT, GL_UNSIGNED_BYTE, nullptr);
+#endif
+                    gl()->texParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                                        GL_NEAREST);
+                    gl()->texParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+                                        GL_NEAREST);
+                    gl()->framebufferTexture2D(GL_FRAMEBUFFER,
+                                               GL_COLOR_ATTACHMENT0,
+                                               GL_TEXTURE_2D, tempTexture, 0);
+
+                    // Set up viewport for the temp FBO
+                    gl()->viewport(0, 0, m_bufferWidth, m_bufferHeight);
+
+                    // Get the source texture from the FBO
+                    GLuint srcTexture =
+                        m_textureFragments.size() > 0
+                            ? (GLuint)m_textureFragments[0].textureID
+                            : 0;
+
+                    // Use the texture shader program
+                    CompositorContextGL* ctx =
+                        (CompositorContextGL*)m_renderer->compostiorContext();
+                    GLuint program = ctx->texShaderProgram();
+                    gl()->useProgram(program);
+
+                    // Bind the source texture
+                    gl()->bindTexture(GL_TEXTURE_2D, srcTexture);
+
+                    // Set up position uniform for full-screen quad (LB, LT, RB,
+                    // RT order)
+                    float hw = 2.f / m_bufferWidth;
+                    float hh = -2.f / m_bufferHeight;
+                    float position[] = {
+                        -1, -1, // LB
+                        -1, 1,  // LT
+                        1,  -1, // RB
+                        1,  1   // RT
+                    };
+                    gl()->uniform2fv(ctx->m_texShaderProgramPosition, 4,
+                                     position);
+
+                    // Set up texture coordinates with Y-flip (swap top and
+                    // bottom) Normal: (0,0) (0,1) (1,0) (1,1) -> Flipped: (0,1)
+                    // (0,0) (1,1) (1,0)
+                    float texCoord[] = { 0, 1, 0, 0, 1, 1, 1, 0 };
+                    gl()->bindBuffer(GL_ARRAY_BUFFER, ctx->m_texTexPosBuffer);
+                    gl()->bufferData(GL_ARRAY_BUFFER, sizeof(float) * 8,
+                                     texCoord, GL_STREAM_DRAW);
+                    gl()->enableVertexAttribArray(
+                        ctx->m_texShaderProgramTexPos);
+                    gl()->vertexAttribPointer(ctx->m_texShaderProgramTexPos, 2,
+                                              GL_FLOAT, false, 0, 0);
+
+                    // Set up tex index
+                    ctx->bindTexIdx(ctx->m_texShaderProgramTexIdx, true);
+                    gl()->enableVertexAttribArray(
+                        ctx->m_texShaderProgramTexIdx);
+
+                    // Set uniforms
+                    gl()->uniform1i(ctx->m_texShaderProgramTexture, 0);
+                    gl()->uniform1f(ctx->m_texShaderProgramAlpha, 1.0f);
+
+                    // Render the flipped texture
+                    gl()->clearColor(0, 0, 0, 0);
+                    gl()->clear(GL_COLOR_BUFFER_BIT);
+                    gl()->drawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+                    // Now read pixels from the temp FBO (which has the flipped
+                    // image)
+                    gl()->pixelStorei(GL_PACK_ALIGNMENT, 1);
+#if defined(PORT_PIXEL_ORDER_RGBA)
+                    gl()->readPixels(0, 0, m_bufferWidth, m_bufferHeight,
+                                     GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+#else
+                    gl()->readPixels(0, 0, m_bufferWidth, m_bufferHeight,
+                                     GL_BGRA_EXT, GL_UNSIGNED_BYTE, nullptr);
+#endif
+
+                    // Clean up temp FBO and texture
+                    gl()->disableVertexAttribArray(
+                        ctx->m_texShaderProgramTexPos);
+                    gl()->disableVertexAttribArray(
+                        ctx->m_texShaderProgramTexIdx);
+                    gl()->bindBuffer(GL_ARRAY_BUFFER, 0);
+                    gl()->bindTexture(GL_TEXTURE_2D, 0);
+                    gl()->bindFramebuffer(GL_FRAMEBUFFER, 0);
+                    gl()->deleteFramebuffers(1, &tempFBO);
+                    gl()->deleteTextures(1, &tempTexture);
+
+                    // Restore original FBO binding
+                    gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, m_fbo);
+
                     // Map the PBO buffer for reading
                     m_buffer = (unsigned char*)gl()->mapBufferRange(
                         GL_PIXEL_PACK_BUFFER, 0,
@@ -1950,23 +2061,6 @@ public:
 
                     // Unbind PBO
                     gl()->bindBuffer(GL_PIXEL_PACK_BUFFER, 0);
-
-                    // OpenGL stores pixels with origin at bottom-left, but
-                    // HTML5 Canvas expects origin at top-left. Flip the image
-                    // vertically.
-                    unsigned char* tempRow =
-                        (unsigned char*)malloc(m_bufferStride);
-                    STARFISH_RELEASE_ASSERT(tempRow);
-                    for (size_t y = 0; y < m_bufferHeight / 2; y++) {
-                        unsigned char* topRow = m_buffer + y * m_bufferStride;
-                        unsigned char* bottomRow =
-                            m_buffer +
-                            (m_bufferHeight - 1 - y) * m_bufferStride;
-                        memcpy(tempRow, topRow, m_bufferStride);
-                        memcpy(topRow, bottomRow, m_bufferStride);
-                        memcpy(bottomRow, tempRow, m_bufferStride);
-                    }
-                    free(tempRow);
                 } else {
                     // For non-framebuffer case, use calloc like before
                     // since we're just creating a CPU-side buffer
