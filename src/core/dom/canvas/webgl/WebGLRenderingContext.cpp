@@ -2994,12 +2994,11 @@ public:
             return;
         }
 
-        if (m_isNativeImageDataUsed && type != GL_UNSIGNED_BYTE) {
-            // NativeImageData is packed as UNSIGNED_BYTE. Type conversion might
-            // be needed, but how often this is used is unclear for now. TODO:
-            // Convert if necessary.
+        if (m_isNativeImageDataUsed && type != GL_UNSIGNED_BYTE &&
+            !Pixel::isTwoBytesPerPixel(type)) {
             STARFISH_UNSUPPORTED(
-                "type (%s). GL_UNSIGNED_BYTE is only supported for now.",
+                "type (%s). Only GL_UNSIGNED_BYTE and packed short types are "
+                "supported for NativeImageData sources.",
                 hex(type).c_str());
         }
 
@@ -3013,9 +3012,9 @@ public:
 #if defined(PORT_PIXEL_ORDER_BGRA)
         if (m_isNativeImageDataUsed) {
             // NativeImageData is formatted as BGRA.
-            // The GL_BGRA_EXT fast path only applies to RGBA output; for RGB
-            // output we must convert channel order and strip the alpha byte.
-            if (m_sourceImage.format == GL_RGBA &&
+            // The GL_BGRA_EXT fast path only applies to RGBA UNSIGNED_BYTE
+            // output; packed short types and RGB always need channel reorder.
+            if (m_sourceImage.format == GL_RGBA && type == GL_UNSIGNED_BYTE &&
                 WebGLExtensionRegistry::instance()
                     .hasEXT_texture_format_BGRA8888()) {
                 m_dataFormat = GL_BGRA_EXT;
@@ -3027,19 +3026,19 @@ public:
 #endif
 
         // NativeImageData (canvas/image) is always 4 bytes per pixel
-        // (BGRA/RGBA). ArrayBufferView source matches the requested format byte
-        // count.
+        // (BGRA/RGBA). ArrayBufferView source already has the correct
+        // bytes-per-pixel for the requested format+type combination.
         const size_t srcBytesPerPixel =
-            m_isNativeImageDataUsed ? 4
-                                    : (m_sourceImage.format == GL_RGB ? 3 : 4);
+            m_isNativeImageDataUsed
+                ? 4
+                : Pixel::getBytesPerPixel(m_sourceImage.format, type);
         const size_t srcStride = m_sourceImage.stride;
 
-        // GL_RGB requires 3 bytes per pixel in the upload buffer; GL_RGBA
-        // needs 4.
+        // Destination bytes per pixel is determined by the GL format+type.
         const size_t dstBytesPerPixel =
-            (m_sourceImage.format == GL_RGB) ? 3 : 4;
+            Pixel::getBytesPerPixel(m_sourceImage.format, type);
         // Conversion is needed when source and destination bytes/pixel differ
-        // (e.g. BGRA/RGBA canvas → RGB upload buffer).
+        // (e.g. 4-byte BGRA/RGBA canvas → 3-byte RGB or 2-byte packed short).
         const bool needsStrideConversion =
             (srcBytesPerPixel != dstBytesPerPixel);
 
@@ -3076,7 +3075,37 @@ public:
                 srcOffset = offset + column * srcBytesPerPixel;
                 destOffset = newOffset + column * dstBytesPerPixel;
 
-                if (needsPremultiplyAlpha && srcBytesPerPixel == 4) {
+                if (Pixel::isTwoBytesPerPixel(type)) {
+                    if (m_isNativeImageDataUsed) {
+                        // Source is 8-bit per channel (BGRA/RGBA); pack into
+                        // the requested 16-bit format.
+                        uint8_t r = image[srcOffset + order[0]];
+                        uint8_t g = image[srcOffset + order[1]];
+                        uint8_t b = image[srcOffset + order[2]];
+                        uint8_t a = image[srcOffset + order[3]];
+                        if (needsPremultiplyAlpha) {
+                            float alpha = a / 255.f;
+                            r = multiplyAlpha(r, alpha);
+                            g = multiplyAlpha(g, alpha);
+                            b = multiplyAlpha(b, alpha);
+                        }
+                        GLushort packed;
+                        if (type == GL_UNSIGNED_SHORT_5_5_5_1) {
+                            packed = Pixel::makePixel5551(r, g, b, a);
+                        } else if (type == GL_UNSIGNED_SHORT_4_4_4_4) {
+                            packed = Pixel::makePixel4444(r, g, b, a);
+                        } else {
+                            // GL_UNSIGNED_SHORT_5_6_5
+                            packed = Pixel::makePixel565(r, g, b);
+                        }
+                        memcpy(&m_data[destOffset], &packed, sizeof(GLushort));
+                    } else {
+                        // ArrayBufferView: pixels are already packed 16-bit;
+                        // just copy the 2 bytes (handles flipY only).
+                        m_data[destOffset + 0] = image[srcOffset + 0];
+                        m_data[destOffset + 1] = image[srcOffset + 1];
+                    }
+                } else if (needsPremultiplyAlpha && srcBytesPerPixel == 4) {
                     float alpha = image[srcOffset + order[3]] / 255.f;
                     m_data[destOffset + 0] =
                         multiplyAlpha(image[srcOffset + order[0]], alpha);

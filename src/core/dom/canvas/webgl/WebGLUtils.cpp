@@ -240,6 +240,12 @@ GLushort Pixel::makePixel4444(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
     return ((r & 0xF) << 12) | ((g & 0xF) << 8) | ((b & 0xF) << 4) | (a & 0xF);
 }
 
+GLushort Pixel::makePixel565(uint8_t r, uint8_t g, uint8_t b)
+{
+    return (((r >> 3) & 0x1F) << 11) | (((g >> 2) & 0x3F) << 5) |
+           ((b >> 3) & 0x1F);
+}
+
 std::string glValueString(uint32_t value)
 {
 #if defined(ENABLE_TRACE)
