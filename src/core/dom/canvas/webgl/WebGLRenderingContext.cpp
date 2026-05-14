@@ -198,7 +198,7 @@ void WebGLRenderingContext::initialize()
     m_gl->bindFramebuffer(GL_FRAMEBUFFER, m_framebufferTexture->fbo());
 }
 
-void WebGLRenderingContext::flush()
+void WebGLRenderingContext::flushInRendering()
 {
     WebGLRenderingContextBaseMixIn::flush();
 
@@ -213,9 +213,56 @@ void WebGLRenderingContext::flush()
     // However, as of now, it's difficult to know when the composition ends and
     // the GL rendering actually ends, so we leave the clearing as a pending job
     // and let it be done lazily. The assumption here is that the engine will
-    // get this `flush()` invoked every frame after we call `setNeedsComposite`.
+    // get this `flushInRendering()` invoked every frame after we call
+    // `setNeedsComposite`.
 
     m_hasPendingJobsBetweenFrames = true;
+}
+
+void WebGLRenderingContext::flush()
+{
+    // Called from HTMLCanvasElement::toDataURL(). Do the compositing flush
+    // first, then read the GPU framebuffer into the CPU buffer so that
+    // canvasSurface->mapBuffer() returns actual pixel data instead of zeroes.
+    flushInRendering();
+
+    if (!m_canvasSurface) {
+        return;
+    }
+
+    GLRevertableContextScope scope(
+        m_context, executionContext()->webBase()->asWebView()->renderer());
+
+    auto width = static_cast<GLsizei>(m_canvasSurface->bufferWidth());
+    auto height = static_cast<GLsizei>(m_canvasSurface->bufferHeight());
+
+    // Bind the WebGL FBO as the read source.
+    m_gl->bindFramebuffer(GL_READ_FRAMEBUFFER, m_framebufferTexture->fbo());
+
+    uint8_t* buffer = m_canvasSurface->mapBuffer();
+    m_gl->readPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+
+    // glReadPixels returns rows bottom-to-top; flip to top-to-bottom for
+    // the image encoder.
+    uint8_t tmp[4];
+    for (GLsizei top = 0; top < height / 2; ++top) {
+        GLsizei bot = height - 1 - top;
+        for (GLsizei col = 0; col < width; ++col) {
+            uint8_t* pTop = buffer + (top * width + col) * 4;
+            uint8_t* pBot = buffer + (bot * width + col) * 4;
+            memcpy(tmp, pTop, 4);
+            memcpy(pTop, pBot, 4);
+            memcpy(pBot, tmp, 4);
+        }
+    }
+
+#if defined(PORT_PIXEL_ORDER_BGRA)
+    // glReadPixels returns RGBA; convert to BGRA to match the platform pixel
+    // order expected by HTMLCanvasElement::toDataURL's image encoder.
+    for (GLsizei i = 0; i < width * height; ++i) {
+        std::swap(buffer[i * 4 + 0], buffer[i * 4 + 2]);
+    }
+#endif
 }
 
 void WebGLRenderingContext::onResize()
