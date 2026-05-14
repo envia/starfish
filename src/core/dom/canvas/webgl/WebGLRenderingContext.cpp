@@ -2986,7 +2986,6 @@ public:
     {
         const size_t width = m_sourceImage.width;
         const size_t height = m_sourceImage.height;
-        const size_t stride = m_sourceImage.stride;
         const unsigned char* image = m_sourceImage.data;
 
         size_t offset = 0, newOffset = 0, srcOffset = 0, destOffset = 0;
@@ -3014,7 +3013,10 @@ public:
 #if defined(PORT_PIXEL_ORDER_BGRA)
         if (m_isNativeImageDataUsed) {
             // NativeImageData is formatted as BGRA.
-            if (WebGLExtensionRegistry::instance()
+            // The GL_BGRA_EXT fast path only applies to RGBA output; for RGB
+            // output we must convert channel order and strip the alpha byte.
+            if (m_sourceImage.format == GL_RGBA &&
+                WebGLExtensionRegistry::instance()
                     .hasEXT_texture_format_BGRA8888()) {
                 m_dataFormat = GL_BGRA_EXT;
                 needsColorConversion = false;
@@ -3023,11 +3025,31 @@ public:
             }
         }
 #endif
-        if (!needsFlipY && !needsPremultiplyAlpha && !needsColorConversion) {
+
+        // NativeImageData (canvas/image) is always 4 bytes per pixel
+        // (BGRA/RGBA). ArrayBufferView source matches the requested format byte
+        // count.
+        const size_t srcBytesPerPixel =
+            m_isNativeImageDataUsed ? 4
+                                    : (m_sourceImage.format == GL_RGB ? 3 : 4);
+        const size_t srcStride = m_sourceImage.stride;
+
+        // GL_RGB requires 3 bytes per pixel in the upload buffer; GL_RGBA
+        // needs 4.
+        const size_t dstBytesPerPixel =
+            (m_sourceImage.format == GL_RGB) ? 3 : 4;
+        // Conversion is needed when source and destination bytes/pixel differ
+        // (e.g. BGRA/RGBA canvas → RGB upload buffer).
+        const bool needsStrideConversion =
+            (srcBytesPerPixel != dstBytesPerPixel);
+
+        if (!needsFlipY && !needsPremultiplyAlpha && !needsColorConversion &&
+            !needsStrideConversion) {
             return;
         }
 
-        m_data.resize(height * stride);
+        const size_t dstStride = dstBytesPerPixel * width;
+        m_data.resize(height * dstStride);
 
         std::vector<uint8_t> order;
 
@@ -3039,20 +3061,22 @@ public:
 
         for (size_t row = 0; row < height; row++) {
             // Calculate the memory offset for the current row
-            newOffset = offset = row * stride;
+            offset = row * srcStride;
 
             // NOTE: For increasing more performance of this feature, we may
             // consider using fragment shader.
             if (needsFlipY) {
-                newOffset = (height - row - 1) * stride;
+                newOffset = (height - row - 1) * dstStride;
+            } else {
+                newOffset = row * dstStride;
             }
 
             for (size_t column = 0; column < width; column++) {
                 // Calculate the memory offset for the current pixel
-                srcOffset = offset + column * 4;
-                destOffset = newOffset + column * 4;
+                srcOffset = offset + column * srcBytesPerPixel;
+                destOffset = newOffset + column * dstBytesPerPixel;
 
-                if (needsPremultiplyAlpha) {
+                if (needsPremultiplyAlpha && srcBytesPerPixel == 4) {
                     float alpha = image[srcOffset + order[3]] / 255.f;
                     m_data[destOffset + 0] =
                         multiplyAlpha(image[srcOffset + order[0]], alpha);
@@ -3060,12 +3084,16 @@ public:
                         multiplyAlpha(image[srcOffset + order[1]], alpha);
                     m_data[destOffset + 2] =
                         multiplyAlpha(image[srcOffset + order[2]], alpha);
-                    m_data[destOffset + 3] = image[srcOffset + order[3]];
+                    if (dstBytesPerPixel == 4) {
+                        m_data[destOffset + 3] = image[srcOffset + order[3]];
+                    }
                 } else {
                     m_data[destOffset + 0] = image[srcOffset + order[0]];
                     m_data[destOffset + 1] = image[srcOffset + order[1]];
                     m_data[destOffset + 2] = image[srcOffset + order[2]];
-                    m_data[destOffset + 3] = image[srcOffset + order[3]];
+                    if (dstBytesPerPixel == 4) {
+                        m_data[destOffset + 3] = image[srcOffset + order[3]];
+                    }
                 }
             }
         }
@@ -3302,7 +3330,18 @@ void WebGLRenderingContext::handleTexImageWithImageSource(
     TRACE(WEBGL_V, "source:", KV(width), KV(height), KV(stride),
           KV(byteLengthOfPixels), KV(imageData));
 
+    // Canvas/image data is always tightly packed with no row padding. Force
+    // GL_UNPACK_ALIGNMENT=1 so OpenGL ES reads rows at the correct byte
+    // offsets regardless of row width (e.g. RGB with non-multiple-of-4 width).
+    GLint savedAlignment = 4;
+    m_gl->getIntegerv(GL_UNPACK_ALIGNMENT, &savedAlignment);
+    if (savedAlignment != 1) {
+        m_gl->pixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    }
     updateImage(&image);
+    if (savedAlignment != 1) {
+        m_gl->pixelStorei(GL_UNPACK_ALIGNMENT, savedAlignment);
+    }
 }
 
 bool WebGLRenderingContext::checkInternalFormat(GLint internalFormat,
