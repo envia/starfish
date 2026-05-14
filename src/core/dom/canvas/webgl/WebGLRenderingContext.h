@@ -76,6 +76,7 @@ public:
 
     void initialize() override;
     void flush() override;
+    void flushInRendering() override;
     void onResize() override;
 
     GLsizei drawingBufferWidth() const;
