@@ -190,6 +190,13 @@ public:
     virtual MappedNativeBuffer mapBuffer(size_t bufferX, size_t bufferY,
                                          size_t bufferWidth,
                                          size_t bufferHeight) = 0;
+    // Obtain the CPU buffer for an external producer (e.g. a WebGL context
+    // reading its FBO) to write into, marking it populated so a later
+    // mapBuffer() read is valid. The default just maps the whole buffer.
+    virtual uint8_t* lockBufferForExternalReadback()
+    {
+        return mapBuffer();
+    }
     uint8_t* mapBuffer() // maps whole area
     {
         MappedNativeBuffer m = mapBuffer(0, 0, bufferWidth(), bufferHeight());

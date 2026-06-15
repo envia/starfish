@@ -229,7 +229,7 @@ void WebGLRenderingContext::flushImpl(bool readbackToSurface)
         // We are in the WebGL context here, so the WebGL FBO is valid and can
         // be read directly into the surface's CPU buffer -- no temporary FBO
         // or shared-texture detour is needed (cf. CanvasSurfaceGL::mapBuffer).
-        uint8_t* dest = m_canvasSurface->mapBuffer();
+        uint8_t* dest = m_canvasSurface->lockBufferForExternalReadback();
         if (dest != nullptr) {
             GLint oldReadFbo = 0;
             m_gl->getIntegerv(GL_READ_FRAMEBUFFER_BINDING, &oldReadFbo);

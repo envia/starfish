@@ -1868,10 +1868,34 @@ public:
         }
     }
 
+    // Producers that fill this surface's CPU buffer out-of-band obtain the
+    // write target here (WebGL reads its FBO into it from flush()). Acquiring
+    // the buffer this way marks it as populated so a subsequent mapBuffer()
+    // read is allowed. mapBuffer() itself must NOT be used for this -- it is
+    // the guarded read path.
+    virtual uint8_t* lockBufferForExternalReadback() override
+    {
+        STARFISH_ASSERT(m_isFrameBuffer);
+        if (!m_buffer) {
+            m_buffer =
+                (unsigned char*)calloc(1, m_bufferStride * m_bufferHeight);
+            STARFISH_RELEASE_ASSERT(m_buffer);
+        }
+        m_frameBufferReadbackDone = true;
+        return m_buffer;
+    }
+
     virtual MappedNativeBuffer mapBuffer(size_t bufferX, size_t bufferY,
                                          size_t bufferWidth,
                                          size_t bufferHeight) override
     {
+        // A WebGL framebuffer surface's CPU buffer is filled by
+        // WebGLRenderingContext::flush() via lockBufferForExternalReadback().
+        // Reading it here without a preceding flush() would hand back stale or
+        // blank pixels, so require that the readback has happened. All readback
+        // consumers (toDataURL/getImageData/drawImage-of-canvas) flush() first.
+        STARFISH_ASSERT(!m_isFrameBuffer || m_frameBufferReadbackDone);
+
         if (m_isEGLImageExternal) {
             if (!m_buffer) {
 #if defined(STARFISH_TIZEN)
@@ -2212,6 +2236,9 @@ protected:
         m_textureFragments;
 
     bool m_isFrameBuffer{ false };
+    // For WebGL framebuffer surfaces: set once flush() has read the FBO into
+    // m_buffer. Guards mapBuffer() against reads with no preceding flush().
+    bool m_frameBufferReadbackDone{ false };
     bool m_isEGLImageExternal;
     bool m_isEGLBufferOwner;
 #if defined(STARFISH_TIZEN) && defined(PORT_WEBVIEW_BRIDGE_EFL)
