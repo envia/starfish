@@ -200,6 +200,22 @@ void WebGLRenderingContext::initialize()
 
 void WebGLRenderingContext::flush()
 {
+    // flush() is the on-demand path (toDataURL/getImageData/drawImage). It is
+    // always preceded by a readback consumer, so refresh the CPU buffer here.
+    flushImpl(/* readbackToSurface */ true);
+}
+
+void WebGLRenderingContext::flushInRendering()
+{
+    // flushInRendering() is invoked every frame during compositing. Screen
+    // composition samples the shared color texture on the GPU directly, so no
+    // CPU readback is needed here -- skip it to avoid a per-frame glReadPixels
+    // stall.
+    flushImpl(/* readbackToSurface */ false);
+}
+
+void WebGLRenderingContext::flushImpl(bool readbackToSurface)
+{
     WebGLRenderingContextBaseMixIn::flush();
 
     GLRevertableContextScope scope(
@@ -207,6 +223,25 @@ void WebGLRenderingContext::flush()
     // we need to bind 0(screen) buffer for sending commands to gpu
     m_gl->bindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
     m_gl->bindFramebuffer(GL_DRAW_FRAMEBUFFER, getCurrentFBO());
+
+    if (readbackToSurface && m_canvasSurface != nullptr &&
+        m_framebufferTexture != nullptr) {
+        // We are in the WebGL context here, so the WebGL FBO is valid and can
+        // be read directly into the surface's CPU buffer -- no temporary FBO
+        // or shared-texture detour is needed (cf. CanvasSurfaceGL::mapBuffer).
+        uint8_t* dest = m_canvasSurface->mapBuffer();
+        if (dest != nullptr) {
+            GLint oldReadFbo = 0;
+            m_gl->getIntegerv(GL_READ_FRAMEBUFFER_BINDING, &oldReadFbo);
+            m_gl->bindFramebuffer(GL_READ_FRAMEBUFFER,
+                                  m_framebufferTexture->fbo());
+            m_gl->pixelStorei(GL_PACK_ALIGNMENT, 1);
+            m_gl->readPixels(0, 0, m_canvasSurface->bufferWidth(),
+                             m_canvasSurface->bufferHeight(), GL_RGBA,
+                             GL_UNSIGNED_BYTE, dest);
+            m_gl->bindFramebuffer(GL_READ_FRAMEBUFFER, (GLuint)oldReadFbo);
+        }
+    }
 
     // NOTE: According to the specification, the content of the drawing buffer
     // should be cleared with default values after the end of the composition.

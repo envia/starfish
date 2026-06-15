@@ -76,6 +76,7 @@ public:
 
     void initialize() override;
     void flush() override;
+    void flushInRendering() override;
     void onResize() override;
 
     GLsizei drawingBufferWidth() const;
@@ -331,6 +332,12 @@ private:
     bool isExtensionEnabled(const char* requestedName);
     bool isDefaultFramebufferBound();
     GLuint getCurrentFBO();
+    // Shared body of flush()/flushInRendering(). When readbackToSurface is
+    // true (on-demand readback paths: toDataURL/getImageData/drawImage), the
+    // WebGL FBO is read back into the canvas surface's CPU buffer. The per-
+    // frame compositing path (flushInRendering) passes false to avoid that
+    // cost.
+    void flushImpl(bool readbackToSurface);
     GLint getCurrentProgram();
     void completePendingJobs();
     void setPendingClearMask(uint32_t mask);

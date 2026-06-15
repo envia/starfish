@@ -1899,34 +1899,10 @@ public:
                 STARFISH_RELEASE_ASSERT(m_buffer);
             }
 
-            // For WebGL framebuffer, read pixels via the shared color texture.
-            // The WebGL FBO (m_fbo) lives in a separate shared GL context and
-            // is NOT valid in the renderer's main context (FBOs aren't shared
-            // across a share group), so bind the shared color texture to a
-            // temporary FBO created here and read from that.
-            if (m_isFrameBuffer && m_textureFragments.size() &&
-                m_textureFragments[0].textureID != 0) {
-                m_renderer->makeCurrent();
-
-                GLuint texId = (GLuint)m_textureFragments[0].textureID;
-                GLint oldReadFbo = 0;
-                gl()->getIntegerv(GL_READ_FRAMEBUFFER_BINDING, &oldReadFbo);
-
-                GLuint tmpFbo = 0;
-                gl()->genFramebuffers(1, &tmpFbo);
-                gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, tmpFbo);
-                gl()->framebufferTexture2D(GL_READ_FRAMEBUFFER,
-                                           GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
-                                           texId, 0);
-
-                gl()->pixelStorei(GL_PACK_ALIGNMENT, 1);
-                gl()->readPixels(0, 0, m_bufferWidth, m_bufferHeight, GL_RGBA,
-                                 GL_UNSIGNED_BYTE, m_buffer);
-
-                gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, (GLuint)oldReadFbo);
-                gl()->deleteFramebuffers(1, &tmpFbo);
-                checkError(gl());
-            }
+            // NOTE: For WebGL framebuffer surfaces the CPU buffer is filled by
+            // WebGLRenderingContext::flush() (which reads the FBO in the WebGL
+            // context). Readback consumers always flush() first, so the buffer
+            // is up to date by the time it is mapped here.
         }
 
         CanvasSurface::MappedNativeBuffer b;
