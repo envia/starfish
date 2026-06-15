@@ -37,7 +37,6 @@ public:
                         GLuint& outTextureId) = 0;
     virtual bool destroy() = 0;
     virtual Type type() = 0;
-    virtual GLuint fbo() = 0;
 };
 
 class SurfaceCreationScope {

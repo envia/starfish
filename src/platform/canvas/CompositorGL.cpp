@@ -1649,10 +1649,7 @@ public:
                 STARFISH_RELEASE_ASSERT(false);
             }
 
-            // 2. Store the FBO ID for reading pixels later
-            m_fbo = SurfaceCreationScope::delegate()->fbo();
-
-            // 3. Add the texture info newly created to the fragement list.
+            // 2. Add the texture info newly created to the fragement list.
             CanvasSurfaceTextureInfo::CanvasSurfaceTextureInfoFragment fragment;
             fragment.textureWidth = m_bufferWidth;
             fragment.textureHeight = m_bufferHeight;
@@ -1664,7 +1661,7 @@ public:
             fragment.sharedTexture = true;
             m_textureFragments.push_back(fragment);
 
-            // 4. Set the dimension of the fragment list.
+            // 3. Set the dimension of the fragment list.
             m_wTextureCount = m_hTextureCount = 1;
 
             return;
@@ -1902,16 +1899,33 @@ public:
                 STARFISH_RELEASE_ASSERT(m_buffer);
             }
 
-            // For WebGL framebuffer, read pixels from the FBO
-            if (m_isFrameBuffer && m_fbo != 0) {
+            // For WebGL framebuffer, read pixels via the shared color texture.
+            // The WebGL FBO (m_fbo) lives in a separate shared GL context and
+            // is NOT valid in the renderer's main context (FBOs aren't shared
+            // across a share group), so bind the shared color texture to a
+            // temporary FBO created here and read from that.
+            if (m_isFrameBuffer && m_textureFragments.size() &&
+                m_textureFragments[0].textureID != 0) {
                 m_renderer->makeCurrent();
-                GLint oldFbo;
-                gl()->getIntegerv(GL_FRAMEBUFFER_BINDING, &oldFbo);
-                gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, m_fbo);
+
+                GLuint texId = (GLuint)m_textureFragments[0].textureID;
+                GLint oldReadFbo = 0;
+                gl()->getIntegerv(GL_READ_FRAMEBUFFER_BINDING, &oldReadFbo);
+
+                GLuint tmpFbo = 0;
+                gl()->genFramebuffers(1, &tmpFbo);
+                gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, tmpFbo);
+                gl()->framebufferTexture2D(GL_READ_FRAMEBUFFER,
+                                           GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
+                                           texId, 0);
+
                 gl()->pixelStorei(GL_PACK_ALIGNMENT, 1);
                 gl()->readPixels(0, 0, m_bufferWidth, m_bufferHeight, GL_RGBA,
                                  GL_UNSIGNED_BYTE, m_buffer);
-                gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, oldFbo);
+
+                gl()->bindFramebuffer(GL_READ_FRAMEBUFFER, (GLuint)oldReadFbo);
+                gl()->deleteFramebuffers(1, &tmpFbo);
+                checkError(gl());
             }
         }
 
@@ -2224,7 +2238,6 @@ protected:
     bool m_isFrameBuffer{ false };
     bool m_isEGLImageExternal;
     bool m_isEGLBufferOwner;
-    GLuint m_fbo{ 0 };
 #if defined(STARFISH_TIZEN) && defined(PORT_WEBVIEW_BRIDGE_EFL)
     tbm_surface_h m_tbmSurface;
     void* m_eglImage;

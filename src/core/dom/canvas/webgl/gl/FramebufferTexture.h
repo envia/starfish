@@ -56,7 +56,7 @@ public:
         return Type::FrameBuffer;
     }
 
-    inline GLuint fbo() override
+    inline GLuint fbo()
     {
         return m_fbo;
     }
