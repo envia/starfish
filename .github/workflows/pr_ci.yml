@@ -48,7 +48,7 @@ jobs:
             git config submodule.third_party/wpt.update none
             git submodule update --init binding_generator third_party
             cd third_party/escargot
-            git submodule update --init third_party
+            git submodule update --init --recursive third_party
             cd -
             git config --unset submodule.third_party/wpt.update
 
