@@ -126,6 +126,52 @@ LayoutUnit FlexFormattingContext::basisSize(FrameBox* flexItem)
     return basisSize.first;
 }
 
+// CSS Flexbox §4.5: Automatic Minimum Size of Flex Items.
+// Returns the content-based size suggestion that should floor the item's
+// hypothetical main size when its used min main-size is `auto` and it is not a
+// scroll container in the main axis. Returns 0 when the automatic minimum does
+// not apply (so callers can safely std::max() it).
+//
+// Without this floor, a flex-basis:0 item inside a container with an indefinite
+// main size (e.g. an auto-height column flex container) collapses to 0 because
+// there is no positive free space to grow into, leaving siblings stacked at the
+// same position.
+LayoutUnit FlexFormattingContext::automaticMinimumMainSize(FrameBox* flexItem)
+{
+    if (m_isMainAxisInInlineAxis) {
+        if (!flexItem->style()->minWidth().isAuto() ||
+            flexItem->appliedOverflowX() != OverflowValue::VisibleOverflow) {
+            return 0;
+        }
+    } else {
+        if (!flexItem->style()->minHeight().isAuto() ||
+            flexItem->appliedOverflowY() != OverflowValue::VisibleOverflow) {
+            return 0;
+        }
+    }
+
+    // Compute the content size suggestion by sizing the item with a content
+    // flex basis. We call the base-size computation directly (not the cached
+    // basisSize() wrapper) since the cache key does not include flex-basis.
+    FlexBasisData savedBasis = flexItem->style()->flexBasis();
+    flexItem->style()->setFlexBasis(FlexBasisData(FlexBasisData::Content));
+    flexItem->markNeedsLayout();
+    LayoutUnit contentSuggestion =
+        m_container
+            ->basisSize(m_layoutContext, m_availableMainSize,
+                        m_availableCrossSize, flexItem,
+                        m_shouldRespectPercentageWidthOnComputingBasisSize)
+            .first;
+    flexItem->style()->setFlexBasis(savedBasis);
+    flexItem->markNeedsLayout();
+    clearBasisSizeFromCache(flexItem);
+
+    if (contentSuggestion == intMaxForLayoutUnit) {
+        return 0;
+    }
+    return contentSuggestion;
+}
+
 void FlexFormattingContext::clearBasisSizeFromCache(FrameBox* flexItem)
 {
     m_layoutContext.unregisterToBasisSizeCache(
@@ -162,6 +208,14 @@ void FlexFormattingContext::computeMainSize()
         LayoutUnit requiredMainSizeForItemInFlexLine;
 
         STARFISH_ASSERT(mainSize != intMaxForLayoutUnit);
+
+        // When the container's main size is indefinite, flexible lengths cannot
+        // grow into free space, so the hypothetical main size must be floored by
+        // the item's automatic minimum size (CSS Flexbox §4.5). Otherwise a
+        // flex-basis:0 item collapses to 0 and siblings overlap.
+        if (m_availableMainSize == intMaxForLayoutUnit) {
+            mainSize = std::max(mainSize, automaticMinimumMainSize(flexItem));
+        }
 
         if (m_isMainAxisInInlineAxis) {
             flexItem->computeBorderMarginPadding(m_layoutContext,
