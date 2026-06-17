@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>flex auto-min-size repro (issue #4925)</title>
+<!--
+  Minimal reproduction of the Bixby Selection Prompt button bug.
+  Distilled from weather2.html's location PermissionPrompt:
+
+    prompt   : column flex, height auto  -> indefinite main size
+    btn-wrap : flex:1 1 0 (flex-basis:0) + align-self:stretch, itself a row flex
+    btn      : the (CJK) text label
+
+  Before the fix (no CSS Flexbox 4.5 automatic minimum size):
+    - btn-wrap collapses to height 0 in the indefinite-main-size column
+      -> all three wrappers stack at y=0 -> BUTTONS OVERLAP.
+    - measuring content suggestion used fit-content cross size, so CJK text
+      wrapped char-by-char -> wrapper height ballooned -> huge gaps.
+  After the fix: each wrapper is floored to its content height (one line),
+  so the three buttons stack compactly top-to-bottom (matches Firefox/Chrome).
+-->
+<style>
+  body { margin: 16px; font-family: sans-serif; background: #fff; }
+  .prompt {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    background: #eee;
+    border: 2px solid #333;
+    /* no height -> main size is indefinite (the trigger) */
+  }
+  .btn-wrap {
+    flex: 1 1 0;            /* flex-basis: 0 */
+    align-self: stretch;    /* definite cross size = container width */
+    display: flex;          /* wrapper is itself a flex container */
+    flex-direction: row;
+    justify-content: center;
+    border: 1px solid #4488ff;
+  }
+  .btn {
+    flex: 1 1 0;
+    text-align: center;
+    padding: 10px 0;
+    color: #222;
+    font-weight: bold;
+  }
+  /* reference: a normal column flow of the same labels for visual comparison */
+  .ref { width: 300px; margin-top: 24px; }
+  .ref > div { border: 1px solid #ccc; padding: 10px 0; text-align: center; }
+</style>
+</head>
+<body>
+  <h3>repro (flex:1 1 0 in auto-height column)</h3>
+  <div class="prompt">
+    <div class="btn-wrap"><div class="btn">앱 사용 중에만 허용</div></div>
+    <div class="btn-wrap"><div class="btn">이번만 허용</div></div>
+    <div class="btn-wrap"><div class="btn">허용 안 함</div></div>
+  </div>
+
+  <h3>reference (expected: three rows, compact, no overlap)</h3>
+  <div class="ref">
+    <div>앱 사용 중에만 허용</div>
+    <div>이번만 허용</div>
+    <div>허용 안 함</div>
+  </div>
+</body>
+</html>
