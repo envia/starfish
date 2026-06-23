@@ -53,11 +53,26 @@ FlexFormattingContext::FlexFormattingContext(
     , m_shouldRespectPercentageWidthOnComputingBasisSize(
           shouldRespectPercentageWidthOnComputingBasisSize)
     , m_currentLineIdx(SIZE_MAX)
-    , m_columnGap(0)
+    , m_mainAxisGap(0)
+    , m_crossAxisGap(0)
 {
+    LayoutUnit columnGap, rowGap;
     if (m_container->style()->columnGap().isSpecified()) {
-        m_columnGap = m_container->style()->columnGap().specifiedValue(
+        columnGap = m_container->style()->columnGap().specifiedValue(
             availableWidth, container->node());
+    }
+    if (m_container->style()->rowGap().isSpecified()) {
+        rowGap = m_container->style()->rowGap().specifiedValue(
+            availableWidth, container->node());
+    }
+    // column-gap separates items along the inline axis, row-gap along the
+    // block axis. Map them onto the container's main/cross axes.
+    if (m_isMainAxisInInlineAxis) {
+        m_mainAxisGap = columnGap;
+        m_crossAxisGap = rowGap;
+    } else {
+        m_mainAxisGap = rowGap;
+        m_crossAxisGap = columnGap;
     }
 
     addNewLine(); // Add initial line.
@@ -170,9 +185,6 @@ void FlexFormattingContext::computeMainSize()
                 m_layoutContext, mainSize, m_availableMainSize);
 
             requiredMainSizeForItemInFlexLine = flexItem->outerWidth();
-            if (flexItems.size()) {
-                requiredMainSizeForItemInFlexLine += m_columnGap;
-            }
         } else {
             flexItem->computeBorderMarginPadding(m_layoutContext,
                                                  m_availableCrossSize);
@@ -212,17 +224,22 @@ void FlexFormattingContext::computeMainSize()
             requiredMainSizeForItemInFlexLine = flexItem->outerHeight();
         }
 
+        // A gap precedes every item except the first one on the line.
+        if (flexItems.size()) {
+            requiredMainSizeForItemInFlexLine += m_mainAxisGap;
+        }
+
         bool canPlaceToFlexLine =
             (lineMainSize + requiredMainSizeForItemInFlexLine <=
              m_availableMainSize);
         if (m_isSingleLine || (lineMainSize == 0) || canPlaceToFlexLine) {
+            if (flexItems.size() > 0) {
+                lineMainSize += m_mainAxisGap;
+                flexLine.m_sumOfMainAxisGapInComputeMainSize += m_mainAxisGap;
+            }
             flexItems.push_back(flexItem);
             if (m_isMainAxisInInlineAxis) {
                 lineMainSize += flexItem->outerWidth();
-                if (flexItems.size() > 1) {
-                    lineMainSize += m_columnGap;
-                    flexLine.m_sumOfColumnGapInComputeMainSize += m_columnGap;
-                }
             } else {
                 lineMainSize += flexItem->outerHeight();
             }
@@ -355,9 +372,7 @@ void FlexFormattingContext::applyFlexFactor()
 
         LayoutUnit initialFreeSpace =
             m_availableMainSize - sumOfUsedupMainSize(flexItems, isFrozens);
-        if (m_isMainAxisInInlineAxis) {
-            initialFreeSpace -= flexLine.m_sumOfColumnGapInComputeMainSize;
-        }
+        initialFreeSpace -= flexLine.m_sumOfMainAxisGapInComputeMainSize;
 
         LayoutUnit remainingFreeSpace = initialFreeSpace;
         if (remainingFreeSpace < 0) {
@@ -512,10 +527,8 @@ void FlexFormattingContext::applyFlexFactor()
                 scaledFlexShrinkFactor = 0;
                 remainingFreeSpace = m_availableMainSize -
                                      sumOfUsedupMainSize(flexItems, isFrozens);
-                if (m_isMainAxisInInlineAxis) {
-                    remainingFreeSpace -=
-                        flexLine.m_sumOfColumnGapInComputeMainSize;
-                }
+                remainingFreeSpace -=
+                    flexLine.m_sumOfMainAxisGapInComputeMainSize;
             }
         }
     }
@@ -558,24 +571,15 @@ void FlexFormattingContext::resolveMainMargin()
             }
         }
 
-        bool canResolve = false;
-        if (m_isMainAxisInInlineAxis) {
-            canResolve =
-                m_availableMainSize >
-                sumOfMainSize + flexLine.m_sumOfColumnGapInComputeMainSize;
-        } else {
-            canResolve = m_availableMainSize > sumOfMainSize;
-        }
+        bool canResolve =
+            m_availableMainSize >
+            sumOfMainSize + flexLine.m_sumOfMainAxisGapInComputeMainSize;
 
         if (canResolve && autoMarginCnt > 0) {
-            LayoutUnit margin;
-            if (m_isMainAxisInInlineAxis) {
-                margin = (m_availableMainSize - sumOfMainSize -
-                          flexLine.m_sumOfColumnGapInComputeMainSize) /
-                         autoMarginCnt;
-            } else {
-                margin = (m_availableMainSize - sumOfMainSize) / autoMarginCnt;
-            }
+            LayoutUnit margin =
+                (m_availableMainSize - sumOfMainSize -
+                 flexLine.m_sumOfMainAxisGapInComputeMainSize) /
+                autoMarginCnt;
 
             for (size_t j = 0; j < flexItems.size(); j++) {
                 FrameBox* flexItem = flexItems[j];
@@ -633,9 +637,7 @@ void FlexFormattingContext::applyJustifyContent()
             }
         }
 
-        if (m_isMainAxisInInlineAxis) {
-            sumOfMainSize += flexLine.m_sumOfColumnGapInComputeMainSize;
-        }
+        sumOfMainSize += flexLine.m_sumOfMainAxisGapInComputeMainSize;
 
         LayoutUnit offset;
         LayoutUnit separator;
@@ -678,7 +680,7 @@ void FlexFormattingContext::applyJustifyContent()
                 for (size_t j = 0; j < flexItems.size(); j++) {
                     FrameBox* flexItem = flexItems[j];
                     flexItem->setX(x + flexItem->marginLeft());
-                    x += flexItem->outerWidth() + separator + m_columnGap;
+                    x += flexItem->outerWidth() + separator + m_mainAxisGap;
                 }
             } else {
                 LayoutUnit x = m_availableMainSize - offset +
@@ -688,7 +690,7 @@ void FlexFormattingContext::applyJustifyContent()
                     FrameBox* flexItem = flexItems[j];
                     flexItem->setX(x - flexItem->outerWidth() +
                                    flexItem->marginLeft());
-                    x -= flexItem->outerWidth() + separator + m_columnGap;
+                    x -= flexItem->outerWidth() + separator + m_mainAxisGap;
                 }
             }
         } else {
@@ -698,7 +700,7 @@ void FlexFormattingContext::applyJustifyContent()
                 for (size_t j = 0; j < flexItems.size(); j++) {
                     FrameBox* flexItem = flexItems[j];
                     flexItem->setY(y + flexItem->marginTop());
-                    y += flexItem->outerHeight() + separator;
+                    y += flexItem->outerHeight() + separator + m_mainAxisGap;
                 }
             } else {
                 LayoutUnit y = m_availableMainSize - offset +
@@ -708,7 +710,7 @@ void FlexFormattingContext::applyJustifyContent()
                     FrameBox* flexItem = flexItems[j];
                     flexItem->setY(y - flexItem->outerHeight() +
                                    flexItem->marginTop());
-                    y -= flexItem->outerHeight() + separator;
+                    y -= flexItem->outerHeight() + separator + m_mainAxisGap;
                 }
             }
         }
@@ -975,16 +977,15 @@ void FlexFormattingContext::computeCrossSize()
         sumOfCrossSize += maxHypotheticalCrossSize;
     }
 
-    LayoutUnit sumOfColumnGap;
-    if (!m_isMainAxisInInlineAxis) {
-        sumOfColumnGap = m_columnGap * (lines - 1);
-    }
+    // Gaps between flex lines count toward the cross size occupied by the
+    // content, so the container grows to contain them.
+    sumOfCrossSize += m_crossAxisGap * (lines - 1);
 
     if (m_container->style()->alignContent() == StretchAlignContentValue &&
         m_availableCrossSize != intMaxForLayoutUnit &&
-        sumOfCrossSize + sumOfColumnGap < m_availableCrossSize && lines > 0) {
+        sumOfCrossSize < m_availableCrossSize && lines > 0) {
         LayoutUnit amountToStretchByLine =
-            (m_availableCrossSize - sumOfCrossSize - sumOfColumnGap) / lines;
+            (m_availableCrossSize - sumOfCrossSize) / lines;
 
         for (size_t i = 0; i < lines; i++) {
             FlexLine& flexLine = m_flexLines[i];
@@ -1221,7 +1222,7 @@ void FlexFormattingContext::applyAlignContent()
                     FrameBox* item = flexItems[j];
                     item->moveY(y);
                 }
-                y += flexLine.m_lineHeight + separator;
+                y += flexLine.m_lineHeight + separator + m_crossAxisGap;
             }
         } else {
             LayoutUnit y = m_availableCrossSize - offset +
@@ -1233,7 +1234,7 @@ void FlexFormattingContext::applyAlignContent()
                     FrameBox* item = flexItems[j];
                     item->moveY(y - flexLine.m_lineHeight);
                 }
-                y -= flexLine.m_lineHeight + separator;
+                y -= flexLine.m_lineHeight + separator + m_crossAxisGap;
             }
         }
     } else {
@@ -1247,7 +1248,7 @@ void FlexFormattingContext::applyAlignContent()
                     FrameBox* item = flexItems[j];
                     item->moveX(x);
                 }
-                x += flexLine.m_lineHeight + separator + m_columnGap;
+                x += flexLine.m_lineHeight + separator + m_crossAxisGap;
             }
         } else {
             LayoutUnit x = m_availableCrossSize - offset +
@@ -1260,7 +1261,7 @@ void FlexFormattingContext::applyAlignContent()
                     FrameBox* item = flexItems[j];
                     item->moveX(x - flexLine.m_lineHeight);
                 }
-                x -= flexLine.m_lineHeight + separator + m_columnGap;
+                x -= flexLine.m_lineHeight + separator + m_crossAxisGap;
             }
         }
     }
