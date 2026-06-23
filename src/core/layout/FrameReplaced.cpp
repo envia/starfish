@@ -299,7 +299,16 @@ void FrameReplaced::computeContentWidthAndHeight(LayoutContext& ctx,
     bool parentHasFixedHeight;
     bool hasAspectRatio;
 
-    parentContentWidth = cb->contentWidth() + cb->paddingWidth();
+    // Percentage widths resolve against the containing block's content width.
+    // For an absolutely positioned box the containing block is the padding box,
+    // so its padding is included; for an in-flow box only the content width is
+    // used. (Merging these two cases regressed in-flow replaced elements, making
+    // width:100% overflow a padded container by the padding amount.)
+    if (isAbsolutePositioned()) {
+        parentContentWidth = cb->contentWidth() + cb->paddingWidth();
+    } else {
+        parentContentWidth = cb->contentWidth();
+    }
     parentHasFixedHeight = ctx.parentHasFixedHeight(this);
     if (parentHasFixedHeight) {
         parentContentHeight = ctx.parentFixedHeight(this);
