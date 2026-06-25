@@ -54,7 +54,9 @@ Optional<Path*> FrameSVGPolylineBox::path()
         for (size_t i = 1; i < points.size(); i++) {
             path->lineTo(points[i].first, points[i].second);
         }
-        path->closePath();
+        // A <polyline> is an open shape: unlike <polygon>, it must NOT be
+        // closed. Closing it would draw a spurious straight segment from the
+        // last point back to the first.
         return path;
     }
     return nullptr;
