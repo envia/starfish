@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+  <meta name="tizen-widget-transparent-background" content="yes">
+<title>Weather Widget</title>
+<style>
+  @font-face { font-family: 'SamsungOne'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/SamsungOneKorean-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+  @font-face { font-family: 'SamsungOne'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/SamsungOneKorean-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  .weather-widget {
+    width: 100%;
+    font-family: 'SamsungOne','Samsung Sans','Pretendard',-apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif;
+    color: #f3ece1;
+    background: rgba(10, 5, 3, 0.65);
+    border-radius: 30px;
+    padding: 28px 32px 24px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(243,236,225,0.08);
+  }
+
+  /* ---- Current weather ---- */
+  .weather-current {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+  .weather-current .icon-area {
+    flex-shrink: 0;
+    width: 56px; height: 56px;
+    display: flex; align-items: center; justify-content: center;
+    color: #ffd980;
+  }
+  .weather-current .icon-area svg { width: 100%; height: 100%; }
+
+  .weather-current .info { flex: 1; }
+  .weather-current .location {
+    font-size: 28px;
+    color: rgba(243,236,225,0.5);
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+  }
+  .weather-current .desc {
+    font-size: 32px;
+    color: rgba(243,236,225,0.7);
+    margin-bottom: 4px;
+  }
+  .weather-current .temp-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .weather-current .temp {
+    font-size: 96px;
+    font-weight: 700;
+    color: #fbf3e6;
+    line-height: 1;
+  }
+  .weather-current .temp-range {
+    font-size: 32px;
+    color: rgba(243,236,225,0.5);
+  }
+  .weather-current .temp-range .hi { color: rgba(255,217,128,0.8); }
+
+  /* ---- Hourly graph ---- */
+  .hourly-section {
+    border-top: 1px solid rgba(243,236,225,0.08);
+    padding-top: 18px;
+  }
+  .hourly-section .section-title {
+    font-size: 24px;
+    color: rgba(243,236,225,0.4);
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+  }
+
+  .hourly-graph {
+    width: 100%;
+    position: relative;
+  }
+  .hourly-graph svg {
+    width: 100%;
+    height: 140px;
+    display: block;
+  }
+
+  /* gradient fill under the line */
+  .graph-fill {
+    fill: url(#tempGradient);
+    stroke: none;
+  }
+  .graph-line {
+    fill: none;
+    stroke: #ffd980;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .graph-dot {
+    fill: #ffd980;
+    stroke: rgba(10,5,3,0.8);
+    stroke-width: 2;
+  }
+
+  /* hour labels below the graph */
+  .hour-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0 0;
+  }
+  .hour-labels .hour-label {
+    font-size: 24px;
+    color: rgba(243,236,225,0.45);
+    text-align: center;
+    flex: 1;
+  }
+  .hour-labels .hour-label .temp-val {
+    display: block;
+    font-size: 26px;
+    color: rgba(243,236,225,0.7);
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+</style>
+</head>
+<body>
+
+<div class="weather-widget">
+
+  <!-- Current weather section -->
+  <div class="weather-current">
+    <div class="icon-area">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="5" stroke="orange" stroke-width="2"/><path d="M12 2V4M12 20V22M4 12H2M22 12H20M19.07 4.93L17.66 6.34M6.34 17.66L4.93 19.07M19.07 19.07L17.66 17.66M6.34 6.34L4.93 4.93" stroke="orange" stroke-width="2" stroke-linecap="round"/><path d="M15 13.5 C12.8 13.5 11 11.8 11 9.7 C11 7.7 12.7 6 14.8 6 C15.4 4.2 17.1 3 19 3 C21.5 3 23.5 5 23.7 7.4 C25.5 7.6 27 9.1 27 11 C27 13 25.4 14.5 23.4 14.5 L15 14.5 Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" fill="white"/></svg>
+    </div>
+    <div class="info">
+      <div class="location">서울</div>
+      <div class="desc">구름 조금</div>
+      <div class="temp-row">
+        <div class="temp">28°</div>
+        <div class="temp-range">
+          <span class="hi">▲29°</span>
+          <span>▼19°</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hourly temperature graph section -->
+  <div class="hourly-section">
+    <div class="section-title">시간대별 기온</div>
+    <div class="hourly-graph">
+      <svg id="tempGraph" viewBox="0 0 736 140" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="tempGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(255,217,128,0.35)"/>
+            <stop offset="100%" stop-color="rgba(255,217,128,0)"/>
+          </linearGradient>
+        </defs>
+        <polygon class="graph-fill" points=""/>
+        <polyline class="graph-line" points=""/>
+      </svg>
+    </div>
+    <div class="hour-labels">
+      <div class="hour-label">
+        <span class="temp-val">29°</span>
+        15시
+      </div>
+      <div class="hour-label">
+        <span class="temp-val">27°</span>
+        18시
+      </div>
+      <div class="hour-label">
+        <span class="temp-val">25°</span>
+        21시
+      </div>
+      <div class="hour-label">
+        <span class="temp-val">23°</span>
+        0시
+      </div>
+      <div class="hour-label">
+        <span class="temp-val">21°</span>
+        3시
+      </div>
+      <div class="hour-label">
+        <span class="temp-val">19°</span>
+        6시
+      </div>
+      <div class="hour-label">
+        <span class="temp-val">23°</span>
+        9시
+      </div>
+      <div class="hour-label">
+        <span class="temp-val">27°</span>
+        12시
+      </div>
+    </div>
+  </div>
+  <script>
+  (function() {
+    var temps = [29,27,25,23,21,19,23,27,];
+    var n = temps.length;
+    if (n === 0) return;
+
+    var svg = document.getElementById('tempGraph');
+    if (!svg) return;
+
+    var minTemp = Math.min.apply(null, temps);
+    var maxTemp = Math.max.apply(null, temps);
+    var tempRange = maxTemp - minTemp;
+    if (tempRange === 0) tempRange = 1;
+
+    var svgW = 736, svgH = 140;
+    var padL = 16, padR = 16, padT = 20, padB = 20;
+    var graphW = svgW - padL - padR;
+    var graphH = svgH - padT - padB;
+
+    var points = [];
+    for (var i = 0; i < n; i++) {
+      var x = (n === 1) ? padL + graphW / 2 : padL + (i / (n - 1)) * graphW;
+      var y = padT + (1 - (temps[i] - minTemp) / tempRange) * graphH;
+      points.push(x + ',' + y);
+    }
+
+    svg.querySelector('.graph-line').setAttribute('points', points.join(' '));
+    svg.querySelector('.graph-fill').setAttribute('points', points.join(' ') + ' ' + points[n - 1].split(',')[0] + ',' + svgH + ' ' + points[0].split(',')[0] + ',' + svgH);
+
+    points.forEach(function(p) {
+      var coords = p.split(',');
+      var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('class', 'graph-dot');
+      circle.setAttribute('cx', coords[0]);
+      circle.setAttribute('cy', coords[1]);
+      circle.setAttribute('r', '4');
+      svg.appendChild(circle);
+    });
+  })();
+  </script>
+
+</div>
+
+</body>
+</html>
