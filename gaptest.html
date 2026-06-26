@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html><head><style>
+  body { margin: 0; }
+  /* row flex, multi-line: column-gap=10 (between items), row-gap=30 (between lines) */
+  .row { display: flex; flex-direction: row; flex-wrap: wrap; width: 250px;
+         column-gap: 10px; row-gap: 30px; }
+  .row > div { width: 100px; height: 40px; background: teal; }
+  /* column flex: gap=15 between stacked items (row-gap) */
+  .col { display: flex; flex-direction: column; gap: 15px; width: 120px; margin-top: 5px; }
+  .col > div { height: 20px; background: orange; }
+</style></head>
+<body>
+  <div class="row"><div>1</div><div>2</div><div>3</div></div>
+  <div class="col"><div>a</div><div>b</div><div>c</div></div>
+</body></html>
