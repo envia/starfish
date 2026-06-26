@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html><head><style>
+  body { margin: 0; }
+  .box { width: 400px; padding: 50px; background: gray; }       /* content width = 400 */
+  .blk { width: 100%; height: 30px; background: green; }         /* block, should be 400 */
+  img  { width: 100%; height: 30px; background: red; display:block; }  /* replaced, should be 400 */
+</style></head>
+<body>
+  <div class="box">
+    <div class="blk"></div>
+    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+  </div>
+</body></html>
