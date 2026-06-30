@@ -448,8 +448,18 @@ public:
                 STARFISH_LOG_INFO("Resize event: %dx%d", attr.width,
                                   attr.height);
 
-                // Destroy old EGL surface and create new one with new size
+                // Destroy old EGL surface and create new one with new size.
+                // The old surface is still bound to the context (makeCurrent
+                // runs on every frame), and eglDestroySurface only marks a
+                // current surface for deletion -- it keeps the surface's
+                // association with the native window alive until it is no
+                // longer current. In that state the following
+                // eglCreateWindowSurface on the same window fails with
+                // EGL_BAD_ALLOC (0x3003). Release the surface from the context
+                // first so it is actually destroyed before we recreate it.
                 if (m_eglSurface != EGL_NO_SURFACE) {
+                    eglMakeCurrent(m_eglDisplay, EGL_NO_SURFACE,
+                                   EGL_NO_SURFACE, EGL_NO_CONTEXT);
                     eglDestroySurface(m_eglDisplay, m_eglSurface);
                     m_eglSurface = EGL_NO_SURFACE;
                 }
