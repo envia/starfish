@@ -425,6 +425,13 @@ public:
         if (!m_display)
             return;
 
+        // Coalesce resize events. An interactive drag-resize floods the queue
+        // with ConfigureNotify events; acting on each one would relayout the
+        // whole page dozens of times per second and stutter. Instead we just
+        // remember the latest geometry seen during this drain and apply it
+        // once, after all pending events have been consumed.
+        bool hasPendingResize = false;
+
         while (XPending(m_display)) {
             XEvent event;
             XNextEvent(m_display, &event);
@@ -434,58 +441,12 @@ public:
             }
 
             switch (event.type) {
-            case ConfigureNotify: {
-                XWindowAttributes attr;
-                XGetWindowAttributes(m_display, m_window, &attr);
-
-                if (attr.width == m_lastWidth && attr.height == m_lastHeight) {
-                    break; // Skip if size hasn't changed
-                }
-
-                m_lastWidth = attr.width;
-                m_lastHeight = attr.height;
-
-                STARFISH_LOG_INFO("Resize event: %dx%d", attr.width,
-                                  attr.height);
-
-                // Destroy old EGL surface and create new one with new size.
-                // The old surface is still bound to the context (makeCurrent
-                // runs on every frame), and eglDestroySurface only marks a
-                // current surface for deletion -- it keeps the surface's
-                // association with the native window alive until it is no
-                // longer current. In that state the following
-                // eglCreateWindowSurface on the same window fails with
-                // EGL_BAD_ALLOC (0x3003). Release the surface from the context
-                // first so it is actually destroyed before we recreate it.
-                if (m_eglSurface != EGL_NO_SURFACE) {
-                    eglMakeCurrent(m_eglDisplay, EGL_NO_SURFACE,
-                                   EGL_NO_SURFACE, EGL_NO_CONTEXT);
-                    eglDestroySurface(m_eglDisplay, m_eglSurface);
-                    m_eglSurface = EGL_NO_SURFACE;
-                }
-
-                // Create new EGL surface with new window size
-                if (!createEGLSurface(m_eglSurface, m_eglDisplay, m_eglConfig,
-                                      m_window)) {
-                    STARFISH_LOG_ERROR(
-                        "Failed to create new EGL surface after resize");
-                    break;
-                }
-
-                // Make context current with new surface
-                if (!eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface,
-                                    m_eglContext)) {
-                    STARFISH_LOG_ERROR(
-                        "Failed to make context current after resize");
-                    break;
-                }
-
-                if (m_resizeCallback) {
-                    m_resizeCallback(attr.width, attr.height);
-                }
-
+            case ConfigureNotify:
+                // Defer handling; XGetWindowAttributes below always reads the
+                // current (latest) geometry, so we don't need the per-event
+                // size here.
+                hasPendingResize = true;
                 break;
-            }
 
             case MotionNotify:
                 if (m_mouseMoveCallback) {
@@ -676,6 +637,39 @@ public:
             default:
                 break;
             }
+        }
+
+        if (hasPendingResize) {
+            applyResize();
+        }
+    }
+
+    // Apply the latest window geometry after a drain of (coalesced) resize
+    // events.
+    void applyResize()
+    {
+        XWindowAttributes attr;
+        XGetWindowAttributes(m_display, m_window, &attr);
+
+        if (attr.width == m_lastWidth && attr.height == m_lastHeight) {
+            return; // Size hasn't actually changed.
+        }
+
+        m_lastWidth = attr.width;
+        m_lastHeight = attr.height;
+
+        STARFISH_LOG_INFO("Resize event: %dx%d", attr.width, attr.height);
+
+        // Note: we deliberately do NOT destroy/recreate the EGL window
+        // surface here. On X11/EGL the window surface tracks its native
+        // window's size automatically -- the next eglSwapBuffers picks up the
+        // new dimensions. Recreating the surface on every resize tore down the
+        // back buffer between events, which both caused EGL_BAD_ALLOC (0x3003)
+        // and produced visible flicker. We only need to tell the engine to
+        // relayout to the new size; it makes the context current before its
+        // next paint, so there is nothing for us to rebind either.
+        if (m_resizeCallback) {
+            m_resizeCallback(attr.width, attr.height);
         }
     }
 
