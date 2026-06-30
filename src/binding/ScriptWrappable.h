@@ -201,10 +201,20 @@ ScriptValue createScriptValue(ScriptUint8Array array);
 ScriptValue createScriptValue(ScriptUint8ClampedArray array);
 
 ScriptValue createScriptValue(bool value);
-ScriptValue createScriptValue(int32_t value);
-ScriptValue createScriptValue(uint32_t value);
-ScriptValue createScriptValue(int64_t value);
-ScriptValue createScriptValue(uint64_t value);
+// Overload on the fundamental integer types rather than fixed-width typedefs
+// (int32_t, int64_t, ...). The fixed-width typedefs are only aliases of some
+// of the fundamental types, and which ones is implementation-defined, so an
+// argument of a fundamental type that no typedef aliases (e.g. `long` when
+// int64_t maps to `long long`) matches no overload exactly and the call is
+// ambiguous. Overloading on the fundamental types covers every integer type
+// (size_t, GLsizeiptr, GLint64, ...) exactly on every platform. This mirrors
+// Escargot's ValueRef::create overload set.
+ScriptValue createScriptValue(int value);
+ScriptValue createScriptValue(unsigned int value);
+ScriptValue createScriptValue(long value);
+ScriptValue createScriptValue(unsigned long value);
+ScriptValue createScriptValue(long long value);
+ScriptValue createScriptValue(unsigned long long value);
 ScriptValue createScriptValue(String* value);
 ScriptValue createScriptValue(double value);
 
