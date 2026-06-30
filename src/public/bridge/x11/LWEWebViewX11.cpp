@@ -448,8 +448,9 @@ public:
                 STARFISH_LOG_INFO("Resize event: %dx%d", attr.width,
                                   attr.height);
 
-                // Destroy old EGL surface and create new one with new size
                 if (m_eglSurface != EGL_NO_SURFACE) {
+                    eglMakeCurrent(m_eglDisplay, EGL_NO_SURFACE, EGL_NO_SURFACE,
+                                   EGL_NO_CONTEXT);
                     eglDestroySurface(m_eglDisplay, m_eglSurface);
                     m_eglSurface = EGL_NO_SURFACE;
                 }
