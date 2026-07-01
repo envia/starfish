@@ -686,6 +686,7 @@ public:
     unsigned long childElementCount();
     void prepend(const GCVector<NodeOrDOMString>& nodes);
     void append(const GCVector<NodeOrDOMString>& nodes);
+    void replaceChildren(const GCVector<NodeOrDOMString>& nodes);
 
     HTMLCollection* children();
     DOMTokenList* classList();
