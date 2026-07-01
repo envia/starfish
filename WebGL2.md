@@ -1,0 +1,179 @@
+# WebGL2 구현 작업 정리 (OSM/MapLibre 렌더링 목표)
+
+## 1. 배경 / 출발점
+
+`http://127.0.0.1:8000/2026/06/2026-06-30/iframe.html` (네이버 지도 iframe) 이 검게 보이는 문제에서 출발.
+
+- **네이버 지도가 검게 보인 직접 원인**: `m.map.naver.com` 이 `X-Frame-Options: SAMEORIGIN` 을
+  내려 cross-origin iframe 임베드를 거부 → iframe 이 비고 body 의 검정 배경이 노출.
+  (Starfish 의 정상 보안 동작. 버그 아님.)
+- 대안으로 OSM 임베드(`https://www.openstreetmap.org/export/embed.html`)를 써보니, OSM 이 최근
+  **MapLibre GL JS (WebGL 기반 벡터 렌더러)** 로 바뀌어 `webglcontextcreationerror` 가 발생.
+- 원인 분석 결과: WebGL2 **컨텍스트 생성·기본 드로우는 정상**이나, MapLibre 가 요구하는
+  **WebGL2 전용 API 다수가 미구현(IDL `[Unimplemented]`)** 이었음. (WebGL1 은 완전 구현)
+
+탐침 페이지(`webgl_probe.html`)로 실측한 초기 상태:
+- `getContext('webgl2')` 성공, `WebGL 2.0` / GLSL ES 3.00 / NVIDIA RTX 3050
+- 단색 삼각형 드로우 성공 (`centerPixel=[255,0,0,255]`, glError 0)
+- 그러나 `vertexAttribDivisor`, `drawElementsInstanced`, `getUniformBlockIndex`,
+  `uniformBlockBinding`, `texStorage2D`, `drawBuffers` … 등이 `typeof === 'undefined'`
+- WebGL2 IDL 의 `[Unimplemented]` 표시: **69줄(고유 메서드 55개)**
+
+## 2. 구현 구조 (레이어)
+
+각 WebGL2 진입점은 5개 레이어를 모두 거친다:
+
+```
+JS  →  ① IDL (WebGL2RenderingContext.idl)            // [Unimplemented] 제거 → 바인딩 생성됨
+       ② 생성 바인딩 (cmake configure 시 자동 생성)
+       ③ WebGL2RenderingContext.h / .cpp              // gl()->xxx() 호출 + 검증/형변환
+       ④ GL.h                                          // 가상 함수 선언(추상 인터페이스)
+       ⑤ GenericGL.cpp (데스크톱) + EvasGL.cpp (Tizen) // 실제 glXxx / m_evasGLAPI->glXxx
+```
+
+- 바인딩 생성은 **cmake configure 시점**에 IDL/생성기 mtime 의 MD5 시그니처가 바뀌면 실행
+  (`build/starfish.cmake`). IDL 수정 후에는 `cmake -Bout/webgl2 ...` 재실행 필요.
+- `GL` 은 순수가상 인터페이스라 `GenericGL` + `EvasGL` **둘 다** 구현해야 컴파일됨
+  (빌드에 둘 다 포함).
+
+## 3. Batch 1 구현 내역 (완료, 검증됨)
+
+IDL `[Unimplemented]` 제거 + 5레이어 구현한 메서드:
+
+| 분류 | 메서드 |
+|------|--------|
+| 인스턴스 드로잉 | `vertexAttribDivisor`, `drawArraysInstanced`, `drawElementsInstanced` |
+| Uniform Block (UBO) | `getUniformBlockIndex`, `uniformBlockBinding`, `getActiveUniformBlockParameter`, `getActiveUniformBlockName` |
+| MRT / 읽기버퍼 | `drawBuffers`, `readBuffer` |
+| 프레임버퍼 | `blitFramebuffer`, `framebufferTextureLayer`, `renderbufferStorageMultisample`, `invalidateFramebuffer` |
+| 불변 텍스처 스토리지 | `texStorage2D` |
+
+변경 파일:
+- `src/core/dom/canvas/webgl/WebGL2RenderingContext.idl` (−14 `[Unimplemented]`)
+- `src/core/dom/canvas/webgl/WebGL2RenderingContext.h` / `.cpp` (+선언/+구현)
+- `src/core/dom/canvas/webgl/WebGLRenderingContext.h` (`completePendingJobs()` private→protected)
+- `src/platform/canvas/gl/GL.h` (+15 가상함수, `invalidateFramebuffer` 는 기존재)
+- `src/platform/canvas/gl/GenericGL.cpp`, `src/platform/canvas/gl/EvasGL.cpp` (+구현)
+
+구현 시 주의했던 점:
+- 인스턴스 드로우는 base `drawArrays/drawElements` 와 동일하게 `completePendingJobs()` +
+  `canvas()->setNeedsComposite()` 호출. (그래서 base 의 `completePendingJobs()` 를 protected 로)
+- `drawElementsInstanced` 의 `GLintptr offset` 은 `reinterpret_cast<void*>(offset)`.
+- `sequence<GLenum>` / `sequence<GLuint>` 인자는 생성기가 `GCAtomicVector<uint32_t>` 로 매핑
+  (IDL `GLenum`/`GLuint` 모두 `unsigned long` → C++ `uint32_t` ≡ `GLenum`).
+- `getActiveUniformBlockParameter` 는 pname 별로 GLuint / Uint32Array / GLboolean 반환.
+- 새 cpp 에서 `HTMLCanvasElement`, `WebGLTexture` 완전형이 필요 → include 추가.
+
+### 검증 결과
+
+`webgl_probe.html` 재실행: 위 메서드 전부 `typeof === 'function'` 확인.
+
+`maplibre_top.html` (MapLibre v4.7.1, **raster** 스타일, 키 불필요) 실행:
+- 이전: `webglcontextcreationerror` 즉시 발생
+- **현재: 에러 없음, 타일 텍스처 업로드 4회, `onload` + `enter idle mode` → 래스터 지도 정상 렌더**
+
+즉 **WebGL2 의 핵심 경로(UBO + 인스턴싱 + FBO)는 동작**한다.
+
+## 4. 추가 발견: OSM(벡터)은 WebGL 외의 Web API 도 필요
+
+OSM 임베드는 MapLibre 의 **벡터 타일** 경로를 쓴다. 이 경로는 WebGL 외에 추가 Web 플랫폼 API 에
+의존하며, 키워보면 블로커가 WebGL 에서 **일반 Web API** 로 이동한다:
+
+| 단계 | 블로커 | 상태 / 조치 |
+|------|--------|-------------|
+| 1 | WebGL2 전용 API 미구현 | ✅ Batch 1 구현 완료 (raster 렌더 확인) |
+| 2 | `Worker is not defined` | ✅ 빌드가 `WORKER=0` 이었음 → **`-DWORKER=1` 로 재빌드** 하여 해결 (Starfish 에 Worker 구현은 이미 존재) |
+| 3 | `AbortController is not defined` | ❌ Starfish 에 **미구현** (`AbortSignal` 도 `Request.idl` 에 주석 처리된 `[Unimplemented]` 만 존재) — 다음 작업 대상 |
+| 4+ | (이후 추가 가능) | `fetch`/`XMLHttpRequest` 는 구현되어 있음. AbortController 이후 추가 누락 API 가 더 나올 수 있음 |
+
+빌드 플래그 메모: `-DWORKER=1` → `STARFISH_ENABLE_WORKER` + `STARFISH_ENABLE_THREADING`
+(`build/config.cmake`). 전역 define 이라 전체 재컴파일.
+
+## 5. 현재 상태 요약 (업데이트)
+
+구현/조치 누적: WebGL2 Batch1 ✅ · Worker 활성화(`-DWORKER=1`) ✅ ·
+`AbortController`/`AbortSignal` 구현 ✅ · `replaceChildren()` 구현 ✅.
+
+각 단계의 가시적 변화(스크린샷, `xwd -id` + PIL 로 캡처):
+
+- **래스터 지도 (Leaflet / MapLibre-raster)**: **정상 렌더**.
+- **OSM 임베드 (MapLibre vector)**:
+  - 이전: 전체 검정.
+  - 현재: **검정 아님** — 페이지 배경(흰색) + **줌 컨트롤(+/−)** + **OSM attribution** 이 정상 표시.
+    JS 에러 0개. 단, **지도 타일 이미지(캔버스 내용)는 아직 비어 있음**.
+- **최상위 벡터 지도 (demotiles)**:
+  - **WebGL 캔버스가 그려짐** — `background` 레이어(바다색 연한 파랑)가 렌더되고 MapLibre
+    attribution 표시. 에러 0개.
+  - 단, **벡터 타일 지오메트리(국경/면)는 미표시**. 즉 단색 fill 레이어는 그려지나
+    벡터 타일 데이터가 화면에 안 나옴.
+
+### 벡터 타일 파이프라인(Worker) 디버깅 결과
+
+격리 테스트(`worker_test*.html`)로 워커 서브시스템을 단계별로 검증:
+
+1. **외부 `.js` 워커**: 정상 (script 실행 + main↔worker postMessage 왕복 OK).
+2. **`blob:` URL 워커**(= MapLibre 가 쓰는 방식): **생성은 되나 스크립트가 로드/실행 안 됨**.
+   - 원인: 워커는 별도 스레드에서 **자신만의 빈 blob-URL 스토어**로 동작
+     (`WebWorker::createGlobalScope()` 가 `clearBlobURLStore()` 호출). blob 은 부모(메인)
+     WebBase 스토어에만 등록되어 있어 워커 스레드가 `blob:` 스크립트 URL 을 못 받음.
+   - **수정**: `WorkerThread(WebBase*, ResourceURL*)` 생성자(메인 스레드, blob 유효)에서
+     scriptURL 이 blob 이면 blob 바이트를 읽어 `data:application/javascript;base64,...`
+     로 치환. 추가로 blob URL 에 박혀있는 문서 URL 을 추출해 baseURL 로 사용
+     (data: 를 blob: base 에 resolve 하면 invalid → 워커가 자기 스크립트를 거부했었음).
+   - 검증: 수정 후 blob 워커가 **script 로드 + postMessage 왕복 + 워커 내 fetch(.pbf)
+     status=200, 101,760 bytes** 까지 정상.
+   - 파일: `src/core/modules/worker/WorkerThread.cpp`.
+
+### 워커 프리미티브 전수 검증 (격리 테스트) — 모두 정상
+
+`worker_*.html` 로 MapLibre 가 의존하는 워커 기능을 하나씩 검증한 결과 **전부 동작**:
+
+| 기능 | 결과 |
+|------|------|
+| 외부 `.js` 워커 script 실행 + postMessage 왕복 | ✅ |
+| blob: 워커 (수정 후) | ✅ script 로드 + 왕복 |
+| 워커 내 `fetch(.pbf)` | ✅ status=200, 101,760 bytes |
+| transferable ArrayBuffer (main↔worker) | ✅ 데이터 정확 전송 (단, 원본 버퍼 neutering 은 미구현 — 비치명) |
+| 복잡/중첩 구조화 클론 (배열+객체+다수 TypedArray+transfer) | ✅ 완전 일치 |
+| 워커 글로벌 API | ✅ TextDecoder/TextEncoder/performance/fetch/atob/ImageData/createImageBitmap/Response/Promise 등 존재 (OffscreenCanvas·WebAssembly·caches 는 없음 — MapLibre v4 벡터파싱엔 불필요) |
+
+### 현재 상태: 프리미티브는 다 되는데 MapLibre 타일이 완료되지 않음
+
+- `map.on('data')` 기준 `srcData=4, tiles=0, errs=0, sourceLoaded=false`, `load`/`idle`
+  이벤트 미발생. 즉 **타일 로드가 완료되지도, 에러를 내지도 않음** (조용히 안 끝남).
+- 워커 프리미티브가 전부 동작하므로 원인은 **MapLibre 내부 Actor 프로토콜의 특정 지점**
+  (loadTile 메시지 라우팅/응답 등)으로 좁혀지며, 블랙박스(격리) 테스트로는 재현·관측 불가.
+- 다음 단계(비용 큼): 엔진 측 워커 메시지 디스패치(`WorkerObjectProxy`/postMessage 경로)에
+  임시 로깅을 넣어 MapLibre 의 loadTile 요청이 워커에 도달하고 응답이 돌아오는지 추적.
+
+### 결론(현 시점)
+- 검정 → OSM 임베드가 **컨트롤·attribution 렌더 + WebGL 캔버스 배경 렌더**까지 도달.
+- 엔진에 **실질 수정 5건**(WebGL2 Batch1 / Worker 활성화 / AbortController·AbortSignal /
+  replaceChildren / blob 워커) 반영·검증 완료.
+- 벡터 지오메트리 최종 렌더는 MapLibre Actor 내부 이슈로 남아 있으며, 추가 진행 시
+  엔진측 워커 메시지 추적이 필요.
+
+## 6. 남은 작업 (OSM 벡터까지)
+
+1. `AbortController` + `AbortSignal` 구현 (EventTarget 기반, `abort()`/`aborted`/`reason`/`'abort'` 이벤트,
+   가능하면 `fetch` 의 `signal` 연동). 전역 노출.
+2. 재빌드 후 `maplibre_top.html`(vector, demotiles) 로 다음 블로커 확인.
+3. 이후 누락 API 가 나오면 반복 구현.
+4. (선택) `EXT_color_buffer_float` 확장 등록 — DEM/terrain/hillshade/heatmap 레이어용.
+5. (선택) WebGL2 잔여 `[Unimplemented]` (queries, samplers, transform feedback, texImage3D,
+   clearBuffer*, getInternalformatParameter 등) — MapLibre 가 실제로 호출하면 추가.
+
+## 7. 테스트 자산 (docroot `/home/hwang/note`, `127.0.0.1:8000`)
+
+- `2026/06/2026-06-30/webgl_probe.html` — WebGL2 메서드/확장/드로우 탐침 (결과를 throw 로 stdout 출력)
+- `2026/06/2026-06-30/maplibre_top.html` — 최상위 MapLibre 테스트(raster→vector 전환하며 사용),
+  에러는 `setTimeout` 안에서 throw 하여 stdout 으로 surface (MapLibre 가 핸들러 throw 를 삼키므로)
+- `2026/06/2026-06-30/map_osm.html` — 키 없는 래스터 지도(Leaflet) — 정상 동작
+- `2026/06/2026-06-30/iframe_osm.html` — OSM 임베드(벡터) — 진행 중
+
+### 실행/디버깅 메모
+- 엔진: `DISPLAY=:1 ./out/webgl2/bin/lightweight-web-engine <URL>` (인자로 URL, X11 창)
+- 셸 `sleep` 이 막혀 있어 포그라운드 대기는 실패(exit 144) → 엔진은 background 실행 후
+  로그 파일을 `until grep` 로 폴링.
+- `console.log` 는 인스펙터 빌드에서만 stdout 으로 가므로, 진단은 `throw new Error(...)` 의
+  `Uncaught` 로그(ScriptWrappable)를 이용.
