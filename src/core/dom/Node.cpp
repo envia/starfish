@@ -888,6 +888,21 @@ void Node::append(const GCVector<NodeOrDOMString>& nodes)
     appendChild(node);
 }
 
+void Node::replaceChildren(const GCVector<NodeOrDOMString>& nodes)
+{
+    // https://dom.spec.whatwg.org/#dom-parentnode-replacechildren
+    // 1. Let node be the result of converting nodes into a node.
+    Node* node = convertNodesIntoNode(nodes, document());
+    // 3. Replace all with node within this: remove all existing children,
+    //    then insert the converted node (if any).
+    while (firstChild()) {
+        removeChild(firstChild());
+    }
+    if (node) {
+        appendChild(node);
+    }
+}
+
 Node* Node::nearestParentElement()
 {
     Node* t = this;
