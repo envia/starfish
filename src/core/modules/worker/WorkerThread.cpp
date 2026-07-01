@@ -24,6 +24,8 @@
 
 #include "platform/loader/ResourceURL.h"
 #include "core/page/WebBase.h"
+#include "core/fileapi/Blob.h"
+#include "core/util/String.h"
 #include "core/page/GlobalScope.h"
 #include "core/dom/ExecutionContext.h"
 #include "core/modules/message_loop/RunLoop.h"
@@ -98,6 +100,42 @@ WorkerThread::WorkerThread(WebBase* webBase, ResourceURL* scriptURL)
 {
     m_workerHostInitData.url = scriptURL->urlString()->toUTF8NonGCString();
     m_workerHostInitData.baseURL = scriptURL->baseURI()->toUTF8NonGCString();
+
+    // A worker can be created from a blob: URL (e.g. MapLibre GL bundles its
+    // worker as a Blob via URL.createObjectURL). The blob is only registered in
+    // this (parent) WebBase's blob-URL store; the worker runs on a separate
+    // thread with its own empty store, so it cannot resolve the blob: URL when
+    // fetching its top-level script. Resolve the blob's bytes here, on the
+    // thread where it is valid, and hand the worker an equivalent data: URL,
+    // which any thread can fetch without consulting a blob-URL store.
+    if (scriptURL->isBlobURL()) {
+        BlobURLStore store;
+        if (WebBase::stringToBlobURLString(scriptURL->urlString(), store) &&
+            webBase->isValidBlobURL(store)) {
+            Blob* blob = static_cast<Blob*>(store.m_blob);
+            std::string scriptText(static_cast<char*>(blob->data()),
+                                   static_cast<size_t>(blob->size()));
+            std::string dataURL = "data:application/javascript;base64,";
+            dataURL += Base64Utils::encodeBase64(scriptText);
+            m_workerHostInitData.url = dataURL;
+
+            // The blob: URL string is "blob:<documentURL>/<store-id>". Its
+            // baseURI is the blob: URL itself, and a data: URL resolved against
+            // a blob: base is invalid -> the worker would reject its own script.
+            // Recover the document URL embedded in the blob: URL and use it as
+            // the (valid http/https) base, matching a normal worker.
+            std::string blobStr = scriptURL->urlString()->toUTF8NonGCString();
+            if (blobStr.compare(0, 5, "blob:") == 0) {
+                std::string origin = blobStr.substr(5);
+                size_t lastSlash = origin.find_last_of('/');
+                if (lastSlash != std::string::npos) {
+                    origin = origin.substr(0, lastSlash);
+                }
+                m_workerHostInitData.baseURL = origin;
+            }
+        }
+    }
+
     m_workerHostInitData.locale = webBase->locale();
     m_workerHostInitData.timezoneID =
         webBase->timezoneID()->toUTF8NonGCString();
