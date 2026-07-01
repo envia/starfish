@@ -170,6 +170,8 @@ OSM 임베드는 MapLibre 의 **벡터 타일** 경로를 쓴다. 이 경로는 
   에러는 `setTimeout` 안에서 throw 하여 stdout 으로 surface (MapLibre 가 핸들러 throw 를 삼키므로)
 - `2026/06/2026-06-30/map_osm.html` — 키 없는 래스터 지도(Leaflet) — 정상 동작
 - `2026/06/2026-06-30/iframe_osm.html` — OSM 임베드(벡터) — 진행 중
+- `2026/06/2026-06-30/crash/module_import_crash_manual.html` — §8 모듈 import 크래시 수동 테스트
+  (http 로 열면 초록 "PASS" 표시; `not-a-module.js` 를 import)
 
 ### 실행/디버깅 메모
 - 엔진: `DISPLAY=:1 ./out/webgl2/bin/lightweight-web-engine <URL>` (인자로 URL, X11 창)
@@ -177,3 +179,44 @@ OSM 임베드는 MapLibre 의 **벡터 타일** 경로를 쓴다. 이 경로는 
   로그 파일을 `until grep` 로 폴링.
 - `console.log` 는 인스펙터 빌드에서만 stdout 으로 가므로, 진단은 `throw new Error(...)` 의
   `Uncaught` 로그(ScriptWrappable)를 이용.
+
+## 8. 별도 버그: 동적 모듈 import 실패 시 크래시 (수정 완료)
+
+위 렌더링 작업과 **무관한 별개 버그**. `https://m.map.naver.com/search2/search.naver?query=...`
+를 (iframe 이 아니라) Starfish 로 **직접** 열면 크래시(SIGABRT)가 났다.
+
+### 원인 (worker/WebGL 아님 — 모듈 로더 널 언랩)
+- 네이버 페이지가 로드하는 ES 모듈 의존성 중 하나(`https://m.map.naver.com/_`)가 **JS 가 아니라
+  HTML 을 반환** → 모듈 파싱 실패(`initModule`: "Line 2: Unexpected token <").
+- 파싱 실패한 모듈의 컴파일 핸들은 빈 `Optional<Escargot::ScriptRef*>`.
+- `Document::executeModule()` 의 **동적 import() 프로미스 처리 루프**가 이 빈 Optional 을
+  `hasValue()` 확인 없이 `data->module.value()` 로 언랩 → `StarfishBase.h:743` assertion →
+  `abort()`.
+- gdb 백트레이스: `Resource::didLoadFinished` → `DeferredScriptDownloadClient::didScriptLoaded`
+  → `Document::executeModule (Document.cpp:734)` → `Optional<ScriptRef>::value()`.
+- **Escargot 는 정상**(파싱 실패를 올바르게 보고). Starfish 가 그 실패 결과를 방어 안 한 것.
+  → 수정도 Starfish 측만.
+
+### 수정
+- 파일: `src/core/dom/Document.cpp` (`executeModule`).
+- 모듈이 `hasLoadingError` 이거나 값이 없으면 `data->module.value()` 대신
+  `notifyDynamicLoadedModuleError()` 로 import() 프로미스를 **reject** (스펙상 실패한 dynamic
+  import 의 정상 동작).
+- 커밋: `bac34b4b` "Reject failed dynamic module imports instead of crashing".
+- 검증: 네이버 URL 재실행 시 이전 `exit 134 (SIGABRT)` → `exit 124 (정상 타임아웃, 크래시 0)`,
+  onload 정상 발생.
+
+### 테스트
+- **수동**: `note/2026/06/2026-06-30/crash/module_import_crash_manual.html` (+ `not-a-module.js`).
+  http 로 열면 JS mime + HTML 본문 모듈을 import → 크래시 없으면 초록 "PASS" 표시.
+  (동적 import() 는 http 문서에서만 fetch 하므로 file:// 로는 재현 불가.)
+- **자동 (test 서브모듈)**:
+  `test/cairo/internal-test/served-resources/crash/js-module-dynamic-import-fail.html` +
+  `.../not-a-module.js`, `tool/reftest/cairo/internal_with_remote_resource.res` 에
+  `http://localhost:11011/crash/js-module-dynamic-import-fail.html` 로 등록.
+  (`internal_test()` 가 `served-resources` 를 http 11011 로 서빙하는 목록. 문서가 http 여야
+  동적 import 이 동작하므로 이 목록에 둠.) 살아남으면 `testEnd()` 가 `[PASS]`, 크래시 시
+  러너가 `[STARFISH_TEST] Got signal` 로 FAIL 감지.
+- 회귀 검출 확인: 가드 임시 제거+재빌드 → 테스트가 SIGABRT 로 FAIL; 수정 복원 → `[PASS]`
+  (3회 결정적, `parse_err=1` 로 크래시 경로 실행 확인).
+- 커밋: 서브모듈 `d0307f58` (테스트 파일), 메인 `d065e381` (등록 + 서브모듈 포인터).
