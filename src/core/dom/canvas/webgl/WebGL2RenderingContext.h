@@ -283,6 +283,44 @@ public:
                     GLenum format, GLenum type,
                     Optional<ScriptArrayBufferView> dstData);
 
+    /* WebGL2: instanced drawing */
+    void drawArraysInstanced(GLenum mode, GLint first, GLsizei count,
+                             GLsizei instanceCount);
+    void drawElementsInstanced(GLenum mode, GLsizei count, GLenum type,
+                               GLintptr offset, GLsizei instanceCount);
+    void vertexAttribDivisor(GLuint index, GLuint divisor);
+
+    /* WebGL2: multiple render targets */
+    void drawBuffers(GCAtomicVector<GLenum> buffers);
+    void readBuffer(GLenum src);
+
+    /* WebGL2: framebuffer objects */
+    void blitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1,
+                         GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1,
+                         GLbitfield mask, GLenum filter);
+    void invalidateFramebuffer(GLenum target, GCAtomicVector<GLenum> attachments);
+    void framebufferTextureLayer(GLenum target, GLenum attachment,
+                                 Optional<WebGLTexture*> texture, GLint level,
+                                 GLint layer);
+    void renderbufferStorageMultisample(GLenum target, GLsizei samples,
+                                        GLenum internalformat, GLsizei width,
+                                        GLsizei height);
+
+    /* WebGL2: immutable texture storage */
+    void texStorage2D(GLenum target, GLsizei levels, GLenum internalformat,
+                      GLsizei width, GLsizei height);
+
+    /* WebGL2: uniform block (UBO) introspection / binding */
+    GLuint getUniformBlockIndex(WebGLProgram* program,
+                                String* uniformBlockName);
+    void uniformBlockBinding(WebGLProgram* program, GLuint uniformBlockIndex,
+                             GLuint uniformBlockBinding);
+    ScriptValue getActiveUniformBlockParameter(WebGLProgram* program,
+                                               GLuint uniformBlockIndex,
+                                               GLenum pname);
+    String* getActiveUniformBlockName(WebGLProgram* program,
+                                      GLuint uniformBlockIndex);
+
 protected:
     Optional<ScriptValue> getParameterImpl(GLenum pname);
 

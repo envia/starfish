@@ -27,10 +27,12 @@
 #include "binding/generated/Int32ArrayOrSequenceOfGLintUnion.h"
 #include "binding/generated/Uint32ArrayOrSequenceOfGLuintUnion.h"
 #include "core/dom/ExecutionContext.h"
+#include "core/dom/canvas/HTMLCanvasElement.h"
 #include "core/dom/canvas/webgl/WebGLBuffer.h"
 #include "core/dom/canvas/webgl/WebGLFramebuffer.h"
 #include "core/dom/canvas/webgl/WebGLProgram.h"
 #include "core/dom/canvas/webgl/WebGLRenderingContextState.h"
+#include "core/dom/canvas/webgl/WebGLTexture.h"
 #include "core/dom/canvas/webgl/WebGLUniformLocation.h"
 #include "core/util/debug/Trace.h"
 #include "platform/canvas/gl/GL.h"
@@ -1745,6 +1747,243 @@ void WebGL2RenderingContext::readPixels(GLint x, GLint y, GLsizei width,
 {
     WebGLRenderingContext::readPixels(x, y, width, height, format, type,
                                       dstData);
+}
+
+/* WebGL2: instanced drawing */
+
+void WebGL2RenderingContext::drawArraysInstanced(GLenum mode, GLint first,
+                                                 GLsizei count,
+                                                 GLsizei instanceCount)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    completePendingJobs();
+
+    if (first < 0 || count < 0 || instanceCount < 0) {
+        setGLError(GL_INVALID_VALUE);
+        return;
+    }
+
+    gl()->drawArraysInstanced(mode, first, count, instanceCount);
+    canvas()->setNeedsComposite();
+}
+
+void WebGL2RenderingContext::drawElementsInstanced(GLenum mode, GLsizei count,
+                                                   GLenum type, GLintptr offset,
+                                                   GLsizei instanceCount)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    completePendingJobs();
+
+    if (count < 0 || offset < 0 || instanceCount < 0) {
+        setGLError(GL_INVALID_VALUE);
+        return;
+    }
+
+    gl()->drawElementsInstanced(mode, count, type,
+                                reinterpret_cast<void*>(offset), instanceCount);
+    canvas()->setNeedsComposite();
+}
+
+void WebGL2RenderingContext::vertexAttribDivisor(GLuint index, GLuint divisor)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    gl()->vertexAttribDivisor(index, divisor);
+}
+
+/* WebGL2: multiple render targets */
+
+void WebGL2RenderingContext::drawBuffers(GCAtomicVector<GLenum> buffers)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    gl()->drawBuffers(static_cast<GLsizei>(buffers.size()), buffers.data());
+}
+
+void WebGL2RenderingContext::readBuffer(GLenum src)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    gl()->readBuffer(src);
+}
+
+/* WebGL2: framebuffer objects */
+
+void WebGL2RenderingContext::blitFramebuffer(GLint srcX0, GLint srcY0,
+                                             GLint srcX1, GLint srcY1,
+                                             GLint dstX0, GLint dstY0,
+                                             GLint dstX1, GLint dstY1,
+                                             GLbitfield mask, GLenum filter)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    gl()->blitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1,
+                          dstY1, mask, filter);
+}
+
+void WebGL2RenderingContext::invalidateFramebuffer(
+    GLenum target, GCAtomicVector<GLenum> attachments)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    gl()->invalidateFramebuffer(target,
+                                static_cast<GLsizei>(attachments.size()),
+                                attachments.data());
+}
+
+void WebGL2RenderingContext::framebufferTextureLayer(
+    GLenum target, GLenum attachment, Optional<WebGLTexture*> texture,
+    GLint level, GLint layer)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    GLuint textureObject = 0;
+    if (texture.hasValue()) {
+        WebGLTexture* value = texture.value();
+        if (!isFromCurrentContext(value)) {
+            setGLError(GL_INVALID_OPERATION);
+            return;
+        }
+        if (value->isDeleted()) {
+            setGLError(GL_INVALID_OPERATION);
+            return;
+        }
+        textureObject = value->glObject();
+    }
+
+    gl()->framebufferTextureLayer(target, attachment, textureObject, level,
+                                  layer);
+}
+
+void WebGL2RenderingContext::renderbufferStorageMultisample(
+    GLenum target, GLsizei samples, GLenum internalformat, GLsizei width,
+    GLsizei height)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    gl()->renderbufferStorageMultisample(target, samples, internalformat, width,
+                                         height);
+}
+
+/* WebGL2: immutable texture storage */
+
+void WebGL2RenderingContext::texStorage2D(GLenum target, GLsizei levels,
+                                          GLenum internalformat, GLsizei width,
+                                          GLsizei height)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    gl()->texStorage2D(target, levels, internalformat, width, height);
+}
+
+/* WebGL2: uniform block (UBO) introspection / binding */
+
+GLuint WebGL2RenderingContext::getUniformBlockIndex(WebGLProgram* program,
+                                                    String* uniformBlockName)
+{
+    ENTER_CONTEXT_SCOPE(GL_INVALID_INDEX);
+
+    if (!isFromCurrentContext(program)) {
+        setGLError(GL_INVALID_OPERATION);
+        return GL_INVALID_INDEX;
+    }
+
+    return gl()->getUniformBlockIndex(program->glObject(),
+                                      CSTR(uniformBlockName));
+}
+
+void WebGL2RenderingContext::uniformBlockBinding(WebGLProgram* program,
+                                                 GLuint uniformBlockIndex,
+                                                 GLuint uniformBlockBinding)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    if (!isFromCurrentContext(program)) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    gl()->uniformBlockBinding(program->glObject(), uniformBlockIndex,
+                              uniformBlockBinding);
+}
+
+ScriptValue WebGL2RenderingContext::getActiveUniformBlockParameter(
+    WebGLProgram* program, GLuint uniformBlockIndex, GLenum pname)
+{
+    ENTER_CONTEXT_SCOPE(scriptNull());
+
+    if (!isFromCurrentContext(program)) {
+        setGLError(GL_INVALID_OPERATION);
+        return scriptNull();
+    }
+
+    switch (pname) {
+    // GLuint
+    case GL_UNIFORM_BLOCK_BINDING:
+    case GL_UNIFORM_BLOCK_DATA_SIZE:
+    case GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS: {
+        GLint value = 0;
+        gl()->getActiveUniformBlockiv(program->glObject(), uniformBlockIndex,
+                                      pname, &value);
+        return createScriptValue(static_cast<GLuint>(value));
+    }
+    // Uint32Array
+    case GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES: {
+        GLint count = 0;
+        gl()->getActiveUniformBlockiv(program->glObject(), uniformBlockIndex,
+                                      GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS, &count);
+        if (hasNewGLError() || count <= 0) {
+            return scriptNull();
+        }
+        std::vector<GLint> values(count);
+        gl()->getActiveUniformBlockiv(program->glObject(), uniformBlockIndex,
+                                      pname, values.data());
+        return createScriptValue(
+            createTypedArray<Escargot::Uint32ArrayObjectRef>(
+                scriptBindingInstance(),
+                std::vector<GLenum>(values.begin(), values.end())));
+    }
+    // GLboolean
+    case GL_UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER:
+    case GL_UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER: {
+        GLint value = 0;
+        gl()->getActiveUniformBlockiv(program->glObject(), uniformBlockIndex,
+                                      pname, &value);
+        return createScriptValue(static_cast<bool>(value));
+    }
+    }
+    setGLError(GL_INVALID_ENUM);
+    return scriptNull();
+}
+
+String* WebGL2RenderingContext::getActiveUniformBlockName(
+    WebGLProgram* program, GLuint uniformBlockIndex)
+{
+    ENTER_CONTEXT_SCOPE(nullptr);
+
+    if (!isFromCurrentContext(program)) {
+        setGLError(GL_INVALID_OPERATION);
+        return nullptr;
+    }
+
+    GLint maxLength = 0;
+    gl()->getActiveUniformBlockiv(program->glObject(), uniformBlockIndex,
+                                  GL_UNIFORM_BLOCK_NAME_LENGTH, &maxLength);
+    if (hasNewGLError() || maxLength <= 0) {
+        return nullptr;
+    }
+
+    std::vector<char> buffer(maxLength);
+    GLsizei length = 0;
+    gl()->getActiveUniformBlockName(program->glObject(), uniformBlockIndex,
+                                    maxLength, &length, buffer.data());
+    if (hasNewGLError()) {
+        return nullptr;
+    }
+
+    return String::fromUTF8(buffer.data(), length);
 }
 
 } // namespace Starfish

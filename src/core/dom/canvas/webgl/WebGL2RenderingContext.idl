@@ -321,22 +321,22 @@ interface WebGL2RenderingContextBase
                                optional unsigned long long dstOffset = 0, optional GLuint length = 0);
 
     /* Framebuffer objects */
-    [Unimplemented] undefined blitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0,
+    undefined blitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0,
                                               GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter);
-    [Unimplemented] undefined framebufferTextureLayer(GLenum target, GLenum attachment, WebGLTexture? texture, GLint level,
+    undefined framebufferTextureLayer(GLenum target, GLenum attachment, WebGLTexture? texture, GLint level,
                                                       GLint layer);
-    [Unimplemented] undefined invalidateFramebuffer(GLenum target, sequence<GLenum> attachments);
+    undefined invalidateFramebuffer(GLenum target, sequence<GLenum> attachments);
     [Unimplemented] undefined invalidateSubFramebuffer(GLenum target, sequence<GLenum> attachments,
                                                        GLint x, GLint y, GLsizei width, GLsizei height);
-    [Unimplemented] undefined readBuffer(GLenum src);
+    undefined readBuffer(GLenum src);
 
     /* Renderbuffer objects */
     [Unimplemented] any getInternalformatParameter(GLenum target, GLenum internalformat, GLenum pname);
-    [Unimplemented] undefined renderbufferStorageMultisample(GLenum target, GLsizei samples, GLenum internalformat,
+    undefined renderbufferStorageMultisample(GLenum target, GLsizei samples, GLenum internalformat,
                                                              GLsizei width, GLsizei height);
 
     /* Texture objects */
-    [Unimplemented] undefined texStorage2D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width,
+    undefined texStorage2D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width,
                                            GLsizei height);
     [Unimplemented] undefined texStorage3D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width,
                                            GLsizei height, GLsizei depth);
@@ -421,13 +421,13 @@ interface WebGL2RenderingContextBase
     undefined vertexAttribIPointer(GLuint index, GLint size, GLenum type, GLsizei stride, GLintptr offset);
 
     /* Writing to the drawing buffer */
-    [Unimplemented] undefined vertexAttribDivisor(GLuint index, GLuint divisor);
-    [Unimplemented] undefined drawArraysInstanced(GLenum mode, GLint first, GLsizei count, GLsizei instanceCount);
-    [Unimplemented] undefined drawElementsInstanced(GLenum mode, GLsizei count, GLenum type, GLintptr offset, GLsizei instanceCount);
+    undefined vertexAttribDivisor(GLuint index, GLuint divisor);
+    undefined drawArraysInstanced(GLenum mode, GLint first, GLsizei count, GLsizei instanceCount);
+    undefined drawElementsInstanced(GLenum mode, GLsizei count, GLenum type, GLintptr offset, GLsizei instanceCount);
     [Unimplemented] undefined drawRangeElements(GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, GLintptr offset);
 
     /* Multiple Render Targets */
-    [Unimplemented] undefined drawBuffers(sequence<GLenum> buffers);
+    undefined drawBuffers(sequence<GLenum> buffers);
 
     [Unimplemented] undefined clearBufferfv(GLenum buffer, GLint drawbuffer, Float32List values,
                                             optional unsigned long long srcOffset = 0);
@@ -482,10 +482,10 @@ interface WebGL2RenderingContextBase
     [Unimplemented] any getIndexedParameter(GLenum target, GLuint index);
     [Unimplemented] sequence<GLuint>? getUniformIndices(WebGLProgram program, sequence<DOMString> uniformNames);
     any getActiveUniforms(WebGLProgram program, sequence<GLuint> uniformIndices, GLenum pname);
-    [Unimplemented] GLuint getUniformBlockIndex(WebGLProgram program, DOMString uniformBlockName);
-    [Unimplemented] any getActiveUniformBlockParameter(WebGLProgram program, GLuint uniformBlockIndex, GLenum pname);
-    [Unimplemented] DOMString? getActiveUniformBlockName(WebGLProgram program, GLuint uniformBlockIndex);
-    [Unimplemented] undefined uniformBlockBinding(WebGLProgram program, GLuint uniformBlockIndex, GLuint uniformBlockBinding);
+    GLuint getUniformBlockIndex(WebGLProgram program, DOMString uniformBlockName);
+    any getActiveUniformBlockParameter(WebGLProgram program, GLuint uniformBlockIndex, GLenum pname);
+    DOMString? getActiveUniformBlockName(WebGLProgram program, GLuint uniformBlockIndex);
+    undefined uniformBlockBinding(WebGLProgram program, GLuint uniformBlockIndex, GLuint uniformBlockBinding);
 
     /* Vertex Array Objects */
     WebGLVertexArrayObject createVertexArray();

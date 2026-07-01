@@ -1065,6 +1065,111 @@ public:
         m_glInvalidateFramebuffer(target, numAttachments, attachments);
     }
 
+    void drawArraysInstanced(GLenum mode, GLint first, GLsizei count,
+                             GLsizei instanceCount) override
+    {
+        m_evasGLAPI->glDrawArraysInstanced(mode, first, count, instanceCount);
+    }
+
+    void drawElementsInstanced(GLenum mode, GLsizei count, GLenum type,
+                               const void *offset,
+                               GLsizei instanceCount) override
+    {
+        m_evasGLAPI->glDrawElementsInstanced(mode, count, type, offset,
+                                             instanceCount);
+    }
+
+    void vertexAttribDivisor(GLuint index, GLuint divisor) override
+    {
+        m_evasGLAPI->glVertexAttribDivisor(index, divisor);
+    }
+
+    GLuint getUniformBlockIndex(GLuint program,
+                                const GLchar *uniformBlockName) override
+    {
+        return m_evasGLAPI->glGetUniformBlockIndex(program, uniformBlockName);
+    }
+
+    void uniformBlockBinding(GLuint program, GLuint uniformBlockIndex,
+                             GLuint uniformBlockBinding) override
+    {
+        m_evasGLAPI->glUniformBlockBinding(program, uniformBlockIndex,
+                                           uniformBlockBinding);
+    }
+
+    void getActiveUniformBlockiv(GLuint program, GLuint uniformBlockIndex,
+                                 GLenum pname, GLint *params) override
+    {
+        m_evasGLAPI->glGetActiveUniformBlockiv(program, uniformBlockIndex, pname,
+                                               params);
+    }
+
+    void getActiveUniformBlockName(GLuint program, GLuint uniformBlockIndex,
+                                   GLsizei bufSize, GLsizei *length,
+                                   GLchar *uniformBlockName) override
+    {
+        m_evasGLAPI->glGetActiveUniformBlockName(program, uniformBlockIndex,
+                                                 bufSize, length,
+                                                 uniformBlockName);
+    }
+
+    void getUniformIndices(GLuint program, GLsizei uniformCount,
+                           const GLchar *const *uniformNames,
+                           GLuint *uniformIndices) override
+    {
+        m_evasGLAPI->glGetUniformIndices(program, uniformCount, uniformNames,
+                                         uniformIndices);
+    }
+
+    void texStorage2D(GLenum target, GLsizei levels, GLenum internalformat,
+                      GLsizei width, GLsizei height) override
+    {
+        m_evasGLAPI->glTexStorage2D(target, levels, internalformat, width,
+                                    height);
+    }
+
+    void texStorage3D(GLenum target, GLsizei levels, GLenum internalformat,
+                      GLsizei width, GLsizei height, GLsizei depth) override
+    {
+        m_evasGLAPI->glTexStorage3D(target, levels, internalformat, width,
+                                    height, depth);
+    }
+
+    void drawBuffers(GLsizei n, const GLenum *bufs) override
+    {
+        m_evasGLAPI->glDrawBuffers(n, bufs);
+    }
+
+    void readBuffer(GLenum src) override
+    {
+        m_evasGLAPI->glReadBuffer(src);
+    }
+
+    void blitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1,
+                         GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1,
+                         GLbitfield mask, GLenum filter) override
+    {
+        m_evasGLAPI->glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0,
+                                       dstX1, dstY1, mask, filter);
+    }
+
+    void renderbufferStorageMultisample(GLenum target, GLsizei samples,
+                                        GLenum internalformat, GLsizei width,
+                                        GLsizei height) override
+    {
+        m_evasGLAPI->glRenderbufferStorageMultisample(target, samples,
+                                                      internalformat, width,
+                                                      height);
+    }
+
+    void framebufferTextureLayer(GLenum target, GLenum attachment,
+                                 GLuint texture, GLint level,
+                                 GLint layer) override
+    {
+        m_evasGLAPI->glFramebufferTextureLayer(target, attachment, texture,
+                                               level, layer);
+    }
+
     EvasGL(void *p)
         : m_evasGLAPI(static_cast<Evas_GL_API *>(p))
     {

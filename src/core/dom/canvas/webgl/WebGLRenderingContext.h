@@ -333,8 +333,10 @@ private:
     bool isDefaultFramebufferBound();
     GLuint getCurrentFBO();
     GLint getCurrentProgram();
-    void completePendingJobs();
     void setPendingClearMask(uint32_t mask);
+
+protected:
+    void completePendingJobs();
 
 protected:
     GLenum getUniformType(WebGLProgram* program,

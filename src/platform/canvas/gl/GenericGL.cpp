@@ -1083,6 +1083,103 @@ public:
         glInvalidateFramebuffer(target, numAttachments, attachments);
     }
 
+    void drawArraysInstanced(GLenum mode, GLint first, GLsizei count,
+                             GLsizei instanceCount) override
+    {
+        glDrawArraysInstanced(mode, first, count, instanceCount);
+    }
+
+    void drawElementsInstanced(GLenum mode, GLsizei count, GLenum type,
+                               const void *offset,
+                               GLsizei instanceCount) override
+    {
+        glDrawElementsInstanced(mode, count, type, offset, instanceCount);
+    }
+
+    void vertexAttribDivisor(GLuint index, GLuint divisor) override
+    {
+        glVertexAttribDivisor(index, divisor);
+    }
+
+    GLuint getUniformBlockIndex(GLuint program,
+                                const GLchar *uniformBlockName) override
+    {
+        return glGetUniformBlockIndex(program, uniformBlockName);
+    }
+
+    void uniformBlockBinding(GLuint program, GLuint uniformBlockIndex,
+                             GLuint uniformBlockBinding) override
+    {
+        glUniformBlockBinding(program, uniformBlockIndex, uniformBlockBinding);
+    }
+
+    void getActiveUniformBlockiv(GLuint program, GLuint uniformBlockIndex,
+                                 GLenum pname, GLint *params) override
+    {
+        glGetActiveUniformBlockiv(program, uniformBlockIndex, pname, params);
+    }
+
+    void getActiveUniformBlockName(GLuint program, GLuint uniformBlockIndex,
+                                   GLsizei bufSize, GLsizei *length,
+                                   GLchar *uniformBlockName) override
+    {
+        glGetActiveUniformBlockName(program, uniformBlockIndex, bufSize, length,
+                                    uniformBlockName);
+    }
+
+    void getUniformIndices(GLuint program, GLsizei uniformCount,
+                           const GLchar *const *uniformNames,
+                           GLuint *uniformIndices) override
+    {
+        glGetUniformIndices(program, uniformCount, uniformNames,
+                            uniformIndices);
+    }
+
+    void texStorage2D(GLenum target, GLsizei levels, GLenum internalformat,
+                      GLsizei width, GLsizei height) override
+    {
+        glTexStorage2D(target, levels, internalformat, width, height);
+    }
+
+    void texStorage3D(GLenum target, GLsizei levels, GLenum internalformat,
+                      GLsizei width, GLsizei height, GLsizei depth) override
+    {
+        glTexStorage3D(target, levels, internalformat, width, height, depth);
+    }
+
+    void drawBuffers(GLsizei n, const GLenum *bufs) override
+    {
+        glDrawBuffers(n, bufs);
+    }
+
+    void readBuffer(GLenum src) override
+    {
+        glReadBuffer(src);
+    }
+
+    void blitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1,
+                         GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1,
+                         GLbitfield mask, GLenum filter) override
+    {
+        glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1,
+                          dstY1, mask, filter);
+    }
+
+    void renderbufferStorageMultisample(GLenum target, GLsizei samples,
+                                        GLenum internalformat, GLsizei width,
+                                        GLsizei height) override
+    {
+        glRenderbufferStorageMultisample(target, samples, internalformat, width,
+                                         height);
+    }
+
+    void framebufferTextureLayer(GLenum target, GLenum attachment,
+                                 GLuint texture, GLint level,
+                                 GLint layer) override
+    {
+        glFramebufferTextureLayer(target, attachment, texture, level, layer);
+    }
+
     GenericGL(Renderer *renderer)
     {
         m_eglGetCurrentDisplayProc =
