@@ -343,6 +343,55 @@ public:
 
     virtual void invalidateFramebuffer(GLenum target, GLsizei numAttachments,
                                        const GLenum *attachments) = 0;
+
+    // WebGL2: instanced drawing
+    virtual void drawArraysInstanced(GLenum mode, GLint first, GLsizei count,
+                                     GLsizei instanceCount) = 0;
+    virtual void drawElementsInstanced(GLenum mode, GLsizei count, GLenum type,
+                                       const void *offset,
+                                       GLsizei instanceCount) = 0;
+    virtual void vertexAttribDivisor(GLuint index, GLuint divisor) = 0;
+
+    // WebGL2: uniform block (UBO) introspection / binding
+    virtual GLuint getUniformBlockIndex(GLuint program,
+                                        const GLchar *uniformBlockName) = 0;
+    virtual void uniformBlockBinding(GLuint program, GLuint uniformBlockIndex,
+                                     GLuint uniformBlockBinding) = 0;
+    virtual void getActiveUniformBlockiv(GLuint program,
+                                         GLuint uniformBlockIndex, GLenum pname,
+                                         GLint *params) = 0;
+    virtual void getActiveUniformBlockName(GLuint program,
+                                           GLuint uniformBlockIndex,
+                                           GLsizei bufSize, GLsizei *length,
+                                           GLchar *uniformBlockName) = 0;
+    virtual void getUniformIndices(GLuint program, GLsizei uniformCount,
+                                   const GLchar *const *uniformNames,
+                                   GLuint *uniformIndices) = 0;
+
+    // WebGL2: immutable texture storage
+    virtual void texStorage2D(GLenum target, GLsizei levels,
+                              GLenum internalformat, GLsizei width,
+                              GLsizei height) = 0;
+    virtual void texStorage3D(GLenum target, GLsizei levels,
+                              GLenum internalformat, GLsizei width,
+                              GLsizei height, GLsizei depth) = 0;
+
+    // WebGL2: multiple render targets / read buffer
+    virtual void drawBuffers(GLsizei n, const GLenum *bufs) = 0;
+    virtual void readBuffer(GLenum src) = 0;
+
+    // WebGL2: framebuffer blit / multisample / layered attachment
+    virtual void blitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1,
+                                 GLint srcY1, GLint dstX0, GLint dstY0,
+                                 GLint dstX1, GLint dstY1, GLbitfield mask,
+                                 GLenum filter) = 0;
+    virtual void renderbufferStorageMultisample(GLenum target, GLsizei samples,
+                                                GLenum internalformat,
+                                                GLsizei width,
+                                                GLsizei height) = 0;
+    virtual void framebufferTextureLayer(GLenum target, GLenum attachment,
+                                         GLuint texture, GLint level,
+                                         GLint layer) = 0;
 };
 
 } // namespace Starfish
