@@ -153,15 +153,30 @@ OSM 임베드는 MapLibre 의 **벡터 타일** 경로를 쓴다. 이 경로는 
 - 벡터 지오메트리 최종 렌더는 MapLibre Actor 내부 이슈로 남아 있으며, 추가 진행 시
   엔진측 워커 메시지 추적이 필요.
 
-## 6. 남은 작업 (OSM 벡터까지)
+## 6. 작업 현황 (OSM 벡터까지)
 
-1. `AbortController` + `AbortSignal` 구현 (EventTarget 기반, `abort()`/`aborted`/`reason`/`'abort'` 이벤트,
-   가능하면 `fetch` 의 `signal` 연동). 전역 노출.
-2. 재빌드 후 `maplibre_top.html`(vector, demotiles) 로 다음 블로커 확인.
-3. 이후 누락 API 가 나오면 반복 구현.
-4. (선택) `EXT_color_buffer_float` 확장 등록 — DEM/terrain/hillshade/heatmap 레이어용.
-5. (선택) WebGL2 잔여 `[Unimplemented]` (queries, samplers, transform feedback, texImage3D,
-   clearBuffer*, getInternalformatParameter 등) — MapLibre 가 실제로 호출하면 추가.
+### 완료 (검증됨)
+- ✅ WebGL2 Batch1 (인스턴싱 + UBO + FBO + texStorage2D) — §3. 래스터 MapLibre 렌더.
+- ✅ Worker 활성화 (`-DWORKER=1`).
+- ✅ `AbortController` / `AbortSignal` 구현 + 전역(Window/Worker) 노출.
+- ✅ `ParentNode.replaceChildren()` — OSM 컨트롤 렌더.
+- ✅ blob: URL 워커 (부모 스레드에서 data: URL 로 치환) — 워커 script 로드 + fetch 정상.
+- ✅ (별도) 동적 모듈 import 실패 크래시 방어 — §8.
+
+### 남음 (OSM 벡터 지오메트리)
+1. **핵심**: OSM/MapLibre 벡터 **지오메트리(국경/면)가 아직 미표시**. WebGL 캔버스는 그림
+   (배경 fill 렌더). 워커 프리미티브(blob 로드/fetch/postMessage/transferable/구조화 클론/
+   워커 API)는 §5 에서 전수 검증돼 **전부 정상**인데, 타일이 완료(`sourceLoaded`)되지 않고
+   에러도 없음.
+   → 다음 단계: 엔진측 워커 메시지 디스패치(`WorkerObjectProxy`/postMessage 경로)에 임시
+     로깅을 넣어 MapLibre Actor 의 `loadTile` 요청 도달/응답을 추적 (블랙박스로는 관측 불가).
+     ※ 편집 가능한(비압축) MapLibre dev 빌드를 로컬 서빙하면 워커 내부 지점에 로그를 심어
+       분석하기 쉬움.
+2. (선택) `EXT_color_buffer_float` 확장 등록 — DEM/terrain/hillshade/heatmap 레이어용.
+3. (선택) WebGL2 잔여 `[Unimplemented]` (queries, samplers, transform feedback, texImage3D,
+   clearBuffer*, getInternalformatParameter 등) — MapLibre 가 실제로 호출할 때 추가.
+4. (선택) transferable 소스 버퍼 neutering(detach) 미구현 — 현재 데이터 전송은 정상이라
+   비치명. 스펙 준수 필요 시 구현.
 
 ## 7. 테스트 자산 (docroot `/home/hwang/note`, `127.0.0.1:8000`)
 
