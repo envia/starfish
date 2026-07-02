@@ -80,8 +80,6 @@ public:
     void* operator new(size_t size);
     void* operator new[](size_t size) = delete;
 
-    GCVector<ColorStop*> colorStops();
-
     STARFISH_SVG_ANIMATED_LENGTH_GETTER(cx);
     STARFISH_SVG_ANIMATED_LENGTH_GETTER(cy);
     STARFISH_SVG_ANIMATED_LENGTH_GETTER(r);

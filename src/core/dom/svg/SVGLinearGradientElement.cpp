@@ -28,19 +28,6 @@
 
 namespace Starfish {
 
-GCVector<ColorStop*> SVGLinearGradientElement::colorStops()
-{
-    GCVector<ColorStop*> colorStops;
-    for (Node* c = firstChild(); c; c = c->nextSibling()) {
-        if (c->isSVGStopElement()) {
-            ColorStop* colorStop = c->asSVGStopElement()->colorStop();
-            colorStops.push_back(colorStop);
-        }
-    }
-
-    return colorStops;
-}
-
 void SVGLinearGradientElement::computeAttributeChangeDamage(AtomicString name)
 {
     SVGGradientElement::computeAttributeChangeDamage(name);
