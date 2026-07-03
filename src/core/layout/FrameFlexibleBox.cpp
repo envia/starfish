@@ -227,9 +227,12 @@ LayoutUnit FlexFormattingContext::automaticMinimumMainSize(FrameBox* flexItem)
                                : flexItem->style()->height();
     if (!preferredMain.isAuto() && preferredMain.isDefinite(false)) {
         // BMP is needed for the box-sizing conversion below; basisSize()'s
-        // MBPRestorer may have reset it, so recompute against the cross size.
-        flexItem->computeBorderMarginPadding(m_layoutContext,
-                                             m_availableCrossSize);
+        // MBPRestorer restores it to its pre-call state, so recompute it here.
+        // Percentages resolve against the inline size, matching the base used
+        // for the same call in computeMainSize().
+        flexItem->computeBorderMarginPadding(
+            m_layoutContext,
+            m_isMainAxisInInlineAxis ? m_availableMainSize : m_availableCrossSize);
         LayoutUnit specified =
             preferredMain.specifiedValue(m_availableMainSize, m_container);
         specified =
