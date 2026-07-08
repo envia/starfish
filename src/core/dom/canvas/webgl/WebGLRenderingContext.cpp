@@ -248,6 +248,10 @@ void WebGLRenderingContext::flushForReadback()
     uint8_t* buffer = m_canvasSurface->mapBuffer();
     m_gl->readPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 
+    // Restore the script-visible read framebuffer binding, as
+    // flushGLCommands() does for the draw binding.
+    m_gl->bindFramebuffer(GL_READ_FRAMEBUFFER, getCurrentFBO());
+
     // glReadPixels returns rows bottom-to-top; flip to top-to-bottom for
     // the image encoder.
     uint8_t tmp[4];
