@@ -255,9 +255,21 @@ void WebGLRenderingContext::flushForReadback()
         m_gl->bindBuffer(GL_PIXEL_PACK_BUFFER, 0);
     }
 
+    // pixelStorei() forwards GL_PACK_ALIGNMENT to the driver; a script-set
+    // alignment above 4 pads rows when width is odd, but the buffer below
+    // is tightly packed (RGBA rows are always 4-byte aligned).
+    GLint packAlignment = 4;
+    m_gl->getIntegerv(GL_PACK_ALIGNMENT, &packAlignment);
+    if (packAlignment > 4) {
+        m_gl->pixelStorei(GL_PACK_ALIGNMENT, 4);
+    }
+
     uint8_t* buffer = m_canvasSurface->mapBuffer();
     m_gl->readPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 
+    if (packAlignment > 4) {
+        m_gl->pixelStorei(GL_PACK_ALIGNMENT, packAlignment);
+    }
     if (packBuffer.hasValue()) {
         m_gl->bindBuffer(GL_PIXEL_PACK_BUFFER, packBuffer.value()->glObject());
     }
