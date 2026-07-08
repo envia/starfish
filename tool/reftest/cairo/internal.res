@@ -786,6 +786,7 @@ test/cairo/internal-test/canvas/ellipse.html
 test/cairo/internal-test/canvas/quadraticCurveTo.html
 test/cairo/internal-test/canvas/isPointInStroke.html
 test/cairo/internal-test/canvas/clearColor.html
+test/cairo/internal-test/canvas/webgl-toDataURL.html
 test/cairo/internal-test/canvas/canvasSatus_lineDash.html
 test/cairo/internal-test/canvas/stroke-shadow.html
 test/cairo/internal-test/css/overflow/overflow-pseudo-element.html
