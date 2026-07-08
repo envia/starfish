@@ -31,8 +31,17 @@
 #include "core/dom/ImageBitmap.h"
 #include "core/dom/svg/SVGImageElement.h"
 #include "core/dom/DOMException.h"
+#include "platform/loader/ResourceURL.h"
 
 namespace Starfish {
+// Images loaded from data: URLs are origin-clean and never taint the
+// canvas (HTML spec, "origin-clean"), even though a data: URL yields an
+// opaque origin.
+static bool isDataURLOrigin(WebOrigin* origin)
+{
+    return origin->url().hasValue() && origin->url().value()->isDataURL();
+}
+
 DOMExceptionOr<bool> CanvasImageSourceUtils::checkUsability(
     ExecutionContext* executionContext, CanvasImageSource image)
 {
@@ -108,18 +117,22 @@ CanvasImageSourceUtils::toNativeImageData(ExecutionContext* executionContext,
     if (image.isHTMLImageElementValue() || image.isSVGImageElementValue()) {
         if (image.isHTMLImageElementValue()) {
             auto htmlImage = image.getHTMLImageElementValue();
+            auto imageOrigin = htmlImage->webOrigin();
 
-            if (executionContext->document()->webOrigin()->isSameOrigin(
-                    htmlImage->webOrigin()) == false) {
+            if (!isDataURLOrigin(imageOrigin) &&
+                executionContext->document()->webOrigin()->isSameOrigin(
+                    imageOrigin) == false) {
                 clean = false;
             }
 
             nativeImageData = htmlImage->imageData();
         } else if (image.isSVGImageElementValue()) {
             auto svgImage = image.getSVGImageElementValue();
+            auto imageOrigin = svgImage->webOrigin();
 
-            if (executionContext->document()->webOrigin()->isSameOrigin(
-                    svgImage->webOrigin()) == false) {
+            if (!isDataURLOrigin(imageOrigin) &&
+                executionContext->document()->webOrigin()->isSameOrigin(
+                    imageOrigin) == false) {
                 clean = false;
             }
             nativeImageData = svgImage->imageData();
