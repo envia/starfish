@@ -245,8 +245,22 @@ void WebGLRenderingContext::flushForReadback()
     // Bind the WebGL FBO as the read source.
     m_gl->bindFramebuffer(GL_READ_FRAMEBUFFER, m_framebufferTexture->fbo());
 
+    // A pixel pack buffer bound by script (WebGL2) would redirect
+    // glReadPixels into that buffer object instead of the pointer below.
+    // Use the tracked binding rather than glGetIntegerv:
+    // GL_PIXEL_PACK_BUFFER_BINDING is not a valid query on ES2 ports.
+    Optional<WebGLBuffer*> packBuffer =
+        m_state->getBoundBuffer(GL_PIXEL_PACK_BUFFER);
+    if (packBuffer.hasValue()) {
+        m_gl->bindBuffer(GL_PIXEL_PACK_BUFFER, 0);
+    }
+
     uint8_t* buffer = m_canvasSurface->mapBuffer();
     m_gl->readPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+
+    if (packBuffer.hasValue()) {
+        m_gl->bindBuffer(GL_PIXEL_PACK_BUFFER, packBuffer.value()->glObject());
+    }
 
     // Restore the script-visible read framebuffer binding, as
     // flushGLCommands() does for the draw binding.
