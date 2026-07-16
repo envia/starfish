@@ -207,6 +207,29 @@ void WebGLRenderingContext::flushForReadback()
     // we need to bind 0(screen) buffer for sending commands to gpu
     m_gl->bindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
     m_gl->bindFramebuffer(GL_DRAW_FRAMEBUFFER, getCurrentFBO());
+
+    size_t width = m_canvasSurface->bufferWidth();
+    size_t height = m_canvasSurface->bufferHeight();
+    uint8_t* buffer = m_canvasSurface->mapBuffer();
+    m_gl->readPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+
+    uint8_t tmp[4];
+    for (size_t top = 0; top < height / 2; ++top) {
+        size_t bot = height - 1 - top;
+        for (size_t col = 0; col < width; ++col) {
+            uint8_t* pTop = buffer + (top * width + col) * 4;
+            uint8_t* pBot = buffer + (bot * width + col) * 4;
+            memcpy(tmp, pTop, 4);
+            memcpy(pTop, pBot, 4);
+            memcpy(pBot, tmp, 4);
+        }
+    }
+
+#if defined(PORT_PIXEL_ORDER_BGRA)
+    for (size_t i = 0; i < width * height; ++i) {
+        std::swap(buffer[i * 4 + 0], buffer[i * 4 + 2]);
+    }
+#endif
 }
 
 void WebGLRenderingContext::flushForCompositing()
