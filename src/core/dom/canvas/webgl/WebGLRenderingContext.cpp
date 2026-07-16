@@ -198,20 +198,35 @@ void WebGLRenderingContext::initialize()
     m_gl->bindFramebuffer(GL_FRAMEBUFFER, m_framebufferTexture->fbo());
 }
 
-void WebGLRenderingContext::flushForReadback()
+void WebGLRenderingContext::flushDrawingCommands()
 {
-    WebGLRenderingContextBaseMixIn::flushForReadback();
-
     GLRevertableContextScope scope(
         m_context, executionContext()->webBase()->asWebView()->renderer());
     // we need to bind 0(screen) buffer for sending commands to gpu
     m_gl->bindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
     m_gl->bindFramebuffer(GL_DRAW_FRAMEBUFFER, getCurrentFBO());
+}
+
+void WebGLRenderingContext::flushForReadback()
+{
+    WebGLRenderingContextBaseMixIn::flushForReadback();
+
+    flushDrawingCommands();
+
+    GLRevertableContextScope scope(
+        m_context, executionContext()->webBase()->asWebView()->renderer());
+
+    GLint prevReadFbo = 0;
+    m_gl->getIntegerv(GL_READ_FRAMEBUFFER_BINDING, &prevReadFbo);
+    m_gl->bindFramebuffer(GL_READ_FRAMEBUFFER, m_framebufferTexture->fbo());
 
     size_t width = m_canvasSurface->bufferWidth();
     size_t height = m_canvasSurface->bufferHeight();
     uint8_t* buffer = m_canvasSurface->mapBuffer();
     m_gl->readPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+
+    m_gl->bindFramebuffer(GL_READ_FRAMEBUFFER,
+                          static_cast<GLuint>(prevReadFbo));
 
     uint8_t tmp[4];
     for (size_t top = 0; top < height / 2; ++top) {
@@ -234,7 +249,10 @@ void WebGLRenderingContext::flushForReadback()
 
 void WebGLRenderingContext::flushForCompositing()
 {
-    flushForReadback();
+    // Unlike other rendering contexts, do not flushForReadback() here.
+    // The compositor consumes the GPU texture directly, and the CPU
+    // readback in flushForReadback() is too expensive to run every frame.
+    flushDrawingCommands();
 
     // NOTE: According to the specification, by default the contents of
     // the drawing buffer shall be cleared to their default values after

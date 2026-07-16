@@ -333,6 +333,7 @@ private:
     bool isDefaultFramebufferBound();
     GLuint getCurrentFBO();
     GLint getCurrentProgram();
+    void flushDrawingCommands();
     void completePendingJobs();
     void setPendingClearMask(uint32_t mask);
 
