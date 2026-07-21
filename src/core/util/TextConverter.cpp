@@ -22,10 +22,22 @@
 
 namespace Starfish {
 
+bool TextConverter::isXUserDefinedLabel(String* charsetName)
+{
+    return charsetName->trim()->equalsIgnoreCase("x-user-defined");
+}
+
 TextConverter::TextConverter(String* charsetName)
     : m_converter(nullptr)
     , m_encoding(nullptr)
 {
+    if (isXUserDefinedLabel(charsetName)) {
+        // WHATWG x-user-defined has no ICU counterpart; convert() handles it.
+        m_isXUserDefined = true;
+        m_encoding = String::createASCIIString("x-user-defined");
+        registerFinalizer();
+        return;
+    }
     UErrorCode err = U_ZERO_ERROR;
     auto utf8Data = charsetName->toUTF8NonGCString();
     m_converter = ucnv_open(utf8Data.data(), &err);
@@ -53,6 +65,12 @@ TextConverter::TextConverter(String* mimetype, String* preferredEncoding,
             type = mimetype->substring(charset, semi - charset);
         } else {
             type = mimetype->substring(charset, mimetype->length() - charset);
+        }
+        if (isXUserDefinedLabel(type)) {
+            m_isXUserDefined = true;
+            m_encoding = String::createASCIIString("x-user-defined");
+            registerFinalizer();
+            return;
         }
         auto utf8Data = type->toUTF8NonGCString();
         m_converter = ucnv_open(utf8Data.data(), &err);
@@ -154,6 +172,26 @@ TextConverter::~TextConverter()
 String* TextConverter::convert(const char* bytes, size_t len,
                                bool isEndOfStream)
 {
+    if (m_isXUserDefined) {
+        // https://encoding.spec.whatwg.org/#x-user-defined-decoder
+        // 0x00-0x7F map to themselves, 0x80-0xFF map to U+F780 + (byte - 0x80)
+        UTF32StringDataNonGCStd str;
+        str.reserve(len);
+        bool hasNonASCIIChar = false;
+        for (size_t i = 0; i < len; i++) {
+            unsigned char b = static_cast<unsigned char>(bytes[i]);
+            if (b < 0x80) {
+                str += static_cast<char32_t>(b);
+            } else {
+                hasNonASCIIChar = true;
+                str += static_cast<char32_t>(0xF780 + (b - 0x80));
+            }
+        }
+        if (hasNonASCIIChar) {
+            return String::createBMPStringFromUTF32Source(str);
+        }
+        return String::createASCIIStringFromUTF32Source(str);
+    }
     if (m_converter != nullptr) {
         UErrorCode err;
         err = U_ZERO_ERROR;
