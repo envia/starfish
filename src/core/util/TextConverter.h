@@ -37,8 +37,10 @@ public:
     }
 
 protected:
+    static bool isXUserDefinedLabel(String* charsetName);
     void registerFinalizer();
     UConverter* m_converter;
+    bool m_isXUserDefined{ false };
     String* m_encoding;
     std::basic_string<char, std::char_traits<char>,
                       gc_allocator_ignore_off_page<char>>
