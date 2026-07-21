@@ -67,6 +67,11 @@ interface Document : Node {
   [NewObject] NodeIterator createNodeIterator(Node root, optional unsigned long whatToShow = 0xFFFFFFFF, optional any filter = null);
   [NewObject] TreeWalker createTreeWalker(Node root, optional unsigned long whatToShow = 0xFFFFFFFF, optional any filter = null);
 
+  // https://dom.spec.whatwg.org/#interface-xpathevaluatorbase
+  // NOTE resolver(XPathNSResolver) is accepted but ignored; namespaces are
+  // not supported by the XPath subset evaluator.
+  [NewObject, RaisesException] XPathResult evaluate(DOMString expression, optional Node? contextNode = null, optional any resolver = null, optional unsigned short type = 0, optional any result = null);
+
 
 
   // [REF3]--------------------------------------------------------------
