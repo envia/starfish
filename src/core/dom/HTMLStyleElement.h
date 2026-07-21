@@ -56,7 +56,7 @@ public:
     virtual void finishParsing() override
     {
         HTMLElement::finishParsing();
-        if (isInDocumentScopeAndDocumentParticipateInRendering()) {
+        if (isInDocumentScope()) {
             generateStyleSheet();
         }
     }
