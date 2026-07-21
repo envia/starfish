@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Google Maps embed test</title>
+<style>
+  html, body { margin: 0; padding: 0; width: 100%; height: 100%; background: #202124; }
+  #bar {
+    position: absolute; top: 0; left: 0; right: 0; height: 44px;
+    background: #202124; color: #e8eaed;
+    font-family: sans-serif; font-size: 14px;
+    white-space: nowrap; overflow: hidden;
+  }
+  #bar button {
+    height: 32px; margin: 6px 2px; padding: 0 10px;
+    font-family: sans-serif; font-size: 13px;
+    background: #3c4043; color: #e8eaed;
+    border: 1px solid #5f6368; border-radius: 4px;
+  }
+  #bar button.on { background: #8ab4f8; color: #202124; }
+  /* NOTE: iframe is a replaced element, so top+bottom constraints alone
+     would not stretch it (CSS 2.1 §10.6.5 — same in Chrome/Starfish).
+     This variant sets an explicit pixel height from layout() in JS;
+     3.html does the same with a stretched wrapper div + height:100%. */
+  #frame {
+    position: absolute; top: 44px; left: 0;
+    width: 100%; border: 0;
+  }
+  #status {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 18px;
+    background: #2d2e31; color: #9aa0a6;
+    font-family: monospace; font-size: 11px; padding: 2px 6px;
+    white-space: nowrap; overflow: hidden;
+  }
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<iframe id="frame" src="about:blank"></iframe>
+<div id="status">loading...</div>
+<script>
+// Minimal Google Maps via the keyless embed endpoint (output=embed).
+// The embed build skips the Street View module, so it runs cleanly in
+// Starfish. The map inside the iframe is directly draggable/zoomable;
+// the buttons below just reload the iframe with different parameters
+// (the embed page exposes no external JS API).
+//
+// The wrapper itself also accepts parameters, e.g.
+//   Starfish "file:///path/2.html?q=Tokyo&z=14&t=k&hl=en"
+var PRESETS = [
+  { name: '서울',   q: 'Seoul',                        z: 12 },
+  { name: '수원 DC', q: 'Samsung Digital City, Suwon', z: 16 },
+  { name: '부산',   q: 'Busan',                        z: 13 },
+  { name: '뉴욕',   q: 'New York',                     z: 12 },
+  { name: '파리',   q: 'Paris',                        z: 13 }
+];
+
+var state = { q: 'Seoul', z: 12, t: 'm', hl: 'ko' };
+
+// allow overrides from the wrapper URL: 2.html?q=Tokyo&z=14&t=k&hl=en
+(function () {
+  var qs = window.location.search.replace(/^\?/, '').split('&');
+  for (var i = 0; i < qs.length; i++) {
+    var kv = qs[i].split('=');
+    if (kv.length === 2 && state.hasOwnProperty(kv[0])) {
+      state[kv[0]] = decodeURIComponent(kv[1]);
+    }
+  }
+  state.z = Math.max(1, Math.min(21, parseInt(state.z, 10) || 12));
+})();
+
+var frame = document.getElementById('frame');
+var bar = document.getElementById('bar');
+var statusEl = document.getElementById('status');
+var loadStart = 0;
+
+var BAR_H = 44, STATUS_H = 22;
+function layout() {
+  frame.style.height = Math.max(0, window.innerHeight - BAR_H - STATUS_H) + 'px';
+}
+window.onresize = layout;
+layout();
+
+function embedSrc() {
+  return 'https://maps.google.com/maps'
+    + '?q=' + encodeURIComponent(state.q)
+    + '&z=' + state.z
+    + '&t=' + state.t
+    + '&hl=' + state.hl
+    + '&output=embed';
+}
+
+function reload() {
+  var url = embedSrc();
+  loadStart = Date.now();
+  statusEl.textContent = 'loading ' + url;
+  frame.src = url;
+  renderBar();
+}
+
+frame.onload = function () {
+  statusEl.textContent = '[' + (Date.now() - loadStart) + ' ms] ' + embedSrc();
+};
+window.onerror = function (msg, src, line) {
+  statusEl.textContent = 'wrapper error: ' + msg + ' @' + line;
+};
+
+function makeButton(label, isOn, onClick) {
+  var b = document.createElement('button');
+  b.textContent = label;
+  if (isOn) { b.className = 'on'; }
+  b.onclick = onClick;
+  bar.appendChild(b);
+  return b;
+}
+
+function renderBar() {
+  while (bar.firstChild) { bar.removeChild(bar.firstChild); }
+  for (var i = 0; i < PRESETS.length; i++) {
+    (function (p, idx) {
+      makeButton((idx + 1) + '. ' + p.name, state.q === p.q, function () {
+        state.q = p.q; state.z = p.z; reload();
+      });
+    })(PRESETS[i], i);
+  }
+  makeButton('−', false, function () { // zoom out
+    state.z = Math.max(1, state.z - 1); reload();
+  });
+  makeButton('z' + state.z, false, function () {});
+  makeButton('+', false, function () { // zoom in
+    state.z = Math.min(21, state.z + 1); reload();
+  });
+  makeButton('지도', state.t === 'm', function () { state.t = 'm'; reload(); });
+  makeButton('위성', state.t === 'k', function () { state.t = 'k'; reload(); });
+  makeButton(state.hl === 'ko' ? 'ko' : 'en', false, function () {
+    state.hl = state.hl === 'ko' ? 'en' : 'ko'; reload();
+  });
+}
+
+// keyboard: 1-5 presets, +/- zoom, s map/satellite toggle, l language
+document.addEventListener('keydown', function (e) {
+  var k = e.key;
+  if (k >= '1' && k <= '5') {
+    var p = PRESETS[k - '1'];
+    if (p) { state.q = p.q; state.z = p.z; reload(); }
+  } else if (k === '+' || k === '=') {
+    state.z = Math.min(21, state.z + 1); reload();
+  } else if (k === '-') {
+    state.z = Math.max(1, state.z - 1); reload();
+  } else if (k === 's' || k === 'S') {
+    state.t = state.t === 'm' ? 'k' : 'm'; reload();
+  } else if (k === 'l' || k === 'L') {
+    state.hl = state.hl === 'ko' ? 'en' : 'ko'; reload();
+  }
+});
+
+reload();
+</script>
+</body>
+</html>
