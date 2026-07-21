@@ -29,6 +29,8 @@
 #include "core/dom/Traverse.h"
 #include "core/dom/DOMException.h"
 #include "core/dom/CharacterData.h"
+#include "core/dom/HTMLBodyElement.h"
+#include "core/dom/parser/HTMLParser.h"
 #include "core/page/Window.h"
 #include "core/page/WebView.h"
 #include "core/layout/Frame.h"
@@ -694,6 +696,32 @@ void Range::surroundContents(Node* newParent)
     newParent->appendChild(fragment);
     selectNode(newParent);
     return;
+}
+
+// https://w3c.github.io/DOM-Parsing/#dom-range-createcontextualfragment
+DocumentFragment* Range::createContextualFragment(String* fragment)
+{
+    Node* node = startContainer();
+    Element* element;
+    if (node->nodeType() == Node::ELEMENT_NODE) {
+        element = node->asElement();
+    } else {
+        element = node->parentElement();
+    }
+    // If either element is null or the following are all true: node's
+    // document is an HTML document, element's local name is "html", and
+    // element's namespace is the HTML namespace; let element be a new
+    // Element with "body" as its local name and the HTML namespace as its
+    // namespace.
+    if (!element ||
+        (!m_document->isXMLDocument() && element->isHTMLHtmlElement())) {
+        element = new HTMLBodyElement(
+            m_document, m_document->starfish()->staticStrings()->m_bodyTagName);
+    }
+    // Scripts within the returned fragment stay executable on insertion; the
+    // parser already skips marking them already-started for fragment parsing
+    // (see HTMLConstructionSite::insertScriptElement).
+    return fragmentParsingAlgorithm(m_document, fragment, element);
 }
 
 // The part of below is taken from Webkit Project.
