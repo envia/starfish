@@ -27,10 +27,18 @@
 namespace Starfish {
 bool CSS::supports(Document* document, String* property, String* value)
 {
+    // https://drafts.csswg.org/css-conditional-3/#dom-css-supports
+    // The two-argument form tests the declaration "property: value" as a
+    // <supports-decl>, i.e. exactly as if the parenthesized condition
+    // "(property: value)" had been passed to the one-argument form. The
+    // parentheses are required: the one-argument parser only accepts a
+    // parenthesized <supports-in-parens> production.
     StringBuilder builder;
+    builder.appendChar('(');
     builder.appendString(property);
     builder.appendChar(':');
     builder.appendString(value);
+    builder.appendChar(')');
     auto condition = builder.finalize();
 
     return supports(document, condition);
