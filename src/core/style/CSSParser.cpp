@@ -2540,6 +2540,27 @@ bool CSSParser::parseSupportsDeclarationCondition()
         restoreState();
     }
 
+    // A CSS custom property (its name starts with "--") declaration is always
+    // syntactically valid regardless of its value, per CSS Custom Properties
+    // for Cascading Variables. CSS.supports() must therefore report it as
+    // supported. The value cannot (and need not) be validated here, so simply
+    // consume the remaining tokens up to the closing ')'.
+    String* keyName = key->value()->toString();
+    if (keyName->length() >= 2 && keyName->charAt(0) == '-' &&
+        keyName->charAt(1) == '-') {
+        while (currentToken()->isNotNull() && !currentToken()->isSymbol(')')) {
+            getToken(true, true);
+        }
+        if (currentToken()->isSymbol(')')) {
+            getToken(true, true);
+            m_supportOperandStack.push_back(True);
+            forgetState();
+            return true;
+        }
+        restoreState();
+        return false;
+    }
+
     CSSStyleDeclaration* decl = new CSSStyleDeclaration(document());
     parseDeclaration(key, decl);
 
