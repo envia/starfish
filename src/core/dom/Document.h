@@ -272,6 +272,10 @@ public:
     TreeWalker* createTreeWalker(Node* root, unsigned whatToShow,
                                  ScriptValue filter);
 
+    XPathResult* evaluate(String* expression, Optional<Node*> contextNode,
+                          ScriptValue resolver, uint32_t type,
+                          ScriptValue result);
+
     /* Other methods */
     virtual NodeType nodeType() const override
     {

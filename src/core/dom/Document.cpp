@@ -76,6 +76,8 @@
 #include "core/dom/WebOrigin.h"
 #include "core/dom/Range.h"
 #include "core/dom/NodeIterator.h"
+#include "core/xml/XPath.h"
+#include "core/xml/XPathResult.h"
 #include "core/dom/MutationObserver.h"
 #include "core/dom/TreeWalker.h"
 #include "core/dom/NamedNodeMap.h"
@@ -256,6 +258,19 @@ TreeWalker* Document::createTreeWalker(Node* root, unsigned whatToShow,
                                        ScriptValue filter)
 {
     return new TreeWalker(this, root, whatToShow, filter);
+}
+
+XPathResult* Document::evaluate(String* expression, Optional<Node*> contextNode,
+                                ScriptValue resolver, uint32_t type,
+                                ScriptValue result)
+{
+    // resolver and result reuse are not supported; resolver is ignored
+    // (namespaces are unsupported) and a fresh XPathResult is returned.
+    (void)resolver;
+    (void)result;
+    Node* context = contextNode.hasValue() ? contextNode.getValue() : this;
+    return evaluateXPathExpression(this, expression, context,
+                                   static_cast<uint16_t>(type));
 }
 
 BrowsingContext* Document::browsingContext() const
