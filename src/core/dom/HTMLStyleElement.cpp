@@ -85,7 +85,7 @@ StyleSheet* HTMLStyleElement::sheet()
 void HTMLStyleElement::didCharacterDataModified(String* before, String* after)
 {
     HTMLElement::didCharacterDataModified(before, after);
-    if (isInDocumentScopeAndDocumentParticipateInRendering()) {
+    if (isInDocumentScope()) {
         removeStyleSheet();
         generateStyleSheet();
     }
@@ -94,7 +94,7 @@ void HTMLStyleElement::didCharacterDataModified(String* before, String* after)
 void HTMLStyleElement::didNodeInserted(Node* parent, Node* newChild)
 {
     HTMLElement::didNodeInserted(parent, newChild);
-    if (isInDocumentScopeAndDocumentParticipateInRendering()) {
+    if (isInDocumentScope()) {
         removeStyleSheet();
         generateStyleSheet();
     }
@@ -103,7 +103,7 @@ void HTMLStyleElement::didNodeInserted(Node* parent, Node* newChild)
 void HTMLStyleElement::didNodeRemoved(Node* parent, Node* oldChild)
 {
     HTMLElement::didNodeInserted(parent, oldChild);
-    if (isInDocumentScopeAndDocumentParticipateInRendering()) {
+    if (isInDocumentScope()) {
         removeStyleSheet();
         generateStyleSheet();
     }
@@ -112,23 +112,23 @@ void HTMLStyleElement::didNodeRemoved(Node* parent, Node* oldChild)
 void HTMLStyleElement::didNodeInsertedToDocumentTree()
 {
     HTMLElement::didNodeInsertedToDocumentTree();
-    if (document()->doesParticipateInRendering()) {
+    if (isInDocumentScope()) {
         generateStyleSheet();
-        dispatchLoadEvent();
+        if (document()->doesParticipateInRendering()) {
+            dispatchLoadEvent();
+        }
     }
 }
 
 void HTMLStyleElement::didNodeRemovedFromDocumentTree()
 {
     HTMLElement::didNodeRemovedFromDocumentTree();
-    if (document()->doesParticipateInRendering()) {
-        removeStyleSheet();
-    }
+    removeStyleSheet();
 }
 
 void HTMLStyleElement::generateStyleSheet()
 {
-    STARFISH_ASSERT(isInDocumentScopeAndDocumentParticipateInRendering());
+    STARFISH_ASSERT(isInDocumentScope());
 
     if (m_inParsing) {
         return;
@@ -156,11 +156,26 @@ void HTMLStyleElement::generateStyleSheet()
         return;
     }
 
-    StyleResolver& styleResolver = this->styleResolver();
-
     CSSStyleSheet* sheet = new CSSStyleSheet(this, str);
     sheet->parseSheetIfneeds();
     m_generatedSheet = sheet;
+
+    if (!document()->doesParticipateInRendering()) {
+        // The style element is connected to a document that does not
+        // participate in rendering (e.g. one created via
+        // document.implementation.createHTMLDocument()). Per CSSOM the CSS
+        // style sheet must still exist and be scriptable (LinkStyle.sheet,
+        // CSSStyleSheet.insertRule / cssRules), but it must not be registered
+        // with the style resolver or trigger style recalculation of the live
+        // (rendered) document.
+        CSSParser mediaParser(this);
+        mediaParser.makeToken(
+            getAttributeOrEmpty(starfish()->staticStrings()->m_media));
+        sheet->setMediaQuerySet(mediaParser.parseMediaQuery());
+        return;
+    }
+
+    StyleResolver& styleResolver = this->styleResolver();
     styleResolver.addSheet(sheet);
 
     CSSParser parser(this);
@@ -177,9 +192,15 @@ void HTMLStyleElement::generateStyleSheet()
 void HTMLStyleElement::removeStyleSheet()
 {
     if (m_generatedSheet) {
-        m_generatedSheet->willRemovedFromDocument();
-        m_generatedSheet->root()->styleResolver().removeSheet(m_generatedSheet);
-        window()->browsingContext()->setNeedsStyleSheetsRecalc();
+        // A sheet belonging to a non-rendering document was never registered
+        // with the style resolver (see generateStyleSheet()), so it must not be
+        // removed from it and must not touch the live document's rendering.
+        if (document()->doesParticipateInRendering()) {
+            m_generatedSheet->willRemovedFromDocument();
+            m_generatedSheet->root()->styleResolver().removeSheet(
+                m_generatedSheet);
+            window()->browsingContext()->setNeedsStyleSheetsRecalc();
+        }
         m_generatedSheet = nullptr;
     }
 }

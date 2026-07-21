@@ -717,8 +717,11 @@ void CSSStyleSheet::syncChildRuleWrappers()
 void CSSStyleSheet::notifyStyleSheetChanged()
 {
     // For constructable stylesheets (m_origin is nullptr), skip style recalc
-    // as they are not associated with a document until adopted
-    if (m_origin) {
+    // as they are not associated with a document until adopted. Likewise, a
+    // sheet whose origin lives in a document that does not participate in
+    // rendering (e.g. document.implementation.createHTMLDocument()) must not
+    // trigger style recalculation of the live document.
+    if (m_origin && m_origin->document()->doesParticipateInRendering()) {
         origin()->styleResolver().setNeedsRecalcRuleSet();
         scriptBindingInstance()
             ->ownerWindow()
