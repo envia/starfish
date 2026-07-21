@@ -50,7 +50,7 @@ interface Range {
 
     // DOM Parsing and Serialization
     // https://w3c.github.io/DOM-Parsing/#extensions-to-the-range-interface
-    [Unimplemented,NewObject, RaisesException, CEReactions, CustomElementCallbacks] DocumentFragment createContextualFragment(DOMString fragment);
+    [NewObject, RaisesException, CEReactions, CustomElementCallbacks] DocumentFragment createContextualFragment(DOMString fragment);
 
     // Non-standard API
     [Unimplemented,RaisesException, DeprecateAs=RangeExpand] void expand([Default=Undefined] optional DOMString unit);

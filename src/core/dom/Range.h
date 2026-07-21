@@ -111,6 +111,8 @@ public:
 
     void surroundContents(Node* newParent);
 
+    DocumentFragment* createContextualFragment(String* fragment);
+
     // DocumentFragment cloneContents();
 
     Range* cloneRange();
