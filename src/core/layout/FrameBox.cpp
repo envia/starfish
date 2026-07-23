@@ -1753,7 +1753,11 @@ void FrameBox::paintGradient(Canvas* canvas, FrameBox* box,
         }
     }
     auto value = imageValue->gradientValue();
-    bool cacheable = value->isCacheable(width, height, true) &&
+    // For absolutely positioned elements, disable gradient caching to prevent
+    // stale cache when scrolling. The element's position relative to viewport
+    // changes during scroll, making cached gradients incorrect.
+    bool isAbsolutePositioned = box->style() && box->style()->isAbsolutePositioned();
+    bool cacheable = !isAbsolutePositioned && value->isCacheable(width, height, true) &&
                      value->isCacheable(dst.width(), dst.height(), true);
 
     if (cacheable) {
