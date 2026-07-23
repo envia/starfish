@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebGL version check</title>
+    <meta charset="utf-8">
+    <style>body { font: 18px/1.5 monospace; padding: 16px; } .ok { color: green; } .no { color: red; }</style>
+</head>
+<body>
+<h3>WebGL context probe</h3>
+<pre id="log"></pre>
+<script>
+function out(msg) {
+    console.log(msg);
+    document.getElementById('log').textContent += msg + '\n';
+}
+
+function probe(type) {
+    var gl = null;
+    try { gl = document.createElement('canvas').getContext(type); }
+    catch (e) { out(type + ' threw: ' + e); return; }
+    if (!gl) { out(type + ': NOT AVAILABLE'); return; }
+    out(type + ': OK');
+    out('  VERSION  : ' + gl.getParameter(gl.VERSION));
+    out('  GLSL     : ' + gl.getParameter(gl.SHADING_LANGUAGE_VERSION));
+    out('  VENDOR   : ' + gl.getParameter(gl.VENDOR));
+    out('  RENDERER : ' + gl.getParameter(gl.RENDERER));
+}
+
+probe('webgl2');
+probe('webgl');
+
+// what maplibre 5.x's default 'webgl2withfallback' would pick
+var c = document.createElement('canvas');
+var got = c.getContext('webgl2') || c.getContext('webgl');
+out('maplibre webgl2withfallback would use: ' +
+    (typeof WebGL2RenderingContext !== 'undefined' && got instanceof WebGL2RenderingContext ? 'WebGL2'
+     : got ? 'WebGL1' : 'none'));
+out('DONE');
+</script>
+</body>
+</html>

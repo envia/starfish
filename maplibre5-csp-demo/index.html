@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MapLibre GL JS 5.24 CSP demo (LWE polyfills)</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./maplibre-gl.css">
+    <style>
+        body { margin: 0; padding: 20px; background: #ddd; }
+        #map { width: 640px; height: 400px; border: 2px solid #333; }
+        #status {
+            margin-bottom: 10px; background: rgba(0, 0, 0, 0.85); color: #fff;
+            font: 16px/1.4 sans-serif; padding: 6px 12px; border-radius: 6px; width: 616px;
+        }
+    </style>
+    <script src="./abort-polyfill.js"></script>
+    <script src="./dom-iter-polyfill.js"></script>
+    <script src="./mc-polyfill.js"></script>
+    <script src="./maplibre-gl-csp.js"></script>
+</head>
+<body>
+<div id="status">loading…</div>
+<div id="map"></div>
+<script>
+    var statusEl = document.getElementById('status');
+    function setStatus(text, color) {
+        statusEl.textContent = text;
+        if (color) { statusEl.style.background = color; }
+        console.log('STATUS: ' + text);
+    }
+
+    maplibregl.setWorkerUrl('./worker-combined.js');
+    maplibregl.setWorkerCount(1);
+    setStatus('maplibre-gl v' + maplibregl.getVersion() + ' | polyfills active');
+
+    var map = null;
+    function snap(tag) {
+        if (!map) { return; }
+        try {
+            console.log('SNAPSHOT[' + tag + ']:' + map.getCanvas().toDataURL('image/png'));
+        } catch (e) {
+            console.log('SNAPSHOT[' + tag + '] FAIL: ' + e);
+        }
+    }
+
+    try {
+        map = new maplibregl.Map({
+            container: 'map',
+            canvasContextAttributes: { contextType: 'webgl2' },
+            style: {
+                version: 8,
+                sources: {
+                    osm: {
+                        type: 'raster',
+                        tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
+                        tileSize: 256,
+                        attribution: '© OpenStreetMap contributors'
+                    }
+                },
+                layers: [{ id: 'osm', type: 'raster', source: 'osm' }]
+            },
+            center: [126.9780, 37.5665],
+            zoom: 11
+        });
+
+        map.on('error', function (e) {
+            setStatus('MAP ERROR: ' + (e.error && e.error.message || e.error), 'rgba(160,0,0,0.85)');
+        });
+        map.on('styledata', function () { console.log('STATUS: styledata (style parsed)'); });
+        map.once('sourcedata', function () { console.log('STATUS: first sourcedata (tile pipeline alive)'); });
+        map.on('load', function () {
+            var gl2 = map.getCanvas().getContext('webgl2');
+            var ok = gl2 instanceof WebGL2RenderingContext;
+            setStatus('MAP LOAD | WebGL2: ' + (ok ? 'OK — ' + gl2.getParameter(gl2.VERSION) : 'NOT USED'),
+                      ok ? 'rgba(0,110,0,0.85)' : 'rgba(160,0,0,0.85)');
+        });
+        map.once('idle', function () {
+            console.log('STATUS: MAP IDLE — rendering complete');
+            snap('idle');
+        });
+        setTimeout(function () { snap('t45'); }, 45000);
+    } catch (err) {
+        setStatus('MAP CONSTRUCTOR THREW: ' + err, 'rgba(160,0,0,0.85)');
+    }
+</script>
+</body>
+</html>

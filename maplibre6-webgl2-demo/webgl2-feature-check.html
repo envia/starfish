@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebGL2 feature smoke test</title>
+    <meta charset="utf-8">
+    <style>body { font: 14px/1.4 monospace; padding: 12px; }</style>
+</head>
+<body>
+<pre id="log"></pre>
+<script>
+var logEl = document.getElementById('log');
+function out(msg) { console.log(msg); logEl.textContent += msg + '\n'; }
+
+var canvas = document.createElement('canvas');
+canvas.width = 16; canvas.height = 16;
+var gl = canvas.getContext('webgl2');
+if (!gl) { out('FATAL: no webgl2 context'); out('DONE'); throw new Error('no gl'); }
+out('context: ' + gl.getParameter(gl.VERSION) + ' / ' + gl.getParameter(gl.SHADING_LANGUAGE_VERSION));
+
+function drainErrors() { var n = 0; while (gl.getError() !== gl.NO_ERROR && n < 20) { n++; } }
+function check(name, fn) {
+    drainErrors();
+    try {
+        var detail = fn();
+        var err = gl.getError();
+        if (err !== gl.NO_ERROR) { out('FAIL ' + name + ' — glError=0x' + err.toString(16)); }
+        else { out('PASS ' + name + (detail ? ' — ' + detail : '')); }
+    } catch (e) {
+        out('FAIL ' + name + ' — threw: ' + e);
+    }
+}
+
+function compile(type, src) {
+    var s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+        throw new Error('shader: ' + gl.getShaderInfoLog(s));
+    }
+    return s;
+}
+function link(vs, fs, tfVaryings) {
+    var p = gl.createProgram();
+    gl.attachShader(p, compile(gl.VERTEX_SHADER, vs));
+    gl.attachShader(p, compile(gl.FRAGMENT_SHADER, fs));
+    if (tfVaryings) { gl.transformFeedbackVaryings(p, tfVaryings, gl.SEPARATE_ATTRIBS); }
+    gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) {
+        throw new Error('link: ' + gl.getProgramInfoLog(p));
+    }
+    return p;
+}
+
+// Fullscreen-triangle VS generating clip-space coords from gl_VertexID (WebGL2-only trick).
+var FSTRI_VS = '#version 300 es\nvoid main(){vec2 p=vec2((gl_VertexID<<1&2)*2-1,(gl_VertexID&2)*2-1);gl_Position=vec4(p,0.,1.);}';
+
+function makeTargetFBO(w, h) {
+    var tex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, w, h, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    var fbo = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+    return { fbo: fbo, tex: tex };
+}
+function readCenterPixel(w, h) {
+    var px = new Uint8Array(4);
+    gl.readPixels((w / 2) | 0, (h / 2) | 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px);
+    return px;
+}
+function expectPixel(px, r, g, b, tol) {
+    tol = tol || 4;
+    if (Math.abs(px[0] - r) > tol || Math.abs(px[1] - g) > tol || Math.abs(px[2] - b) > tol) {
+        throw new Error('pixel [' + px[0] + ',' + px[1] + ',' + px[2] + '] != [' + r + ',' + g + ',' + b + ']');
+    }
+}
+function drawWith(fsBody, setup) {
+    var t = makeTargetFBO(4, 4);
+    gl.viewport(0, 0, 4, 4);
+    var p = link(FSTRI_VS, '#version 300 es\nprecision highp float;\nprecision highp int;\nout vec4 o;\n' + fsBody);
+    gl.useProgram(p);
+    if (setup) { setup(p); }
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    var px = readCenterPixel(4, 4);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    return px;
+}
+
+check('ES300 shader + gl_VertexID draw', function () {
+    var px = drawWith('void main(){o=vec4(1.,0.,0.,1.);}');
+    expectPixel(px, 255, 0, 0);
+    return 'red ok';
+});
+
+check('native VAO', function () {
+    var vao = gl.createVertexArray();
+    gl.bindVertexArray(vao);
+    var buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);
+    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+    var t = makeTargetFBO(4, 4);
+    gl.viewport(0, 0, 4, 4);
+    var p = link('#version 300 es\nlayout(location=0) in vec2 a;\nvoid main(){gl_Position=vec4(a,0.,1.);}',
+                 '#version 300 es\nprecision highp float;\nout vec4 o;\nvoid main(){o=vec4(0.,1.,0.,1.);}');
+    gl.useProgram(p);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    var px = readCenterPixel(4, 4);
+    expectPixel(px, 0, 255, 0);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.bindVertexArray(null);
+    return 'green ok';
+});
+
+check('UBO (uniform block)', function () {
+    var px = drawWith(
+        'layout(std140) uniform Blk { vec4 c; };\nvoid main(){o=c;}',
+        function (p) {
+            var idx = gl.getUniformBlockIndex(p, 'Blk');
+            gl.uniformBlockBinding(p, idx, 0);
+            var ub = gl.createBuffer();
+            gl.bindBuffer(gl.UNIFORM_BUFFER, ub);
+            gl.bufferData(gl.UNIFORM_BUFFER, new Float32Array([0, 0, 1, 1]), gl.STATIC_DRAW);
+            gl.bindBufferBase(gl.UNIFORM_BUFFER, 0, ub);
+        });
+    expectPixel(px, 0, 0, 255);
+    return 'blue ok';
+});
+
+check('texStorage2D + texelFetch', function () {
+    var tex = gl.createTexture();
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texStorage2D(gl.TEXTURE_2D, 1, gl.RGBA8, 2, 2);
+    gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, 2, 2, gl.RGBA, gl.UNSIGNED_BYTE,
+                     new Uint8Array([255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255]));
+    var px = drawWith(
+        'uniform sampler2D s;\nvoid main(){o=texelFetch(s,ivec2(0,0),0);}',
+        function (p) { gl.uniform1i(gl.getUniformLocation(p, 's'), 0); });
+    expectPixel(px, 255, 255, 0);
+    return 'yellow ok';
+});
+
+check('integer texture (RGBA8UI + usampler2D)', function () {
+    var tex = gl.createTexture();
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8UI, 1, 1, 0, gl.RGBA_INTEGER, gl.UNSIGNED_BYTE,
+                  new Uint8Array([255, 0, 255, 255]));
+    var px = drawWith(
+        'uniform highp usampler2D s;\nvoid main(){uvec4 v=texelFetch(s,ivec2(0),0);o=vec4(v)/255.;}',
+        function (p) { gl.uniform1i(gl.getUniformLocation(p, 's'), 0); });
+    expectPixel(px, 255, 0, 255);
+    return 'magenta ok';
+});
+
+check('3D texture (texImage3D + sampler3D)', function () {
+    var tex = gl.createTexture();
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_3D, tex);
+    gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texImage3D(gl.TEXTURE_3D, 0, gl.RGBA8, 1, 1, 2, 0, gl.RGBA, gl.UNSIGNED_BYTE,
+                  new Uint8Array([0, 255, 255, 255, 255, 128, 0, 255]));
+    var px = drawWith(
+        'uniform highp sampler3D s;\nvoid main(){o=texelFetch(s,ivec3(0,0,1),0);}',
+        function (p) { gl.uniform1i(gl.getUniformLocation(p, 's'), 0); });
+    expectPixel(px, 255, 128, 0);
+    return 'orange ok (layer 1)';
+});
+
+check('instancing (drawArraysInstanced + gl_InstanceID)', function () {
+    var t = makeTargetFBO(4, 4);
+    gl.viewport(0, 0, 4, 4);
+    gl.disable(gl.DEPTH_TEST);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.ONE, gl.ONE);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    var p = link('#version 300 es\nvoid main(){vec2 q=vec2((gl_VertexID<<1&2)*2-1,(gl_VertexID&2)*2-1);gl_Position=vec4(q,0.,1.);}',
+                 '#version 300 es\nprecision highp float;\nout vec4 o;\nvoid main(){o=vec4(0.25,0.,0.,0.25);}');
+    gl.useProgram(p);
+    gl.drawArraysInstanced(gl.TRIANGLES, 0, 3, 4);
+    var px = readCenterPixel(4, 4);
+    gl.disable(gl.BLEND);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    expectPixel(px, 255, 0, 0, 8);
+    return '4 instances additively = red';
+});
+
+check('MRT (drawBuffers, 2 attachments)', function () {
+    var texA = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, texA);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, 4, 4, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    var texB = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, texB);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, 4, 4, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    var fbo = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texA, 0);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT1, gl.TEXTURE_2D, texB, 0);
+    gl.drawBuffers([gl.COLOR_ATTACHMENT0, gl.COLOR_ATTACHMENT1]);
+    gl.viewport(0, 0, 4, 4);
+    var p = link(FSTRI_VS,
+                 '#version 300 es\nprecision highp float;\nlayout(location=0) out vec4 a;\nlayout(location=1) out vec4 b;\nvoid main(){a=vec4(1.,0.,0.,1.);b=vec4(0.,1.,0.,1.);}');
+    gl.useProgram(p);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    gl.readBuffer(gl.COLOR_ATTACHMENT0);
+    var pxA = readCenterPixel(4, 4);
+    gl.readBuffer(gl.COLOR_ATTACHMENT1);
+    var pxB = readCenterPixel(4, 4);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    expectPixel(pxA, 255, 0, 0);
+    expectPixel(pxB, 0, 255, 0);
+    return 'attachment0=red, attachment1=green';
+});
+
+check('transform feedback + getBufferSubData', function () {
+    var p = link('#version 300 es\nout vec4 tfv;\nvoid main(){tfv=vec4(float(gl_VertexID)+1.,2.,3.,4.);gl_Position=vec4(0.);gl_PointSize=1.;}',
+                 '#version 300 es\nprecision highp float;\nout vec4 o;\nvoid main(){o=vec4(1.);}',
+                 ['tfv']);
+    gl.useProgram(p);
+    var buf = gl.createBuffer();
+    gl.bindBuffer(gl.TRANSFORM_FEEDBACK_BUFFER, buf);
+    gl.bufferData(gl.TRANSFORM_FEEDBACK_BUFFER, 2 * 4 * 4, gl.DYNAMIC_READ);
+    gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, 0, buf);
+    gl.enable(gl.RASTERIZER_DISCARD);
+    gl.beginTransformFeedback(gl.POINTS);
+    gl.drawArrays(gl.POINTS, 0, 2);
+    gl.endTransformFeedback();
+    gl.disable(gl.RASTERIZER_DISCARD);
+    var res = new Float32Array(8);
+    gl.getBufferSubData(gl.TRANSFORM_FEEDBACK_BUFFER, 0, res);
+    gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, 0, null);
+    if (res[0] !== 1 || res[4] !== 2 || res[3] !== 4) {
+        throw new Error('captured ' + Array.prototype.join.call(res, ','));
+    }
+    return 'captured [' + Array.prototype.slice.call(res, 0, 4).join(',') + ' ...]';
+});
+
+check('PBO (PIXEL_PACK_BUFFER readPixels)', function () {
+    var t = makeTargetFBO(4, 4);
+    gl.viewport(0, 0, 4, 4);
+    gl.clearColor(0, 1, 0, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    var pbo = gl.createBuffer();
+    gl.bindBuffer(gl.PIXEL_PACK_BUFFER, pbo);
+    gl.bufferData(gl.PIXEL_PACK_BUFFER, 4, gl.STREAM_READ);
+    gl.readPixels(1, 1, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, 0);
+    var res = new Uint8Array(4);
+    gl.getBufferSubData(gl.PIXEL_PACK_BUFFER, 0, res);
+    gl.bindBuffer(gl.PIXEL_PACK_BUFFER, null);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    expectPixel(res, 0, 255, 0);
+    return 'green via PBO';
+});
+
+check('MSAA renderbuffer + blitFramebuffer', function () {
+    var rb = gl.createRenderbuffer();
+    gl.bindRenderbuffer(gl.RENDERBUFFER, rb);
+    gl.renderbufferStorageMultisample(gl.RENDERBUFFER, 4, gl.RGBA8, 4, 4);
+    var fboMS = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fboMS);
+    gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.RENDERBUFFER, rb);
+    gl.viewport(0, 0, 4, 4);
+    gl.clearColor(1, 0, 1, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    var dst = makeTargetFBO(4, 4);
+    gl.bindFramebuffer(gl.READ_FRAMEBUFFER, fboMS);
+    gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, dst.fbo);
+    gl.blitFramebuffer(0, 0, 4, 4, 0, 0, 4, 4, gl.COLOR_BUFFER_BIT, gl.NEAREST);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, dst.fbo);
+    var px = readCenterPixel(4, 4);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    expectPixel(px, 255, 0, 255);
+    return 'resolved magenta';
+});
+
+check('sampler objects', function () {
+    var smp = gl.createSampler();
+    gl.samplerParameteri(smp, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.samplerParameteri(smp, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.bindSampler(0, smp);
+    gl.bindSampler(0, null);
+    return 'create/param/bind ok';
+});
+
+check('fenceSync + clientWaitSync', function () {
+    var sync = gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0);
+    if (!sync) { throw new Error('fenceSync returned null'); }
+    gl.flush();
+    var r = gl.clientWaitSync(sync, gl.SYNC_FLUSH_COMMANDS_BIT, 0);
+    gl.deleteSync(sync);
+    return 'clientWaitSync=0x' + r.toString(16);
+});
+
+out('DONE');
+</script>
+</body>
+</html>

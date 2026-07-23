@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MapLibre GL JS v6 (WebGL2-only) demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./maplibre-gl.css">
+    <style>
+        body { margin: 0; padding: 0; }
+        html, body, #map { height: 100%; }
+        #status {
+            position: absolute; top: 10px; left: 10px; z-index: 10;
+            background: rgba(0, 0, 0, 0.75); color: #fff;
+            font: 20px/1.4 sans-serif; padding: 8px 14px; border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<div id="status">loading…</div>
+<script src="./dom-iter-polyfill.js"></script>
+<script type="module">
+    import * as maplibregl from './maplibre-gl.mjs';
+
+    const statusEl = document.getElementById('status');
+    const status = {
+        set textContent(text) { statusEl.textContent = text; console.log('STATUS: ' + text); },
+        get style() { return statusEl.style; }
+    };
+    console.log('STATUS: module loaded, maplibre-gl v' + maplibregl.getVersion());
+    const map = new maplibregl.Map({
+        container: 'map',
+        style: 'https://demotiles.maplibre.org/style.json',
+        center: [126.9780, 37.5665],
+        zoom: 2,
+        hash: true
+    });
+
+    map.on('error', (e) => {
+        status.textContent = 'ERROR: ' + (e.error && e.error.message || e.error);
+        status.style.background = 'rgba(160, 0, 0, 0.85)';
+    });
+
+    map.on('load', () => {
+        const gl2 = map.getCanvas().getContext('webgl2');
+        const ok = gl2 instanceof WebGL2RenderingContext;
+        status.textContent =
+            'maplibre-gl v' + maplibregl.getVersion() +
+            ' | WebGL2: ' + (ok ? 'OK — ' + gl2.getParameter(gl2.VERSION) : 'NOT USED');
+        status.style.background = ok ? 'rgba(0, 110, 0, 0.85)' : 'rgba(160, 0, 0, 0.85)';
+    });
+</script>
+</body>
+</html>
