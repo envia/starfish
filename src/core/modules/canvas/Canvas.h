@@ -242,6 +242,14 @@ public:
         return m_flipYNeeded;
     }
 
+    // Returns true when mapBuffer() yields a CPU shadow buffer that is not
+    // backed by the surface's live render target; callers that need the
+    // current GPU contents must explicitly copy them into the mapped buffer.
+    virtual bool needsExplicitReadback()
+    {
+        return false;
+    }
+
 protected:
     CanvasSurface(float additionalPixelRatio)
         : m_additionalPixelRatio(additionalPixelRatio)

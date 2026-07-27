@@ -198,10 +198,8 @@ void WebGLRenderingContext::initialize()
     m_gl->bindFramebuffer(GL_FRAMEBUFFER, m_framebufferTexture->fbo());
 }
 
-void WebGLRenderingContext::flushForReadback()
+void WebGLRenderingContext::flushDrawingCommands()
 {
-    WebGLRenderingContextBaseMixIn::flushForReadback();
-
     GLRevertableContextScope scope(
         m_context, executionContext()->webBase()->asWebView()->renderer());
     // we need to bind 0(screen) buffer for sending commands to gpu
@@ -209,9 +207,83 @@ void WebGLRenderingContext::flushForReadback()
     m_gl->bindFramebuffer(GL_DRAW_FRAMEBUFFER, getCurrentFBO());
 }
 
+void WebGLRenderingContext::readbackDrawingBufferToSurface()
+{
+    if (m_isContextLost || m_canvasSurface == nullptr ||
+        !m_canvasSurface->needsExplicitReadback()) {
+        return;
+    }
+
+    const size_t width = m_canvasSurface->bufferWidth();
+    const size_t height = m_canvasSurface->bufferHeight();
+    if (width == 0 || height == 0) {
+        return;
+    }
+
+    GLRevertableContextScope scope(
+        m_context, executionContext()->webBase()->asWebView()->renderer());
+
+    // Save the app-visible GL state we are about to touch.
+    GLint prevReadFbo = 0;
+    GLint prevPackAlignment = 4;
+    GLint prevPixelPackBuffer = 0;
+    m_gl->getIntegerv(GL_READ_FRAMEBUFFER_BINDING, &prevReadFbo);
+    m_gl->getIntegerv(GL_PACK_ALIGNMENT, &prevPackAlignment);
+    m_gl->getIntegerv(GL_PIXEL_PACK_BUFFER_BINDING, &prevPixelPackBuffer);
+
+    m_gl->bindFramebuffer(GL_READ_FRAMEBUFFER, m_framebufferTexture->fbo());
+    m_gl->pixelStorei(GL_PACK_ALIGNMENT, 1);
+    if (prevPixelPackBuffer != 0) {
+        m_gl->bindBuffer(GL_PIXEL_PACK_BUFFER, 0);
+    }
+
+    std::vector<uint8_t> pixels(width * height * 4);
+    m_gl->readPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE,
+                     pixels.data());
+
+    if (prevPixelPackBuffer != 0) {
+        m_gl->bindBuffer(GL_PIXEL_PACK_BUFFER, prevPixelPackBuffer);
+    }
+    m_gl->pixelStorei(GL_PACK_ALIGNMENT, prevPackAlignment);
+    m_gl->bindFramebuffer(GL_READ_FRAMEBUFFER, prevReadFbo);
+
+    // The FBO's row 0 is the bottom of the image while the CPU buffer is
+    // consumed top-down, so flip vertically and convert RGBA to the port
+    // pixel order. Do not call unmapBufferAndNotifyUpdatedRegion here: the
+    // FBO texture already holds this content (bottom-up, presented with
+    // FlipY by the compositor) and re-uploading the flipped buffer would
+    // corrupt what is displayed.
+    auto mapped = m_canvasSurface->mapBuffer(0, 0, width, height);
+    uint8_t* dst = mapped.m_bufferAddress;
+    const size_t dstStride = mapped.m_mappedBufferStride;
+    const size_t srcStride = width * 4;
+    for (size_t y = 0; y < height; y++) {
+        const uint8_t* srcRow = pixels.data() + (height - 1 - y) * srcStride;
+        uint8_t* dstRow = dst + y * dstStride;
+#if defined(PORT_PIXEL_ORDER_BGRA)
+        for (size_t x = 0; x < width; x++) {
+            dstRow[x * 4 + 0] = srcRow[x * 4 + 2];
+            dstRow[x * 4 + 1] = srcRow[x * 4 + 1];
+            dstRow[x * 4 + 2] = srcRow[x * 4 + 0];
+            dstRow[x * 4 + 3] = srcRow[x * 4 + 3];
+        }
+#else
+        memcpy(dstRow, srcRow, srcStride);
+#endif
+    }
+}
+
+void WebGLRenderingContext::flushForReadback()
+{
+    WebGLRenderingContextBaseMixIn::flushForReadback();
+
+    flushDrawingCommands();
+    readbackDrawingBufferToSurface();
+}
+
 void WebGLRenderingContext::flushForCompositing()
 {
-    flushForReadback();
+    flushDrawingCommands();
 
     // NOTE: According to the specification, by default the contents of
     // the drawing buffer shall be cleared to their default values after

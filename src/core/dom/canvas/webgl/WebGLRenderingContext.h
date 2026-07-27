@@ -335,6 +335,8 @@ private:
     GLint getCurrentProgram();
     void completePendingJobs();
     void setPendingClearMask(uint32_t mask);
+    void flushDrawingCommands();
+    void readbackDrawingBufferToSurface();
 
 protected:
     GLenum getUniformType(WebGLProgram* program,

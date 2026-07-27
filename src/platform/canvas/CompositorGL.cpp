@@ -3078,6 +3078,14 @@ public:
         }
     }
 
+    virtual bool needsExplicitReadback() override
+    {
+        // The framebuffer-delegate path returns a CPU shadow buffer from
+        // mapBuffer() that is never filled from the render target, unlike
+        // the EGLImage-external path which maps the render target itself.
+        return m_isFrameBuffer && !m_isEGLImageExternal;
+    }
+
     virtual MappedNativeBuffer mapBuffer(size_t bufferX, size_t bufferY,
                                          size_t bufferWidth,
                                          size_t bufferHeight) override
