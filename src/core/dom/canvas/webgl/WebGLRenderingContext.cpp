@@ -200,8 +200,6 @@ void WebGLRenderingContext::initialize()
 
 void WebGLRenderingContext::flushGLCommands()
 {
-    WebGLRenderingContextBaseMixIn::flushForReadback();
-
     GLRevertableContextScope scope(
         m_context, executionContext()->webBase()->asWebView()->renderer());
     // we need to bind 0(screen) buffer for sending commands to gpu

@@ -40,7 +40,6 @@ public:
     }
 
     void initialize() override;
-    void flushForReadback() override;
     void onResize() override;
     CanvasSurface* surface() override;
 

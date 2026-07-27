@@ -140,10 +140,6 @@ void WebGLRenderingContextBaseMixIn::finalize()
     m_canvasSurface = nullptr;
 }
 
-void WebGLRenderingContextBaseMixIn::flushForReadback()
-{
-}
-
 void WebGLRenderingContextBaseMixIn::onResize()
 {
     TRACE_SCOPE(WEBGL);
