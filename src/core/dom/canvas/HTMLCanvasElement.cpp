@@ -199,6 +199,37 @@ String* HTMLCanvasElement::toDataURL(String* type, ScriptValue quality)
 
     std::string result = "data:,";
     m_canvasRenderingContext->flushForReadback();
+#if defined(STARFISH_ENABLE_WEBGL) && !defined(STARFISH_HEADLESS)
+    if (m_contextMode == CanvasContextModeWebGL ||
+        m_contextMode == CanvasContextModeWebGL2) {
+        // The WebGL drawing buffer lives in a GPU framebuffer and its pixels
+        // never reach the canvas surface's CPU buffer, so read them back
+        // through GL.
+        auto glContext =
+            static_cast<WebGLRenderingContext*>(m_canvasRenderingContext);
+        std::vector<uint8_t> pixels;
+        if (glContext->readDrawingBufferForEncoding(pixels)) {
+            auto width = glContext->drawingBufferWidth();
+            auto height = glContext->drawingBufferHeight();
+            if (type->equals("image/png")) {
+                result = "data:image/png;base64," +
+                         Base64Utils::encodeBase64(ImageEncoder::encodePNG(
+                             pixels.data(), width, height,
+                             ImageEncoder::ImageColorSpace::RGBA));
+            } else if (type->equals("image/jpeg")) {
+                result = "data:image/jpeg;base64," +
+                         Base64Utils::encodeBase64(ImageEncoder::encodeJPEG(
+                             pixels.data(), width, height,
+                             ImageEncoder::ImageColorSpace::RGBA));
+            } else {
+                STARFISH_UNSUPPORTED("Unsupported data type %s(%s)",
+                                     type->toUTF8NonGCString().data(),
+                                     __PRETTY_FUNCTION__);
+            }
+        }
+        return String::fromUTF8(result.data(), result.size());
+    }
+#endif
     CanvasSurface* canvasSurface = m_canvasRenderingContext->surface();
     if (canvasSurface != nullptr) {
         auto width = canvasSurface->bufferWidth();

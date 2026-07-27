@@ -284,6 +284,62 @@ GLsizei WebGLRenderingContext::drawingBufferHeight() const
     return m_canvasSurface->bufferHeight();
 }
 
+bool WebGLRenderingContext::readDrawingBufferForEncoding(
+    std::vector<uint8_t>& pixels)
+{
+    ENTER_CONTEXT_SCOPE(false);
+
+    const size_t width = drawingBufferWidth();
+    const size_t height = drawingBufferHeight();
+    if (width == 0 || height == 0) {
+        return false;
+    }
+
+    const size_t stride = width * 4;
+    pixels.resize(stride * height);
+
+    // The application's pixel pack state must not affect this internal
+    // readback: a pack alignment above 4 would pad the rows and a bound
+    // PIXEL_PACK_BUFFER (WebGL 2) would capture the pixels instead of the
+    // client memory. Neutralize both and restore them afterwards.
+    GLint packAlignment = 4;
+    m_gl->getIntegerv(GL_PACK_ALIGNMENT, &packAlignment);
+    if (packAlignment != 4) {
+        m_gl->pixelStorei(GL_PACK_ALIGNMENT, 4);
+    }
+    auto packBuffer = m_state->getBoundBuffer(GL_PIXEL_PACK_BUFFER);
+    if (packBuffer.hasValue()) {
+        m_gl->bindBuffer(GL_PIXEL_PACK_BUFFER, 0);
+    }
+
+    // Read from the default drawing buffer regardless of the framebuffer
+    // currently bound by the application, then restore the binding.
+    m_gl->bindFramebuffer(GL_FRAMEBUFFER, m_framebufferTexture->fbo());
+    m_gl->readPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE,
+                     pixels.data());
+    m_gl->bindFramebuffer(GL_FRAMEBUFFER, getCurrentFBO());
+
+    if (packBuffer.hasValue()) {
+        m_gl->bindBuffer(GL_PIXEL_PACK_BUFFER, packBuffer.value()->glObject());
+    }
+    if (packAlignment != 4) {
+        m_gl->pixelStorei(GL_PACK_ALIGNMENT, packAlignment);
+    }
+
+    // glReadPixels returns rows bottom-up while image encoders expect
+    // top-down, so flip the rows.
+    std::vector<uint8_t> rowBuffer(stride);
+    for (size_t y = 0; y < height / 2; y++) {
+        uint8_t* topRow = pixels.data() + y * stride;
+        uint8_t* bottomRow = pixels.data() + (height - 1 - y) * stride;
+        memcpy(rowBuffer.data(), topRow, stride);
+        memcpy(topRow, bottomRow, stride);
+        memcpy(bottomRow, rowBuffer.data(), stride);
+    }
+
+    return true;
+}
+
 static bool isPredefinedColorSpace(String* value)
 {
     STARFISH_ASSERT(value != nullptr);

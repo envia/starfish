@@ -81,6 +81,10 @@ public:
 
     GLsizei drawingBufferWidth() const;
     GLsizei drawingBufferHeight() const;
+    // Reads the whole drawing buffer back as top-down, non-premultiplied
+    // RGBA pixels for image serialization (e.g. toDataURL). Returns false
+    // when the pixels cannot be read (lost context, empty buffer).
+    bool readDrawingBufferForEncoding(std::vector<uint8_t>& pixels);
     String* drawingBufferColorSpace();
     void setDrawingBufferColorSpace(String* value);
     String* unpackColorSpace();

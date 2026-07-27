@@ -26,6 +26,7 @@
 #include "core/dom/canvas/CanvasRenderingContext.h"
 #include "core/dom/canvas/CanvasRenderingContext2DMixIn.h"
 #include "core/dom/WebOrigin.h"
+#include "platform/loader/ResourceURL.h"
 #include "core/dom/canvas/HTMLCanvasElement.h"
 #include "core/dom/HTMLImageElement.h"
 #include "core/dom/ImageBitmap.h"
@@ -106,11 +107,22 @@ CanvasImageSourceUtils::toNativeImageData(ExecutionContext* executionContext,
     bool clean = true;
 
     if (image.isHTMLImageElementValue() || image.isSVGImageElementValue()) {
+        // https://html.spec.whatwg.org/multipage/canvas.html#drawing-images
+        // The origin-clean flag is reset only when the image's media data is
+        // CORS-cross-origin; data: URLs yield same-origin responses, so they
+        // never taint the canvas.
+        auto taintsCanvas = [executionContext](WebOrigin* imageOrigin) {
+            if (imageOrigin->url() && imageOrigin->url()->isDataURL()) {
+                return false;
+            }
+            return executionContext->document()->webOrigin()->isSameOrigin(
+                       imageOrigin) == false;
+        };
+
         if (image.isHTMLImageElementValue()) {
             auto htmlImage = image.getHTMLImageElementValue();
 
-            if (executionContext->document()->webOrigin()->isSameOrigin(
-                    htmlImage->webOrigin()) == false) {
+            if (taintsCanvas(htmlImage->webOrigin())) {
                 clean = false;
             }
 
@@ -118,8 +130,7 @@ CanvasImageSourceUtils::toNativeImageData(ExecutionContext* executionContext,
         } else if (image.isSVGImageElementValue()) {
             auto svgImage = image.getSVGImageElementValue();
 
-            if (executionContext->document()->webOrigin()->isSameOrigin(
-                    svgImage->webOrigin()) == false) {
+            if (taintsCanvas(svgImage->webOrigin())) {
                 clean = false;
             }
             nativeImageData = svgImage->imageData();
