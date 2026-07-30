@@ -3234,26 +3234,31 @@ void WebGLRenderingContext::handleTexImageWithArrayBufferView(
         TRACE(WEBGL_V, KV(glValueString(format)), KV(glValueString(type)));
         TRACE(WEBGL_V, KV(bytesPerPixel), KV(byteLengthOfPixels));
 
-        static size_t maxTextureSize = 0;
+        static GLint maxTextureSize = 0;
         if (maxTextureSize == 0) {
-            m_gl->getIntegerv(GL_MAX_TEXTURE_SIZE,
-                              reinterpret_cast<GLint*>(&maxTextureSize));
+            m_gl->getIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
             TRACE(WEBGL_V, KV(maxTextureSize));
         }
 
+        const bool dimensionsWithinLimit =
+            width >= 0 && height >= 0 && width <= maxTextureSize &&
+            height <= maxTextureSize;
+
         if (Pixel::isTwoBytesPerPixel(type)) {
             std::vector<GLushort> blackData;
-            if (byteLengthOfPixels <= maxTextureSize) {
+            if (dimensionsWithinLimit) {
+                const size_t pixelCount =
+                    static_cast<size_t>(width) * static_cast<size_t>(height);
                 if (type == GL_UNSIGNED_SHORT_5_5_5_1) {
-                    blackData.resize(byteLengthOfPixels,
+                    blackData.resize(pixelCount,
                                      Pixel::makePixel5551(0, 0, 0, 0xFF));
                 } else if (type == GL_UNSIGNED_SHORT_4_4_4_4) {
-                    blackData.resize(byteLengthOfPixels,
+                    blackData.resize(pixelCount,
                                      Pixel::makePixel4444(0, 0, 0, 0xFF));
                 } else {
                     // format == GL_RGB
                     STARFISH_ASSERT(type == GL_UNSIGNED_SHORT_5_6_5);
-                    blackData.resize(byteLengthOfPixels, 0);
+                    blackData.resize(pixelCount, 0);
                 }
             }
 
@@ -3262,7 +3267,7 @@ void WebGLRenderingContext::handleTexImageWithArrayBufferView(
         }
 
         std::vector<GLubyte> blackData;
-        if (byteLengthOfPixels <= maxTextureSize) {
+        if (dimensionsWithinLimit) {
             if (format == GL_ALPHA) {
                 blackData.resize(byteLengthOfPixels, 255);
             } else if (format == GL_LUMINANCE_ALPHA || format == GL_RGBA) {
