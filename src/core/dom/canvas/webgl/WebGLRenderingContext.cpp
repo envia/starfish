@@ -3247,10 +3247,10 @@ void WebGLRenderingContext::handleTexImageWithArrayBufferView(
                 if (type == GL_UNSIGNED_SHORT_5_5_5_1) {
                     std::vector<GLushort> blackData;
                     blackData.resize(byteLengthOfPixels,
-                                     Pixel::makePixel5551(0, 0, 0, 0x1));
+                                     Pixel::makePixel5551(0, 0, 0, 0xFF));
                 } else if (type == GL_UNSIGNED_SHORT_4_4_4_4) {
                     blackData.resize(byteLengthOfPixels,
-                                     Pixel::makePixel4444(0, 0, 0, 0xF));
+                                     Pixel::makePixel4444(0, 0, 0, 0xFF));
                 } else {
                     // format == GL_RGB
                     STARFISH_ASSERT(type == GL_UNSIGNED_SHORT_5_6_5);

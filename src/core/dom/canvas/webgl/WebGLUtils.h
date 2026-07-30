@@ -51,6 +51,7 @@ public:
     static size_t getBytesPerPixel(GLenum format, GLenum type,
                                    int webGLVersion = 1);
     static bool isTwoBytesPerPixel(GLenum type);
+    // r/g/b/a are full-range 8-bit channel values (0-255).
     static GLushort makePixel5551(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
     static GLushort makePixel4444(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
     static GLushort makePixel565(uint8_t r, uint8_t g, uint8_t b);
