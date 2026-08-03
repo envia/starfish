@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Manual test: dynamic import() of a non-JS module must not crash</title>
+<style>
+  body { font-family: sans-serif; margin: 0; }
+  #status { padding: 40px; font-size: 40px; color: #fff; }
+  .pass { background: #1a7f37; }
+  .fail { background: #b00020; }
+  .pending { background: #555; }
+  #detail { padding: 20px; font-size: 18px; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<div id="status" class="pending">Running…</div>
+<div id="detail"></div>
+<script>
+  // Manual regression test for the crash fixed in commit bac34b4b.
+  //
+  // Dynamically import a module that is served with a JavaScript MIME type
+  // but whose body is HTML (invalid JavaScript), reproducing "the server
+  // returned HTML for a module". Before the fix, Starfish aborted (SIGABRT)
+  // while resolving the import() promise. After the fix, the promise must
+  // reject and this page must keep running.
+  //
+  // HOW TO USE: serve the repo root over http and open this page in
+  // Starfish, e.g.
+  //   (repo root) python3 -m http.server 8000
+  //   http://127.0.0.1:8000/2026-06-30/crash/module_import_crash_manual.html
+  // (dynamic import() requires an http(s) document; file:// will not fetch.)
+  //
+  //   PASS  -> green box "PASS": engine survived, import rejected.
+  //   crash -> the Starfish process aborts and the window disappears.
+  var statusEl = document.getElementById('status');
+  var detailEl = document.getElementById('detail');
+
+  window.onload = function () {
+    import('./not-a-module.js').then(function () {
+      statusEl.className = 'fail';
+      statusEl.textContent = 'FAIL: invalid module unexpectedly resolved';
+    }).catch(function (e) {
+      statusEl.className = 'pass';
+      statusEl.textContent = 'PASS: import rejected, no crash';
+      detailEl.textContent = 'Rejection reason: ' + e;
+    });
+  };
+</script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 ## 1. 배경 / 출발점
 
-`http://127.0.0.1:8000/2026/06/2026-06-30/iframe.html` (네이버 지도 iframe) 이 검게 보이는 문제에서 출발.
+`2026-06-30/iframe.html` (네이버 지도 iframe; 당시 http 로 서빙해 열었음) 이 검게 보이는 문제에서 출발.
 
 - **네이버 지도가 검게 보인 직접 원인**: `m.map.naver.com` 이 `X-Frame-Options: SAMEORIGIN` 을
   내려 cross-origin iframe 임베드를 거부 → iframe 이 비고 body 의 검정 배경이 노출.
@@ -178,14 +178,19 @@ OSM 임베드는 MapLibre 의 **벡터 타일** 경로를 쓴다. 이 경로는 
 4. (선택) transferable 소스 버퍼 neutering(detach) 미구현 — 현재 데이터 전송은 정상이라
    비치명. 스펙 준수 필요 시 구현.
 
-## 7. 테스트 자산 (docroot `/home/hwang/note`, `127.0.0.1:8000`)
+## 7. 테스트 자산 (repo 루트 `2026-06-30/`)
 
-- `2026/06/2026-06-30/webgl_probe.html` — WebGL2 메서드/확장/드로우 탐침 (결과를 throw 로 stdout 출력)
-- `2026/06/2026-06-30/maplibre_top.html` — 최상위 MapLibre 테스트(raster→vector 전환하며 사용),
+http 로 서빙해서 사용: repo 루트에서 `python3 -m http.server 8000` →
+`http://127.0.0.1:8000/2026-06-30/<파일>` (동적 import/워커 테스트는 file:// 로 동작 안 함).
+
+- `2026-06-30/webgl_probe.html` — WebGL2 메서드/확장/드로우 탐침 (결과를 throw 로 stdout 출력)
+- `2026-06-30/maplibre_top.html` — 최상위 MapLibre 테스트(raster→vector 전환하며 사용),
   에러는 `setTimeout` 안에서 throw 하여 stdout 으로 surface (MapLibre 가 핸들러 throw 를 삼키므로)
-- `2026/06/2026-06-30/map_osm.html` — 키 없는 래스터 지도(Leaflet) — 정상 동작
-- `2026/06/2026-06-30/iframe_osm.html` — OSM 임베드(벡터) — 진행 중
-- `2026/06/2026-06-30/crash/module_import_crash_manual.html` — §8 모듈 import 크래시 수동 테스트
+- `2026-06-30/maplibre_diag.html` — 타일/`isSourceLoaded` 추적 진단 (§5 벡터 블로커용)
+- `2026-06-30/map_osm.html` — 키 없는 래스터 지도(Leaflet) — 정상 동작
+- `2026-06-30/iframe_osm.html` — OSM 임베드(벡터) — 진행 중
+- `2026-06-30/worker_*.html`(+`*_child.js`) — 워커 프리미티브 격리 하네스 (§5 전수 검증에 사용)
+- `2026-06-30/crash/module_import_crash_manual.html` — §8 모듈 import 크래시 수동 테스트
   (http 로 열면 초록 "PASS" 표시; `not-a-module.js` 를 import)
 
 ### 실행/디버깅 메모
@@ -222,7 +227,7 @@ OSM 임베드는 MapLibre 의 **벡터 타일** 경로를 쓴다. 이 경로는 
   onload 정상 발생.
 
 ### 테스트
-- **수동**: `note/2026/06/2026-06-30/crash/module_import_crash_manual.html` (+ `not-a-module.js`).
+- **수동**: `2026-06-30/crash/module_import_crash_manual.html` (+ `not-a-module.js`, repo 루트).
   http 로 열면 JS mime + HTML 본문 모듈을 import → 크래시 없으면 초록 "PASS" 표시.
   (동적 import() 는 http 문서에서만 fetch 하므로 file:// 로는 재현 불가.)
 - **자동 (test 서브모듈)**:

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OSM iframe (no key)</title>
+</head>
+<!-- 배경을 흰색으로 두면 iframe이 비었을 때(차단 시) 구분하기 쉽습니다. -->
+<body style="margin:0; padding:0; overflow:hidden; background:#fff;">
+  <!--
+    원래 m.map.naver.com 은 X-Frame-Options: SAMEORIGIN 때문에 iframe 임베드가 거부됨.
+    OpenStreetMap export/embed 페이지는 임베드 차단 헤더가 없어 그대로 표시됩니다.
+    bbox = minLon,minLat,maxLon,maxLat (서울 명동 주변), marker = lat,lon
+  -->
+  <iframe
+    src="https://www.openstreetmap.org/export/embed.html?bbox=126.9780,37.5580,126.9960,37.5700&layer=mapnik&marker=37.5636,126.9869"
+    style="width:100%; height:100vh; border:none;"></iframe>
+</body>
+</html>

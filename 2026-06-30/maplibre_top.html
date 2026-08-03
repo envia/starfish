@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MapLibre vector test</title>
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <style>
+    html, body { margin:0; padding:0; height:100%; background:#fff; }
+    #map { position:absolute; top:0; bottom:0; width:100%; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script>
+    // Collect every error. MapLibre wraps its event listeners in try/catch and
+    // re-fires throws as 'error', so throwing inside a handler is swallowed.
+    // setTimeout callbacks are NOT wrapped -> throwing there surfaces as Uncaught
+    // (which the engine's JS error logger prints to stdout).
+    window.__errs = [];
+    function rec(tag, msg, stack){ window.__errs.push(tag + ': ' + msg + (stack ? ' || ' + String(stack).slice(0,300) : '')); }
+    window.addEventListener('error', function(ev){
+      rec('WINERR', (ev.message||'') + ' @ ' + (ev.filename||'') + ':' + (ev.lineno||''),
+          ev.error && ev.error.stack);
+    });
+    try {
+      var map = new maplibregl.Map({
+        container: 'map',
+        style: 'https://demotiles.maplibre.org/style.json', // keyless vector style
+        center: [126.9869, 37.5636],
+        zoom: 4
+      });
+      map.on('error', function(e){
+        var err = e && e.error ? e.error : e;
+        rec('MAPLIBRE_ERR', (err && err.message) ? err.message : JSON.stringify(err), err && err.stack);
+      });
+      map.on('load', function(){ rec('LOAD', 'ok'); });
+    } catch(e) {
+      rec('CTOR_THREW', e.message, e.stack);
+    }
+    setTimeout(function(){
+      throw new Error('PROBE_RESULT ' + JSON.stringify(window.__errs));
+    }, 9000);
+  </script>
+</body>
+</html>
