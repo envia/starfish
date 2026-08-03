@@ -1,0 +1,75 @@
+From 877e230e3e0611accfbe715e763e3ad2222bd69c Mon Sep 17 00:00:00 2001
+From: MuHong Byun <mh.byun@samsung.com>
+Date: Wed, 1 Jul 2026 10:03:26 +0900
+Subject: [PATCH] fix: prevent crash on iframe module load and
+ history.replaceState
+
+Loading a page whose iframe navigates to a cross-origin document (e.g.
+naver-map-iframe.html) crashed in two spots on the load path:
+
+- HistoryManager::resolveURL dereferenced a null current history entry
+  when history.replaceState() was called with no URL from a freshly
+  loaded iframe (empty history). Fall back to the document URI, per the
+  HTML spec (no URL -> use document's current URL).
+
+- Document::executeModule called data->module.value() unconditionally
+  for pending dynamic-import promises, asserting when the module failed
+  to load/parse (empty Optional). Reject the promise via
+  notifyDynamicLoadedModuleError instead.
+
+Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
+---
+ src/browser/history/HistoryManager.cpp | 11 ++++++++++-
+ src/core/dom/Document.cpp              | 14 +++++++++++---
+ 2 files changed, 21 insertions(+), 4 deletions(-)
+
+diff --git a/src/browser/history/HistoryManager.cpp b/src/browser/history/HistoryManager.cpp
+index b90c4b142..28dc2cfae 100644
+--- a/src/browser/history/HistoryManager.cpp
++++ b/src/browser/history/HistoryManager.cpp
+@@ -274,7 +274,16 @@ ResourceURL* HistoryManager::resolveURL(Document* document,
+                                           document->baseURL()->baseURI());
+         }
+     } else {
+-        resolvedURL = new ResourceURL(*(currentEntry()->url()));
++        // No URL given → use the document's current URL (per spec). The current
++        // history entry may be absent (e.g. a freshly-loaded iframe that calls
++        // history.replaceState before any entry is recorded), so fall back to
++        // the document URI instead of dereferencing a null entry.
++        HistoryEntry* cur = currentEntry();
++        if (cur && cur->url()) {
++            resolvedURL = new ResourceURL(*(cur->url()));
++        } else {
++            resolvedURL = new ResourceURL(*(document->documentURI()));
++        }
+     }
+     return resolvedURL;
+ }
+diff --git a/src/core/dom/Document.cpp b/src/core/dom/Document.cpp
+index 586b7d229..ac475492d 100644
+--- a/src/core/dom/Document.cpp
++++ b/src/core/dom/Document.cpp
+@@ -731,9 +731,17 @@ static void executeModule(Document* document,
+                 data->source->markModuleLoadOrErrorEventFired();
+             }
+             for (auto* promise : data->promiseForDynamicLoadedModule) {
+-                notifyDynamicLoadedModuleResult(
+-                    document->scriptBindingInstance(), data->module.value(),
+-                    promise);
++                // The module may have failed to load/parse, in which case
++                // data->module holds no value. Reject the dynamic import
++                // promise instead of dereferencing the empty Optional.
++                if (data->module.hasValue()) {
++                    notifyDynamicLoadedModuleResult(
++                        document->scriptBindingInstance(), data->module.value(),
++                        promise);
++                } else {
++                    notifyDynamicLoadedModuleError(
++                        document->scriptBindingInstance(), promise);
++                }
+             }
+             data->promiseForDynamicLoadedModule.clear();
+         }
+-- 
+2.43.0
+
