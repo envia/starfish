@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OSM raster map (no key, no WebGL)</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    html, body { margin:0; padding:0; height:100%; background:#fff; }
+    #map { width:100%; height:100vh; }
+  </style>
+</head>
+<body>
+  <!--
+    Leaflet + OpenStreetMap 래스터 타일(<img> png).
+    MapLibre/WebGL 을 쓰지 않으므로 Starfish 에서 그려집니다. 키 불필요.
+  -->
+  <div id="map"></div>
+  <script>
+    var map = L.map('map', { zoomControl: true }).setView([37.5636, 126.9869], 16); // 서울 명동
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+    L.marker([37.5636, 126.9869]).addTo(map).bindPopup('서울 명동');
+  </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Worker (external .js) test</title></head>
+<body style="background:#fff">
+<script>
+window.__r = [];
+function rec(m){ window.__r.push(String(m)); }
+try {
+  var w = new Worker('worker_child.js');
+  rec('created');
+  w.onmessage = function(e){ rec('M:' + e.data); };
+  w.onerror = function(e){ rec('WERR:' + (e.message || e.filename || e)); };
+  w.postMessage('ping');
+} catch(e) {
+  rec('THREW:' + e.message);
+}
+setTimeout(function(){ throw new Error('WT2_RESULT ' + JSON.stringify(window.__r)); }, 6000);
+</script>
+</body>
+</html>

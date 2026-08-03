@@ -1,0 +1,18 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="background:#fff">
+<script>
+window.__r=[];
+function rec(m){window.__r.push(String(m));}
+var code="self.postMessage('data-started');self.onmessage=function(e){self.postMessage('data-got:'+e.data);};";
+// base64 of code
+var b64 = btoa(code);
+rec('btoa=' + (typeof btoa));
+var durl = 'data:application/javascript;base64,' + b64;
+try {
+  var w = new Worker(durl);
+  rec('created');
+  w.onmessage=function(e){rec('M:'+e.data);};
+  w.onerror=function(e){rec('WERR:'+(e.message||e.filename||'err'));};
+  w.postMessage('ping');
+} catch(e){ rec('threw:'+e); }
+setTimeout(function(){ throw new Error('WTD_RESULT '+JSON.stringify(window.__r)); }, 6000);
+</script></body></html>

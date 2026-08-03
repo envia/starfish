@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Naver Maps JS API (needs key)</title>
+  <!--
+    ★ 키가 필요합니다 ★
+    1) NAVER Cloud Platform 콘솔(https://console.ncloud.com) > AI·NAVER API > Maps 에서
+       애플리케이션을 만들고 "Web Dynamic Map" 서비스를 켜세요.
+    2) 발급된 Client ID(키 ID)를 아래 YOUR_KEY_ID 에 넣으세요.
+       - 신규 키: 파라미터 이름이 ncpKeyId
+       - 구형 키: 파라미터 이름이 ncpClientId  (둘 중 발급된 형식에 맞춰 사용)
+    3) 콘솔의 "Web 서비스 URL"에 이 페이지의 출처를 등록하세요:  http://127.0.0.1:8000
+       (등록 안 하면 인증 오류로 지도가 안 뜹니다.)
+    iframe 이 아니라 페이지 안에 직접 그리므로 X-Frame-Options 차단과 무관합니다.
+  -->
+  <script type="text/javascript"
+    src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=YOUR_KEY_ID"></script>
+  <style>
+    html, body { margin:0; padding:0; height:100%; }
+    #map { width:100%; height:100vh; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script>
+    // 서울 명동 좌표 (위도, 경도)
+    var myeongdong = new naver.maps.LatLng(37.5636, 126.9869);
+    var map = new naver.maps.Map('map', {
+      center: myeongdong,
+      zoom: 16
+    });
+    new naver.maps.Marker({ position: myeongdong, map: map });
+  </script>
+</body>
+</html>

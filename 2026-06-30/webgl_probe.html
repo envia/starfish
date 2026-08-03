@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>WebGL2 probe</title></head>
+<body style="margin:0;background:#fff;">
+<canvas id="c" width="64" height="64"></canvas>
+<script>
+function probe() {
+  var r = {};
+  var cv = document.getElementById('c');
+  var gl = cv.getContext('webgl2');
+  r.webgl2 = !!gl;
+  if (!gl) {
+    r.webgl1 = !!cv.getContext('webgl');
+    return r;
+  }
+  r.VERSION = gl.getParameter(gl.VERSION);
+  r.GLSL = gl.getParameter(gl.SHADING_LANGUAGE_VERSION);
+  r.VENDOR = gl.getParameter(gl.VENDOR);
+  r.RENDERER = gl.getParameter(gl.RENDERER);
+  r.MAX_TEX = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+  // methods MapLibre relies on
+  var methods = ['createVertexArray','bindVertexArray','drawElementsInstanced',
+    'drawArraysInstanced','vertexAttribDivisor','texStorage2D','texStorage3D',
+    'createQuery','beginQuery','endQuery','getQueryParameter','deleteQuery',
+    'getBufferSubData','blitFramebuffer','invalidateFramebuffer',
+    'fenceSync','clientWaitSync','texImage3D','texSubImage3D','uniformMatrix4fv',
+    'getUniformBlockIndex','uniformBlockBinding','getActiveUniformBlockParameter',
+    'getActiveUniformBlockName','getUniformIndices','bindBufferBase','bindBufferRange',
+    'renderbufferStorageMultisample','framebufferTextureLayer','drawBuffers','readBuffer',
+    'createSampler','bindSampler','samplerParameteri','samplerParameterf','deleteSampler',
+    'drawRangeElements','clearBufferfv','clearBufferiv','clearBufferuiv','clearBufferfi',
+    'getInternalformatParameter','getIndexedParameter','copyTexSubImage3D',
+    'createTransformFeedback','bindTransformFeedback','beginTransformFeedback',
+    'transformFeedbackVaryings'];
+  var missing = [];
+  for (var i=0;i<methods.length;i++){ if (typeof gl[methods[i]] !== 'function') missing.push(methods[i]); }
+  r.missingMethods = missing;
+  // extensions MapLibre commonly queries
+  var exts = ['EXT_color_buffer_float','OES_texture_float_linear',
+    'EXT_texture_filter_anisotropic','WEBGL_debug_renderer_info'];
+  var extState = {};
+  for (var j=0;j<exts.length;j++){ extState[exts[j]] = !!gl.getExtension(exts[j]); }
+  r.extensions = extState;
+  r.allExts = (gl.getSupportedExtensions()||[]).length;
+  // actually draw a red triangle and read back
+  try {
+    var vs = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vs, '#version 300 es\nin vec2 p;void main(){gl_Position=vec4(p,0.,1.);}');
+    gl.compileShader(vs);
+    r.vsOK = gl.getShaderParameter(vs, gl.COMPILE_STATUS);
+    if (!r.vsOK) r.vsLog = gl.getShaderInfoLog(vs);
+    var fs = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fs, '#version 300 es\nprecision mediump float;out vec4 o;void main(){o=vec4(1.,0.,0.,1.);}');
+    gl.compileShader(fs);
+    r.fsOK = gl.getShaderParameter(fs, gl.COMPILE_STATUS);
+    if (!r.fsOK) r.fsLog = gl.getShaderInfoLog(fs);
+    var pr = gl.createProgram();
+    gl.attachShader(pr, vs); gl.attachShader(pr, fs); gl.linkProgram(pr);
+    r.linkOK = gl.getProgramParameter(pr, gl.LINK_STATUS);
+    if (!r.linkOK) r.linkLog = gl.getProgramInfoLog(pr);
+    gl.useProgram(pr);
+    var buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+    var loc = gl.getAttribLocation(pr,'p');
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    gl.viewport(0,0,64,64); gl.clearColor(0,0,0,1); gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    var px = new Uint8Array(4);
+    gl.readPixels(32,32,1,1,gl.RGBA,gl.UNSIGNED_BYTE,px);
+    r.centerPixel = [px[0],px[1],px[2],px[3]];
+    r.glError = gl.getError();
+  } catch(e) { r.drawThrew = String(e); }
+  return r;
+}
+var out;
+try { out = probe(); } catch(e) { out = {probeThrew:String(e), stack:String(e.stack)}; }
+// surface via the JS error logger (prints to stdout)
+throw new Error('PROBE_RESULT ' + JSON.stringify(out));
+</script>
+</body>
+</html>

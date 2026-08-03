@@ -1,0 +1,21 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="background:#fff">
+<script>
+window.__r=[];function rec(m){window.__r.push(String(m));}
+try{
+  var w=new Worker('worker_clone_child.js');
+  w.onmessage=function(e){
+    var d=e.data;
+    try{
+      rec('buckets='+(d.buckets?d.buckets.length:-1));
+      rec('b0.layerId='+d.buckets[0].layerId);
+      rec('b0.lva='+(d.buckets[0].arrays.layoutVertexArray?new Float32Array(d.buckets[0].arrays.layoutVertexArray).length:'MISSING'));
+      rec('b0.segs='+d.buckets[0].segments.length+' seg1.pl='+d.buckets[0].segments[1].primitiveLength);
+      rec('b1.nested='+d.buckets[1].nested.a.b.c.join(','));
+      rec('featureIndex='+(d.featureIndex?new Uint8Array(d.featureIndex).length:'MISSING'));
+    }catch(err){ rec('READ-THREW:'+err); }
+  };
+  w.onerror=function(e){rec('WERR:'+(e.message||'err'));};
+  w.postMessage('go');
+}catch(e){rec('threw:'+e);}
+setTimeout(function(){ throw new Error('CLONE_RESULT '+JSON.stringify(window.__r)); },6000);
+</script></body></html>

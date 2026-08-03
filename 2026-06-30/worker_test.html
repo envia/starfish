@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Worker pipeline test</title></head>
+<body style="background:#fff">
+<script>
+window.__r = [];
+function rec(m){ window.__r.push(String(m)); }
+rec('typeof Worker=' + (typeof Worker));
+rec('typeof Blob=' + (typeof Blob));
+rec('typeof URL=' + (typeof URL));
+rec('URL.createObjectURL=' + (typeof (window.URL && URL.createObjectURL)));
+try {
+  var src = [
+    "self.postMessage('worker-loaded');",
+    "self.onmessage = function(e){",
+    "  self.postMessage('worker-got:'+e.data);",
+    "  self.postMessage('worker-fetch='+(typeof fetch));",
+    "  try {",
+    "    fetch('https://demotiles.maplibre.org/tiles/0/0/0.pbf')",
+    "      .then(function(r){ self.postMessage('status='+r.status); return r.arrayBuffer(); })",
+    "      .then(function(b){ self.postMessage('bytes='+b.byteLength); })",
+    "      .catch(function(err){ self.postMessage('fetch-err='+err); });",
+    "  } catch(err){ self.postMessage('fetch-throw='+err); }",
+    "};"
+  ].join("\n");
+  var blob = new Blob([src], {type:'application/javascript'});
+  var url = URL.createObjectURL(blob);
+  rec('blobURL=' + (url ? 'ok' : 'null'));
+  var w = new Worker(url);
+  rec('worker-created');
+  w.onmessage = function(e){ rec('M:'+e.data); };
+  w.onerror = function(e){ rec('WERR:'+(e.message||e.filename||e)); };
+  w.postMessage('ping');
+} catch(e) {
+  rec('MAIN-THREW:' + e.message + ' | ' + (e.stack||''));
+}
+setTimeout(function(){ throw new Error('WT_RESULT ' + JSON.stringify(window.__r)); }, 8000);
+</script>
+</body>
+</html>
