@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>WebGL readback: draw - readback - draw interleaving</title>
+</head>
+<body style="margin: 0">
+<div id="result" style="font-size: 20px">running...</div>
+<div id="detail" style="font-size: 16px; white-space: pre"></div>
+<canvas id="c" width="640" height="480"></canvas>
+<div style="font-size: 20px">toDataURL snapshot (taken between the draws;
+must show the green background and the red triangle only):</div>
+<img id="snapshot" width="640" height="480"
+     style="border: 1px solid #000">
+<script>
+// Draw a red triangle, call toDataURL() in the middle of the frame, then
+// draw a blue triangle WITHOUT clearing. If the readback schedules the
+// lazy between-frames clear (the bug fixed by moving the flag into
+// flushForCompositing), the second draw call wipes the first one: the
+// red triangle and the green background become transparent black.
+var canvas = document.getElementById('c');
+var gl = canvas.getContext('webgl');
+
+var vsSource =
+    'attribute vec2 p;' +
+    'void main() { gl_Position = vec4(p, 0.0, 1.0); }';
+var fsSource =
+    'precision mediump float;' +
+    'uniform vec4 color;' +
+    'void main() { gl_FragColor = color; }';
+
+function compile(type, source) {
+    var shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    return shader;
+}
+
+var program = gl.createProgram();
+gl.attachShader(program, compile(gl.VERTEX_SHADER, vsSource));
+gl.attachShader(program, compile(gl.FRAGMENT_SHADER, fsSource));
+gl.linkProgram(program);
+gl.useProgram(program);
+
+var buffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+var positionLocation = gl.getAttribLocation(program, 'p');
+gl.enableVertexAttribArray(positionLocation);
+gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+var colorLocation = gl.getUniformLocation(program, 'color');
+
+// Draw A: green background plus a red triangle on the left half.
+gl.clearColor(0.0, 0.6, 0.0, 1.0);
+gl.clear(gl.COLOR_BUFFER_BIT);
+gl.bufferData(gl.ARRAY_BUFFER,
+              new Float32Array([-0.5, 0.8, -0.9, -0.6, -0.1, -0.6]),
+              gl.STATIC_DRAW);
+gl.uniform4f(colorLocation, 1.0, 0.0, 0.0, 1.0);
+gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+// The readback in the middle of the frame.
+var dataUrl = canvas.toDataURL('image/png');
+document.getElementById('snapshot').src = dataUrl;
+
+// Draw B: a blue triangle on the right half, no clear in between. On the
+// broken variant the readback above scheduled the between-frames clear,
+// so this draw call wipes draw A first.
+gl.bufferData(gl.ARRAY_BUFFER,
+              new Float32Array([0.5, 0.8, 0.1, -0.6, 0.9, -0.6]),
+              gl.STATIC_DRAW);
+gl.uniform4f(colorLocation, 0.0, 0.0, 1.0, 1.0);
+gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+// Probe the drawing buffer in the same task, before compositing may
+// legitimately schedule the clear. readPixels is a read operation and
+// does not trigger the lazy clear itself.
+function probe(clipX, clipY) {
+    var px = Math.round((clipX + 1) / 2 * canvas.width);
+    var py = Math.round((clipY + 1) / 2 * canvas.height);
+    var data = new Uint8Array(4);
+    gl.readPixels(px, py, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, data);
+    return [data[0], data[1], data[2], data[3]];
+}
+
+function matches(actual, expected) {
+    for (var i = 0; i < 4; i++) {
+        if (Math.abs(actual[i] - expected[i]) > 4) {
+            return false;
+        }
+    }
+    return true;
+}
+
+var redProbe = probe(-0.5, 0.0); // inside triangle A
+var blueProbe = probe(0.5, 0.0); // inside triangle B
+var bgProbe = probe(0.0, -0.9);  // background, below both triangles
+
+var redOk = matches(redProbe, [255, 0, 0, 255]);
+var blueOk = matches(blueProbe, [0, 0, 255, 255]);
+var bgOk = matches(bgProbe, [0, 153, 0, 255]);
+
+var verdict;
+if (redOk && blueOk && bgOk) {
+    verdict = 'PASS: the first draw survived the mid-frame readback';
+} else if (blueOk && matches(redProbe, [0, 0, 0, 0]) &&
+           matches(bgProbe, [0, 0, 0, 0])) {
+    verdict = 'WIPED: the draw after toDataURL() ran the between-frames ' +
+              'clear and erased the first draw (the bug)';
+} else {
+    verdict = 'FAIL: unexpected pixels';
+}
+
+var detail =
+    'red triangle probe:  [' + redProbe + '] expected [255,0,0,255]\n' +
+    'blue triangle probe: [' + blueProbe + '] expected [0,0,255,255]\n' +
+    'background probe:    [' + bgProbe + '] expected [0,153,0,255]';
+document.getElementById('result').textContent = verdict;
+document.getElementById('detail').textContent = detail;
+console.log('draw-readback-draw ' + verdict);
+console.log(detail);
+</script>
+</body>
+</html>
