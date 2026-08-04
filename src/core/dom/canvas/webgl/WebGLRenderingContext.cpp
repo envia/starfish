@@ -2982,7 +2982,7 @@ public:
     }
 
     void draw(const bool needsFlipY, const bool needsPremultiplyAlpha,
-              const GLenum type)
+              const GLenum type, const size_t bytesPerPixel)
     {
         const size_t width = m_sourceImage.width;
         const size_t height = m_sourceImage.height;
@@ -2991,6 +2991,12 @@ public:
         size_t offset = 0, newOffset = 0, srcOffset = 0, destOffset = 0;
 
         if (m_sourceImage.format != GL_RGB && m_sourceImage.format != GL_RGBA) {
+            return;
+        }
+
+        if (bytesPerPixel == 0) {
+            // Unknown format/type combination; leave the source untouched and
+            // let the GL driver generate the error for the upload.
             return;
         }
 
@@ -3029,14 +3035,13 @@ public:
         // (BGRA/RGBA). ArrayBufferView source already has the correct
         // bytes-per-pixel for the requested format+type combination.
         const size_t srcBytesPerPixel =
-            m_isNativeImageDataUsed
-                ? 4
-                : Pixel::getBytesPerPixel(m_sourceImage.format, type);
+            m_isNativeImageDataUsed ? 4 : bytesPerPixel;
         const size_t srcStride = m_sourceImage.stride;
 
-        // Destination bytes per pixel is determined by the GL format+type.
-        const size_t dstBytesPerPixel =
-            Pixel::getBytesPerPixel(m_sourceImage.format, type);
+        // Destination bytes per pixel is determined by the GL format+type;
+        // the caller computes it with the context's version-aware
+        // getBytesPerPixel() so WebGL2-only combinations resolve correctly.
+        const size_t dstBytesPerPixel = bytesPerPixel;
         // Conversion is needed when source and destination bytes/pixel differ
         // (e.g. 4-byte BGRA/RGBA canvas → 3-byte RGB or 2-byte packed short).
         const bool needsStrideConversion =
@@ -3221,7 +3226,8 @@ void WebGLRenderingContext::handleTexImageWithArrayBufferView(
         // behavior of this function.
         TexImageHelper image(width, height, width * bytesPerPixel, format,
                              data);
-        image.draw(m_unpackFlipY, m_unpackPremultiplyAlpha, type);
+        image.draw(m_unpackFlipY, m_unpackPremultiplyAlpha, type,
+                   bytesPerPixel);
 
         updateImage(&image);
     } else {
@@ -3373,7 +3379,7 @@ void WebGLRenderingContext::handleTexImageWithImageSource(
     // Handle WebGL-specific pixel storage parameters that affect the behavior
     // of this function.
     TexImageHelper image(imageData, format);
-    image.draw(m_unpackFlipY, m_unpackPremultiplyAlpha, type);
+    image.draw(m_unpackFlipY, m_unpackPremultiplyAlpha, type, bytesPerPixel);
 
     TRACE(WEBGL_V, "source:", KV(width), KV(height), KV(stride),
           KV(byteLengthOfPixels), KV(imageData));
