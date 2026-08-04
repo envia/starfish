@@ -3232,6 +3232,12 @@ void WebGLRenderingContext::handleTexImageWithArrayBufferView(
             width >= 0 && height >= 0 && width <= maxTextureSize &&
             height <= maxTextureSize;
 
+        GLint savedAlignment = 4;
+        m_gl->getIntegerv(GL_UNPACK_ALIGNMENT, &savedAlignment);
+        if (savedAlignment != 1) {
+            m_gl->pixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        }
+
         if (Pixel::isTwoBytesPerPixel(type)) {
             std::vector<GLushort> blackData;
             if (dimensionsWithinLimit) {
@@ -3251,6 +3257,9 @@ void WebGLRenderingContext::handleTexImageWithArrayBufferView(
             }
 
             updateTwoBytesBlackImage(blackData);
+            if (savedAlignment != 1) {
+                m_gl->pixelStorei(GL_UNPACK_ALIGNMENT, savedAlignment);
+            }
             return;
         }
 
@@ -3270,6 +3279,9 @@ void WebGLRenderingContext::handleTexImageWithArrayBufferView(
         }
 
         updateBlackImage(blackData);
+        if (savedAlignment != 1) {
+            m_gl->pixelStorei(GL_UNPACK_ALIGNMENT, savedAlignment);
+        }
     }
 }
 
