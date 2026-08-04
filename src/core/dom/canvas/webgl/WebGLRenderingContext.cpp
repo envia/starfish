@@ -2982,7 +2982,7 @@ public:
     }
 
     void draw(const bool needsFlipY, const bool needsPremultiplyAlpha,
-              const GLenum type)
+              const GLenum type, const size_t bytesPerPixel)
     {
         const size_t width = m_sourceImage.width;
         const size_t height = m_sourceImage.height;
@@ -3024,12 +3024,9 @@ public:
 #endif
 
         const size_t srcBytesPerPixel =
-            m_isNativeImageDataUsed
-                ? 4
-                : Pixel::getBytesPerPixel(m_sourceImage.format, type);
+            m_isNativeImageDataUsed ? 4 : bytesPerPixel;
         const size_t srcStride = m_sourceImage.stride;
-        const size_t dstBytesPerPixel =
-            Pixel::getBytesPerPixel(m_sourceImage.format, type);
+        const size_t dstBytesPerPixel = bytesPerPixel;
         const bool needsStrideConversion =
             (srcBytesPerPixel != dstBytesPerPixel);
 
@@ -3209,7 +3206,8 @@ void WebGLRenderingContext::handleTexImageWithArrayBufferView(
         // behavior of this function.
         TexImageHelper image(width, height, width * bytesPerPixel, format,
                              data);
-        image.draw(m_unpackFlipY, m_unpackPremultiplyAlpha, type);
+        image.draw(m_unpackFlipY, m_unpackPremultiplyAlpha, type,
+                   bytesPerPixel);
 
         updateImage(&image);
     } else {
@@ -3228,9 +3226,9 @@ void WebGLRenderingContext::handleTexImageWithArrayBufferView(
             TRACE(WEBGL_V, KV(maxTextureSize));
         }
 
-        const bool dimensionsWithinLimit =
-            width >= 0 && height >= 0 && width <= maxTextureSize &&
-            height <= maxTextureSize;
+        const bool dimensionsWithinLimit = width >= 0 && height >= 0 &&
+                                           width <= maxTextureSize &&
+                                           height <= maxTextureSize;
 
         GLint savedAlignment = 4;
         m_gl->getIntegerv(GL_UNPACK_ALIGNMENT, &savedAlignment);
@@ -3358,7 +3356,7 @@ void WebGLRenderingContext::handleTexImageWithImageSource(
     // Handle WebGL-specific pixel storage parameters that affect the behavior
     // of this function.
     TexImageHelper image(imageData, format);
-    image.draw(m_unpackFlipY, m_unpackPremultiplyAlpha, type);
+    image.draw(m_unpackFlipY, m_unpackPremultiplyAlpha, type, bytesPerPixel);
 
     TRACE(WEBGL_V, "source:", KV(width), KV(height), KV(stride),
           KV(byteLengthOfPixels), KV(imageData));
