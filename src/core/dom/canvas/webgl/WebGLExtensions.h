@@ -50,8 +50,9 @@ public:
         return m_isInitialized;
     }
 
-    Optional<ExtensionGenerator> getGenerator(const std::string& name);
-    GCVector<String*> getSupportedExtensions();
+    Optional<ExtensionGenerator> getGenerator(const std::string& name,
+                                              int webGLVersion);
+    GCVector<String*> getSupportedExtensions(int webGLVersion);
 
     WebGLExtensionRegistry(const WebGLExtensionRegistry&) = delete;
     WebGLExtensionRegistry(const WebGLExtensionRegistry&&) = delete;

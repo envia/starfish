@@ -93,7 +93,8 @@ void WebGLExtensionRegistry::initialize(GL* gl)
     V(OES_depth_texture, WEBGL_depth_texture)                         \
     V(EXT_texture_filter_anisotropic, EXT_texture_filter_anisotropic) \
     V(OES_texture_float_linear, OES_texture_float_linear)             \
-    V(EXT_blend_minmax, EXT_blend_minmax)
+    V(EXT_blend_minmax, EXT_blend_minmax)                             \
+    V(EXT_color_buffer_float, EXT_color_buffer_float)
 
 #define V(name, spec)                                                        \
     if (glExtensions.find(#name) != glExtensions.end()) {                    \
@@ -136,10 +137,21 @@ void WebGLExtensionRegistry::initialize(GL* gl)
     m_isInitialized = true;
 }
 
-GCVector<String*> WebGLExtensionRegistry::getSupportedExtensions()
+static bool isSupportedInWebGLVersion(const std::string& name, int webGLVersion)
+{
+    // EXT_color_buffer_float applies only to WebGL 2 contexts.
+    // https://registry.khronos.org/webgl/extensions/EXT_color_buffer_float/
+    return name != "EXT_color_buffer_float" || webGLVersion == 2;
+}
+
+GCVector<String*> WebGLExtensionRegistry::getSupportedExtensions(
+    int webGLVersion)
 {
     GCVector<String*> extentions;
     for (const auto& pair : m_interfaceGenerators) {
+        if (!isSupportedInWebGLVersion(pair.first, webGLVersion)) {
+            continue;
+        }
         extentions.push_back(
             String::createASCIIString(pair.first.c_str(), pair.first.length()));
     }
@@ -147,10 +159,11 @@ GCVector<String*> WebGLExtensionRegistry::getSupportedExtensions()
 }
 
 Optional<ExtensionGenerator> WebGLExtensionRegistry::getGenerator(
-    const std::string& name)
+    const std::string& name, int webGLVersion)
 {
     const auto& iter = m_interfaceGenerators.find(name);
-    if (iter != m_interfaceGenerators.end()) {
+    if (iter != m_interfaceGenerators.end() &&
+        isSupportedInWebGLVersion(iter->first, webGLVersion)) {
         return iter->second;
     }
     return Optional<ExtensionGenerator>();
