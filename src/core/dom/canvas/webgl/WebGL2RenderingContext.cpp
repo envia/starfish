@@ -1747,6 +1747,28 @@ void WebGL2RenderingContext::readPixels(GLint x, GLint y, GLsizei width,
                                       dstData);
 }
 
+void WebGL2RenderingContext::readPixels(GLint x, GLint y, GLsizei width,
+                                        GLsizei height, GLenum format,
+                                        GLenum type, GLintptr offset)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    // This overload writes into the buffer bound to PIXEL_PACK_BUFFER at the
+    // given byte offset.
+    if (!getState()->getBoundBuffer(GL_PIXEL_PACK_BUFFER).hasValue()) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    if (offset < 0) {
+        setGLError(GL_INVALID_VALUE);
+        return;
+    }
+
+    gl()->readPixels(x, y, width, height, format, type,
+                     reinterpret_cast<GLvoid*>(offset));
+}
+
 } // namespace Starfish
 
 #endif // defined(STARFISH_ENABLE_CANVAS) && defined(STARFISH_ENABLE_WEBGL)
