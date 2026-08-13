@@ -3217,10 +3217,10 @@ void WebGLRenderingContext::handleTexImageWithArrayBufferView(
         return;
     }
 
-    // OES_texture_float must also be enabled for null allocations in
-    // WebGL 1.
+    // OES_texture_float is required in WebGL 1 for both data uploads and
+    // null allocations; float uploads are a core feature in WebGL 2.
     // https://registry.khronos.org/webgl/extensions/OES_texture_float/
-    if (type == GL_FLOAT && (pixels || webGLVersion() == 1) &&
+    if (type == GL_FLOAT && webGLVersion() == 1 &&
         !isExtensionEnabled("OES_texture_float")) {
         setGLError(GL_INVALID_ENUM);
         return;
@@ -3467,10 +3467,15 @@ void WebGLRenderingContext::texImage2D(GLenum target, GLint level,
         target, level, width, height, format, type, pixels,
         [&](const void* data) {
 #if defined(PORT_PIXEL_ORDER_BGRA)
-            if (!pixels && format == GL_RGBA &&
-                !Pixel::isTwoBytesPerPixel(type) &&
+            if (!pixels && internalFormat == GL_RGBA && format == GL_RGBA &&
+                type == GL_UNSIGNED_BYTE &&
                 WebGLExtensionRegistry::instance()
                     .hasEXT_texture_format_BGRA8888()) {
+                // GLES 2.0 section 3.7.2 requires texSubImage2D's format
+                // to match the texture's internal format. Keep these byte
+                // allocations compatible with later NativeImageData BGRA
+                // uploads, without rewriting float or sized formats.
+                // https://registry.khronos.org/OpenGL/specs/es/2.0/es_full_spec_2.0.pdf
                 internalFormat = GL_BGRA_EXT;
                 format = GL_BGRA_EXT;
             }
