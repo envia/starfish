@@ -3178,7 +3178,10 @@ void WebGLRenderingContext::handleTexImageWithArrayBufferView(
             return;
         }
 
-        if ((type == GL_FLOAT) && !isExtensionEnabled("OES_texture_float")) {
+        // In WebGL 2, float upload is a core feature; OES_texture_float is
+        // a WebGL 1 extension and is never exposed on WebGL 2 contexts.
+        if ((type == GL_FLOAT) && !isWebGL2() &&
+            !isExtensionEnabled("OES_texture_float")) {
             setGLError(GL_INVALID_ENUM);
             return;
         }
@@ -3403,7 +3406,9 @@ void WebGLRenderingContext::texImage2D(GLenum target, GLint level,
         },
         [&](const std::vector<GLubyte>& blackData) {
 #if defined(PORT_PIXEL_ORDER_BGRA)
-            if (format == GL_RGBA) {
+            // BGRA8888 is an 8-bit-per-channel format; sized float formats
+            // (e.g. RGBA32F with type FLOAT) must be passed through unchanged.
+            if (format == GL_RGBA && type == GL_UNSIGNED_BYTE) {
                 if (WebGLExtensionRegistry::instance()
                         .hasEXT_texture_format_BGRA8888()) {
                     // According to OpenGL ES specification, the format must
@@ -3485,7 +3490,9 @@ void WebGLRenderingContext::texSubImage2D(
         },
         [&](const std::vector<GLubyte>& blackData) {
 #if defined(PORT_PIXEL_ORDER_BGRA)
-            if (format == GL_RGBA) {
+            // BGRA8888 is an 8-bit-per-channel format; sized float formats
+            // (e.g. RGBA32F with type FLOAT) must be passed through unchanged.
+            if (format == GL_RGBA && type == GL_UNSIGNED_BYTE) {
                 if (WebGLExtensionRegistry::instance()
                         .hasEXT_texture_format_BGRA8888()) {
                     // According to OpenGL ES specification, the format must

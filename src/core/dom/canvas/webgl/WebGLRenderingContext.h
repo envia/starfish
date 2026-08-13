@@ -364,6 +364,10 @@ private:
                                      GLenum type);
     virtual bool isSrcDataValid(ScriptArrayBufferView srcData, GLenum type);
     virtual size_t getBytesPerPixel(GLenum format, GLenum type);
+    virtual bool isWebGL2() const
+    {
+        return false;
+    }
 
     bool m_hasPendingJobsBetweenFrames;
     uint32_t m_pendingClearMask;
