@@ -721,7 +721,7 @@ IF (${HOST} STREQUAL "tizen")
     )
 ENDIF()
 
-IF (${HOST} STREQUAL "linux" OR ${CUSTOM} STREQUAL "prod_tv" OR ${CUSTOM} STREQUAL "unified_tv" OR ${CUSTOM} STREQUAL "unified_mobile" OR ${CUSTOM} STREQUAL "unified_wearable")
+IF (${HOST} STREQUAL "linux" OR ${CUSTOM} STREQUAL "prod_tv" OR ${CUSTOM} STREQUAL "unified_tv" OR ${CUSTOM} STREQUAL "unified_mobile" OR ${CUSTOM} STREQUAL "unified_wearable" OR ${CUSTOM} STREQUAL "headless")
     SET (STARFISH_LIBRARIES_HOST ${STARFISH_LIBRARIES_HOST} websockets_lwe)
 ENDIF()
 
