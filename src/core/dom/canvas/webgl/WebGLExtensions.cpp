@@ -93,7 +93,8 @@ void WebGLExtensionRegistry::initialize(GL* gl)
     V(OES_depth_texture, WEBGL_depth_texture)                         \
     V(EXT_texture_filter_anisotropic, EXT_texture_filter_anisotropic) \
     V(OES_texture_float_linear, OES_texture_float_linear)             \
-    V(EXT_blend_minmax, EXT_blend_minmax)
+    V(EXT_blend_minmax, EXT_blend_minmax)                             \
+    V(EXT_color_buffer_float, EXT_color_buffer_float)
 
 #define V(name, spec)                                                        \
     if (glExtensions.find(#name) != glExtensions.end()) {                    \
