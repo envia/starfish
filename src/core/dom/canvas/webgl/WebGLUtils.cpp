@@ -47,15 +47,27 @@ static size_t getBytesPerPixelWebGL1(GLenum format, GLenum type)
     // Refs: Table 3.4: Valid pixel format and type combinations.
     // https://registry.khronos.org/OpenGL/specs/es/2.0/es_full_spec_2.0.pdf
 
-    if (type == GL_UNSIGNED_BYTE || type == GL_FLOAT) {
-        if (format == GL_RGBA || format == GL_BGRA_EXT) {
-            return 4;
+    // FLOAT comes from OES_texture_float (4 bytes per channel) and
+    // HALF_FLOAT_OES from OES_texture_half_float (2 bytes per channel).
+    size_t bytesPerChannel = 0;
+    if (type == GL_UNSIGNED_BYTE) {
+        bytesPerChannel = 1;
+    } else if (type == GL_HALF_FLOAT_OES) {
+        bytesPerChannel = 2;
+    } else if (type == GL_FLOAT) {
+        bytesPerChannel = 4;
+    }
+
+    if (bytesPerChannel != 0) {
+        if (format == GL_RGBA ||
+            (format == GL_BGRA_EXT && type == GL_UNSIGNED_BYTE)) {
+            return 4 * bytesPerChannel;
         } else if (format == GL_RGB) {
-            return 3;
+            return 3 * bytesPerChannel;
         } else if (format == GL_LUMINANCE_ALPHA) {
-            return 2;
+            return 2 * bytesPerChannel;
         } else if (format == GL_LUMINANCE || format == GL_ALPHA) {
-            return 1;
+            return 1 * bytesPerChannel;
         }
     } else if (type == GL_UNSIGNED_SHORT_4_4_4_4) {
         if (format == GL_RGBA || format == GL_BGRA_EXT) {

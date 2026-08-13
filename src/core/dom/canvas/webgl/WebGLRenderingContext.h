@@ -368,6 +368,8 @@ private:
     {
         return false;
     }
+    GLint promotedWebGL1InternalFormat(GLint internalFormat, GLenum type);
+    GLenum promotedWebGL1Type(GLenum type);
 
     bool m_hasPendingJobsBetweenFrames;
     uint32_t m_pendingClearMask;

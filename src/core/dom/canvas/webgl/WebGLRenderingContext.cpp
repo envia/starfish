@@ -3376,6 +3376,48 @@ bool WebGLRenderingContext::checkInternalFormat(GLint internalFormat,
     return true;
 }
 
+// WebGL 1 runs on top of an ES3 context in this engine, where unsized float
+// formats are not color-renderable. Promote them to their sized counterparts
+// (and the core HALF_FLOAT type) the way browsers do, so that rendering to
+// float textures works on WebGL 1 as well. Only effective when the device
+// GL is ES3-level (proxied by GL_EXT_color_buffer_float being available).
+GLint WebGLRenderingContext::promotedWebGL1InternalFormat(GLint internalFormat,
+                                                          GLenum type)
+{
+    if (isWebGL2() || !WebGLExtensionRegistry::instance()
+                           .getGenerator("EXT_color_buffer_float")
+                           .hasValue()) {
+        return internalFormat;
+    }
+    if (type == GL_FLOAT) {
+        if (internalFormat == GL_RGBA) {
+            return GL_RGBA32F;
+        } else if (internalFormat == GL_RGB) {
+            return GL_RGB32F;
+        }
+    } else if (type == GL_HALF_FLOAT_OES) {
+        if (internalFormat == GL_RGBA) {
+            return GL_RGBA16F;
+        } else if (internalFormat == GL_RGB) {
+            return GL_RGB16F;
+        }
+    }
+    return internalFormat;
+}
+
+GLenum WebGLRenderingContext::promotedWebGL1Type(GLenum type)
+{
+    if (isWebGL2() || !WebGLExtensionRegistry::instance()
+                           .getGenerator("EXT_color_buffer_float")
+                           .hasValue()) {
+        return type;
+    }
+    if (type == GL_HALF_FLOAT_OES) {
+        return GL_HALF_FLOAT;
+    }
+    return type;
+}
+
 void WebGLRenderingContext::texImage2D(GLenum target, GLint level,
                                        GLint internalFormat, GLsizei width,
                                        GLsizei height, GLint border,
@@ -3397,14 +3439,22 @@ void WebGLRenderingContext::texImage2D(GLenum target, GLint level,
         return;
     }
 
+    // Validation and size computations above use the WebGL-level enums; only
+    // the actual GL upload uses the promoted ones.
+    const GLint glInternalFormat =
+        promotedWebGL1InternalFormat(internalFormat, type);
+    const GLenum glType = promotedWebGL1Type(type);
+
     handleTexImageWithArrayBufferView(
         target, level, width, height, format, type, pixels,
         [&](const TexImageHelper* helper) {
             STARFISH_ASSERT(helper != nullptr);
-            m_gl->texImage2D(target, level, internalFormat, width, height, 0,
-                             format, type, helper->data());
+            m_gl->texImage2D(target, level, glInternalFormat, width, height, 0,
+                             format, glType, helper->data());
         },
         [&](const std::vector<GLubyte>& blackData) {
+            GLint uploadInternalFormat = glInternalFormat;
+            GLenum uploadFormat = format;
 #if defined(PORT_PIXEL_ORDER_BGRA)
             // BGRA8888 is an 8-bit-per-channel format; sized float formats
             // (e.g. RGBA32F with type FLOAT) must be passed through unchanged.
@@ -3415,17 +3465,17 @@ void WebGLRenderingContext::texImage2D(GLenum target, GLint level,
                     // match the base internal format (no conversions from
                     // one format to another during texture image processing
                     // are supported.)
-                    internalFormat = GL_BGRA_EXT;
-                    format = GL_BGRA_EXT;
+                    uploadInternalFormat = GL_BGRA_EXT;
+                    uploadFormat = GL_BGRA_EXT;
                 }
             }
 #endif
-            m_gl->texImage2D(target, level, internalFormat, width, height, 0,
-                             format, type, blackData.data());
+            m_gl->texImage2D(target, level, uploadInternalFormat, width, height,
+                             0, uploadFormat, glType, blackData.data());
         },
         [&](const std::vector<GLushort>& blackData) {
-            m_gl->texImage2D(target, level, internalFormat, width, height, 0,
-                             format, type, blackData.data());
+            m_gl->texImage2D(target, level, glInternalFormat, width, height, 0,
+                             format, glType, blackData.data());
         });
 }
 
@@ -3481,14 +3531,19 @@ void WebGLRenderingContext::texSubImage2D(
 {
     ENTER_CONTEXT_SCOPE();
 
+    // See texImage2D: textures allocated with a promoted sized float format
+    // must also be updated with the promoted (core) type.
+    const GLenum glType = promotedWebGL1Type(type);
+
     handleTexImageWithArrayBufferView(
         target, level, width, height, format, type, pixels,
         [&](const TexImageHelper* helper) {
             STARFISH_ASSERT(helper != nullptr);
             m_gl->texSubImage2D(target, level, xoffset, yoffset, width, height,
-                                format, type, helper->data());
+                                format, glType, helper->data());
         },
         [&](const std::vector<GLubyte>& blackData) {
+            GLenum uploadFormat = format;
 #if defined(PORT_PIXEL_ORDER_BGRA)
             // BGRA8888 is an 8-bit-per-channel format; sized float formats
             // (e.g. RGBA32F with type FLOAT) must be passed through unchanged.
@@ -3499,16 +3554,16 @@ void WebGLRenderingContext::texSubImage2D(
                     // match the base internal format (no conversions from
                     // one format to another during texture image processing
                     // are supported.)
-                    format = GL_BGRA_EXT;
+                    uploadFormat = GL_BGRA_EXT;
                 }
             }
 #endif
             m_gl->texSubImage2D(target, level, xoffset, yoffset, width, height,
-                                format, type, blackData.data());
+                                uploadFormat, glType, blackData.data());
         },
         [&](const std::vector<GLushort>& blackData) {
             m_gl->texSubImage2D(target, level, xoffset, yoffset, width, height,
-                                format, type, blackData.data());
+                                format, glType, blackData.data());
         });
 }
 
