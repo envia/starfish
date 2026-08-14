@@ -48,8 +48,12 @@ WebGLExtensionRegistry::WebGLExtensionRegistry()
 {
 }
 
-void WebGLExtensionRegistry::initialize(GL* gl)
+bool WebGLExtensionRegistry::initialize(GL* gl)
 {
+    if (m_isInitialized) {
+        return true;
+    }
+
     // 1. Get a list of extensions supported on this device
     const char* raw =
         reinterpret_cast<const char*>(gl->getString(GL_EXTENSIONS));
@@ -59,7 +63,7 @@ void WebGLExtensionRegistry::initialize(GL* gl)
         STARFISH_LOG_WARN(
             "glGetString(GL_EXTENSIONS) returned null; "
             "the WebGL extension registry stays uninitialized");
-        return;
+        return false;
     }
     const std::string extensions = raw;
 
@@ -143,6 +147,7 @@ void WebGLExtensionRegistry::initialize(GL* gl)
          std::string::npos);
 
     m_isInitialized = true;
+    return true;
 }
 
 GCVector<String*> WebGLExtensionRegistry::getSupportedExtensions()

@@ -176,6 +176,11 @@ void WebGLRenderingContext::preInitialize(ScriptValue contextAttributes)
     }
 }
 
+bool WebGLRenderingContext::ensureExtensionRegistryInitialized()
+{
+    return WebGLExtensionRegistry::instance().initialize(m_gl);
+}
+
 void WebGLRenderingContext::initialize()
 {
     WebGLRenderingContextBaseMixIn::initialize();
@@ -192,13 +197,18 @@ void WebGLRenderingContext::initialize()
 
     // bind default frame buffer
     GLContextScope contextScope(m_context);
+    if (contextScope.hasError()) {
+        TRACE(WEBGL,
+              "\033[33m"
+              "GL Context error detected."
+              "\033[0m");
+        return;
+    }
 
     // The registry queries GL_EXTENSIONS, which needs a current GL context.
     // The constructor runs before any GLContextScope is entered, so this is
     // the earliest point in a context's life where the query is reliable.
-    if (!WebGLExtensionRegistry::instance().isInitialized()) {
-        WebGLExtensionRegistry::instance().initialize(m_gl);
-    }
+    ensureExtensionRegistryInitialized();
 
     m_gl->bindFramebuffer(GL_FRAMEBUFFER, m_framebufferTexture->fbo());
 }
@@ -405,6 +415,9 @@ Optional<GCVector<String*>> WebGLRenderingContext::getSupportedExtensions()
 {
     ENTER_CONTEXT_SCOPE(Optional<GCVector<String*>>());
 
+    if (!ensureExtensionRegistryInitialized()) {
+        return Optional<GCVector<String*>>();
+    }
     return WebGLExtensionRegistry::instance().getSupportedExtensions();
 }
 
@@ -417,6 +430,10 @@ Optional<ScriptObject> WebGLRenderingContext::getExtension(
     String* requestedName)
 {
     ENTER_CONTEXT_SCOPE(Optional<ScriptObject>());
+
+    if (!ensureExtensionRegistryInitialized()) {
+        return Optional<ScriptObject>();
+    }
 
     // TODO: An attempt to use any features of an extension without first
     // calling getExtension to enable it must generate an appropriate GL
@@ -3171,6 +3188,8 @@ void WebGLRenderingContext::handleTexImageWithArrayBufferView(
     std::function<void(const std::vector<GLubyte>&)> updateBlackImage,
     std::function<void(const std::vector<GLushort>&)> updateTwoBytesBlackImage)
 {
+    ensureExtensionRegistryInitialized();
+
     STARFISH_ASSERT(updateImage != nullptr);
     STARFISH_ASSERT(updateBlackImage != nullptr);
     STARFISH_ASSERT(updateTwoBytesBlackImage != nullptr);
@@ -3278,6 +3297,8 @@ void WebGLRenderingContext::handleTexImageWithImageSource(
     const GLenum format, const GLenum type, const TexImageSource& source,
     std::function<void(const TexImageHelper*)> updateImage)
 {
+    ensureExtensionRegistryInitialized();
+
     STARFISH_ASSERT(updateImage != nullptr);
 
     GLsizei width = 0;
@@ -3389,9 +3410,10 @@ bool WebGLRenderingContext::checkInternalFormat(GLint internalFormat,
 GLint WebGLRenderingContext::promotedWebGL1InternalFormat(GLint internalFormat,
                                                           GLenum type)
 {
-    if (isWebGL2() || !WebGLExtensionRegistry::instance()
-                           .getGenerator("EXT_color_buffer_float")
-                           .hasValue()) {
+    if (isWebGL2() || !ensureExtensionRegistryInitialized() ||
+        !WebGLExtensionRegistry::instance()
+             .getGenerator("EXT_color_buffer_float")
+             .hasValue()) {
         return internalFormat;
     }
     if (type == GL_FLOAT) {
@@ -3412,9 +3434,10 @@ GLint WebGLRenderingContext::promotedWebGL1InternalFormat(GLint internalFormat,
 
 GLenum WebGLRenderingContext::promotedWebGL1Type(GLenum type)
 {
-    if (isWebGL2() || !WebGLExtensionRegistry::instance()
-                           .getGenerator("EXT_color_buffer_float")
-                           .hasValue()) {
+    if (isWebGL2() || !ensureExtensionRegistryInitialized() ||
+        !WebGLExtensionRegistry::instance()
+             .getGenerator("EXT_color_buffer_float")
+             .hasValue()) {
         return type;
     }
     if (type == GL_HALF_FLOAT_OES) {

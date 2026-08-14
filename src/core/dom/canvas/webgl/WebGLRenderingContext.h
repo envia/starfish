@@ -329,6 +329,7 @@ protected:
     bool isFromCurrentProgram(WebGLUniformLocation* uniform);
 
 private:
+    bool ensureExtensionRegistryInitialized();
     bool isExtensionEnabled(const char* requestedName);
     bool isDefaultFramebufferBound();
     GLuint getCurrentFBO();
