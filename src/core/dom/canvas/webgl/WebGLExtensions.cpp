@@ -53,7 +53,15 @@ void WebGLExtensionRegistry::initialize(GL* gl)
     // 1. Get a list of extensions supported on this device
     const char* raw =
         reinterpret_cast<const char*>(gl->getString(GL_EXTENSIONS));
-    const std::string extensions = raw ? raw : "";
+    if (raw == nullptr) {
+        // glGetString fails when no GL context is current on this thread.
+        // Stay uninitialized so that a later attempt can retry.
+        STARFISH_LOG_WARN(
+            "glGetString(GL_EXTENSIONS) returned null; "
+            "the WebGL extension registry stays uninitialized");
+        return;
+    }
+    const std::string extensions = raw;
 
     // WebGL uses extension names without the 'GL_' prefix.
     std::vector<std::string> tokens;
@@ -139,6 +147,7 @@ void WebGLExtensionRegistry::initialize(GL* gl)
 
 GCVector<String*> WebGLExtensionRegistry::getSupportedExtensions()
 {
+    STARFISH_ASSERT(m_isInitialized);
     GCVector<String*> extentions;
     for (const auto& pair : m_interfaceGenerators) {
         extentions.push_back(
@@ -150,6 +159,7 @@ GCVector<String*> WebGLExtensionRegistry::getSupportedExtensions()
 Optional<ExtensionGenerator> WebGLExtensionRegistry::getGenerator(
     const std::string& name)
 {
+    STARFISH_ASSERT(m_isInitialized);
     const auto& iter = m_interfaceGenerators.find(name);
     if (iter != m_interfaceGenerators.end()) {
         return iter->second;
