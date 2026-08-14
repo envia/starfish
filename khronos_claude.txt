@@ -1,0 +1,73 @@
+tfjs WebGL2 패치 시리즈 관련 Khronos conformance TC 매핑
+=========================================================
+작성: Claude (2026-08-14)
+기준: tool/reftest/cairo/khronos_webgl.res (WebGL 1.0.3 스위트, 729줄)
+      tool/reftest/cairo/khronos_webgl2.res (WebGL 2.0.0 스위트, 2462줄)
+표기: 줄번호는 위 .res 파일 기준. "비활성" = 현재 '#' 주석으로 실행 제외 상태.
+      관련 TC가 전부 비활성인데, 이 패치들이 고치는 문제(크래시 포함) 때문에
+      빠져 있었을 가능성이 높음 → 패치 랜딩 후 재활성화 후보.
+
+1. 4bce531bd — Register EXT_color_buffer_float WebGL extension
+---------------------------------------------------------------
+- conformance2/extensions/ext-color-buffer-float.html
+  (khronos_webgl2.res:1510, 비활성)
+  확장 존재 + RGBA16F/RGBA32F 렌더 가능성을 직접 검증하는 대표 TC.
+- 참고: conformance2/extensions/promoted-extensions.html (:1513, 비활성)
+  WebGL2 컨텍스트에 WebGL1 확장(OES_texture_float 등)이 노출되면 안 됨을 검사.
+  registry가 버전 무구분이라 이 시리즈 이후에도 실패 예상.
+  → 별도 과제(컨텍스트 버전별 확장 필터링)의 전용 TC.
+- WebGL1에 EXT_color_buffer_float가 노출되는 편차를 직접 잡는 TC는 1.0.3에 없음.
+
+2. 10cf585d8 — Fix float texture uploads in tex image paths
+---------------------------------------------------------------
+- conformance2/textures/misc/tex-new-formats.html (khronos_webgl2.res:1602, 비활성)
+  RGBA32F 등 sized format 업로드. WebGL2에서 OES_texture_float 검사 때문에
+  INVALID_ENUM 나던 버그(두 번째 버그)의 직접 TC.
+- conformance2/textures/misc/tex-input-validation.html (:1600, 비활성)
+- conformance2/textures/misc/tex-image-with-bad-args.html (:1597, 비활성)
+- conformance/extensions/oes-texture-float.html (khronos_webgl.res:63, 비활성)
+  확장 enable 전 FLOAT 업로드는 실패해야 한다는 케이스 포함
+  → isWebGL2() 게이트가 WebGL1 동작을 보존하는지 반대 방향 커버.
+- BGRA 재작성 버그(첫 번째 버그)는 vendor 확장(EXT_texture_format_BGRA8888)
+  경로라 전용 khronos TC 없음. 위 업로드 계열 +
+  conformance/textures/misc/tex-image-with-format-and-type.html
+  (khronos_webgl2.res:566, 비활성)이 간접 커버.
+
+3. 126df1bb4 — Implement readPixels into PIXEL_PACK_BUFFER
+---------------------------------------------------------------
+- conformance2/reading/read-pixels-into-pixel-pack-buffer.html
+  (khronos_webgl2.res:1559, 비활성) — 이 오버로드의 직접 TC.
+- conformance2/reading/read-pixels-pack-parameters.html (:1560, 비활성)
+- conformance2/reading/read-pixels-from-fbo-test.html (:1558, 비활성)
+- 인접 TC: conformance2/buffers/get-buffer-sub-data.html (:1503, 현재 활성)
+  readback 뒷단(getBufferSubData)은 이미 돌고 있음. 회귀 감시용으로 유지.
+
+4. 65b32f585 — Fix WebGL1 float texture size and renderability
+---------------------------------------------------------------
+- conformance/extensions/oes-texture-float.html (khronos_webgl.res:63, 비활성)
+  null 업로드(크기 계산)와 float RTT(unsized→sized promotion 효과) 직접 커버.
+- conformance/extensions/oes-texture-half-float.html (:69, 비활성)
+  HALF_FLOAT_OES가 0바이트로 계산되어 프로세스 크래시 나던 버그의 재현 TC.
+- 부분 관련: oes-texture-float-linear (:64), oes-texture-half-float-linear (:70)
+- 주의: oes-texture-float-with-canvas/-image/-image-data/-video (:65-68),
+  oes-texture-half-float-with-canvas/-image-data (:71-72...)는 DOM 소스 업로드
+  경로라 이 패치 범위(ArrayBufferView 경로) 밖 → 재활성화해도 실패 가능.
+- 광범위 TC: conformance/renderbuffers/framebuffer-object-attachment.html (:593),
+  framebuffer-test.html (:595) — 커버 범위가 넓어 단독 판정용으론 부적합.
+
+공통 전제: extension registry 초기화 타이밍 버그
+---------------------------------------------------------------
+khronos TC 페이지들은 대부분 로드 중 동기적으로 WebGL 컨텍스트를 만들므로,
+registry 초기화 타이밍 버그(첫 컨텍스트가 동기 생성이면 프로세스 전체 확장이
+빈 채로 고정)의 영향권. 그 상태에선 확장 계열 TC가 "확장 없음"으로 스킵/실패
+→ 패치가 맞아도 TC가 안 켜질 수 있음. khronos로 이 시리즈를 게이팅하려면
+registry 초기화 수정(생성자 → getContext 흐름의 initialize() 내 GLContextScope
+아래로 이동 + raw==NULL 시 no-latch)이 사실상 선행 조건.
+
+비고
+---------------------------------------------------------------
+- 이 매핑은 코드 경로 분석 기준이며 실제 TC 실행 결과는 아님.
+  일부 TC(tex-image-with-format-and-type, framebuffer-object-attachment 등)는
+  커버 범위가 넓어 패치와 무관한 이유로 계속 실패할 수 있음.
+- 로컬 스위트 위치: test/cairo/reftest/vendor/khronos/webgl/{1.0.3, 2.0.0, sdk}
+- 실행 타깃(Makefile): make webgl1 / webgl2 / webglsdk

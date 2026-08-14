@@ -1,0 +1,306 @@
+github_r TFJS 지원 패치별 관련 Khronos WebGL 테스트
+====================================================
+
+대상 패치
+---------
+
+- 3c2970edf: EXT_color_buffer_float 등록
+- 10cf585d8: float texture upload 경로 수정
+- 126df1bb4: PIXEL_PACK_BUFFER 대상으로 readPixels 구현
+- 65b32f585: WebGL 1 float/half-float texture 크기 및 renderability 수정
+
+
+1. 3c2970edf — EXT_color_buffer_float 등록
+------------------------------------------
+
+가장 직접적인 테스트:
+
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/
+  conformance2/extensions/ext-color-buffer-float.html
+
+이 테스트는 다음을 직접 확인한다.
+
+- getExtension("EXT_color_buffer_float") 반환값
+- 같은 extension을 여러 번 요청했을 때의 일관성
+- extension 활성화 전후의 float color-buffer 동작
+- float texture/renderbuffer internal format
+- texSubImage2D 및 readPixels 경로
+
+현재 관련 결과 목록:
+
+tool/reftest/cairo/khronos_webgl2.res:1510
+
+WebGL 버전별 registry 노출 여부를 함께 검증할 때 중요한 테스트:
+
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/
+  conformance2/extensions/promoted-extensions.html
+
+현재 관련 결과 목록:
+
+tool/reftest/cairo/khronos_webgl2.res:1513
+
+보조 안정성 테스트:
+
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/
+  conformance2/misc/getextension-while-pbo-bound-stability.html
+
+현재 관련 결과 목록:
+
+tool/reftest/cairo/khronos_webgl2.res:1550
+
+주의할 점:
+
+- 고정된 Khronos corpus에는 WebGL 1에서
+  EXT_color_buffer_float가 반드시 null이어야 한다는 것을 직접 겨냥한
+  테스트가 보이지 않는다.
+- conformance/extensions/get-extension.html은 advertised extension과
+  getExtension 결과의 일관성을 주로 검사하므로, WebGL 1에서 지원하면 안 되는
+  extension을 양쪽 모두에 잘못 노출한 경우까지 잡아내지는 못한다.
+- 따라서 WebGL 1 context에서는 EXT_color_buffer_float가 supported list에 없고
+  getExtension도 null을 반환한다는 internal regression test가 필요하다.
+
+
+2. 10cf585d8 — float texture upload 경로 수정
+------------------------------------------------
+
+가장 직접적인 테스트:
+
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/
+  conformance2/textures/misc/tex-new-formats.html
+
+주요 확인 범위:
+
+- RGBA16F + HALF_FLOAT
+- RGBA32F + FLOAT
+- RGBA16F + FLOAT
+- WebGL 2에서 OES_texture_float 없이 typed-array 기반
+  texImage2D/texSubImage2D가 동작하는지
+
+현재 관련 결과 목록:
+
+tool/reftest/cairo/khronos_webgl2.res:1602
+
+PORT_PIXEL_ORDER_BGRA 처리와 null-pixel FLOAT upload 경로를 확인하는 테스트:
+
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/
+  conformance2/extensions/ext-color-buffer-float.html
+
+현재 관련 결과 목록:
+
+tool/reftest/cairo/khronos_webgl2.res:1510
+
+관련 회귀 테스트:
+
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/
+  conformance2/textures/misc/tex-mipmap-levels.html
+  conformance2/textures/misc/tex-image-and-sub-image-with-array-buffer-view-sub-source.html
+  conformance2/textures/misc/tex-image-with-bad-args.html
+
+현재 관련 결과 목록:
+
+- tex-mipmap-levels.html: khronos_webgl2.res:1601
+- tex-image-and-sub-image-with-array-buffer-view-sub-source.html:
+  khronos_webgl2.res:1596
+- tex-image-with-bad-args.html: khronos_webgl2.res:1597
+
+주의할 점:
+
+- tex-new-formats.html은 texStorage와 3D texture 등도 함께 검사한다.
+- Starfish의 다른 WebGL 2 API가 아직 구현되지 않았다면 이번 패치와 무관한
+  이유로 전체 테스트가 실패할 수 있다.
+- 그 경우 이번 수정이 담당하는 2D FLOAT/HALF_FLOAT upload 조합만 좁게
+  검증하는 internal test를 추가하는 편이 좋다.
+
+
+3. 126df1bb4 — PIXEL_PACK_BUFFER 대상으로 readPixels 구현
+-----------------------------------------------------------
+
+가장 직접적인 테스트:
+
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/
+  conformance2/reading/read-pixels-into-pixel-pack-buffer.html
+
+이 테스트는 다음을 확인한다.
+
+- PIXEL_PACK_BUFFER bind 여부
+- offset overload 사용
+- 음수 offset
+- buffer range 및 buffer size 검증
+- 음수 width/height
+- format/type 조합
+- typed-array overload와 PBO offset overload의 충돌 처리
+
+현재 관련 결과 목록:
+
+tool/reftest/cairo/khronos_webgl2.res:1559
+
+PACK 파라미터와 필요한 buffer 크기를 확인하는 테스트:
+
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/
+  conformance2/reading/read-pixels-pack-parameters.html
+
+검사 범위:
+
+- PACK_ALIGNMENT
+- PACK_ROW_LENGTH
+- PACK_SKIP_PIXELS
+- PACK_SKIP_ROWS
+- 위 상태를 반영한 PBO 크기 검증
+
+현재 관련 결과 목록:
+
+tool/reftest/cairo/khronos_webgl2.res:1560
+
+happy-path 종단 테스트:
+
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/
+  conformance2/reading/read-pixels-from-rgb8-into-pbo-bug.html
+
+이 테스트는 framebuffer에서 PBO로 readPixels한 뒤 getBufferSubData로
+결과를 꺼내 확인한다. 다만 현재 00_test_list의 최소 버전 조건이 2.0.1이라
+khronos_webgl2.res에 포함되지 않은 것으로 보인다.
+
+후속 API 테스트:
+
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/
+  conformance2/buffers/get-buffer-sub-data.html
+
+현재 활성 상태:
+
+tool/reftest/cairo/khronos_webgl2.res:1503
+
+TFJS pipeline의 보조 테스트:
+
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/
+  conformance2/sync/sync-webgl-specific.html
+
+현재 활성 상태:
+
+tool/reftest/cairo/khronos_webgl2.res:1589
+
+이 테스트는 126df1bb4 자체를 직접 검증하는 것은 아니지만, TFJS가 사용하는
+PBO/readback/synchronization 흐름의 동반 회귀 테스트로 유용하다.
+
+참고로 read-pixels-from-fbo-test.html은 typed array 대상으로 readPixels를
+호출하므로 PBO offset overload를 직접 검증하는 테스트는 아니다.
+
+
+4. 65b32f585 — WebGL 1 float texture 크기 및 renderability 수정
+-----------------------------------------------------------------
+
+WebGL 1 FLOAT texture의 가장 직접적인 테스트:
+
+test/cairo/reftest/vendor/khronos/webgl/1.0.3/
+  conformance/extensions/oes-texture-float.html
+
+검사 범위:
+
+- OES_texture_float extension gating
+- FLOAT typed-array upload
+- null data upload
+- texSubImage2D
+- 지원되는 format/type 조합
+- 선택적인 framebuffer attachment/readback 경로
+
+현재 관련 결과 목록:
+
+tool/reftest/cairo/khronos_webgl.res:63
+
+WebGL 1 HALF_FLOAT_OES texture의 가장 직접적인 테스트:
+
+test/cairo/reftest/vendor/khronos/webgl/1.0.3/
+  conformance/extensions/oes-texture-half-float.html
+
+검사 범위:
+
+- OES_texture_half_float extension gating
+- HALF_FLOAT_OES upload
+- null/non-null data
+- 지원되는 format
+- 잘못된 typed array 전달
+- 선택적인 framebuffer attachment
+
+현재 관련 결과 목록:
+
+tool/reftest/cairo/khronos_webgl.res:69
+
+보조 테스트:
+
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/
+  conformance/extensions/ext-color-buffer-half-float.html
+
+현재 관련 결과 목록:
+
+tool/reftest/cairo/khronos_webgl2.res:53
+
+다만 Starfish가 EXT_color_buffer_half_float를 노출하지 않으면 이 테스트는
+skip되므로 65b32f585의 핵심 회귀를 반드시 잡아준다고 볼 수는 없다.
+
+중요한 coverage gap:
+
+- oes-texture-float.html은 FLOAT texture를 framebuffer에 붙였을 때
+  framebuffer가 incomplete인 구현도 합법적인 결과로 허용한다.
+- 따라서 65b32f585의 TFJS 목적, 즉 WebGL 1에서 native
+  EXT_color_buffer_float capability를 이용해 RGBA/FLOAT texture를 실제로
+  renderable하게 만드는 동작은 이 Khronos 테스트만으로 강제되지 않는다.
+- 다음 순서를 검증하는 internal regression test가 별도로 필요하다.
+
+  1. WebGL 1 context 생성
+  2. OES_texture_float 활성화
+  3. RGBA/FLOAT texture 생성 및 upload
+  4. framebuffer에 attach
+  5. FRAMEBUFFER_COMPLETE 확인
+  6. draw
+  7. readPixels 결과값 확인
+
+HALF_FLOAT_OES까지 같은 방식으로 지원하려는 경우에는 half-float용 테스트도
+같은 구조로 추가하는 것이 좋다.
+
+
+우선 활성화할 최소 Khronos 테스트 묶음
+-----------------------------------------
+
+tool/reftest/cairo/khronos_webgl.res:
+
+- conformance/extensions/oes-texture-float.html
+- conformance/extensions/oes-texture-half-float.html
+
+tool/reftest/cairo/khronos_webgl2.res:
+
+- conformance2/extensions/ext-color-buffer-float.html
+- conformance2/extensions/promoted-extensions.html
+- conformance2/textures/misc/tex-new-formats.html
+- conformance2/reading/read-pixels-into-pixel-pack-buffer.html
+- conformance2/reading/read-pixels-pack-parameters.html
+
+
+실행 방법
+---------
+
+xvfb-run -s '-screen 0 1920x1080x24' -a \
+  ./tool/runner/test_runner.py \
+  vendor_test_khronos vendor_test_khronos2
+
+주의:
+
+- 관련 테스트만 확인하려고 test runner의 -f 옵션을 사용하면 안 된다.
+  이 옵션은 이번 패치와 무관한 모든 commented known-failure까지 강제로
+  실행한다.
+- .res에서 주석 처리된 항목은 추적 중인 known failure다. 단순히 테스트를
+  green으로 만들 목적으로 삭제하거나 임의로 주석 상태를 바꾸면 안 된다.
+- 테스트를 활성화할 때는 해당 항목만 수동으로 uncomment하고, 패치 전후
+  결과를 비교한 뒤 실제 남은 실패를 다시 annotation해야 한다.
+
+
+요약
+----
+
+- 3c2970edf: ext-color-buffer-float.html이 핵심이고,
+  WebGL 1 비노출 여부는 internal test가 필요하다.
+- 10cf585d8: tex-new-formats.html이 핵심이지만 다른 미구현 WebGL 2 기능 때문에
+  실패할 수 있어 좁은 upload regression test가 유용하다.
+- 126df1bb4: read-pixels-into-pixel-pack-buffer.html과
+  read-pixels-pack-parameters.html을 반드시 함께 봐야 한다.
+- 65b32f585: oes-texture-float.html과 oes-texture-half-float.html이 기본이지만,
+  TFJS가 요구하는 WebGL 1 float renderability는 별도 internal test로
+  보강해야 한다.
