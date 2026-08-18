@@ -235,6 +235,11 @@ machine with a live desktop session: the suites launch Starfish instances
 8-way in parallel, which spikes load on a real X server, and the fixed
 virtual screen keeps pixel/reftest comparisons reproducible.
 
+The CI `reftest_all` jobs also set `LP_NUM_THREADS=4`. The runners use Mesa
+llvmpipe for Xvfb's X11 rendering when hardware acceleration is unavailable.
+This caps each software-rendering context's worker pool without reducing the
+test runner's process parallelism.
+
 ### Summary
 ``` sh
 # Run all test at once
