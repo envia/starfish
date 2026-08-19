@@ -33,6 +33,9 @@
 #include "core/modules/renderer/Renderer.h"
 #include "core/modules/canvas/CompositorFactory.h"
 #include "core/dom/canvas/webgl/gl/SurfaceCreationScope.h"
+#if defined(STARFISH_ENABLE_WEBGL)
+#include "core/dom/canvas/webgl/gl/GLContext.h"
+#endif
 
 #if defined(STARFISH_USE_FFMPEG_MEDIAPLAYER)
 #include "platform/multimedia/MediaPlayerLinux.h"
@@ -2855,6 +2858,13 @@ public:
                     m_bufferWidth * m_bufferHeight * sizeof(uint32_t);
             }
 
+#if defined(STARFISH_ENABLE_WEBGL)
+            // A GC finalizer can reach here while a WebGL API call's
+            // GLContextScope is active. Preserve that context because the
+            // compositor context selected below would otherwise leak back into
+            // the interrupted WebGL call.
+            GLContext contextToRestore = GLContextScope::getCurrentGLContext();
+#endif
             bool ret = m_renderer->makeCurrent();
             if (m_isEGLImageExternal) {
 #if defined(STARFISH_TIZEN) || \
@@ -2920,6 +2930,11 @@ public:
             m_bufferHeight = m_height = 0;
 
             m_isEGLBufferOwner = m_isEGLImageExternal = false;
+#if defined(STARFISH_ENABLE_WEBGL)
+            if (contextToRestore.isValid() && !contextToRestore.setCurrent()) {
+                STARFISH_LOG_WARN("Failed to restore WebGL context.");
+            }
+#endif
         }
     }
 
