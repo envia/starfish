@@ -48,6 +48,8 @@ jobs:
             git config --global http.sslVerify false
             git config --global --add safe.directory /__w/starfish/starfish
             git config submodule.third_party/wpt.update none
+            # Reused runners may retain stale local URLs for these submodules.
+            git submodule sync -- binding_generator third_party
             git submodule update --init binding_generator third_party
             cd third_party/escargot
             git submodule update --init third_party
