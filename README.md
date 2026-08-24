@@ -25,7 +25,7 @@ sudo apt-get install -y \
     libx11-dev libxext-dev libxrender-dev libxi-dev \
     libegl-dev libgles-dev libgl1-mesa-dev \
     libpng-dev libturbojpeg0-dev libgif-dev libwebp-dev \
-    libcurl4-openssl-dev libssl-dev libicu-dev libcap-dev libasound2-dev zlib1g-dev
+    libcurl4-openssl-dev libssl-dev libicu-dev libcap-dev libasound2-dev zlib1g-dev libjpeg-dev
 
 # optional for zeromq.
 sudo apt-get install -y asciidoc xmlto
