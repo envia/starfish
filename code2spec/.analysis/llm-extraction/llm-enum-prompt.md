@@ -50,67 +50,67 @@ In addition to standard enum declarations, extract these patterns:
 # Languages: c (118), cpp (150), java (11), javascript (8), python (43)
 
 ## Enum Definitions
-- [c] class | ? | /home/hwang/starfish/compat/tizen_5.0/inc/LWEWebView.h:50
-- [c] class | ? | /home/hwang/starfish/compat/tizen_5.0/inc/LWEWebView.h:184
-- [javascript] generateFlagTag | ? | /home/hwang/starfish/docs/webpages/webapi/webapi_main.js:53
-- [c] class | ? | /home/hwang/starfish/inc/LWEWebView.h:58
-- [c] class | ? | /home/hwang/starfish/inc/LWEWebView.h:194
-- [c] class | ? | /home/hwang/starfish/inc/LWEWorker.h:44
-- [c] KeyValue | UnidentifiedKey=auto, AltLeftKey=auto, AltRightKey=auto, ControlLeftKey=auto, ControlRightKey=auto, CapsLockKey=auto, FnKey=auto, FnLockKey=auto, HyperKey=auto, MetaKey=auto, NumLockKey=auto, ScrollLockKey=auto, ShiftLeftKey=auto, ShiftRightKey=auto, SuperKey=auto, SymbolKey=auto, SymbolLockKey=auto, EnterKey=auto, TabKey=auto, ArrowDownKey=auto | /home/hwang/starfish/inc/PlatformIntegrationData.h:7
-- [c] MouseButtonValue | NoButton=0, LeftButton=0, MiddleButton=1, RightButton=2 | /home/hwang/starfish/inc/PlatformIntegrationData.h:239
-- [c] MouseButtonsValue | NoButtonDown=0, LeftButtonDown=1, RightButtonDown=auto, MiddleButtonDown=auto | /home/hwang/starfish/inc/PlatformIntegrationData.h:246
-- [c] TTSMode | Default=0, Forced=1 | /home/hwang/starfish/inc/PlatformIntegrationData.h:253
-- [c] class | ? | /home/hwang/starfish/inc/PlatformIntegrationData.h:258
-- [c] class | ? | /home/hwang/starfish/inc/PlatformIntegrationData.h:260
-- [c] class | ? | /home/hwang/starfish/src/Starfish.h:43
-- [c] ENSURE_ENUM_UNSIGNED | ? | /home/hwang/starfish/src/StarfishBase.h:184
-- [c] ENSURE_ENUM_UNSIGNED | ? | /home/hwang/starfish/src/StarfishBase.h:186
-- [c] NullOptionType | NullOption=auto | /home/hwang/starfish/src/StarfishBase.h:591
-- [c] class | ? | /home/hwang/starfish/src/browser/history/HistoryManager.h:33
-- [c] HistoryManagerOwner | OwnerIsWebView=auto, OwnerIsHTMLIFrame=auto | /home/hwang/starfish/src/browser/history/HistoryManager.h:119
-- [cpp] setDoneFlag | ? | /home/hwang/starfish/src/launcher/ServiceWorkerEntry.cpp:32
-- [cpp] setDoneFlag | ? | /home/hwang/starfish/src/launcher/SharedWorkerEntry.cpp:32
-- [cpp] Command | MoveTo=auto, LineTo=auto, ArcNegative=auto | /home/hwang/starfish/src/platform/canvas/CompositorGL.cpp:477
-- [c] class | ? | /home/hwang/starfish/src/platform/canvas/PathCairo.h:26
-- [c] class | ? | /home/hwang/starfish/src/platform/canvas/PathMock.h:25
-- [c] GLenum | ? | /home/hwang/starfish/src/platform/canvas/gl/GLTypes.h:27
-- [c] FileMode | Read=1, Write=auto, ReadWrite=auto | /home/hwang/starfish/src/platform/file/PlatformFile.h:35
-- [c] Whence | SEEK_SET=auto, SEEK_CUR=auto, SEEK_END=auto | /home/hwang/starfish/src/platform/file/PlatformFile.h:41
-- [c] State | BeforeSend=auto, Receiving=auto, Finished=auto, Failed=auto, Canceled=auto | /home/hwang/starfish/src/platform/loader/Resource.h:42
-- [c] Type | ResourceType=auto, ImageResourceType=auto, TextResourceType=auto, FontResourceType=auto | /home/hwang/starfish/src/platform/loader/Resource.h:50
-- [c] Protocol | FILE_PROTOCOL=auto, BLOB_PROTOCOL=auto, DATA_PROTOCOL=auto, ABOUT_PROTOCOL=auto, HTTP_PROTOCOL=auto, HTTPS_PROTOCOL=auto, JAVASCRIPT_PROTOCOL=auto, WS_PROTOCOL=auto, WSS_PROTOCOL=auto, UNKNOWN=auto | /home/hwang/starfish/src/platform/loader/ResourceURL.h:35
-- [c] Protocol | ? | /home/hwang/starfish/src/platform/loader/ResourceURL.h:253
-- [c] class | ? | /home/hwang/starfish/src/platform/loader/ResourceURL.h:282
-- [cpp] RendezvousOwner | None=auto, MainBlockedOnLWE=auto, LWEPausingMain=auto | /home/hwang/starfish/src/platform/message_loop/MessageLoopGLib.cpp:99
-- [c] SeekWhence | SeekWhenceSet=auto, SeekWhenceCurrent=auto, SeekWhenceEnd=auto, SeekWhenceLookSize=auto | /home/hwang/starfish/src/platform/multimedia/DemuxerSource.h:26
-- [c] PlaybackState | PLAYBACK_STATE_NONE=auto, PLAYBACK_STATE_PLAYING=auto, PLAYBACK_STATE_PAUSED=auto, PLAYBACK_STATE_END=auto | /home/hwang/starfish/src/platform/multimedia/MediaPlayer.h:67
-- [c] SeekState | SEEKSTATE_NO_SEEK=auto, SEEKSTATE_SEEKING=auto, SEEKSTATE_WAITING=auto | /home/hwang/starfish/src/platform/multimedia/MediaPlayer.h:73
-- [c] class | ? | /home/hwang/starfish/src/platform/multimedia/MediaPlayerLinux.h:163
-- [c] StreamType | StreamTypeUnknown=1, StreamTypeAudio=auto, StreamTypeVideo=auto, StreamTypeSubtitle=auto | /home/hwang/starfish/src/platform/multimedia/StreamInfo.h:52
-- [c] MediaCodec | MediaCodecUnknown=auto, MediaCodecAudioAAC=auto, MediaCodecAudioMP3=auto, MediaCodecAudioVorbis=auto, MediaCodecAudioOpus=auto, MediaCodecVideoH264=auto, MediaCodecVideoHEVC=auto, MediaCodecVideoVP9=auto, MediaCodecVideoAV1=auto | /home/hwang/starfish/src/platform/multimedia/StreamInfo.h:59
-- [c] AudioSampleFormat | AudioSampleFormatNone=-1, AudioSampleFormatU8=auto, AudioSampleFormatS16=auto, AudioSampleFormatS32=auto, AudioSampleFormatFLT=auto, AudioSampleFormatDBL=auto, AudioSampleFormatU8P=auto, AudioSampleFormatS16P=auto, AudioSampleFormatS32P=auto, AudioSampleFormatFLTP=auto, AudioSampleFormatDBLP=auto | /home/hwang/starfish/src/platform/multimedia/StreamInfo.h:73
-- [c] HTTPStatusCode | ? | /home/hwang/starfish/src/platform/network/http/HTTPStatus.h:94
-- [c] ScreenOrientationType | ScreenOrientationUndefined=0, ScreenOrientationPortraitPrimary=auto, ScreenOrientationPortraitSecondary=auto, ScreenOrientationLandscapePrimary=auto, ScreenOrientationLandscapeSecondary=auto | /home/hwang/starfish/src/platform/public/ScreenOrientationType.h:24
-- [c] class | ? | /home/hwang/starfish/src/public/LWEDelegateLoader.h:34
-- [c] class | ? | /home/hwang/starfish/src/public/LWELoaderUtils.h:29
-- [c] class | ? | /home/hwang/starfish/src/public/LWEWorkerDelegateLoader.h:31
-- [java] ImeComposingStatus | NORMAL=auto, COMPOSING_START=auto, COMPOSING_END=auto | type: int | /home/hwang/starfish/src/public/bridge/android/java/com/samsung/android/lightweightwebengine/internal/LweWebViewImpl.java:93
-- [cpp] Owner | FREE=auto, ENGINE=auto, READY=auto, PRESENTING=auto | /home/hwang/starfish/src/public/bridge/ecore_wl2/LWEWebViewEcoreWl2.cpp:190
-- [cpp] Owner | FREE=auto, ENGINE=auto, READY=auto, DISPLAYING=auto | /home/hwang/starfish/src/public/bridge/efl/LWEWebViewEFL.cpp:153
-- [cpp] PORT_WINDOW_BACKEND | GB=auto, GL=auto, HEADLESS=auto | /home/hwang/starfish/src/public/bridge/flutter/LWEWebViewFlutter.cpp:82
-- [cpp] PORT_COMPOSITOR_BACKEND | CAIRO=auto, GL=auto, MOCK=auto | /home/hwang/starfish/src/public/bridge/flutter/LWEWebViewFlutter.cpp:83
-- [c] class | ? | /home/hwang/starfish/src/public/contract/LWEWorkerDelegate.h:28
-- [cpp] StarfishStartUpFlag | enableComputedStyleDump=auto, enableFrameTreeDump=auto, enableStackingContextDump=auto, enableHitTestDump=auto, enableDebugGraphicsLayer=auto, enableDebugRepaintRegion=auto, enableRegressionTest=auto | /home/hwang/starfish/src/shell/MiniBrowser.cpp:34
-- [c] class | ? | /home/hwang/starfish/src/shell/WindowKeyType.h:25
-- [c] class | ? | /home/hwang/starfish/src/shell/WindowKeyType.h:44
-- [c] class | ? | /home/hwang/starfish/src/shell/WindowKeyType.h:49
-- [cpp] setDoneFlag | ? | /home/hwang/starfish/src/shell/libuv/AppLoopLibuv.cpp:39
-- [cpp] GLenum | ? | /home/hwang/starfish/src/shell/windows/RendererWGL.cpp:36
-- [python] ABIDW_FLAGS | ? | /home/hwang/starfish/tool/lint/check_contract_abi.py:117
-- [python] COMPILE_FLAGS | ? | /home/hwang/starfish/tool/lint/check_contract_abi.py:128
-- [python] ENUM_RE | ? | /home/hwang/starfish/tool/lint/check_contract_abi.py:136
-- [python] extract_enum_fp | ? | /home/hwang/starfish/tool/lint/check_contract_abi.py:438
-- [python] _fixture_enum_renumber | ? | /home/hwang/starfish/tool/lint/check_contract_abi.py:1112
-- [python] enumerate_tests | ? | /home/hwang/starfish/tool/wpt/scripts/wpt_status.py:136
+- [c] class | ? | compat/tizen_5.0/inc/LWEWebView.h:50
+- [c] class | ? | compat/tizen_5.0/inc/LWEWebView.h:184
+- [javascript] generateFlagTag | ? | docs/webpages/webapi/webapi_main.js:53
+- [c] class | ? | inc/LWEWebView.h:58
+- [c] class | ? | inc/LWEWebView.h:194
+- [c] class | ? | inc/LWEWorker.h:44
+- [c] KeyValue | UnidentifiedKey=auto, AltLeftKey=auto, AltRightKey=auto, ControlLeftKey=auto, ControlRightKey=auto, CapsLockKey=auto, FnKey=auto, FnLockKey=auto, HyperKey=auto, MetaKey=auto, NumLockKey=auto, ScrollLockKey=auto, ShiftLeftKey=auto, ShiftRightKey=auto, SuperKey=auto, SymbolKey=auto, SymbolLockKey=auto, EnterKey=auto, TabKey=auto, ArrowDownKey=auto | inc/PlatformIntegrationData.h:7
+- [c] MouseButtonValue | NoButton=0, LeftButton=0, MiddleButton=1, RightButton=2 | inc/PlatformIntegrationData.h:239
+- [c] MouseButtonsValue | NoButtonDown=0, LeftButtonDown=1, RightButtonDown=auto, MiddleButtonDown=auto | inc/PlatformIntegrationData.h:246
+- [c] TTSMode | Default=0, Forced=1 | inc/PlatformIntegrationData.h:253
+- [c] class | ? | inc/PlatformIntegrationData.h:258
+- [c] class | ? | inc/PlatformIntegrationData.h:260
+- [c] class | ? | src/Starfish.h:43
+- [c] ENSURE_ENUM_UNSIGNED | ? | src/StarfishBase.h:184
+- [c] ENSURE_ENUM_UNSIGNED | ? | src/StarfishBase.h:186
+- [c] NullOptionType | NullOption=auto | src/StarfishBase.h:591
+- [c] class | ? | src/browser/history/HistoryManager.h:33
+- [c] HistoryManagerOwner | OwnerIsWebView=auto, OwnerIsHTMLIFrame=auto | src/browser/history/HistoryManager.h:119
+- [cpp] setDoneFlag | ? | src/launcher/ServiceWorkerEntry.cpp:32
+- [cpp] setDoneFlag | ? | src/launcher/SharedWorkerEntry.cpp:32
+- [cpp] Command | MoveTo=auto, LineTo=auto, ArcNegative=auto | src/platform/canvas/CompositorGL.cpp:477
+- [c] class | ? | src/platform/canvas/PathCairo.h:26
+- [c] class | ? | src/platform/canvas/PathMock.h:25
+- [c] GLenum | ? | src/platform/canvas/gl/GLTypes.h:27
+- [c] FileMode | Read=1, Write=auto, ReadWrite=auto | src/platform/file/PlatformFile.h:35
+- [c] Whence | SEEK_SET=auto, SEEK_CUR=auto, SEEK_END=auto | src/platform/file/PlatformFile.h:41
+- [c] State | BeforeSend=auto, Receiving=auto, Finished=auto, Failed=auto, Canceled=auto | src/platform/loader/Resource.h:42
+- [c] Type | ResourceType=auto, ImageResourceType=auto, TextResourceType=auto, FontResourceType=auto | src/platform/loader/Resource.h:50
+- [c] Protocol | FILE_PROTOCOL=auto, BLOB_PROTOCOL=auto, DATA_PROTOCOL=auto, ABOUT_PROTOCOL=auto, HTTP_PROTOCOL=auto, HTTPS_PROTOCOL=auto, JAVASCRIPT_PROTOCOL=auto, WS_PROTOCOL=auto, WSS_PROTOCOL=auto, UNKNOWN=auto | src/platform/loader/ResourceURL.h:35
+- [c] Protocol | ? | src/platform/loader/ResourceURL.h:253
+- [c] class | ? | src/platform/loader/ResourceURL.h:282
+- [cpp] RendezvousOwner | None=auto, MainBlockedOnLWE=auto, LWEPausingMain=auto | src/platform/message_loop/MessageLoopGLib.cpp:99
+- [c] SeekWhence | SeekWhenceSet=auto, SeekWhenceCurrent=auto, SeekWhenceEnd=auto, SeekWhenceLookSize=auto | src/platform/multimedia/DemuxerSource.h:26
+- [c] PlaybackState | PLAYBACK_STATE_NONE=auto, PLAYBACK_STATE_PLAYING=auto, PLAYBACK_STATE_PAUSED=auto, PLAYBACK_STATE_END=auto | src/platform/multimedia/MediaPlayer.h:67
+- [c] SeekState | SEEKSTATE_NO_SEEK=auto, SEEKSTATE_SEEKING=auto, SEEKSTATE_WAITING=auto | src/platform/multimedia/MediaPlayer.h:73
+- [c] class | ? | src/platform/multimedia/MediaPlayerLinux.h:163
+- [c] StreamType | StreamTypeUnknown=1, StreamTypeAudio=auto, StreamTypeVideo=auto, StreamTypeSubtitle=auto | src/platform/multimedia/StreamInfo.h:52
+- [c] MediaCodec | MediaCodecUnknown=auto, MediaCodecAudioAAC=auto, MediaCodecAudioMP3=auto, MediaCodecAudioVorbis=auto, MediaCodecAudioOpus=auto, MediaCodecVideoH264=auto, MediaCodecVideoHEVC=auto, MediaCodecVideoVP9=auto, MediaCodecVideoAV1=auto | src/platform/multimedia/StreamInfo.h:59
+- [c] AudioSampleFormat | AudioSampleFormatNone=-1, AudioSampleFormatU8=auto, AudioSampleFormatS16=auto, AudioSampleFormatS32=auto, AudioSampleFormatFLT=auto, AudioSampleFormatDBL=auto, AudioSampleFormatU8P=auto, AudioSampleFormatS16P=auto, AudioSampleFormatS32P=auto, AudioSampleFormatFLTP=auto, AudioSampleFormatDBLP=auto | src/platform/multimedia/StreamInfo.h:73
+- [c] HTTPStatusCode | ? | src/platform/network/http/HTTPStatus.h:94
+- [c] ScreenOrientationType | ScreenOrientationUndefined=0, ScreenOrientationPortraitPrimary=auto, ScreenOrientationPortraitSecondary=auto, ScreenOrientationLandscapePrimary=auto, ScreenOrientationLandscapeSecondary=auto | src/platform/public/ScreenOrientationType.h:24
+- [c] class | ? | src/public/LWEDelegateLoader.h:34
+- [c] class | ? | src/public/LWELoaderUtils.h:29
+- [c] class | ? | src/public/LWEWorkerDelegateLoader.h:31
+- [java] ImeComposingStatus | NORMAL=auto, COMPOSING_START=auto, COMPOSING_END=auto | type: int | src/public/bridge/android/java/com/samsung/android/lightweightwebengine/internal/LweWebViewImpl.java:93
+- [cpp] Owner | FREE=auto, ENGINE=auto, READY=auto, PRESENTING=auto | src/public/bridge/ecore_wl2/LWEWebViewEcoreWl2.cpp:190
+- [cpp] Owner | FREE=auto, ENGINE=auto, READY=auto, DISPLAYING=auto | src/public/bridge/efl/LWEWebViewEFL.cpp:153
+- [cpp] PORT_WINDOW_BACKEND | GB=auto, GL=auto, HEADLESS=auto | src/public/bridge/flutter/LWEWebViewFlutter.cpp:82
+- [cpp] PORT_COMPOSITOR_BACKEND | CAIRO=auto, GL=auto, MOCK=auto | src/public/bridge/flutter/LWEWebViewFlutter.cpp:83
+- [c] class | ? | src/public/contract/LWEWorkerDelegate.h:28
+- [cpp] StarfishStartUpFlag | enableComputedStyleDump=auto, enableFrameTreeDump=auto, enableStackingContextDump=auto, enableHitTestDump=auto, enableDebugGraphicsLayer=auto, enableDebugRepaintRegion=auto, enableRegressionTest=auto | src/shell/MiniBrowser.cpp:34
+- [c] class | ? | src/shell/WindowKeyType.h:25
+- [c] class | ? | src/shell/WindowKeyType.h:44
+- [c] class | ? | src/shell/WindowKeyType.h:49
+- [cpp] setDoneFlag | ? | src/shell/libuv/AppLoopLibuv.cpp:39
+- [cpp] GLenum | ? | src/shell/windows/RendererWGL.cpp:36
+- [python] ABIDW_FLAGS | ? | tool/lint/check_contract_abi.py:117
+- [python] COMPILE_FLAGS | ? | tool/lint/check_contract_abi.py:128
+- [python] ENUM_RE | ? | tool/lint/check_contract_abi.py:136
+- [python] extract_enum_fp | ? | tool/lint/check_contract_abi.py:438
+- [python] _fixture_enum_renumber | ? | tool/lint/check_contract_abi.py:1112
+- [python] enumerate_tests | ? | tool/wpt/scripts/wpt_status.py:136
 
 <!-- Total: 7004 nodes, 62 relevant -->

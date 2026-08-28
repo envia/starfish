@@ -1,7 +1,6 @@
 # Message / IPC Contract Candidates
 
 **Generated**: 2026-08-27T02:09:57Z
-**Analysis Target**: /home/hwang/starfish
 **Families**: message
 
 ## Summary

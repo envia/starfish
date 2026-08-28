@@ -3,10 +3,7 @@
   "session_id": "20260827_112419",
   "run_type": "full",
   "mode": "detail",
-  "target_path": "/home/hwang/starfish",
-  "workspace_root": "/home/hwang/starfish",
-  "analysis_target": "/home/hwang/starfish",
-  "output_root": "/home/hwang/starfish/code2spec",
+  "output_root": "code2spec",
   "code_size": {
     "total_files": 330,
     "total_lines": 102438,
@@ -80,7 +77,6 @@
     },
     "analysis_scope": 3,
     "git": {
-      "repo": "github.sec.samsung.net/jh1984-hwang/starfish",
       "commit": "a1c95481fdf6cb47d19ce98b74c0885efe1468af",
       "branch": "master"
     },
@@ -149,7 +145,6 @@
   },
   "analysis_scope": 3,
   "git": {
-    "repo": "github.sec.samsung.net/jh1984-hwang/starfish",
     "commit": "a1c95481fdf6cb47d19ce98b74c0885efe1468af",
     "branch": "master"
   },

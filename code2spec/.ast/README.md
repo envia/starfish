@@ -4,7 +4,6 @@ code2spec code-to-ast(tree-sitter) 그래프를 deep-wiki 스키마로 변환한
 
 | 항목 | 값 |
 |---|---|
-| sourceRepo | `/home/hwang/starfish` |
 | extractor | `ast_adapter.py` |
 | files | 302 |
 | symbols | 6003 |

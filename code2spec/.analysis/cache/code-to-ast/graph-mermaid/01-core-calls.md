@@ -1,6 +1,5 @@
 # Code Graph - All Function Calls
 
-Generated from: `/home/hwang/starfish`
 
 Total call relationships: 19290
 

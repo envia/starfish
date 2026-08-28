@@ -1,6 +1,5 @@
 # Code Graph - Core Module Summary
 
-Generated from: `/home/hwang/starfish`
 Core modules: 20
 
 ```mermaid
