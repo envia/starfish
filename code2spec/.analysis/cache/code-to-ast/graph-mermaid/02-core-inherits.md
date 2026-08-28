@@ -1,6 +1,6 @@
 # Code Graph - Inheritance Hierarchy
 
-Generated from: `/home/hwang/starfish`
+Generated from: ``
 
 Total inheritance relationships: 87
 

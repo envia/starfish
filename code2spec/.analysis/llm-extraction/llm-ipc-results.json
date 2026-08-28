@@ -6,7 +6,7 @@
     "target_component": "Remote HTTP Server",
     "data": "Curl-based HTTP transaction with multiplex support (CURLPIPE_MULTIPLEX)",
     "language": "cpp",
-    "source": "[Source: /home/hwang/starfish/src/platform/network/http/HTTPTransaction.cpp:49]"
+    "source": "[Source: src/platform/network/http/HTTPTransaction.cpp:49]"
   },
   {
     "mechanism": "http_client",
@@ -15,7 +15,7 @@
     "target_component": "CookieStore",
     "data": "Transforms cookie data to Netscape format for curl",
     "language": "cpp",
-    "source": "[Source: /home/hwang/starfish/src/platform/network/curl/NetworkSharedResourceManager.cpp:208]"
+    "source": "[Source: src/platform/network/curl/NetworkSharedResourceManager.cpp:208]"
   },
   {
     "mechanism": "http_client",
@@ -24,7 +24,7 @@
     "target_component": "NetworkURLWorkerData",
     "data": "Extracts HTTP cache entry properties including CacheControl, HTTPContentInfo, HTTPFreshnessInfo",
     "language": "cpp",
-    "source": "[Source: /home/hwang/starfish/src/platform/network/http/HTTPCache.cpp:441]"
+    "source": "[Source: src/platform/network/http/HTTPCache.cpp:441]"
   },
   {
     "mechanism": "socket",
@@ -33,7 +33,7 @@
     "target_component": "X11 Display Server",
     "data": "Registers X11 file descriptor for event polling via ConnectionNumber",
     "language": "cpp",
-    "source": "[Source: /home/hwang/starfish/src/shell/x11_webcontainer/WindowX11Webcontainer.cpp:520]"
+    "source": "[Source: src/shell/x11_webcontainer/WindowX11Webcontainer.cpp:520]"
   },
   {
     "mechanism": "socket",
@@ -42,7 +42,7 @@
     "target_component": "WPT HTTP Server",
     "data": "Checks if port is open using socket connect_ex",
     "language": "python",
-    "source": "[Source: /home/hwang/starfish/tool/wpt/scripts/wpt_server.py:555]"
+    "source": "[Source: tool/wpt/scripts/wpt_server.py:555]"
   },
   {
     "mechanism": "socket",
@@ -51,7 +51,7 @@
     "target_component": "WPT HTTP Server",
     "data": "Verifies HTTP server is responding via socket create_connection, sendall, recv",
     "language": "python",
-    "source": "[Source: /home/hwang/starfish/tool/wpt/scripts/wpt_server.py:556]"
+    "source": "[Source: tool/wpt/scripts/wpt_server.py:556]"
   },
   {
     "mechanism": "socket",
@@ -60,7 +60,7 @@
     "target_component": "WPT HTTP/HTTPS Server",
     "data": "Probes WPT server availability via HTTPConnection/HTTPSConnection",
     "language": "python",
-    "source": "[Source: /home/hwang/starfish/tool/wpt/scripts/wpt_audit.py:552]"
+    "source": "[Source: tool/wpt/scripts/wpt_audit.py:552]"
   },
   {
     "mechanism": "socket",
@@ -69,7 +69,7 @@
     "target_component": "HTTP Client",
     "data": "HTTP GET handler sending response headers via send_response/send_header",
     "language": "python",
-    "source": "[Source: /home/hwang/starfish/tool/perf_tools/measure-bench/server.py:521]"
+    "source": "[Source: tool/perf_tools/measure-bench/server.py:521]"
   },
   {
     "mechanism": "socket",
@@ -78,7 +78,7 @@
     "target_component": "HTTP Client",
     "data": "HTTP POST handler sending response headers via send_response/send_header",
     "language": "python",
-    "source": "[Source: /home/hwang/starfish/tool/perf_tools/measure-bench/server.py:525]"
+    "source": "[Source: tool/perf_tools/measure-bench/server.py:525]"
   },
   {
     "mechanism": "socket",
@@ -87,7 +87,7 @@
     "target_component": "HTTP Client",
     "data": "Sends HTTP response headers via send_header",
     "language": "python",
-    "source": "[Source: /home/hwang/starfish/tool/runner/http_server.py:549]"
+    "source": "[Source: tool/runner/http_server.py:549]"
   },
   {
     "mechanism": "jni",
@@ -96,7 +96,7 @@
     "target_component": "NativeEngine",
     "data": "Android Java WebView implementation bridging to native C++ engine via JNI",
     "language": "java",
-    "source": "[Source: /home/hwang/starfish/src/public/bridge/android/java/com/samsung/android/lightweightwebengine/internal/LweWebViewImpl.java:93]"
+    "source": "[Source: src/public/bridge/android/java/com/samsung/android/lightweightwebengine/internal/LweWebViewImpl.java:93]"
   },
   {
     "mechanism": "other",
@@ -105,7 +105,7 @@
     "target_component": "GPU Driver",
     "data": "OpenGL texture binding via EvasGL wrapper to glBindTexture",
     "language": "cpp",
-    "source": "[Source: /home/hwang/starfish/src/platform/canvas/gl/EvasGL.cpp:71]"
+    "source": "[Source: src/platform/canvas/gl/EvasGL.cpp:71]"
   },
   {
     "mechanism": "other",
@@ -114,7 +114,7 @@
     "target_component": "GPU Driver",
     "data": "OpenGL buffer binding via GenericGL wrapper to glBindBuffer",
     "language": "cpp",
-    "source": "[Source: /home/hwang/starfish/src/platform/canvas/gl/GenericGL.cpp:73]"
+    "source": "[Source: src/platform/canvas/gl/GenericGL.cpp:73]"
   },
   {
     "mechanism": "other",
@@ -123,6 +123,6 @@
     "target_component": "BrowserRuntime",
     "data": "JavaScript function processing MDN data for web API documentation",
     "language": "javascript",
-    "source": "[Source: /home/hwang/starfish/docs/webpages/webapi/webapi_main.js:163]"
+    "source": "[Source: docs/webpages/webapi/webapi_main.js:163]"
   }
 ]
