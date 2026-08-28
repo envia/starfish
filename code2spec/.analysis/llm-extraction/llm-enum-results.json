@@ -4,181 +4,181 @@
     "values": ["UnidentifiedKey", "AltLeftKey", "AltRightKey", "ControlLeftKey", "ControlRightKey", "CapsLockKey", "FnKey", "FnLockKey", "HyperKey", "MetaKey", "NumLockKey", "ScrollLockKey", "ShiftLeftKey", "ShiftRightKey", "SuperKey", "SymbolKey", "SymbolLockKey", "EnterKey", "TabKey", "ArrowDownKey"],
     "type": "c_enum",
     "language": "c",
-    "source": "[Source: /home/hwang/starfish/inc/PlatformIntegrationData.h:7]"
+    "source": "[Source: inc/PlatformIntegrationData.h:7]"
   },
   {
     "name": "PlatformIntegrationData.MouseButtonValue",
     "values": ["NoButton=0", "LeftButton=0", "MiddleButton=1", "RightButton=2"],
     "type": "c_enum",
     "language": "c",
-    "source": "[Source: /home/hwang/starfish/inc/PlatformIntegrationData.h:239]"
+    "source": "[Source: inc/PlatformIntegrationData.h:239]"
   },
   {
     "name": "PlatformIntegrationData.MouseButtonsValue",
     "values": ["NoButtonDown=0", "LeftButtonDown=1", "RightButtonDown", "MiddleButtonDown"],
     "type": "c_enum",
     "language": "c",
-    "source": "[Source: /home/hwang/starfish/inc/PlatformIntegrationData.h:246]"
+    "source": "[Source: inc/PlatformIntegrationData.h:246]"
   },
   {
     "name": "PlatformIntegrationData.TTSMode",
     "values": ["Default=0", "Forced=1"],
     "type": "c_enum",
     "language": "c",
-    "source": "[Source: /home/hwang/starfish/inc/PlatformIntegrationData.h:253]"
+    "source": "[Source: inc/PlatformIntegrationData.h:253]"
   },
   {
     "name": "StarfishBase.NullOptionType",
     "values": ["NullOption"],
     "type": "c_enum",
     "language": "c",
-    "source": "[Source: /home/hwang/starfish/src/StarfishBase.h:591]"
+    "source": "[Source: src/StarfishBase.h:591]"
   },
   {
     "name": "HistoryManager.HistoryManagerOwner",
     "values": ["OwnerIsWebView", "OwnerIsHTMLIFrame"],
     "type": "c_enum",
     "language": "c",
-    "source": "[Source: /home/hwang/starfish/src/browser/history/HistoryManager.h:119]"
+    "source": "[Source: src/browser/history/HistoryManager.h:119]"
   },
   {
     "name": "CompositorGL.Command",
     "values": ["MoveTo", "LineTo", "ArcNegative"],
     "type": "cpp_enum",
     "language": "cpp",
-    "source": "[Source: /home/hwang/starfish/src/platform/canvas/CompositorGL.cpp:477]"
+    "source": "[Source: src/platform/canvas/CompositorGL.cpp:477]"
   },
   {
     "name": "PlatformFile.FileMode",
     "values": ["Read=1", "Write", "ReadWrite"],
     "type": "c_enum",
     "language": "c",
-    "source": "[Source: /home/hwang/starfish/src/platform/file/PlatformFile.h:35]"
+    "source": "[Source: src/platform/file/PlatformFile.h:35]"
   },
   {
     "name": "PlatformFile.Whence",
     "values": ["SEEK_SET", "SEEK_CUR", "SEEK_END"],
     "type": "c_enum",
     "language": "c",
-    "source": "[Source: /home/hwang/starfish/src/platform/file/PlatformFile.h:41]"
+    "source": "[Source: src/platform/file/PlatformFile.h:41]"
   },
   {
     "name": "Resource.State",
     "values": ["BeforeSend", "Receiving", "Finished", "Failed", "Canceled"],
     "type": "c_enum",
     "language": "c",
-    "source": "[Source: /home/hwang/starfish/src/platform/loader/Resource.h:42]"
+    "source": "[Source: src/platform/loader/Resource.h:42]"
   },
   {
     "name": "Resource.Type",
     "values": ["ResourceType", "ImageResourceType", "TextResourceType", "FontResourceType"],
     "type": "c_enum",
     "language": "c",
-    "source": "[Source: /home/hwang/starfish/src/platform/loader/Resource.h:50]"
+    "source": "[Source: src/platform/loader/Resource.h:50]"
   },
   {
     "name": "ResourceURL.Protocol",
     "values": ["FILE_PROTOCOL", "BLOB_PROTOCOL", "DATA_PROTOCOL", "ABOUT_PROTOCOL", "HTTP_PROTOCOL", "HTTPS_PROTOCOL", "JAVASCRIPT_PROTOCOL", "WS_PROTOCOL", "WSS_PROTOCOL", "UNKNOWN"],
     "type": "c_enum",
     "language": "c",
-    "source": "[Source: /home/hwang/starfish/src/platform/loader/ResourceURL.h:35]"
+    "source": "[Source: src/platform/loader/ResourceURL.h:35]"
   },
   {
     "name": "MessageLoopGLib.RendezvousOwner",
     "values": ["None", "MainBlockedOnLWE", "LWEPausingMain"],
     "type": "cpp_enum",
     "language": "cpp",
-    "source": "[Source: /home/hwang/starfish/src/platform/message_loop/MessageLoopGLib.cpp:99]"
+    "source": "[Source: src/platform/message_loop/MessageLoopGLib.cpp:99]"
   },
   {
     "name": "DemuxerSource.SeekWhence",
     "values": ["SeekWhenceSet", "SeekWhenceCurrent", "SeekWhenceEnd", "SeekWhenceLookSize"],
     "type": "c_enum",
     "language": "c",
-    "source": "[Source: /home/hwang/starfish/src/platform/multimedia/DemuxerSource.h:26]"
+    "source": "[Source: src/platform/multimedia/DemuxerSource.h:26]"
   },
   {
     "name": "MediaPlayer.PlaybackState",
     "values": ["PLAYBACK_STATE_NONE", "PLAYBACK_STATE_PLAYING", "PLAYBACK_STATE_PAUSED", "PLAYBACK_STATE_END"],
     "type": "c_enum",
     "language": "c",
-    "source": "[Source: /home/hwang/starfish/src/platform/multimedia/MediaPlayer.h:67]"
+    "source": "[Source: src/platform/multimedia/MediaPlayer.h:67]"
   },
   {
     "name": "MediaPlayer.SeekState",
     "values": ["SEEKSTATE_NO_SEEK", "SEEKSTATE_SEEKING", "SEEKSTATE_WAITING"],
     "type": "c_enum",
     "language": "c",
-    "source": "[Source: /home/hwang/starfish/src/platform/multimedia/MediaPlayer.h:73]"
+    "source": "[Source: src/platform/multimedia/MediaPlayer.h:73]"
   },
   {
     "name": "StreamInfo.StreamType",
     "values": ["StreamTypeUnknown=1", "StreamTypeAudio", "StreamTypeVideo", "StreamTypeSubtitle"],
     "type": "c_enum",
     "language": "c",
-    "source": "[Source: /home/hwang/starfish/src/platform/multimedia/StreamInfo.h:52]"
+    "source": "[Source: src/platform/multimedia/StreamInfo.h:52]"
   },
   {
     "name": "StreamInfo.MediaCodec",
     "values": ["MediaCodecUnknown", "MediaCodecAudioAAC", "MediaCodecAudioMP3", "MediaCodecAudioVorbis", "MediaCodecAudioOpus", "MediaCodecVideoH264", "MediaCodecVideoHEVC", "MediaCodecVideoVP9", "MediaCodecVideoAV1"],
     "type": "c_enum",
     "language": "c",
-    "source": "[Source: /home/hwang/starfish/src/platform/multimedia/StreamInfo.h:59]"
+    "source": "[Source: src/platform/multimedia/StreamInfo.h:59]"
   },
   {
     "name": "StreamInfo.AudioSampleFormat",
     "values": ["AudioSampleFormatNone=-1", "AudioSampleFormatU8", "AudioSampleFormatS16", "AudioSampleFormatS32", "AudioSampleFormatFLT", "AudioSampleFormatDBL", "AudioSampleFormatU8P", "AudioSampleFormatS16P", "AudioSampleFormatS32P", "AudioSampleFormatFLTP", "AudioSampleFormatDBLP"],
     "type": "c_enum",
     "language": "c",
-    "source": "[Source: /home/hwang/starfish/src/platform/multimedia/StreamInfo.h:73]"
+    "source": "[Source: src/platform/multimedia/StreamInfo.h:73]"
   },
   {
     "name": "ScreenOrientationType.ScreenOrientationType",
     "values": ["ScreenOrientationUndefined=0", "ScreenOrientationPortraitPrimary", "ScreenOrientationPortraitSecondary", "ScreenOrientationLandscapePrimary", "ScreenOrientationLandscapeSecondary"],
     "type": "c_enum",
     "language": "c",
-    "source": "[Source: /home/hwang/starfish/src/platform/public/ScreenOrientationType.h:24]"
+    "source": "[Source: src/platform/public/ScreenOrientationType.h:24]"
   },
   {
     "name": "LweWebViewImpl.ImeComposingStatus",
     "values": ["NORMAL", "COMPOSING_START", "COMPOSING_END"],
     "type": "java_enum",
     "language": "java",
-    "source": "[Source: /home/hwang/starfish/src/public/bridge/android/java/com/samsung/android/lightweightwebengine/internal/LweWebViewImpl.java:93]"
+    "source": "[Source: src/public/bridge/android/java/com/samsung/android/lightweightwebengine/internal/LweWebViewImpl.java:93]"
   },
   {
     "name": "LWEWebViewEcoreWl2.Owner",
     "values": ["FREE", "ENGINE", "READY", "PRESENTING"],
     "type": "cpp_enum",
     "language": "cpp",
-    "source": "[Source: /home/hwang/starfish/src/public/bridge/ecore_wl2/LWEWebViewEcoreWl2.cpp:190]"
+    "source": "[Source: src/public/bridge/ecore_wl2/LWEWebViewEcoreWl2.cpp:190]"
   },
   {
     "name": "LWEWebViewEFL.Owner",
     "values": ["FREE", "ENGINE", "READY", "DISPLAYING"],
     "type": "cpp_enum",
     "language": "cpp",
-    "source": "[Source: /home/hwang/starfish/src/public/bridge/efl/LWEWebViewEFL.cpp:153]"
+    "source": "[Source: src/public/bridge/efl/LWEWebViewEFL.cpp:153]"
   },
   {
     "name": "LWEWebViewFlutter.PORT_WINDOW_BACKEND",
     "values": ["GB", "GL", "HEADLESS"],
     "type": "cpp_enum",
     "language": "cpp",
-    "source": "[Source: /home/hwang/starfish/src/public/bridge/flutter/LWEWebViewFlutter.cpp:82]"
+    "source": "[Source: src/public/bridge/flutter/LWEWebViewFlutter.cpp:82]"
   },
   {
     "name": "LWEWebViewFlutter.PORT_COMPOSITOR_BACKEND",
     "values": ["CAIRO", "GL", "MOCK"],
     "type": "cpp_enum",
     "language": "cpp",
-    "source": "[Source: /home/hwang/starfish/src/public/bridge/flutter/LWEWebViewFlutter.cpp:83]"
+    "source": "[Source: src/public/bridge/flutter/LWEWebViewFlutter.cpp:83]"
   },
   {
     "name": "MiniBrowser.StarfishStartUpFlag",
     "values": ["enableComputedStyleDump", "enableFrameTreeDump", "enableStackingContextDump", "enableHitTestDump", "enableDebugGraphicsLayer", "enableDebugRepaintRegion", "enableRegressionTest"],
     "type": "cpp_enum",
     "language": "cpp",
-    "source": "[Source: /home/hwang/starfish/src/shell/MiniBrowser.cpp:34]"
+    "source": "[Source: src/shell/MiniBrowser.cpp:34]"
   }
 ]

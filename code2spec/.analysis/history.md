@@ -8,7 +8,7 @@
 - **Coding assistants**: cline
 - **History format**: v2 hybrid
 - **분석 모드**: Detail
-- **분석 대상**: `/home/hwang/starfish`
+- **분석 대상**: ``
 
 ## 코드 규모
 
@@ -51,7 +51,7 @@
 - 이벤트 파일: `telemetry-events.jsonl`
 - 이벤트 수: 27개
 - Coding assistants: cline
-- Git repo: `github.sec.samsung.net/jh1984-hwang/starfish` @ `master`
+- Git repo: `` @ `master`
 - Token 사용량: unknown (provider token source 미연동)
 
 ### Workflow 사용 횟수
