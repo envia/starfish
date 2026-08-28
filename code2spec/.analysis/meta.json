@@ -1,0 +1,32 @@
+{
+  "artifact_lookup": {
+    "missing_fields": [],
+    "status": "ok"
+  },
+  "code2spec": {
+    "commit_id": "a9e18a8ac55b4dc5dc4f05d4b2f0cf00232b737c",
+    "version": "0.5.3"
+  },
+  "generated_at": "2026-08-27T04:39:22+00:00",
+  "repository": {
+    "analysis_target_path": "/home/hwang/starfish",
+    "branch": "master",
+    "commit_id": "a1c95481fdf6cb47d19ce98b74c0885efe1468af",
+    "context_reason": null,
+    "context_status": "ok",
+    "gerrit_project": null,
+    "git_porcelain_status": "?? code2spec/\u0000",
+    "git_root": "/home/hwang/starfish",
+    "host": "github.sec.samsung.net",
+    "is_dirty": true,
+    "local_commit": false,
+    "missing_fields": [],
+    "name": "starfish",
+    "owner": "jh1984-hwang",
+    "remote_name": "origin",
+    "remote_url": "github.sec.samsung.net:jh1984-hwang/starfish.git",
+    "repository_id": "github.sec.samsung.net/jh1984-hwang/starfish",
+    "scm": "git"
+  },
+  "schema_version": 1
+}

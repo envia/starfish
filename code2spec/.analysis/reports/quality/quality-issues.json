@@ -1,0 +1,616 @@
+{
+  "version": "1.0",
+  "status": "FAIL",
+  "computed_at": "2026-08-27T13:34:48",
+  "analysis_target": "/home/hwang/starfish",
+  "run_type": "full",
+  "thresholds": {
+    "evidence_precision_min": 0.95,
+    "broken_source_link_rate_max": 0.01,
+    "core_coverage_min": 0.9,
+    "source_coverage_drop_warn": 0.2
+  },
+  "metrics": {
+    "version": "1.0",
+    "evidence_precision": 0.0,
+    "total_source_tags": 45,
+    "valid_source_tags": 0,
+    "source_coverage": 1.0,
+    "total_source_files": 330,
+    "referenced_source_files": 330,
+    "core_coverage": 1.0,
+    "total_core_files": 330,
+    "referenced_core_files": 330,
+    "core_coverage_unit": "module",
+    "total_core_modules": 15,
+    "referenced_core_modules": 15,
+    "broken_source_link_rate": 1.0,
+    "total_source_links": 45,
+    "broken_source_links": 45,
+    "computed_at": "2026-08-27T13:34:48",
+    "analysis_target": "/home/hwang/starfish"
+  },
+  "repair_scope": {
+    "allowed_docs": [
+      "01-introduction.md",
+      "02-architecture.md",
+      "03-design-patterns.md",
+      "04-data-layer.md",
+      "05-external-interfaces.md",
+      "06-configuration-deployment.md",
+      "07-resources.md",
+      "08-security-quality.md",
+      "09-ipc-enum-catalog.md"
+    ],
+    "blocked_docs": [],
+    "allow_full_regeneration": false
+  },
+  "issues": [
+    {
+      "metric": "evidence_precision",
+      "severity": "fail",
+      "message": "Evidence Precision is below threshold.",
+      "affected_docs": [
+        "01-introduction.md",
+        "02-architecture.md",
+        "03-design-patterns.md",
+        "04-data-layer.md",
+        "05-external-interfaces.md",
+        "06-configuration-deployment.md",
+        "07-resources.md",
+        "08-security-quality.md",
+        "09-ipc-enum-catalog.md"
+      ],
+      "affected_sources": [
+        "/home/hwang/starfish/AST export `graph-summary.json`",
+        "/home/hwang/starfish/LLM extraction `llm-extraction-results.json`",
+        "/home/hwang/starfish/`.code2spec-tools/build-info.json`",
+        "/home/hwang/starfish/`AGENTS.md`",
+        "/home/hwang/starfish/`AGENTS.md` documentation map",
+        "/home/hwang/starfish/`AGENTS.md` security checker",
+        "/home/hwang/starfish/`AGENTS.md` security section",
+        "/home/hwang/starfish/`AGENTS.md` testing section",
+        "/home/hwang/starfish/`AGENTS.md` testing table",
+        "/home/hwang/starfish/`AGENTS.md` web standards section",
+        "/home/hwang/starfish/`compat/tizen_5.0/inc/LWEWebView.h`",
+        "/home/hwang/starfish/`docs/Spec.md`",
+        "/home/hwang/starfish/`module-priority-reviewed.md`",
+        "/home/hwang/starfish/`src/Starfish.h`",
+        "/home/hwang/starfish/`src/StarfishBase.h`",
+        "/home/hwang/starfish/`src/StoragePathProvider.h`",
+        "/home/hwang/starfish/`src/binding/*CustomBinding.cpp`",
+        "/home/hwang/starfish/`src/binding/*Holdable*`",
+        "/home/hwang/starfish/`src/binding/ScriptBindingSecurity.cpp`",
+        "/home/hwang/starfish/`src/binding/`",
+        "/home/hwang/starfish/`src/platform/` directory structure",
+        "/home/hwang/starfish/`src/platform/canvas/` directory structure",
+        "/home/hwang/starfish/`src/platform/loader/Resource.h`",
+        "/home/hwang/starfish/`src/platform/loader/`",
+        "/home/hwang/starfish/`src/platform/message_loop/`",
+        "/home/hwang/starfish/`src/public/`",
+        "/home/hwang/starfish/`src/public/bridge/`",
+        "/home/hwang/starfish/`src/public/bridge/` directory",
+        "/home/hwang/starfish/`src/public/bridge/` directory structure",
+        "/home/hwang/starfish/`src/public/bridge/android/java/`",
+        "/home/hwang/starfish/`src/public/contract/CookieManagerDelegate.h`",
+        "/home/hwang/starfish/`src/public/contract/`",
+        "/home/hwang/starfish/`src/public/contract/` directory",
+        "/home/hwang/starfish/`src/shell/`",
+        "/home/hwang/starfish/`third_party/`",
+        "/home/hwang/starfish/`tool/` directory"
+      ],
+      "repair_action": "repair_invalid_source_evidence",
+      "regeneration_mode": "section",
+      "evidence": [
+        {
+          "source_doc": "01-introduction.md",
+          "raw_tag": "[Source: `AGENTS.md`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "01-introduction.md",
+          "raw_tag": "[Source: `docs/Spec.md`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "01-introduction.md",
+          "raw_tag": "[Source: AST export `graph-summary.json`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "01-introduction.md",
+          "raw_tag": "[Source: `.code2spec-tools/build-info.json`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "02-architecture.md",
+          "raw_tag": "[Source: `src/shell/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "02-architecture.md",
+          "raw_tag": "[Source: `AGENTS.md`, `src/public/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "02-architecture.md",
+          "raw_tag": "[Source: `AGENTS.md`, `src/public/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "02-architecture.md",
+          "raw_tag": "[Source: `src/Starfish.h`, `src/StarfishBase.h`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "02-architecture.md",
+          "raw_tag": "[Source: `src/Starfish.h`, `src/StarfishBase.h`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "02-architecture.md",
+          "raw_tag": "[Source: `src/binding/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "02-architecture.md",
+          "raw_tag": "[Source: `src/platform/` directory structure]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "02-architecture.md",
+          "raw_tag": "[Source: `module-priority-reviewed.md`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "02-architecture.md",
+          "raw_tag": "[Source: `AGENTS.md`, `docs/Spec.md`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "02-architecture.md",
+          "raw_tag": "[Source: `src/public/bridge/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "03-design-patterns.md",
+          "raw_tag": "[Source: `AGENTS.md`, `src/public/contract/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "03-design-patterns.md",
+          "raw_tag": "[Source: `AGENTS.md`, `src/public/contract/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "03-design-patterns.md",
+          "raw_tag": "[Source: `src/public/bridge/` directory structure]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "03-design-patterns.md",
+          "raw_tag": "[Source: `src/platform/canvas/` directory structure]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "03-design-patterns.md",
+          "raw_tag": "[Source: `src/binding/*Holdable*`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "03-design-patterns.md",
+          "raw_tag": "[Source: `AGENTS.md`, `src/StarfishBase.h`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "03-design-patterns.md",
+          "raw_tag": "[Source: `src/binding/*CustomBinding.cpp`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "03-design-patterns.md",
+          "raw_tag": "[Source: `src/platform/loader/Resource.h`, `src/platform/loader/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "03-design-patterns.md",
+          "raw_tag": "[Source: `src/platform/loader/Resource.h`, `src/platform/loader/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "03-design-patterns.md",
+          "raw_tag": "[Source: `src/platform/message_loop/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "04-data-layer.md",
+          "raw_tag": "[Source: `src/StoragePathProvider.h`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "05-external-interfaces.md",
+          "raw_tag": "[Source: `src/public/contract/` directory]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "05-external-interfaces.md",
+          "raw_tag": "[Source: `src/public/bridge/` directory]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "05-external-interfaces.md",
+          "raw_tag": "[Source: `src/public/bridge/android/java/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "05-external-interfaces.md",
+          "raw_tag": "[Source: `compat/tizen_5.0/inc/LWEWebView.h`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "06-configuration-deployment.md",
+          "raw_tag": "[Source: `AGENTS.md`, `third_party/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "06-configuration-deployment.md",
+          "raw_tag": "[Source: `AGENTS.md`, `third_party/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "07-resources.md",
+          "raw_tag": "[Source: `AGENTS.md` documentation map]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "07-resources.md",
+          "raw_tag": "[Source: `AGENTS.md` testing table]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "07-resources.md",
+          "raw_tag": "[Source: `AGENTS.md`, `third_party/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "07-resources.md",
+          "raw_tag": "[Source: `AGENTS.md`, `third_party/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "07-resources.md",
+          "raw_tag": "[Source: `tool/` directory, `AGENTS.md`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "08-security-quality.md",
+          "raw_tag": "[Source: `AGENTS.md` security section]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "08-security-quality.md",
+          "raw_tag": "[Source: `src/binding/ScriptBindingSecurity.cpp`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "08-security-quality.md",
+          "raw_tag": "[Source: `src/public/contract/CookieManagerDelegate.h`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "08-security-quality.md",
+          "raw_tag": "[Source: `AGENTS.md` security checker]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "08-security-quality.md",
+          "raw_tag": "[Source: `AGENTS.md`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "08-security-quality.md",
+          "raw_tag": "[Source: `AGENTS.md` testing section]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "08-security-quality.md",
+          "raw_tag": "[Source: `AGENTS.md` web standards section]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "08-security-quality.md",
+          "raw_tag": "[Source: `AGENTS.md`, `src/StarfishBase.h`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "09-ipc-enum-catalog.md",
+          "raw_tag": "[Source: LLM extraction `llm-extraction-results.json`]",
+          "reason": "file_missing_or_unreadable"
+        }
+      ]
+    },
+    {
+      "metric": "broken_source_link_rate",
+      "severity": "fail",
+      "message": "Broken Source Link Rate exceeded threshold.",
+      "affected_docs": [
+        "01-introduction.md",
+        "02-architecture.md",
+        "03-design-patterns.md",
+        "04-data-layer.md",
+        "05-external-interfaces.md",
+        "06-configuration-deployment.md",
+        "07-resources.md",
+        "08-security-quality.md",
+        "09-ipc-enum-catalog.md"
+      ],
+      "affected_sources": [
+        "/home/hwang/starfish/AST export `graph-summary.json`",
+        "/home/hwang/starfish/LLM extraction `llm-extraction-results.json`",
+        "/home/hwang/starfish/`.code2spec-tools/build-info.json`",
+        "/home/hwang/starfish/`AGENTS.md`",
+        "/home/hwang/starfish/`AGENTS.md` documentation map",
+        "/home/hwang/starfish/`AGENTS.md` security checker",
+        "/home/hwang/starfish/`AGENTS.md` security section",
+        "/home/hwang/starfish/`AGENTS.md` testing section",
+        "/home/hwang/starfish/`AGENTS.md` testing table",
+        "/home/hwang/starfish/`AGENTS.md` web standards section",
+        "/home/hwang/starfish/`compat/tizen_5.0/inc/LWEWebView.h`",
+        "/home/hwang/starfish/`docs/Spec.md`",
+        "/home/hwang/starfish/`module-priority-reviewed.md`",
+        "/home/hwang/starfish/`src/Starfish.h`",
+        "/home/hwang/starfish/`src/StarfishBase.h`",
+        "/home/hwang/starfish/`src/StoragePathProvider.h`",
+        "/home/hwang/starfish/`src/binding/*CustomBinding.cpp`",
+        "/home/hwang/starfish/`src/binding/*Holdable*`",
+        "/home/hwang/starfish/`src/binding/ScriptBindingSecurity.cpp`",
+        "/home/hwang/starfish/`src/binding/`",
+        "/home/hwang/starfish/`src/platform/` directory structure",
+        "/home/hwang/starfish/`src/platform/canvas/` directory structure",
+        "/home/hwang/starfish/`src/platform/loader/Resource.h`",
+        "/home/hwang/starfish/`src/platform/loader/`",
+        "/home/hwang/starfish/`src/platform/message_loop/`",
+        "/home/hwang/starfish/`src/public/`",
+        "/home/hwang/starfish/`src/public/bridge/`",
+        "/home/hwang/starfish/`src/public/bridge/` directory",
+        "/home/hwang/starfish/`src/public/bridge/` directory structure",
+        "/home/hwang/starfish/`src/public/bridge/android/java/`",
+        "/home/hwang/starfish/`src/public/contract/CookieManagerDelegate.h`",
+        "/home/hwang/starfish/`src/public/contract/`",
+        "/home/hwang/starfish/`src/public/contract/` directory",
+        "/home/hwang/starfish/`src/shell/`",
+        "/home/hwang/starfish/`third_party/`",
+        "/home/hwang/starfish/`tool/` directory"
+      ],
+      "repair_action": "fix_broken_source_tags",
+      "regeneration_mode": "patch",
+      "evidence": [
+        {
+          "source_doc": "01-introduction.md",
+          "raw_tag": "[Source: `AGENTS.md`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "01-introduction.md",
+          "raw_tag": "[Source: `docs/Spec.md`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "01-introduction.md",
+          "raw_tag": "[Source: AST export `graph-summary.json`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "01-introduction.md",
+          "raw_tag": "[Source: `.code2spec-tools/build-info.json`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "02-architecture.md",
+          "raw_tag": "[Source: `src/shell/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "02-architecture.md",
+          "raw_tag": "[Source: `AGENTS.md`, `src/public/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "02-architecture.md",
+          "raw_tag": "[Source: `AGENTS.md`, `src/public/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "02-architecture.md",
+          "raw_tag": "[Source: `src/Starfish.h`, `src/StarfishBase.h`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "02-architecture.md",
+          "raw_tag": "[Source: `src/Starfish.h`, `src/StarfishBase.h`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "02-architecture.md",
+          "raw_tag": "[Source: `src/binding/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "02-architecture.md",
+          "raw_tag": "[Source: `src/platform/` directory structure]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "02-architecture.md",
+          "raw_tag": "[Source: `module-priority-reviewed.md`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "02-architecture.md",
+          "raw_tag": "[Source: `AGENTS.md`, `docs/Spec.md`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "02-architecture.md",
+          "raw_tag": "[Source: `src/public/bridge/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "03-design-patterns.md",
+          "raw_tag": "[Source: `AGENTS.md`, `src/public/contract/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "03-design-patterns.md",
+          "raw_tag": "[Source: `AGENTS.md`, `src/public/contract/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "03-design-patterns.md",
+          "raw_tag": "[Source: `src/public/bridge/` directory structure]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "03-design-patterns.md",
+          "raw_tag": "[Source: `src/platform/canvas/` directory structure]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "03-design-patterns.md",
+          "raw_tag": "[Source: `src/binding/*Holdable*`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "03-design-patterns.md",
+          "raw_tag": "[Source: `AGENTS.md`, `src/StarfishBase.h`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "03-design-patterns.md",
+          "raw_tag": "[Source: `src/binding/*CustomBinding.cpp`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "03-design-patterns.md",
+          "raw_tag": "[Source: `src/platform/loader/Resource.h`, `src/platform/loader/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "03-design-patterns.md",
+          "raw_tag": "[Source: `src/platform/loader/Resource.h`, `src/platform/loader/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "03-design-patterns.md",
+          "raw_tag": "[Source: `src/platform/message_loop/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "04-data-layer.md",
+          "raw_tag": "[Source: `src/StoragePathProvider.h`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "05-external-interfaces.md",
+          "raw_tag": "[Source: `src/public/contract/` directory]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "05-external-interfaces.md",
+          "raw_tag": "[Source: `src/public/bridge/` directory]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "05-external-interfaces.md",
+          "raw_tag": "[Source: `src/public/bridge/android/java/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "05-external-interfaces.md",
+          "raw_tag": "[Source: `compat/tizen_5.0/inc/LWEWebView.h`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "06-configuration-deployment.md",
+          "raw_tag": "[Source: `AGENTS.md`, `third_party/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "06-configuration-deployment.md",
+          "raw_tag": "[Source: `AGENTS.md`, `third_party/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "07-resources.md",
+          "raw_tag": "[Source: `AGENTS.md` documentation map]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "07-resources.md",
+          "raw_tag": "[Source: `AGENTS.md` testing table]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "07-resources.md",
+          "raw_tag": "[Source: `AGENTS.md`, `third_party/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "07-resources.md",
+          "raw_tag": "[Source: `AGENTS.md`, `third_party/`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "07-resources.md",
+          "raw_tag": "[Source: `tool/` directory, `AGENTS.md`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "08-security-quality.md",
+          "raw_tag": "[Source: `AGENTS.md` security section]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "08-security-quality.md",
+          "raw_tag": "[Source: `src/binding/ScriptBindingSecurity.cpp`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "08-security-quality.md",
+          "raw_tag": "[Source: `src/public/contract/CookieManagerDelegate.h`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "08-security-quality.md",
+          "raw_tag": "[Source: `AGENTS.md` security checker]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "08-security-quality.md",
+          "raw_tag": "[Source: `AGENTS.md`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "08-security-quality.md",
+          "raw_tag": "[Source: `AGENTS.md` testing section]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "08-security-quality.md",
+          "raw_tag": "[Source: `AGENTS.md` web standards section]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "08-security-quality.md",
+          "raw_tag": "[Source: `AGENTS.md`, `src/StarfishBase.h`]",
+          "reason": "file_missing_or_unreadable"
+        },
+        {
+          "source_doc": "09-ipc-enum-catalog.md",
+          "raw_tag": "[Source: LLM extraction `llm-extraction-results.json`]",
+          "reason": "file_missing_or_unreadable"
+        }
+      ]
+    }
+  ]
+}

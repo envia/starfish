@@ -1,0 +1,70 @@
+# Entry Points (진입점)
+
+탐지 건수: 63개
+
+
+| Name | File | Type |
+|------|------|------|
+| /home/hwang/starfish/docs/webpages/webapi/webapi_main.js | /home/hwang/starfish/docs/webpages/webapi/webapi_main.js | file-entry |
+| /home/hwang/starfish/tool/perf_tools/measure-bench/server.py | /home/hwang/starfish/tool/perf_tools/measure-bench/server.py | file-entry |
+| /home/hwang/starfish/tool/perf_tools/mse-smoke/server.py | /home/hwang/starfish/tool/perf_tools/mse-smoke/server.py | file-entry |
+| /home/hwang/starfish/tool/perf_tools/style-smoke/server.py | /home/hwang/starfish/tool/perf_tools/style-smoke/server.py | file-entry |
+| /home/hwang/starfish/tool/runner/http_server.py | /home/hwang/starfish/tool/runner/http_server.py | file-entry |
+| /home/hwang/starfish/tool/wpt/scripts/wpt_server.py | /home/hwang/starfish/tool/wpt/scripts/wpt_server.py | file-entry |
+| RegisterOnRenderedHandler | /home/hwang/starfish/compat/tizen_5.0/inc/LWEWebView.h | function-entry |
+| RegisterDebuggerShouldInitHandler | /home/hwang/starfish/compat/tizen_5.0/inc/LWEWebView.h | function-entry |
+| RegisterDebuggerShouldContinueWaitingHandler | /home/hwang/starfish/compat/tizen_5.0/inc/LWEWebView.h | function-entry |
+| RegisterDebuggerShouldInitHandler | /home/hwang/starfish/compat/tizen_5.0/inc/LWEWebView.h | function-entry |
+| RegisterDebuggerShouldContinueWaitingHandler | /home/hwang/starfish/compat/tizen_5.0/inc/LWEWebView.h | function-entry |
+| RegisterPreRenderingHandler | /home/hwang/starfish/inc/LWEWebView.h | function-entry |
+| RegisterOnRenderedHandler | /home/hwang/starfish/inc/LWEWebView.h | function-entry |
+| RegisterDebuggerShouldInitHandler | /home/hwang/starfish/inc/LWEWebView.h | function-entry |
+| RegisterDebuggerShouldContinueWaitingHandler | /home/hwang/starfish/inc/LWEWebView.h | function-entry |
+| RegisterDebuggerShouldInitHandler | /home/hwang/starfish/inc/LWEWebView.h | function-entry |
+| RegisterDebuggerShouldContinueWaitingHandler | /home/hwang/starfish/inc/LWEWebView.h | function-entry |
+| RegisterOnStatusChangedHandler | /home/hwang/starfish/inc/LWEWorker.h | function-entry |
+| RegisterOnStatusChangedHandler | /home/hwang/starfish/inc/LWEWorker.h | function-entry |
+| timeoutHandler | /home/hwang/starfish/src/binding/WindowCustomBinding.cpp | function-entry |
+| requestAnimationFrameHandler | /home/hwang/starfish/src/binding/WindowCustomBinding.cpp | function-entry |
+| screenShotTimeoutHandler | /home/hwang/starfish/src/binding/WindowCustomBinding.cpp | function-entry |
+| timeoutHandler | /home/hwang/starfish/src/binding/WorkerGlobalScopeCustomBinding.cpp | function-entry |
+| handleReadyToPrepare | /home/hwang/starfish/src/platform/multimedia/MediaPlayerESPlusPlayer.cpp | function-entry |
+| handleReadyToSeek | /home/hwang/starfish/src/platform/multimedia/MediaPlayerESPlusPlayer.cpp | function-entry |
+| registerCurlHandlers | /home/hwang/starfish/src/platform/network/http/HTTPTransaction.cpp | function-entry |
+| registerCurlHandlers | /home/hwang/starfish/src/platform/network/http/HTTPTransaction.h | function-entry |
+| RegisterPreRenderingHandler | /home/hwang/starfish/src/public/LWEWebView.cpp | function-entry |
+| RegisterOnRenderedHandler | /home/hwang/starfish/src/public/LWEWebView.cpp | function-entry |
+| RegisterDebuggerShouldInitHandler | /home/hwang/starfish/src/public/LWEWebView.cpp | function-entry |
+| RegisterDebuggerShouldContinueWaitingHandler | /home/hwang/starfish/src/public/LWEWebView.cpp | function-entry |
+| RegisterDebuggerShouldInitHandler | /home/hwang/starfish/src/public/LWEWebView.cpp | function-entry |
+| RegisterDebuggerShouldContinueWaitingHandler | /home/hwang/starfish/src/public/LWEWebView.cpp | function-entry |
+| RegisterOnStatusChangedHandler | /home/hwang/starfish/src/public/LWEWorker.cpp | function-entry |
+| RegisterOnStatusChangedHandler | /home/hwang/starfish/src/public/LWEWorker.cpp | function-entry |
+| callOnLoadResourceHandler | /home/hwang/starfish/src/public/bridge/android/AndroidBridge.cpp | function-entry |
+| callOnLoadResourceHandler | /home/hwang/starfish/src/public/bridge/android/AndroidBridge.cpp | function-entry |
+| registerWebContainerHandler | /home/hwang/starfish/src/public/bridge/android/AndroidBridge.cpp | function-entry |
+| setupEventHandlers | /home/hwang/starfish/src/public/bridge/ecore_wl2/LWEWebViewEcoreWl2.cpp | function-entry |
+| setupEventHandlers | /home/hwang/starfish/src/public/bridge/ecore_x/LWEWebViewEcoreX.cpp | function-entry |
+| setupEventHandlers | /home/hwang/starfish/src/public/bridge/tcore_wl/LWEWebViewTcoreWl.cpp | function-entry |
+| RegisterOnStatusChangedHandler | /home/hwang/starfish/src/public/contract/LWEWorkerDelegate.h | function-entry |
+| JavaScriptNativeHandler | /home/hwang/starfish/src/public/delegate/JavaScriptNativeHandler.cpp | function-entry |
+| RegisterPreRenderingHandler | /home/hwang/starfish/src/public/delegate/LWEWebContainerDelegate.cpp | function-entry |
+| RegisterOnRenderedHandler | /home/hwang/starfish/src/public/delegate/LWEWebContainerDelegate.cpp | function-entry |
+| RegisterDebuggerShouldInitHandler | /home/hwang/starfish/src/public/delegate/LWEWebContainerDelegate.cpp | function-entry |
+| RegisterDebuggerShouldContinueWaitingHandler | /home/hwang/starfish/src/public/delegate/LWEWebContainerDelegate.cpp | function-entry |
+| RegisterDebuggerShouldInitHandler | /home/hwang/starfish/src/public/delegate/LWEWebViewDelegateImpl.cpp | function-entry |
+| RegisterDebuggerShouldContinueWaitingHandler | /home/hwang/starfish/src/public/delegate/LWEWebViewDelegateImpl.cpp | function-entry |
+| RegisterOnStatusChangedHandler | /home/hwang/starfish/src/public/delegate/LWEWorkerDelegate.cpp | function-entry |
+| LWEWorkerDelegate_LWEWorker_RegisterOnStatusChangedHandler | /home/hwang/starfish/src/public/delegate/LWEWorkerDelegate.cpp | function-entry |
+| sigHandler | /home/hwang/starfish/src/shell/Shell.cpp | function-entry |
+| setBacktraceHandler | /home/hwang/starfish/src/shell/Shell.cpp | function-entry |
+| setBacktraceHandler | /home/hwang/starfish/src/shell/Shell.h | function-entry |
+| default_result_handler | /home/hwang/starfish/tool/drivers/basics/parallel.py | function-entry |
+| set_tc_handler | /home/hwang/starfish/tool/drivers/basics/starfish_basic_test.py | function-entry |
+| default_tc_handler | /home/hwang/starfish/tool/drivers/basics/starfish_basic_test.py | function-entry |
+| set_tc_handler | /home/hwang/starfish/tool/drivers/basics/starfish_pixel_test.py | function-entry |
+| default_tc_handler | /home/hwang/starfish/tool/drivers/basics/starfish_pixel_test.py | function-entry |
+| set_tc_handler | /home/hwang/starfish/tool/drivers/basics/starfish_pixel_with_remote_test.py | function-entry |
+| default_tc_handler | /home/hwang/starfish/tool/drivers/basics/starfish_pixel_with_remote_test.py | function-entry |
+| wpt_tc_handler | /home/hwang/starfish/tool/drivers/tests/wpt_test.py | function-entry |
+| signal_handler | /home/hwang/starfish/tool/runner/http_server.py | function-entry |

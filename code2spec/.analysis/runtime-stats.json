@@ -1,0 +1,158 @@
+{
+  "code2spec_version": "0.5.3",
+  "session_id": "20260827_112419",
+  "run_type": "full",
+  "mode": "detail",
+  "target_path": "/home/hwang/starfish",
+  "workspace_root": "/home/hwang/starfish",
+  "analysis_target": "/home/hwang/starfish",
+  "output_root": "/home/hwang/starfish/code2spec",
+  "code_size": {
+    "total_files": 330,
+    "total_lines": 102438,
+    "total_bytes": 3547397,
+    "by_extension": {
+      ".h": {
+        "files": 118,
+        "lines": 21160,
+        "bytes": 685635
+      },
+      ".py": {
+        "files": 43,
+        "lines": 8144,
+        "bytes": 311056
+      },
+      ".js": {
+        "files": 8,
+        "lines": 1504,
+        "bytes": 55406
+      },
+      ".cpp": {
+        "files": 150,
+        "lines": 69922,
+        "bytes": 2437542
+      },
+      ".java": {
+        "files": 11,
+        "lines": 1708,
+        "bytes": 57758
+      }
+    },
+    "filters": {
+      "min_lines": 0
+    }
+  },
+  "workflows": {
+    "W1": {
+      "start_time": null,
+      "end_time": null,
+      "duration_seconds": 0,
+      "token_usage": 0,
+      "coding_agent": null,
+      "status": "pending"
+    },
+    "W2": {
+      "start_time": null,
+      "end_time": null,
+      "duration_seconds": 0,
+      "token_usage": 0,
+      "coding_agent": null,
+      "status": "pending"
+    },
+    "W3": {
+      "start_time": null,
+      "end_time": null,
+      "duration_seconds": 0,
+      "token_usage": 0,
+      "coding_agent": null,
+      "status": "pending"
+    }
+  },
+  "total_duration_seconds": 0,
+  "total_token_usage": 0,
+  "telemetry": {
+    "version": "1.0",
+    "events_file": "telemetry-events.jsonl",
+    "event_count": 2,
+    "event_type_counts": {
+      "session_started": 1,
+      "code_size_measured": 1
+    },
+    "analysis_scope": 3,
+    "git": {
+      "repo": "github.sec.samsung.net/jh1984-hwang/starfish",
+      "commit": "a1c95481fdf6cb47d19ce98b74c0885efe1468af",
+      "branch": "master"
+    },
+    "workflow_usage": {
+      "total_runs": 0,
+      "by_workflow": {
+        "W1": {
+          "started": 0,
+          "completed": 0,
+          "in_progress": 0,
+          "failed": 0,
+          "attempt_count": 0,
+          "completed_once": false
+        },
+        "W2": {
+          "started": 0,
+          "completed": 0,
+          "in_progress": 0,
+          "failed": 0,
+          "attempt_count": 0,
+          "completed_once": false
+        },
+        "W3": {
+          "started": 0,
+          "completed": 0,
+          "in_progress": 0,
+          "failed": 0,
+          "attempt_count": 0,
+          "completed_once": false
+        },
+        "W-DELTA": {
+          "started": 0,
+          "completed": 0,
+          "in_progress": 0,
+          "failed": 0,
+          "attempt_count": 0,
+          "completed_once": false
+        }
+      }
+    },
+    "module_usage": {
+      "regenerated": 0,
+      "failed": 0,
+      "unique_regenerated": 0,
+      "unique_failed": 0
+    },
+    "coding_agents": [
+      "cline"
+    ],
+    "latest_event": {
+      "event_type": "code_size_measured",
+      "timestamp": "2026-08-27T11:24:19",
+      "coding_agent": "cline"
+    },
+    "latest_progress_event": {
+      "event_type": "code_size_measured",
+      "timestamp": "2026-08-27T11:24:19",
+      "coding_agent": "cline"
+    },
+    "latest_failure": null,
+    "token_usage": {
+      "status": "unknown",
+      "total": 0
+    },
+    "updated_at": "2026-08-27T11:24:19"
+  },
+  "analysis_scope": 3,
+  "git": {
+    "repo": "github.sec.samsung.net/jh1984-hwang/starfish",
+    "commit": "a1c95481fdf6cb47d19ce98b74c0885efe1468af",
+    "branch": "master"
+  },
+  "coding_agent": "cline",
+  "last_updated": "2026-08-27T11:24:19"
+}

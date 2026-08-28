@@ -1,0 +1,13 @@
+{
+  "wikiDir": "/home/hwang/starfish/code2spec",
+  "repoRoot": "/home/hwang/starfish",
+  "pages": 44,
+  "sourceLinks": 0,
+  "counts": {
+    "supported": 0,
+    "contradicted": 0,
+    "unresolved": 0
+  },
+  "links": [],
+  "results": []
+}
