@@ -1,0 +1,168 @@
+{
+  "code2spec_version": "0.5.3",
+  "session_id": "20260827_112419",
+  "run_type": "full",
+  "mode": "detail",
+  "target_path": "/home/hwang/starfish",
+  "workspace_root": "/home/hwang/starfish",
+  "analysis_target": "/home/hwang/starfish",
+  "output_root": "/home/hwang/starfish/code2spec",
+  "code_size": {
+    "total_files": 330,
+    "total_lines": 102438,
+    "total_bytes": 3547397,
+    "by_extension": {
+      ".h": {
+        "files": 118,
+        "lines": 21160,
+        "bytes": 685635
+      },
+      ".py": {
+        "files": 43,
+        "lines": 8144,
+        "bytes": 311056
+      },
+      ".js": {
+        "files": 8,
+        "lines": 1504,
+        "bytes": 55406
+      },
+      ".cpp": {
+        "files": 150,
+        "lines": 69922,
+        "bytes": 2437542
+      },
+      ".java": {
+        "files": 11,
+        "lines": 1708,
+        "bytes": 57758
+      }
+    },
+    "filters": {
+      "min_lines": 0
+    },
+    "classes": 373,
+    "functions": 5630,
+    "ast_nodes": 7004
+  },
+  "workflows": {
+    "W1": {
+      "start_time": "2026-08-27T11:24:35",
+      "end_time": "2026-08-27T11:25:21",
+      "duration_seconds": 46,
+      "token_usage": 0,
+      "coding_agent": "cline",
+      "status": "passed"
+    },
+    "W2": {
+      "start_time": "2026-08-27T11:37:59",
+      "end_time": "2026-08-27T11:46:36",
+      "duration_seconds": 517,
+      "token_usage": 0,
+      "coding_agent": "cline",
+      "status": "passed"
+    },
+    "W3": {
+      "start_time": "2026-08-27T13:32:30",
+      "end_time": "2026-08-27T13:39:10",
+      "duration_seconds": 400,
+      "token_usage": 0,
+      "coding_agent": "cline",
+      "status": "passed"
+    }
+  },
+  "total_duration_seconds": 963,
+  "total_token_usage": 0,
+  "telemetry": {
+    "version": "1.0",
+    "events_file": "telemetry-events.jsonl",
+    "event_count": 27,
+    "event_type_counts": {
+      "session_started": 1,
+      "code_size_measured": 1,
+      "workflow_started": 3,
+      "workflow_completed": 3,
+      "module_regenerated": 15,
+      "metrics_computed": 1,
+      "quality_gate_evaluated": 1,
+      "code_size_finalized": 1,
+      "history_finalized": 1
+    },
+    "analysis_scope": 3,
+    "git": {
+      "repo": "github.sec.samsung.net/jh1984-hwang/starfish",
+      "commit": "a1c95481fdf6cb47d19ce98b74c0885efe1468af",
+      "branch": "master"
+    },
+    "workflow_usage": {
+      "total_runs": 3,
+      "by_workflow": {
+        "W1": {
+          "started": 1,
+          "completed": 1,
+          "in_progress": 0,
+          "failed": 0,
+          "attempt_count": 1,
+          "completed_once": true
+        },
+        "W2": {
+          "started": 1,
+          "completed": 1,
+          "in_progress": 0,
+          "failed": 0,
+          "attempt_count": 1,
+          "completed_once": true
+        },
+        "W3": {
+          "started": 1,
+          "completed": 1,
+          "in_progress": 0,
+          "failed": 0,
+          "attempt_count": 1,
+          "completed_once": true
+        },
+        "W-DELTA": {
+          "started": 0,
+          "completed": 0,
+          "in_progress": 0,
+          "failed": 0,
+          "attempt_count": 0,
+          "completed_once": false
+        }
+      }
+    },
+    "module_usage": {
+      "regenerated": 15,
+      "failed": 0,
+      "unique_regenerated": 15,
+      "unique_failed": 0
+    },
+    "coding_agents": [
+      "cline"
+    ],
+    "latest_event": {
+      "event_type": "history_finalized",
+      "timestamp": "2026-08-27T13:39:10",
+      "coding_agent": "cline"
+    },
+    "latest_progress_event": {
+      "event_type": "history_finalized",
+      "timestamp": "2026-08-27T13:39:10",
+      "coding_agent": "cline"
+    },
+    "latest_failure": null,
+    "token_usage": {
+      "status": "unknown",
+      "total": 0
+    },
+    "updated_at": "2026-08-27T13:39:10"
+  },
+  "analysis_scope": 3,
+  "git": {
+    "repo": "github.sec.samsung.net/jh1984-hwang/starfish",
+    "commit": "a1c95481fdf6cb47d19ce98b74c0885efe1468af",
+    "branch": "master"
+  },
+  "coding_agent": "cline",
+  "last_updated": "2026-08-27T13:39:10"
+}

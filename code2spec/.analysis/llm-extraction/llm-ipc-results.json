@@ -1,0 +1,128 @@
+[
+  {
+    "mechanism": "http_client",
+    "name": "HTTPTransaction",
+    "source_component": "NetworkLayer",
+    "target_component": "Remote HTTP Server",
+    "data": "Curl-based HTTP transaction with multiplex support (CURLPIPE_MULTIPLEX)",
+    "language": "cpp",
+    "source": "[Source: /home/hwang/starfish/src/platform/network/http/HTTPTransaction.cpp:49]"
+  },
+  {
+    "mechanism": "http_client",
+    "name": "transformetoNetscapeCookieFormat",
+    "source_component": "NetworkSharedResourceManager",
+    "target_component": "CookieStore",
+    "data": "Transforms cookie data to Netscape format for curl",
+    "language": "cpp",
+    "source": "[Source: /home/hwang/starfish/src/platform/network/curl/NetworkSharedResourceManager.cpp:208]"
+  },
+  {
+    "mechanism": "http_client",
+    "name": "extractHTTPCacheEntryProperty",
+    "source_component": "HTTPCache",
+    "target_component": "NetworkURLWorkerData",
+    "data": "Extracts HTTP cache entry properties including CacheControl, HTTPContentInfo, HTTPFreshnessInfo",
+    "language": "cpp",
+    "source": "[Source: /home/hwang/starfish/src/platform/network/http/HTTPCache.cpp:441]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "registerX11Fd",
+    "source_component": "WindowX11Webcontainer",
+    "target_component": "X11 Display Server",
+    "data": "Registers X11 file descriptor for event polling via ConnectionNumber",
+    "language": "cpp",
+    "source": "[Source: /home/hwang/starfish/src/shell/x11_webcontainer/WindowX11Webcontainer.cpp:520]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "_port_open",
+    "source_component": "WPTServer",
+    "target_component": "WPT HTTP Server",
+    "data": "Checks if port is open using socket connect_ex",
+    "language": "python",
+    "source": "[Source: /home/hwang/starfish/tool/wpt/scripts/wpt_server.py:555]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "_http_ok",
+    "source_component": "WPTServer",
+    "target_component": "WPT HTTP Server",
+    "data": "Verifies HTTP server is responding via socket create_connection, sendall, recv",
+    "language": "python",
+    "source": "[Source: /home/hwang/starfish/tool/wpt/scripts/wpt_server.py:556]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "probe",
+    "source_component": "WPTAudit",
+    "target_component": "WPT HTTP/HTTPS Server",
+    "data": "Probes WPT server availability via HTTPConnection/HTTPSConnection",
+    "language": "python",
+    "source": "[Source: /home/hwang/starfish/tool/wpt/scripts/wpt_audit.py:552]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "H.do_GET",
+    "source_component": "PerfBenchServer",
+    "target_component": "HTTP Client",
+    "data": "HTTP GET handler sending response headers via send_response/send_header",
+    "language": "python",
+    "source": "[Source: /home/hwang/starfish/tool/perf_tools/measure-bench/server.py:521]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "H.do_POST",
+    "source_component": "PerfBenchServer",
+    "target_component": "HTTP Client",
+    "data": "HTTP POST handler sending response headers via send_response/send_header",
+    "language": "python",
+    "source": "[Source: /home/hwang/starfish/tool/perf_tools/measure-bench/server.py:525]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "RequestHandler.end_headers",
+    "source_component": "TestRunnerHTTPServer",
+    "target_component": "HTTP Client",
+    "data": "Sends HTTP response headers via send_header",
+    "language": "python",
+    "source": "[Source: /home/hwang/starfish/tool/runner/http_server.py:549]"
+  },
+  {
+    "mechanism": "jni",
+    "name": "LweWebViewImpl",
+    "source_component": "AndroidJavaBridge",
+    "target_component": "NativeEngine",
+    "data": "Android Java WebView implementation bridging to native C++ engine via JNI",
+    "language": "java",
+    "source": "[Source: /home/hwang/starfish/src/public/bridge/android/java/com/samsung/android/lightweightwebengine/internal/LweWebViewImpl.java:93]"
+  },
+  {
+    "mechanism": "other",
+    "name": "EvasGL.bindTexture",
+    "source_component": "CanvasRenderer",
+    "target_component": "GPU Driver",
+    "data": "OpenGL texture binding via EvasGL wrapper to glBindTexture",
+    "language": "cpp",
+    "source": "[Source: /home/hwang/starfish/src/platform/canvas/gl/EvasGL.cpp:71]"
+  },
+  {
+    "mechanism": "other",
+    "name": "GenericGL.bindBuffer",
+    "source_component": "CanvasRenderer",
+    "target_component": "GPU Driver",
+    "data": "OpenGL buffer binding via GenericGL wrapper to glBindBuffer",
+    "language": "cpp",
+    "source": "[Source: /home/hwang/starfish/src/platform/canvas/gl/GenericGL.cpp:73]"
+  },
+  {
+    "mechanism": "other",
+    "name": "runWithMDNData",
+    "source_component": "WebAPIDocs",
+    "target_component": "BrowserRuntime",
+    "data": "JavaScript function processing MDN data for web API documentation",
+    "language": "javascript",
+    "source": "[Source: /home/hwang/starfish/docs/webpages/webapi/webapi_main.js:163]"
+  }
+]
