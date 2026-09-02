@@ -714,19 +714,58 @@ void WebGL2RenderingContext::texParameterf(GLenum target, GLenum pname,
 {
     ENTER_CONTEXT_SCOPE();
 
+    const GLfloat roundedParam = roundf(param);
     if (pname == GL_TEXTURE_MAX_ANISOTROPY_EXT) {
         if (!isExtensionEnabled("EXT_texture_filter_anisotropic")) {
             setGLError(GL_INVALID_ENUM);
             return;
         }
-    } else if (pname != GL_TEXTURE_BASE_LEVEL &&
-               pname != GL_TEXTURE_COMPARE_FUNC &&
-               pname != GL_TEXTURE_COMPARE_MODE &&
-               pname != GL_TEXTURE_MAG_FILTER &&
-               pname != GL_TEXTURE_MAX_LEVEL && pname != GL_TEXTURE_MAX_LOD &&
-               pname != GL_TEXTURE_MIN_FILTER && pname != GL_TEXTURE_MIN_LOD &&
-               pname != GL_TEXTURE_WRAP_R && pname != GL_TEXTURE_WRAP_S &&
-               pname != GL_TEXTURE_WRAP_T) {
+        if (param < 1.0f) {
+            setGLError(GL_INVALID_VALUE);
+            return;
+        }
+    } else if (pname == GL_TEXTURE_BASE_LEVEL ||
+               pname == GL_TEXTURE_MAX_LEVEL) {
+        if (roundedParam < 0.0f) {
+            setGLError(GL_INVALID_VALUE);
+            return;
+        }
+    } else if (pname == GL_TEXTURE_COMPARE_MODE) {
+        if (roundedParam != GL_NONE &&
+            roundedParam != GL_COMPARE_REF_TO_TEXTURE) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+    } else if (pname == GL_TEXTURE_COMPARE_FUNC) {
+        if (roundedParam != GL_LEQUAL && roundedParam != GL_GEQUAL &&
+            roundedParam != GL_LESS && roundedParam != GL_GREATER &&
+            roundedParam != GL_EQUAL && roundedParam != GL_NOTEQUAL &&
+            roundedParam != GL_ALWAYS && roundedParam != GL_NEVER) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+    } else if (pname == GL_TEXTURE_MAG_FILTER) {
+        if (roundedParam != GL_NEAREST && roundedParam != GL_LINEAR) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+    } else if (pname == GL_TEXTURE_MIN_FILTER) {
+        if (roundedParam != GL_NEAREST && roundedParam != GL_LINEAR &&
+            roundedParam != GL_NEAREST_MIPMAP_NEAREST &&
+            roundedParam != GL_NEAREST_MIPMAP_LINEAR &&
+            roundedParam != GL_LINEAR_MIPMAP_NEAREST &&
+            roundedParam != GL_LINEAR_MIPMAP_LINEAR) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+    } else if (pname == GL_TEXTURE_WRAP_S || pname == GL_TEXTURE_WRAP_T ||
+               pname == GL_TEXTURE_WRAP_R) {
+        if (roundedParam != GL_CLAMP_TO_EDGE &&
+            roundedParam != GL_MIRRORED_REPEAT && roundedParam != GL_REPEAT) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+    } else if (pname != GL_TEXTURE_MAX_LOD && pname != GL_TEXTURE_MIN_LOD) {
         setGLError(GL_INVALID_ENUM);
         return;
     }
@@ -755,14 +794,50 @@ void WebGL2RenderingContext::texParameteri(GLenum target, GLenum pname,
             setGLError(GL_INVALID_ENUM);
             return;
         }
-    } else if (pname != GL_TEXTURE_BASE_LEVEL &&
-               pname != GL_TEXTURE_COMPARE_FUNC &&
-               pname != GL_TEXTURE_COMPARE_MODE &&
-               pname != GL_TEXTURE_MAG_FILTER &&
-               pname != GL_TEXTURE_MAX_LEVEL && pname != GL_TEXTURE_MAX_LOD &&
-               pname != GL_TEXTURE_MIN_FILTER && pname != GL_TEXTURE_MIN_LOD &&
-               pname != GL_TEXTURE_WRAP_R && pname != GL_TEXTURE_WRAP_S &&
-               pname != GL_TEXTURE_WRAP_T) {
+        if (param < 1) {
+            setGLError(GL_INVALID_VALUE);
+            return;
+        }
+    } else if (pname == GL_TEXTURE_BASE_LEVEL ||
+               pname == GL_TEXTURE_MAX_LEVEL) {
+        if (param < 0) {
+            setGLError(GL_INVALID_VALUE);
+            return;
+        }
+    } else if (pname == GL_TEXTURE_COMPARE_MODE) {
+        if (param != GL_NONE && param != GL_COMPARE_REF_TO_TEXTURE) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+    } else if (pname == GL_TEXTURE_COMPARE_FUNC) {
+        if (param != GL_LEQUAL && param != GL_GEQUAL && param != GL_LESS &&
+            param != GL_GREATER && param != GL_EQUAL && param != GL_NOTEQUAL &&
+            param != GL_ALWAYS && param != GL_NEVER) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+    } else if (pname == GL_TEXTURE_MAG_FILTER) {
+        if (param != GL_NEAREST && param != GL_LINEAR) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+    } else if (pname == GL_TEXTURE_MIN_FILTER) {
+        if (param != GL_NEAREST && param != GL_LINEAR &&
+            param != GL_NEAREST_MIPMAP_NEAREST &&
+            param != GL_NEAREST_MIPMAP_LINEAR &&
+            param != GL_LINEAR_MIPMAP_NEAREST &&
+            param != GL_LINEAR_MIPMAP_LINEAR) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+    } else if (pname == GL_TEXTURE_WRAP_S || pname == GL_TEXTURE_WRAP_T ||
+               pname == GL_TEXTURE_WRAP_R) {
+        if (param != GL_CLAMP_TO_EDGE && param != GL_MIRRORED_REPEAT &&
+            param != GL_REPEAT) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+    } else if (pname != GL_TEXTURE_MAX_LOD && pname != GL_TEXTURE_MIN_LOD) {
         setGLError(GL_INVALID_ENUM);
         return;
     }

@@ -2373,8 +2373,37 @@ void WebGLRenderingContext::texParameterf(GLenum target, GLenum pname,
 {
     ENTER_CONTEXT_SCOPE();
 
-    if (pname == GL_TEXTURE_MAX_ANISOTROPY_EXT &&
-        !isExtensionEnabled("EXT_texture_filter_anisotropic")) {
+    const GLfloat roundedParam = roundf(param);
+    if (pname == GL_TEXTURE_MAX_ANISOTROPY_EXT) {
+        if (!isExtensionEnabled("EXT_texture_filter_anisotropic")) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+        if (param < 1.0f) {
+            setGLError(GL_INVALID_VALUE);
+            return;
+        }
+    } else if (pname == GL_TEXTURE_WRAP_S || pname == GL_TEXTURE_WRAP_T) {
+        if (roundedParam != GL_CLAMP_TO_EDGE &&
+            roundedParam != GL_MIRRORED_REPEAT && roundedParam != GL_REPEAT) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+    } else if (pname == GL_TEXTURE_MIN_FILTER) {
+        if (roundedParam != GL_NEAREST && roundedParam != GL_LINEAR &&
+            roundedParam != GL_NEAREST_MIPMAP_NEAREST &&
+            roundedParam != GL_NEAREST_MIPMAP_LINEAR &&
+            roundedParam != GL_LINEAR_MIPMAP_NEAREST &&
+            roundedParam != GL_LINEAR_MIPMAP_LINEAR) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+    } else if (pname == GL_TEXTURE_MAG_FILTER) {
+        if (roundedParam != GL_NEAREST && roundedParam != GL_LINEAR) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+    } else {
         setGLError(GL_INVALID_ENUM);
         return;
     }
@@ -2399,8 +2428,36 @@ void WebGLRenderingContext::texParameteri(GLenum target, GLenum pname,
 {
     ENTER_CONTEXT_SCOPE();
 
-    if (pname == GL_TEXTURE_MAX_ANISOTROPY_EXT &&
-        !isExtensionEnabled("EXT_texture_filter_anisotropic")) {
+    if (pname == GL_TEXTURE_MAX_ANISOTROPY_EXT) {
+        if (!isExtensionEnabled("EXT_texture_filter_anisotropic")) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+        if (param < 1) {
+            setGLError(GL_INVALID_VALUE);
+            return;
+        }
+    } else if (pname == GL_TEXTURE_WRAP_S || pname == GL_TEXTURE_WRAP_T) {
+        if (param != GL_CLAMP_TO_EDGE && param != GL_MIRRORED_REPEAT &&
+            param != GL_REPEAT) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+    } else if (pname == GL_TEXTURE_MIN_FILTER) {
+        if (param != GL_NEAREST && param != GL_LINEAR &&
+            param != GL_NEAREST_MIPMAP_NEAREST &&
+            param != GL_NEAREST_MIPMAP_LINEAR &&
+            param != GL_LINEAR_MIPMAP_NEAREST &&
+            param != GL_LINEAR_MIPMAP_LINEAR) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+    } else if (pname == GL_TEXTURE_MAG_FILTER) {
+        if (param != GL_NEAREST && param != GL_LINEAR) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+    } else {
         setGLError(GL_INVALID_ENUM);
         return;
     }
