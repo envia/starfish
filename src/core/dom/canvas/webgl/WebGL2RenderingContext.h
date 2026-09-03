@@ -295,6 +295,9 @@ protected:
                                          WebGLUniformLocation* location,
                                          GLenum type);
 
+    void implementTexParameter(GLenum target, GLenum pname, GLenum type,
+                               GLfloat paramf, GLint parami);
+
     void implementUniformNuiv(
         size_t n, void (GL::*uniformNuiv)(GLint, GLsizei, const GLuint*),
         Optional<WebGLUniformLocation*> location, Uint32List data,

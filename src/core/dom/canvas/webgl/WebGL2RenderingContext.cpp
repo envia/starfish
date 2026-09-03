@@ -709,59 +709,58 @@ ScriptValue WebGL2RenderingContext::getVertexAttrib(GLuint index, GLenum pname)
     return scriptNull();
 }
 
-void WebGL2RenderingContext::texParameterf(GLenum target, GLenum pname,
-                                           GLfloat param)
+void WebGL2RenderingContext::implementTexParameter(GLenum target, GLenum pname,
+                                                   GLenum type, GLfloat paramf,
+                                                   GLint parami)
 {
     ENTER_CONTEXT_SCOPE();
 
-    const GLfloat roundedParam = roundf(param);
     if (pname == GL_TEXTURE_MAX_ANISOTROPY_EXT) {
         if (!isExtensionEnabled("EXT_texture_filter_anisotropic")) {
             setGLError(GL_INVALID_ENUM);
             return;
         }
-        if (std::isnan(param) || param < 1.0f) {
+        if (std::isnan(paramf) || paramf < 1.0f) {
             setGLError(GL_INVALID_VALUE);
             return;
         }
     } else if (pname == GL_TEXTURE_BASE_LEVEL ||
                pname == GL_TEXTURE_MAX_LEVEL) {
-        if (std::isnan(roundedParam) || roundedParam < 0.0f) {
+        if (parami < 0) {
             setGLError(GL_INVALID_VALUE);
             return;
         }
     } else if (pname == GL_TEXTURE_COMPARE_MODE) {
-        if (roundedParam != GL_NONE &&
-            roundedParam != GL_COMPARE_REF_TO_TEXTURE) {
+        if (parami != GL_NONE && parami != GL_COMPARE_REF_TO_TEXTURE) {
             setGLError(GL_INVALID_ENUM);
             return;
         }
     } else if (pname == GL_TEXTURE_COMPARE_FUNC) {
-        if (roundedParam != GL_LEQUAL && roundedParam != GL_GEQUAL &&
-            roundedParam != GL_LESS && roundedParam != GL_GREATER &&
-            roundedParam != GL_EQUAL && roundedParam != GL_NOTEQUAL &&
-            roundedParam != GL_ALWAYS && roundedParam != GL_NEVER) {
+        if (parami != GL_LEQUAL && parami != GL_GEQUAL && parami != GL_LESS &&
+            parami != GL_GREATER && parami != GL_EQUAL &&
+            parami != GL_NOTEQUAL && parami != GL_ALWAYS &&
+            parami != GL_NEVER) {
             setGLError(GL_INVALID_ENUM);
             return;
         }
     } else if (pname == GL_TEXTURE_MAG_FILTER) {
-        if (roundedParam != GL_NEAREST && roundedParam != GL_LINEAR) {
+        if (parami != GL_NEAREST && parami != GL_LINEAR) {
             setGLError(GL_INVALID_ENUM);
             return;
         }
     } else if (pname == GL_TEXTURE_MIN_FILTER) {
-        if (roundedParam != GL_NEAREST && roundedParam != GL_LINEAR &&
-            roundedParam != GL_NEAREST_MIPMAP_NEAREST &&
-            roundedParam != GL_NEAREST_MIPMAP_LINEAR &&
-            roundedParam != GL_LINEAR_MIPMAP_NEAREST &&
-            roundedParam != GL_LINEAR_MIPMAP_LINEAR) {
+        if (parami != GL_NEAREST && parami != GL_LINEAR &&
+            parami != GL_NEAREST_MIPMAP_NEAREST &&
+            parami != GL_NEAREST_MIPMAP_LINEAR &&
+            parami != GL_LINEAR_MIPMAP_NEAREST &&
+            parami != GL_LINEAR_MIPMAP_LINEAR) {
             setGLError(GL_INVALID_ENUM);
             return;
         }
     } else if (pname == GL_TEXTURE_WRAP_S || pname == GL_TEXTURE_WRAP_T ||
                pname == GL_TEXTURE_WRAP_R) {
-        if (roundedParam != GL_CLAMP_TO_EDGE &&
-            roundedParam != GL_MIRRORED_REPEAT && roundedParam != GL_REPEAT) {
+        if (parami != GL_CLAMP_TO_EDGE && parami != GL_MIRRORED_REPEAT &&
+            parami != GL_REPEAT) {
             setGLError(GL_INVALID_ENUM);
             return;
         }
@@ -781,79 +780,32 @@ void WebGL2RenderingContext::texParameterf(GLenum target, GLenum pname,
         return;
     }
 
-    gl()->texParameterf(target, pname, param);
+    switch (type) {
+    case GL_FLOAT:
+        gl()->texParameterf(target, pname, paramf);
+        return;
+    case GL_INT:
+        gl()->texParameteri(target, pname, parami);
+        return;
+    default:
+        STARFISH_ASSERT_NOT_REACHED();
+    }
+}
+
+void WebGL2RenderingContext::texParameterf(GLenum target, GLenum pname,
+                                           GLfloat param)
+{
+    // Map NaN to -1, which fails every enum check and the level >= 0 check.
+    implementTexParameter(target, pname, GL_FLOAT, param,
+                          std::isnan(param) ? -1
+                                            : clampTo<GLint>(roundf(param)));
 }
 
 void WebGL2RenderingContext::texParameteri(GLenum target, GLenum pname,
                                            GLint param)
 {
-    ENTER_CONTEXT_SCOPE();
-
-    if (pname == GL_TEXTURE_MAX_ANISOTROPY_EXT) {
-        if (!isExtensionEnabled("EXT_texture_filter_anisotropic")) {
-            setGLError(GL_INVALID_ENUM);
-            return;
-        }
-        if (param < 1) {
-            setGLError(GL_INVALID_VALUE);
-            return;
-        }
-    } else if (pname == GL_TEXTURE_BASE_LEVEL ||
-               pname == GL_TEXTURE_MAX_LEVEL) {
-        if (param < 0) {
-            setGLError(GL_INVALID_VALUE);
-            return;
-        }
-    } else if (pname == GL_TEXTURE_COMPARE_MODE) {
-        if (param != GL_NONE && param != GL_COMPARE_REF_TO_TEXTURE) {
-            setGLError(GL_INVALID_ENUM);
-            return;
-        }
-    } else if (pname == GL_TEXTURE_COMPARE_FUNC) {
-        if (param != GL_LEQUAL && param != GL_GEQUAL && param != GL_LESS &&
-            param != GL_GREATER && param != GL_EQUAL && param != GL_NOTEQUAL &&
-            param != GL_ALWAYS && param != GL_NEVER) {
-            setGLError(GL_INVALID_ENUM);
-            return;
-        }
-    } else if (pname == GL_TEXTURE_MAG_FILTER) {
-        if (param != GL_NEAREST && param != GL_LINEAR) {
-            setGLError(GL_INVALID_ENUM);
-            return;
-        }
-    } else if (pname == GL_TEXTURE_MIN_FILTER) {
-        if (param != GL_NEAREST && param != GL_LINEAR &&
-            param != GL_NEAREST_MIPMAP_NEAREST &&
-            param != GL_NEAREST_MIPMAP_LINEAR &&
-            param != GL_LINEAR_MIPMAP_NEAREST &&
-            param != GL_LINEAR_MIPMAP_LINEAR) {
-            setGLError(GL_INVALID_ENUM);
-            return;
-        }
-    } else if (pname == GL_TEXTURE_WRAP_S || pname == GL_TEXTURE_WRAP_T ||
-               pname == GL_TEXTURE_WRAP_R) {
-        if (param != GL_CLAMP_TO_EDGE && param != GL_MIRRORED_REPEAT &&
-            param != GL_REPEAT) {
-            setGLError(GL_INVALID_ENUM);
-            return;
-        }
-    } else if (pname != GL_TEXTURE_MAX_LOD && pname != GL_TEXTURE_MIN_LOD) {
-        setGLError(GL_INVALID_ENUM);
-        return;
-    }
-
-    if (target != GL_TEXTURE_2D && target != GL_TEXTURE_3D &&
-        target != GL_TEXTURE_2D_ARRAY && target != GL_TEXTURE_CUBE_MAP) {
-        setGLError(GL_INVALID_ENUM);
-        return;
-    }
-
-    if (!hasBoundTexture(target)) {
-        setGLError(GL_INVALID_OPERATION);
-        return;
-    }
-
-    gl()->texParameteri(target, pname, param);
+    implementTexParameter(target, pname, GL_INT, static_cast<GLfloat>(param),
+                          param);
 }
 
 // WebGL2RenderingContextBase
