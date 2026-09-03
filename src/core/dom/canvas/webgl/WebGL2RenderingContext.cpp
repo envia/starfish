@@ -720,13 +720,13 @@ void WebGL2RenderingContext::texParameterf(GLenum target, GLenum pname,
             setGLError(GL_INVALID_ENUM);
             return;
         }
-        if (param < 1.0f) {
+        if (std::isnan(param) || param < 1.0f) {
             setGLError(GL_INVALID_VALUE);
             return;
         }
     } else if (pname == GL_TEXTURE_BASE_LEVEL ||
                pname == GL_TEXTURE_MAX_LEVEL) {
-        if (roundedParam < 0.0f) {
+        if (std::isnan(roundedParam) || roundedParam < 0.0f) {
             setGLError(GL_INVALID_VALUE);
             return;
         }

@@ -2379,7 +2379,7 @@ void WebGLRenderingContext::texParameterf(GLenum target, GLenum pname,
             setGLError(GL_INVALID_ENUM);
             return;
         }
-        if (param < 1.0f) {
+        if (std::isnan(param) || param < 1.0f) {
             setGLError(GL_INVALID_VALUE);
             return;
         }
