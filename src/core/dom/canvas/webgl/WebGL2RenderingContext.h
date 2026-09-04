@@ -117,9 +117,6 @@ public:
 
     ScriptValue getVertexAttrib(GLuint index, GLenum pname);
 
-    void texParameterf(GLenum target, GLenum pname, GLfloat param);
-    void texParameteri(GLenum target, GLenum pname, GLint param);
-
     void vertexAttrib1f(GLuint index, GLfloat x);
     void vertexAttrib2f(GLuint index, GLfloat x, GLfloat y);
     void vertexAttrib3f(GLuint index, GLfloat x, GLfloat y, GLfloat z);
@@ -294,9 +291,6 @@ protected:
     Optional<ScriptValue> getUniformImpl(WebGLProgram* program,
                                          WebGLUniformLocation* location,
                                          GLenum type);
-
-    void implementTexParameter(GLenum target, GLenum pname, GLenum type,
-                               GLfloat paramf, GLint parami);
 
     void implementUniformNuiv(
         size_t n, void (GL::*uniformNuiv)(GLint, GLsizei, const GLuint*),

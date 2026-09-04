@@ -346,6 +346,9 @@ protected:
                                          WebGLUniformLocation* location,
                                          GLenum type);
 
+    void implementTexParameter(GLenum target, GLenum pname, GLenum type,
+                               GLfloat paramf, GLint parami);
+
     void implementUniformNfv(
         size_t n, void (GL::*uniformNfv)(GLint, GLsizei, const GLfloat*),
         Optional<WebGLUniformLocation*> location, Float32List data,
