@@ -1096,6 +1096,15 @@ public:
         glTexStorage3D(target, levels, internalformat, width, height, depth);
     }
 
+    void texSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset,
+                       GLint zoffset, GLsizei width, GLsizei height,
+                       GLsizei depth, GLenum format, GLenum type,
+                       const void *pixels) override
+    {
+        glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height,
+                        depth, format, type, pixels);
+    }
+
     GenericGL(Renderer *renderer)
     {
 #if defined(STARFISH_WINDOWS)

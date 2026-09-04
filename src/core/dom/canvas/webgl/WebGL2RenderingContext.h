@@ -312,6 +312,10 @@ private:
     bool isSrcDataValid(ScriptArrayBufferView srcData, GLenum type) override;
     size_t getBytesPerPixel(GLenum format, GLenum type) override;
 
+    void zeroFillTextureStorage(GLenum target, GLsizei levels,
+                                GLenum internalformat, GLsizei width,
+                                GLsizei height, GLsizei depth);
+
     GLenum m_currentVertexAttribType = GL_FLOAT;
 };
 

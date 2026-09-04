@@ -36,6 +36,8 @@
 #include "platform/canvas/gl/GL.h"
 #include "platform/canvas/gl/IncludeGL.h"
 #include <EscargotPublic.h>
+#include <algorithm>
+#include <vector>
 
 /* WebGL-specific enums */
 static constexpr GLenum kMAX_CLIENT_WAIT_TIMEOUT_WEBGL = 0x9247;
@@ -726,7 +728,17 @@ void WebGL2RenderingContext::texStorage2D(GLenum target, GLsizei levels,
 {
     ENTER_CONTEXT_SCOPE();
 
+    // Record errors still pending in the driver first, so that the check
+    // below sees only what this call generates.
+    while (hasNewGLError()) {
+    }
+
     gl()->texStorage2D(target, levels, internalformat, width, height);
+    if (hasNewGLError()) {
+        return;
+    }
+
+    zeroFillTextureStorage(target, levels, internalformat, width, height, 1);
 }
 
 void WebGL2RenderingContext::texStorage3D(GLenum target, GLsizei levels,
@@ -735,7 +747,135 @@ void WebGL2RenderingContext::texStorage3D(GLenum target, GLsizei levels,
 {
     ENTER_CONTEXT_SCOPE();
 
+    while (hasNewGLError()) {
+    }
+
     gl()->texStorage3D(target, levels, internalformat, width, height, depth);
+    if (hasNewGLError()) {
+        return;
+    }
+
+    zeroFillTextureStorage(target, levels, internalformat, width, height,
+                           depth);
+}
+
+// Pixel store parameters a page may have changed through pixelStorei(). They
+// are forwarded to the GL as-is, so the GL holds the current values.
+static const GLenum kUnpackParams[] = {
+    GL_UNPACK_ALIGNMENT, GL_UNPACK_ROW_LENGTH,   GL_UNPACK_SKIP_PIXELS,
+    GL_UNPACK_SKIP_ROWS, GL_UNPACK_IMAGE_HEIGHT, GL_UNPACK_SKIP_IMAGES,
+};
+static const GLint kTightUnpackValues[] = { 1, 0, 0, 0, 0, 0 };
+static const size_t kUnpackParamCount =
+    sizeof(kUnpackParams) / sizeof(kUnpackParams[0]);
+
+// Makes the GL read a contiguous client buffer as-is while in scope: tight
+// unpack parameters and no pixel unpack buffer. The page's values are
+// restored on exit.
+class ScopedTightUnpackState {
+public:
+    explicit ScopedTightUnpackState(GL* gl)
+        : m_gl(gl)
+    {
+        for (size_t i = 0; i < kUnpackParamCount; i++) {
+            m_gl->getIntegerv(kUnpackParams[i], &m_savedValues[i]);
+            if (m_savedValues[i] != kTightUnpackValues[i]) {
+                m_gl->pixelStorei(kUnpackParams[i], kTightUnpackValues[i]);
+            }
+        }
+        m_gl->getIntegerv(GL_PIXEL_UNPACK_BUFFER_BINDING, &m_savedBuffer);
+        if (m_savedBuffer != 0) {
+            m_gl->bindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+        }
+    }
+
+    ~ScopedTightUnpackState()
+    {
+        for (size_t i = 0; i < kUnpackParamCount; i++) {
+            if (m_savedValues[i] != kTightUnpackValues[i]) {
+                m_gl->pixelStorei(kUnpackParams[i], m_savedValues[i]);
+            }
+        }
+        if (m_savedBuffer != 0) {
+            m_gl->bindBuffer(GL_PIXEL_UNPACK_BUFFER,
+                             static_cast<GLuint>(m_savedBuffer));
+        }
+    }
+
+private:
+    GL* m_gl;
+    GLint m_savedValues[kUnpackParamCount] = {};
+    GLint m_savedBuffer = 0;
+};
+
+// Upper bound of one zero upload. Small textures go in one call; large ones
+// are filled a band of rows at a time from the same buffer.
+static const size_t kZeroFillChunkBytes = 64 * 1024;
+
+// WebGL requires storage allocated by texStorage2D/3D to read as zero, while
+// OpenGL ES leaves it undefined. Whatever the driver recycled would otherwise
+// be visible to the page, so upload zeros to every image of the texture.
+void WebGL2RenderingContext::zeroFillTextureStorage(
+    GLenum target, GLsizei levels, GLenum internalformat, GLsizei width,
+    GLsizei height, GLsizei depth)
+{
+    GLenum format = 0;
+    GLenum type = 0;
+    size_t bytesPerPixel = 0;
+    if (!Pixel::getTransferCombination(internalformat, &format, &type,
+                                       &bytesPerPixel)) {
+        // No way to upload to it with texSubImage (e.g. a compressed format);
+        // leave the storage as the driver made it.
+        return;
+    }
+
+    const bool is3D = target == GL_TEXTURE_3D || target == GL_TEXTURE_2D_ARRAY;
+    const bool isCubeMap = target == GL_TEXTURE_CUBE_MAP;
+    const size_t faceCount = isCubeMap ? 6 : 1;
+
+    ScopedTightUnpackState tightUnpack(gl());
+
+    std::vector<GLubyte> zeros;
+    for (GLsizei level = 0; level < levels; level++) {
+        const GLsizei levelWidth = std::max(1, width >> level);
+        const GLsizei levelHeight = std::max(1, height >> level);
+        // Only TEXTURE_3D shrinks in depth along the mip chain; the layer
+        // count of TEXTURE_2D_ARRAY is the same at every level.
+        const GLsizei levelDepth =
+            target == GL_TEXTURE_3D ? std::max(1, depth >> level) : depth;
+
+        const size_t rowBytes = static_cast<size_t>(levelWidth) * bytesPerPixel;
+        const GLsizei rowsPerChunk = static_cast<GLsizei>(std::min<size_t>(
+            levelHeight, std::max<size_t>(1, kZeroFillChunkBytes / rowBytes)));
+        if (zeros.size() < rowBytes * rowsPerChunk) {
+            zeros.resize(rowBytes * rowsPerChunk, 0);
+        }
+
+        for (size_t face = 0; face < faceCount; face++) {
+            const GLenum imageTarget =
+                isCubeMap ? GL_TEXTURE_CUBE_MAP_POSITIVE_X + face : target;
+            for (GLsizei z = 0; z < (is3D ? levelDepth : 1); z++) {
+                for (GLsizei y = 0; y < levelHeight; y += rowsPerChunk) {
+                    const GLsizei rows =
+                        std::min(rowsPerChunk, levelHeight - y);
+                    if (is3D) {
+                        gl()->texSubImage3D(target, level, 0, y, z, levelWidth,
+                                            rows, 1, format, type,
+                                            zeros.data());
+                    } else {
+                        gl()->texSubImage2D(imageTarget, level, 0, y,
+                                            levelWidth, rows, format, type,
+                                            zeros.data());
+                    }
+                }
+            }
+        }
+    }
+
+    // These uploads are the engine's own; an error from them must not reach
+    // the page as if the texStorage call had failed.
+    while (gl()->getError() != GL_NO_ERROR) {
+    }
 }
 
 GLint WebGL2RenderingContext::getFragDataLocation(WebGLProgram* program,

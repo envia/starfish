@@ -50,6 +50,11 @@ public:
                                       GLenum type = 0, int webGLVersion = 1);
     static size_t getBytesPerPixel(GLenum format, GLenum type,
                                    int webGLVersion = 1);
+    // Finds the most compact format/type that OpenGL ES 3.0 accepts for
+    // uploading to a texture of the given sized internal format. Returns
+    // false for an internal format outside table 3.2 (e.g. compressed).
+    static bool getTransferCombination(GLenum internalFormat, GLenum* format,
+                                       GLenum* type, size_t* bytesPerPixel);
     static bool isTwoBytesPerPixel(GLenum type);
     static GLushort makePixel5551(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
     static GLushort makePixel4444(uint8_t r, uint8_t g, uint8_t b, uint8_t a);

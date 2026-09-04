@@ -217,6 +217,25 @@ size_t Pixel::getBytesPerPixel(GLenum format, GLenum type, int webGLVersion)
     return 0;
 }
 
+bool Pixel::getTransferCombination(GLenum internalFormat, GLenum* format,
+                                   GLenum* type, size_t* bytesPerPixel)
+{
+    const Combination* best = nullptr;
+    for (const Combination& combination : combinationsWebGL2) {
+        if (static_cast<GLenum>(combination.internalFormat) == internalFormat &&
+            (!best || combination.bytesPerPixel < best->bytesPerPixel)) {
+            best = &combination;
+        }
+    }
+    if (!best) {
+        return false;
+    }
+    *format = best->format;
+    *type = best->type;
+    *bytesPerPixel = best->bytesPerPixel;
+    return true;
+}
+
 bool Pixel::isTwoBytesPerPixel(GLenum type)
 {
     return (type == GL_UNSIGNED_SHORT_5_5_5_1 ||

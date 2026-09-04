@@ -1080,6 +1080,16 @@ public:
                                     height, depth);
     }
 
+    void texSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset,
+                       GLint zoffset, GLsizei width, GLsizei height,
+                       GLsizei depth, GLenum format, GLenum type,
+                       const void *pixels) override
+    {
+        m_evasGLAPI->glTexSubImage3D(target, level, xoffset, yoffset, zoffset,
+                                     width, height, depth, format, type,
+                                     pixels);
+    }
+
     EvasGL(void *p)
         : m_evasGLAPI(static_cast<Evas_GL_API *>(p))
     {

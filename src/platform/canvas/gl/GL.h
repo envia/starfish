@@ -349,6 +349,10 @@ public:
     virtual void texStorage3D(GLenum target, GLsizei levels,
                               GLenum internalformat, GLsizei width,
                               GLsizei height, GLsizei depth) = 0;
+    virtual void texSubImage3D(GLenum target, GLint level, GLint xoffset,
+                               GLint yoffset, GLint zoffset, GLsizei width,
+                               GLsizei height, GLsizei depth, GLenum format,
+                               GLenum type, const void *pixels) = 0;
 };
 
 } // namespace Starfish
