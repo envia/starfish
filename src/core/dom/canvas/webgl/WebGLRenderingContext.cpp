@@ -2374,6 +2374,18 @@ void WebGLRenderingContext::implementTexParameter(GLenum target, GLenum pname,
 {
     ENTER_CONTEXT_SCOPE();
 
+    if ((target != GL_TEXTURE_2D && target != GL_TEXTURE_CUBE_MAP) &&
+        (webGLVersion() != 2 ||
+         (target != GL_TEXTURE_3D && target != GL_TEXTURE_2D_ARRAY))) {
+        setGLError(GL_INVALID_ENUM);
+        return;
+    }
+
+    if (!hasBoundTexture(target)) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
     switch (pname) {
     case GL_TEXTURE_MAX_ANISOTROPY_EXT:
         if (!isExtensionEnabled("EXT_texture_filter_anisotropic")) {
@@ -2452,18 +2464,6 @@ void WebGLRenderingContext::implementTexParameter(GLenum target, GLenum pname,
         break;
     default:
         setGLError(GL_INVALID_ENUM);
-        return;
-    }
-
-    if ((target != GL_TEXTURE_2D && target != GL_TEXTURE_CUBE_MAP) &&
-        (webGLVersion() != 2 ||
-         (target != GL_TEXTURE_3D && target != GL_TEXTURE_2D_ARRAY))) {
-        setGLError(GL_INVALID_ENUM);
-        return;
-    }
-
-    if (!hasBoundTexture(target)) {
-        setGLError(GL_INVALID_OPERATION);
         return;
     }
 
