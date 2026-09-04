@@ -1503,7 +1503,7 @@ test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/buffers/buffer-type-r
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/buffers/get-buffer-sub-data.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/buffers/one-large-uniform-buffer.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/buffers/uniform-buffers.html
-# test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/context/constants-and-properties-2.html
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/context/constants-and-properties-2.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/context/context-attributes-depth-stencil-antialias-obeyed.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/context/context-type-test-2.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/context/methods-2.html
