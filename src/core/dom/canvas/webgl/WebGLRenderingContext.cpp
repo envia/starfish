@@ -1760,19 +1760,39 @@ bool WebGLRenderingContext::hasBoundTexture(GLenum target) const
     return boundTexture != 0;
 }
 
-ScriptValue WebGLRenderingContext::getTexParameter(GLenum target, GLenum pname)
+// Generates INVALID_ENUM if target is not a texture target of this WebGL
+// version, and INVALID_OPERATION if no texture is bound to it.
+bool WebGLRenderingContext::validateTextureBinding(GLenum target)
 {
-    ENTER_CONTEXT_SCOPE(scriptNull());
-
-    if ((target != GL_TEXTURE_2D && target != GL_TEXTURE_CUBE_MAP) &&
-        (webGLVersion() != 2 ||
-         (target != GL_TEXTURE_3D && target != GL_TEXTURE_2D_ARRAY))) {
+    switch (target) {
+    case GL_TEXTURE_2D:
+    case GL_TEXTURE_CUBE_MAP:
+        break;
+    case GL_TEXTURE_3D:
+    case GL_TEXTURE_2D_ARRAY:
+        if (webGLVersion() != 2) {
+            setGLError(GL_INVALID_ENUM);
+            return false;
+        }
+        break;
+    default:
         setGLError(GL_INVALID_ENUM);
-        return scriptNull();
+        return false;
     }
 
     if (!hasBoundTexture(target)) {
         setGLError(GL_INVALID_OPERATION);
+        return false;
+    }
+
+    return true;
+}
+
+ScriptValue WebGLRenderingContext::getTexParameter(GLenum target, GLenum pname)
+{
+    ENTER_CONTEXT_SCOPE(scriptNull());
+
+    if (!validateTextureBinding(target)) {
         return scriptNull();
     }
 
@@ -2442,15 +2462,7 @@ void WebGLRenderingContext::implementTexParameter(GLenum target, GLenum pname,
 {
     ENTER_CONTEXT_SCOPE();
 
-    if ((target != GL_TEXTURE_2D && target != GL_TEXTURE_CUBE_MAP) &&
-        (webGLVersion() != 2 ||
-         (target != GL_TEXTURE_3D && target != GL_TEXTURE_2D_ARRAY))) {
-        setGLError(GL_INVALID_ENUM);
-        return;
-    }
-
-    if (!hasBoundTexture(target)) {
-        setGLError(GL_INVALID_OPERATION);
+    if (!validateTextureBinding(target)) {
         return;
     }
 

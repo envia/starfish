@@ -339,6 +339,7 @@ private:
 
 protected:
     bool hasBoundTexture(GLenum target) const;
+    bool validateTextureBinding(GLenum target);
 
     GLenum getUniformType(WebGLProgram* program,
                           WebGLUniformLocation* location);
