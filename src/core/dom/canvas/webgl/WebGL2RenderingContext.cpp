@@ -724,18 +724,18 @@ void WebGL2RenderingContext::implementTexParameter(GLenum target, GLenum pname,
             setGLError(GL_INVALID_VALUE);
             return;
         }
-    } else if (pname == GL_TEXTURE_BASE_LEVEL ||
-               pname == GL_TEXTURE_MAX_LEVEL) {
+    } else if (webGLVersion() == 2 && (pname == GL_TEXTURE_BASE_LEVEL ||
+                                       pname == GL_TEXTURE_MAX_LEVEL)) {
         if (parami < 0) {
             setGLError(GL_INVALID_VALUE);
             return;
         }
-    } else if (pname == GL_TEXTURE_COMPARE_MODE) {
+    } else if (webGLVersion() == 2 && pname == GL_TEXTURE_COMPARE_MODE) {
         if (parami != GL_NONE && parami != GL_COMPARE_REF_TO_TEXTURE) {
             setGLError(GL_INVALID_ENUM);
             return;
         }
-    } else if (pname == GL_TEXTURE_COMPARE_FUNC) {
+    } else if (webGLVersion() == 2 && pname == GL_TEXTURE_COMPARE_FUNC) {
         if (parami != GL_LEQUAL && parami != GL_GEQUAL && parami != GL_LESS &&
             parami != GL_GREATER && parami != GL_EQUAL &&
             parami != GL_NOTEQUAL && parami != GL_ALWAYS &&
@@ -759,18 +759,21 @@ void WebGL2RenderingContext::implementTexParameter(GLenum target, GLenum pname,
         }
     } else if (pname == GL_TEXTURE_WRAP_S || pname == GL_TEXTURE_WRAP_T ||
                pname == GL_TEXTURE_WRAP_R) {
-        if (parami != GL_CLAMP_TO_EDGE && parami != GL_MIRRORED_REPEAT &&
-            parami != GL_REPEAT) {
+        if ((webGLVersion() != 2 && pname == GL_TEXTURE_WRAP_R) ||
+            (parami != GL_CLAMP_TO_EDGE && parami != GL_MIRRORED_REPEAT &&
+             parami != GL_REPEAT)) {
             setGLError(GL_INVALID_ENUM);
             return;
         }
-    } else if (pname != GL_TEXTURE_MAX_LOD && pname != GL_TEXTURE_MIN_LOD) {
+    } else if (webGLVersion() != 2 ||
+               (pname != GL_TEXTURE_MAX_LOD && pname != GL_TEXTURE_MIN_LOD)) {
         setGLError(GL_INVALID_ENUM);
         return;
     }
 
-    if (target != GL_TEXTURE_2D && target != GL_TEXTURE_3D &&
-        target != GL_TEXTURE_2D_ARRAY && target != GL_TEXTURE_CUBE_MAP) {
+    if ((target != GL_TEXTURE_2D && target != GL_TEXTURE_CUBE_MAP) &&
+        (webGLVersion() != 2 ||
+         (target != GL_TEXTURE_3D && target != GL_TEXTURE_2D_ARRAY))) {
         setGLError(GL_INVALID_ENUM);
         return;
     }
