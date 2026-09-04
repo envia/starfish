@@ -1796,31 +1796,23 @@ ScriptValue WebGLRenderingContext::getTexParameter(GLenum target, GLenum pname)
         return scriptNull();
     }
 
-    if (pname == GL_TEXTURE_MAX_ANISOTROPY_EXT &&
-        isExtensionEnabled("EXT_texture_filter_anisotropic")) {
-        GLfloat params = 0;
-        m_gl->getTexParameterfv(target, pname, &params);
-        if (hasNewGLError()) {
-            return scriptNull();
-        }
-        return createScriptValue(params);
-    }
-
+    // Return type of each pname, as in the WebGL spec's getTexParameter table.
+    enum class Type { Bool, Enum, Float, Int, Uint };
+    Type type;
     switch (pname) {
-    // GLboolean
-    case GL_TEXTURE_IMMUTABLE_FORMAT: {
-        if (webGLVersion() != 2) {
+    case GL_TEXTURE_MAX_ANISOTROPY_EXT:
+        if (!isExtensionEnabled("EXT_texture_filter_anisotropic")) {
             setGLError(GL_INVALID_ENUM);
             return scriptNull();
         }
-        GLint params = 0;
-        m_gl->getTexParameteriv(target, pname, &params);
-        if (hasNewGLError()) {
-            return scriptNull();
-        }
-        return createScriptValue(static_cast<bool>(params));
-    }
-    // GLenum
+        type = Type::Float;
+        break;
+    case GL_TEXTURE_MAG_FILTER:
+    case GL_TEXTURE_MIN_FILTER:
+    case GL_TEXTURE_WRAP_S:
+    case GL_TEXTURE_WRAP_T:
+        type = Type::Enum;
+        break;
     case GL_TEXTURE_COMPARE_FUNC:
     case GL_TEXTURE_COMPARE_MODE:
     case GL_TEXTURE_WRAP_R:
@@ -1828,64 +1820,70 @@ ScriptValue WebGLRenderingContext::getTexParameter(GLenum target, GLenum pname)
             setGLError(GL_INVALID_ENUM);
             return scriptNull();
         }
-        FALLTHROUGH;
-    case GL_TEXTURE_MAG_FILTER:
-    case GL_TEXTURE_MIN_FILTER:
-    case GL_TEXTURE_WRAP_S:
-    case GL_TEXTURE_WRAP_T: {
-        GLint params = 0;
-        m_gl->getTexParameteriv(target, pname, &params);
-        if (hasNewGLError()) {
-            return scriptNull();
-        }
-        return createScriptValue(static_cast<GLenum>(params));
-    }
-    // GLfloat
-    case GL_TEXTURE_MAX_LOD:
-    case GL_TEXTURE_MIN_LOD: {
-        if (webGLVersion() != 2) {
-            setGLError(GL_INVALID_ENUM);
-            return scriptNull();
-        }
-        GLfloat params = 0;
-        m_gl->getTexParameterfv(target, pname, &params);
-        if (hasNewGLError()) {
-            return scriptNull();
-        }
-        return createScriptValue(params);
-    }
-    // GLint
-    case GL_TEXTURE_BASE_LEVEL:
-    case GL_TEXTURE_MAX_LEVEL: {
-        if (webGLVersion() != 2) {
-            setGLError(GL_INVALID_ENUM);
-            return scriptNull();
-        }
-        GLint params = 0;
-        m_gl->getTexParameteriv(target, pname, &params);
-        if (hasNewGLError()) {
-            return scriptNull();
-        }
-        return createScriptValue(params);
-    }
-    // GLuint
-    case GL_TEXTURE_IMMUTABLE_LEVELS: {
-        if (webGLVersion() != 2) {
-            setGLError(GL_INVALID_ENUM);
-            return scriptNull();
-        }
-        GLint params = 0;
-        m_gl->getTexParameteriv(target, pname, &params);
-        if (hasNewGLError()) {
-            return scriptNull();
-        }
-        return createScriptValue(static_cast<GLuint>(params));
-    }
-    default:
+        type = Type::Enum;
         break;
+    case GL_TEXTURE_MAX_LOD:
+    case GL_TEXTURE_MIN_LOD:
+        if (webGLVersion() != 2) {
+            setGLError(GL_INVALID_ENUM);
+            return scriptNull();
+        }
+        type = Type::Float;
+        break;
+    case GL_TEXTURE_BASE_LEVEL:
+    case GL_TEXTURE_MAX_LEVEL:
+        if (webGLVersion() != 2) {
+            setGLError(GL_INVALID_ENUM);
+            return scriptNull();
+        }
+        type = Type::Int;
+        break;
+    case GL_TEXTURE_IMMUTABLE_FORMAT:
+        if (webGLVersion() != 2) {
+            setGLError(GL_INVALID_ENUM);
+            return scriptNull();
+        }
+        type = Type::Bool;
+        break;
+    case GL_TEXTURE_IMMUTABLE_LEVELS:
+        if (webGLVersion() != 2) {
+            setGLError(GL_INVALID_ENUM);
+            return scriptNull();
+        }
+        type = Type::Uint;
+        break;
+    default:
+        setGLError(GL_INVALID_ENUM);
+        return scriptNull();
     }
-    setGLError(GL_INVALID_ENUM);
-    return scriptNull();
+
+    if (type == Type::Float) {
+        GLfloat value = 0;
+        m_gl->getTexParameterfv(target, pname, &value);
+        if (hasNewGLError()) {
+            return scriptNull();
+        }
+        return createScriptValue(value);
+    }
+
+    GLint value = 0;
+    m_gl->getTexParameteriv(target, pname, &value);
+    if (hasNewGLError()) {
+        return scriptNull();
+    }
+    switch (type) {
+    case Type::Bool:
+        return createScriptValue(static_cast<bool>(value));
+    case Type::Enum:
+        return createScriptValue(static_cast<GLenum>(value));
+    case Type::Int:
+        return createScriptValue(value);
+    case Type::Uint:
+        return createScriptValue(static_cast<GLuint>(value));
+    default:
+        STARFISH_ASSERT_NOT_REACHED();
+        return scriptNull();
+    }
 }
 
 GLenum WebGLRenderingContext::getUniformType(WebGLProgram* program,
