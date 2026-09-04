@@ -1764,7 +1764,9 @@ ScriptValue WebGLRenderingContext::getTexParameter(GLenum target, GLenum pname)
 {
     ENTER_CONTEXT_SCOPE(scriptNull());
 
-    if (target != GL_TEXTURE_2D && target != GL_TEXTURE_CUBE_MAP) {
+    if ((target != GL_TEXTURE_2D && target != GL_TEXTURE_CUBE_MAP) &&
+        (webGLVersion() != 2 ||
+         (target != GL_TEXTURE_3D && target != GL_TEXTURE_2D_ARRAY))) {
         setGLError(GL_INVALID_ENUM);
         return scriptNull();
     }
@@ -1784,20 +1786,86 @@ ScriptValue WebGLRenderingContext::getTexParameter(GLenum target, GLenum pname)
         return createScriptValue(params);
     }
 
-    if (pname != GL_TEXTURE_MAG_FILTER && pname != GL_TEXTURE_MIN_FILTER &&
-        pname != GL_TEXTURE_WRAP_S && pname != GL_TEXTURE_WRAP_T) {
-        setGLError(GL_INVALID_ENUM);
-        return scriptNull();
+    switch (pname) {
+    // GLboolean
+    case GL_TEXTURE_IMMUTABLE_FORMAT: {
+        if (webGLVersion() != 2) {
+            setGLError(GL_INVALID_ENUM);
+            return scriptNull();
+        }
+        GLint params = 0;
+        m_gl->getTexParameteriv(target, pname, &params);
+        if (hasNewGLError()) {
+            return scriptNull();
+        }
+        return createScriptValue(static_cast<bool>(params));
     }
-
-    GLint params = 0;
-    m_gl->getTexParameteriv(target, pname, &params);
-
-    if (hasNewGLError()) {
-        return scriptNull();
+    // GLenum
+    case GL_TEXTURE_COMPARE_FUNC:
+    case GL_TEXTURE_COMPARE_MODE:
+    case GL_TEXTURE_WRAP_R:
+        if (webGLVersion() != 2) {
+            setGLError(GL_INVALID_ENUM);
+            return scriptNull();
+        }
+        FALLTHROUGH;
+    case GL_TEXTURE_MAG_FILTER:
+    case GL_TEXTURE_MIN_FILTER:
+    case GL_TEXTURE_WRAP_S:
+    case GL_TEXTURE_WRAP_T: {
+        GLint params = 0;
+        m_gl->getTexParameteriv(target, pname, &params);
+        if (hasNewGLError()) {
+            return scriptNull();
+        }
+        return createScriptValue(static_cast<GLenum>(params));
     }
-
-    return createScriptValue(static_cast<GLenum>(params));
+    // GLfloat
+    case GL_TEXTURE_MAX_LOD:
+    case GL_TEXTURE_MIN_LOD: {
+        if (webGLVersion() != 2) {
+            setGLError(GL_INVALID_ENUM);
+            return scriptNull();
+        }
+        GLfloat params = 0;
+        m_gl->getTexParameterfv(target, pname, &params);
+        if (hasNewGLError()) {
+            return scriptNull();
+        }
+        return createScriptValue(params);
+    }
+    // GLint
+    case GL_TEXTURE_BASE_LEVEL:
+    case GL_TEXTURE_MAX_LEVEL: {
+        if (webGLVersion() != 2) {
+            setGLError(GL_INVALID_ENUM);
+            return scriptNull();
+        }
+        GLint params = 0;
+        m_gl->getTexParameteriv(target, pname, &params);
+        if (hasNewGLError()) {
+            return scriptNull();
+        }
+        return createScriptValue(params);
+    }
+    // GLuint
+    case GL_TEXTURE_IMMUTABLE_LEVELS: {
+        if (webGLVersion() != 2) {
+            setGLError(GL_INVALID_ENUM);
+            return scriptNull();
+        }
+        GLint params = 0;
+        m_gl->getTexParameteriv(target, pname, &params);
+        if (hasNewGLError()) {
+            return scriptNull();
+        }
+        return createScriptValue(static_cast<GLuint>(params));
+    }
+    default:
+        break;
+    }
+    setGLError(GL_INVALID_ENUM);
+    return scriptNull();
 }
 
 GLenum WebGLRenderingContext::getUniformType(WebGLProgram* program,
