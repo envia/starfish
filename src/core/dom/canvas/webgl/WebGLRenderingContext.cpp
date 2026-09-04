@@ -2374,7 +2374,8 @@ void WebGLRenderingContext::implementTexParameter(GLenum target, GLenum pname,
 {
     ENTER_CONTEXT_SCOPE();
 
-    if (pname == GL_TEXTURE_MAX_ANISOTROPY_EXT) {
+    switch (pname) {
+    case GL_TEXTURE_MAX_ANISOTROPY_EXT:
         if (!isExtensionEnabled("EXT_texture_filter_anisotropic")) {
             setGLError(GL_INVALID_ENUM);
             return;
@@ -2383,31 +2384,49 @@ void WebGLRenderingContext::implementTexParameter(GLenum target, GLenum pname,
             setGLError(GL_INVALID_VALUE);
             return;
         }
-    } else if (webGLVersion() == 2 && (pname == GL_TEXTURE_BASE_LEVEL ||
-                                       pname == GL_TEXTURE_MAX_LEVEL)) {
+        break;
+    case GL_TEXTURE_BASE_LEVEL:
+    case GL_TEXTURE_MAX_LEVEL:
+        if (webGLVersion() != 2) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
         if (parami < 0) {
             setGLError(GL_INVALID_VALUE);
             return;
         }
-    } else if (webGLVersion() == 2 && pname == GL_TEXTURE_COMPARE_MODE) {
-        if (parami != GL_NONE && parami != GL_COMPARE_REF_TO_TEXTURE) {
+        break;
+    case GL_TEXTURE_COMPARE_FUNC:
+        if (webGLVersion() != 2 ||
+            (parami != GL_LEQUAL && parami != GL_GEQUAL && parami != GL_LESS &&
+             parami != GL_GREATER && parami != GL_EQUAL &&
+             parami != GL_NOTEQUAL && parami != GL_ALWAYS &&
+             parami != GL_NEVER)) {
             setGLError(GL_INVALID_ENUM);
             return;
         }
-    } else if (webGLVersion() == 2 && pname == GL_TEXTURE_COMPARE_FUNC) {
-        if (parami != GL_LEQUAL && parami != GL_GEQUAL && parami != GL_LESS &&
-            parami != GL_GREATER && parami != GL_EQUAL &&
-            parami != GL_NOTEQUAL && parami != GL_ALWAYS &&
-            parami != GL_NEVER) {
+        break;
+    case GL_TEXTURE_COMPARE_MODE:
+        if (webGLVersion() != 2 ||
+            (parami != GL_NONE && parami != GL_COMPARE_REF_TO_TEXTURE)) {
             setGLError(GL_INVALID_ENUM);
             return;
         }
-    } else if (pname == GL_TEXTURE_MAG_FILTER) {
+        break;
+    case GL_TEXTURE_MAG_FILTER:
         if (parami != GL_NEAREST && parami != GL_LINEAR) {
             setGLError(GL_INVALID_ENUM);
             return;
         }
-    } else if (pname == GL_TEXTURE_MIN_FILTER) {
+        break;
+    case GL_TEXTURE_MAX_LOD:
+    case GL_TEXTURE_MIN_LOD:
+        if (webGLVersion() != 2) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+        break;
+    case GL_TEXTURE_MIN_FILTER:
         if (parami != GL_NEAREST && parami != GL_LINEAR &&
             parami != GL_NEAREST_MIPMAP_NEAREST &&
             parami != GL_NEAREST_MIPMAP_LINEAR &&
@@ -2416,16 +2435,22 @@ void WebGLRenderingContext::implementTexParameter(GLenum target, GLenum pname,
             setGLError(GL_INVALID_ENUM);
             return;
         }
-    } else if (pname == GL_TEXTURE_WRAP_S || pname == GL_TEXTURE_WRAP_T ||
-               pname == GL_TEXTURE_WRAP_R) {
-        if ((webGLVersion() != 2 && pname == GL_TEXTURE_WRAP_R) ||
-            (parami != GL_CLAMP_TO_EDGE && parami != GL_MIRRORED_REPEAT &&
-             parami != GL_REPEAT)) {
+        break;
+    case GL_TEXTURE_WRAP_R:
+        if (webGLVersion() != 2) {
             setGLError(GL_INVALID_ENUM);
             return;
         }
-    } else if (webGLVersion() != 2 ||
-               (pname != GL_TEXTURE_MAX_LOD && pname != GL_TEXTURE_MIN_LOD)) {
+        FALLTHROUGH;
+    case GL_TEXTURE_WRAP_S:
+    case GL_TEXTURE_WRAP_T:
+        if (parami != GL_CLAMP_TO_EDGE && parami != GL_MIRRORED_REPEAT &&
+            parami != GL_REPEAT) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+        break;
+    default:
         setGLError(GL_INVALID_ENUM);
         return;
     }
