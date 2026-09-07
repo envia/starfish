@@ -1,0 +1,10 @@
+{
+  "version": "0.5.3",
+  "base_version": "0.5.0",
+  "source": "release",
+  "tag": "v0.5.3",
+  "branch": "",
+  "commit": "a9e18a8ac55b4dc5dc4f05d4b2f0cf00232b737c",
+  "dirty": false,
+  "installed_at": "2026-08-27T01:33:38+00:00"
+}
