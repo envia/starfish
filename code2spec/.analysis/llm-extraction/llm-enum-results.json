@@ -1,0 +1,184 @@
+[
+  {
+    "name": "PlatformIntegrationData.KeyValue",
+    "values": ["UnidentifiedKey", "AltLeftKey", "AltRightKey", "ControlLeftKey", "ControlRightKey", "CapsLockKey", "FnKey", "FnLockKey", "HyperKey", "MetaKey", "NumLockKey", "ScrollLockKey", "ShiftLeftKey", "ShiftRightKey", "SuperKey", "SymbolKey", "SymbolLockKey", "EnterKey", "TabKey", "ArrowDownKey"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: inc/PlatformIntegrationData.h:7]"
+  },
+  {
+    "name": "PlatformIntegrationData.MouseButtonValue",
+    "values": ["NoButton", "LeftButton", "MiddleButton", "RightButton"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: inc/PlatformIntegrationData.h:239]"
+  },
+  {
+    "name": "PlatformIntegrationData.MouseButtonsValue",
+    "values": ["NoButtonDown", "LeftButtonDown", "RightButtonDown", "MiddleButtonDown"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: inc/PlatformIntegrationData.h:246]"
+  },
+  {
+    "name": "PlatformIntegrationData.TTSMode",
+    "values": ["Default", "Forced"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: inc/PlatformIntegrationData.h:253]"
+  },
+  {
+    "name": "StarfishBase.NullOptionType",
+    "values": ["NullOption"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/StarfishBase.h:591]"
+  },
+  {
+    "name": "HistoryManager.HistoryManagerOwner",
+    "values": ["OwnerIsWebView", "OwnerIsHTMLIFrame"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/browser/history/HistoryManager.h:119]"
+  },
+  {
+    "name": "CompositorGL.Command",
+    "values": ["MoveTo", "LineTo", "ArcNegative"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/canvas/CompositorGL.cpp:477]"
+  },
+  {
+    "name": "PlatformFile.FileMode",
+    "values": ["Read", "Write", "ReadWrite"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/file/PlatformFile.h:35]"
+  },
+  {
+    "name": "PlatformFile.Whence",
+    "values": ["SEEK_SET", "SEEK_CUR", "SEEK_END"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/file/PlatformFile.h:41]"
+  },
+  {
+    "name": "Resource.State",
+    "values": ["BeforeSend", "Receiving", "Finished", "Failed", "Canceled"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/loader/Resource.h:42]"
+  },
+  {
+    "name": "Resource.Type",
+    "values": ["ResourceType", "ImageResourceType", "TextResourceType", "FontResourceType"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/loader/Resource.h:50]"
+  },
+  {
+    "name": "ResourceURL.Protocol",
+    "values": ["FILE_PROTOCOL", "BLOB_PROTOCOL", "DATA_PROTOCOL", "ABOUT_PROTOCOL", "HTTP_PROTOCOL", "HTTPS_PROTOCOL", "JAVASCRIPT_PROTOCOL", "WS_PROTOCOL", "WSS_PROTOCOL", "UNKNOWN"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/loader/ResourceURL.h:35]"
+  },
+  {
+    "name": "MessageLoopGLib.RendezvousOwner",
+    "values": ["None", "MainBlockedOnLWE", "LWEPausingMain"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/message_loop/MessageLoopGLib.cpp:99]"
+  },
+  {
+    "name": "DemuxerSource.SeekWhence",
+    "values": ["SeekWhenceSet", "SeekWhenceCurrent", "SeekWhenceEnd", "SeekWhenceLookSize"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/multimedia/DemuxerSource.h:26]"
+  },
+  {
+    "name": "MediaPlayer.PlaybackState",
+    "values": ["PLAYBACK_STATE_NONE", "PLAYBACK_STATE_PLAYING", "PLAYBACK_STATE_PAUSED", "PLAYBACK_STATE_END"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/multimedia/MediaPlayer.h:67]"
+  },
+  {
+    "name": "MediaPlayer.SeekState",
+    "values": ["SEEKSTATE_NO_SEEK", "SEEKSTATE_SEEKING", "SEEKSTATE_WAITING"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/multimedia/MediaPlayer.h:73]"
+  },
+  {
+    "name": "StreamInfo.StreamType",
+    "values": ["StreamTypeUnknown", "StreamTypeAudio", "StreamTypeVideo", "StreamTypeSubtitle"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/multimedia/StreamInfo.h:52]"
+  },
+  {
+    "name": "StreamInfo.MediaCodec",
+    "values": ["MediaCodecUnknown", "MediaCodecAudioAAC", "MediaCodecAudioMP3", "MediaCodecAudioVorbis", "MediaCodecAudioOpus", "MediaCodecVideoH264", "MediaCodecVideoHEVC", "MediaCodecVideoVP9", "MediaCodecVideoAV1"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/multimedia/StreamInfo.h:59]"
+  },
+  {
+    "name": "StreamInfo.AudioSampleFormat",
+    "values": ["AudioSampleFormatNone", "AudioSampleFormatU8", "AudioSampleFormatS16", "AudioSampleFormatS32", "AudioSampleFormatFLT", "AudioSampleFormatDBL", "AudioSampleFormatU8P", "AudioSampleFormatS16P", "AudioSampleFormatS32P", "AudioSampleFormatFLTP", "AudioSampleFormatDBLP"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/multimedia/StreamInfo.h:73]"
+  },
+  {
+    "name": "ScreenOrientationType.ScreenOrientationType",
+    "values": ["ScreenOrientationUndefined", "ScreenOrientationPortraitPrimary", "ScreenOrientationPortraitSecondary", "ScreenOrientationLandscapePrimary", "ScreenOrientationLandscapeSecondary"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/public/ScreenOrientationType.h:24]"
+  },
+  {
+    "name": "LweWebViewImpl.ImeComposingStatus",
+    "values": ["NORMAL", "COMPOSING_START", "COMPOSING_END"],
+    "type": "java_intdef",
+    "language": "java",
+    "source": "[Source: src/public/bridge/android/java/com/samsung/android/lightweightwebengine/internal/LweWebViewImpl.java:93]"
+  },
+  {
+    "name": "LWEWebViewEcoreWl2.Owner",
+    "values": ["FREE", "ENGINE", "READY", "PRESENTING"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/public/bridge/ecore_wl2/LWEWebViewEcoreWl2.cpp:190]"
+  },
+  {
+    "name": "LWEWebViewEFL.Owner",
+    "values": ["FREE", "ENGINE", "READY", "DISPLAYING"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/public/bridge/efl/LWEWebViewEFL.cpp:153]"
+  },
+  {
+    "name": "LWEWebViewFlutter.PORT_WINDOW_BACKEND",
+    "values": ["GB", "GL", "HEADLESS"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/public/bridge/flutter/LWEWebViewFlutter.cpp:82]"
+  },
+  {
+    "name": "LWEWebViewFlutter.PORT_COMPOSITOR_BACKEND",
+    "values": ["CAIRO", "GL", "MOCK"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/public/bridge/flutter/LWEWebViewFlutter.cpp:83]"
+  },
+  {
+    "name": "MiniBrowser.StarfishStartUpFlag",
+    "values": ["enableComputedStyleDump", "enableFrameTreeDump", "enableStackingContextDump", "enableHitTestDump", "enableDebugGraphicsLayer", "enableDebugRepaintRegion", "enableRegressionTest"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/shell/MiniBrowser.cpp:34]"
+  }
+]

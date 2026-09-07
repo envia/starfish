@@ -1,0 +1,98 @@
+[
+  {
+    "mechanism": "dbus",
+    "name": "A11yAtspiBridge.a11yDbusFilter",
+    "source_component": "A11yAtspiBridge",
+    "target_component": "D-Bus Accessibility Daemon",
+    "data": "Accessibility tree event DBus message delivery",
+    "source": "[Source: src/public/bridge/efl/A11yAtspiBridge.cpp:462]"
+  },
+  {
+    "mechanism": "dbus",
+    "name": "A11yAtspiBridge.enableBridge",
+    "source_component": "A11yAtspiBridge",
+    "target_component": "D-Bus Accessibility Daemon",
+    "data": "Add DBus connection filter for accessibility events",
+    "source": "[Source: src/public/bridge/efl/A11yAtspiBridge.cpp:463]"
+  },
+  {
+    "mechanism": "dbus",
+    "name": "A11yAtspiBridge.disableBridge",
+    "source_component": "A11yAtspiBridge",
+    "target_component": "D-Bus Accessibility Daemon",
+    "data": "Remove DBus connection filter for accessibility events",
+    "source": "[Source: src/public/bridge/efl/A11yAtspiBridge.cpp:467]"
+  },
+  {
+    "mechanism": "signal",
+    "name": "A11yAtspiBridge.flushTreeEvents",
+    "source_component": "A11yAtspiBridge",
+    "target_component": "GObject System",
+    "data": "Emit accessibility tree GObject signals",
+    "source": "[Source: src/public/bridge/efl/A11yAtspiBridge.cpp:460]"
+  },
+  {
+    "mechanism": "signal",
+    "name": "Process.killProcess",
+    "source_component": "Process",
+    "target_component": "Child Process",
+    "data": "Send SIGKILL/SIGTERM signal to process",
+    "source": "[Source: src/platform/process/base/Process.cpp:440]"
+  },
+  {
+    "mechanism": "signal",
+    "name": "Process.launchProcess",
+    "source_component": "Process",
+    "target_component": "Operating System",
+    "data": "Configure signal action masks for spawned process",
+    "source": "[Source: src/platform/process/base/Process.cpp:439]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "WebViewEcoreWl2.WebViewEcoreWl2",
+    "source_component": "LWE WebView (Ecore Wayland)",
+    "target_component": "Wayland Display Server",
+    "data": "Establish connection to Wayland compositor socket",
+    "source": "[Source: src/public/bridge/ecore_wl2/LWEWebViewEcoreWl2.cpp:456]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "WebViewTcoreWl.WebViewTcoreWl",
+    "source_component": "LWE WebView (Tizen Core Wayland)",
+    "target_component": "Tizen Wayland Display Server",
+    "data": "Establish Wayland display socket connection",
+    "source": "[Source: src/public/bridge/tcore_wl/LWEWebViewTcoreWl.cpp:479]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "WebViewFlutter.initEGL",
+    "source_component": "LWE WebView (Flutter)",
+    "target_component": "Wayland Display Server",
+    "data": "Establish connection to Wayland compositor socket for EGL",
+    "source": "[Source: src/public/bridge/flutter/LWEWebViewFlutter.cpp:475]"
+  },
+  {
+    "mechanism": "jni",
+    "name": "AndroidBridge.init",
+    "source_component": "Android LWE WebView Impl (Java)",
+    "target_component": "C++ Starfish Web Engine",
+    "data": "Initialize Android Bridge and retrieve JavaVM reference",
+    "source": "[Source: src/public/bridge/android/AndroidBridge.cpp:443]"
+  },
+  {
+    "mechanism": "signal",
+    "name": "Shell.sigHandler",
+    "source_component": "Shell Console Launcher",
+    "target_component": "Self / OS",
+    "data": "Handle system signals (SIGINT, SIGSEGV, SIGTERM)",
+    "source": "[Source: src/shell/Shell.cpp:509]"
+  },
+  {
+    "mechanism": "signal",
+    "name": "Shell.setBacktraceHandler",
+    "source_component": "Shell Console Launcher",
+    "target_component": "Operating System",
+    "data": "Register crash backtrace signal action handlers",
+    "source": "[Source: src/shell/Shell.cpp:511]"
+  }
+]

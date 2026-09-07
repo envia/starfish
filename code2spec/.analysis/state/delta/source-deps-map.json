@@ -1,0 +1,96 @@
+{
+  "version": "1.0",
+  "built_at": "2026-08-27T10:50:01",
+  "deps": {
+    "modules/README.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": ""
+    },
+    "modules/bindings.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/bindings-fr.md"
+    },
+    "modules/browser.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/browser-fr.md"
+    },
+    "modules/compat-tizen.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/compat-tizen-fr.md"
+    },
+    "modules/docs-generator.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/docs-generator-fr.md"
+    },
+    "modules/engine-core.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/engine-core-fr.md"
+    },
+    "modules/inc-headers.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/inc-headers-fr.md"
+    },
+    "modules/launcher.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/launcher-fr.md"
+    },
+    "modules/platform-canvas.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/platform-canvas-fr.md"
+    },
+    "modules/platform-core.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/platform-core-fr.md"
+    },
+    "modules/platform-file.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/platform-file-fr.md"
+    },
+    "modules/platform-loader.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/platform-loader-fr.md"
+    },
+    "modules/platform-multimedia.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/platform-multimedia-fr.md"
+    },
+    "modules/platform-network.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/platform-network-fr.md"
+    },
+    "modules/public-bridge.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/public-bridge-fr.md"
+    },
+    "modules/shell.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/shell-fr.md"
+    },
+    "modules/third-party.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/third-party-fr.md"
+    },
+    "modules/tooling.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/tooling-fr.md"
+    }
+  }
+}

@@ -1,0 +1,170 @@
+[
+  {
+    "name": "LWE_DEFAULT_FONT_SIZE",
+    "value": "16",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: inc/LWEWebView.h:190]"
+  },
+  {
+    "name": "LWE_MIN_FONT_SIZE",
+    "value": "1",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: inc/LWEWebView.h:191]"
+  },
+  {
+    "name": "LWE_MAX_FONT_SIZE",
+    "value": "72",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: inc/LWEWebView.h:192]"
+  },
+  {
+    "name": "STARFISH_LINE_BREAK_ITERATOR_POOL_SIZE",
+    "value": "4",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/Starfish.cpp:81]"
+  },
+  {
+    "name": "BDWGC_FREE_SPACE_DIVISOR",
+    "value": "12",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/Starfish.h:40]"
+  },
+  {
+    "name": "COMPILER_CLANG",
+    "value": "1",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/StarfishBase.h:85]"
+  },
+  {
+    "name": "COMPILER_MSVC",
+    "value": "1",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/StarfishBase.h:87]"
+  },
+  {
+    "name": "COMPILER_GCC",
+    "value": "1",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/StarfishBase.h:89]"
+  },
+  {
+    "name": "OS_WINDOWS",
+    "value": "1",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/StarfishBase.h:190]"
+  },
+  {
+    "name": "OS_POSIX",
+    "value": "1",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/StarfishBase.h:196]"
+  },
+  {
+    "name": "TRUE",
+    "value": "1",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/StarfishBase.h:256]"
+  },
+  {
+    "name": "FALSE",
+    "value": "0",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/StarfishBase.h:260]"
+  },
+  {
+    "name": "DEFAULT_CLEAR_STACK_SIZE",
+    "value": "102400",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/StarfishBase.h:279]"
+  },
+  {
+    "name": "ELABORATE_CLEAR_STACK_SIZE",
+    "value": "DEFAULT_CLEAR_STACK_SIZE * 4",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/StarfishBase.h:280]"
+  },
+  {
+    "name": "STARFISH_PIXEL_R_INDEX",
+    "value": "0",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/StarfishBase.h:1079]"
+  },
+  {
+    "name": "STARFISH_PIXEL_G_INDEX",
+    "value": "1",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/StarfishBase.h:1080]"
+  },
+  {
+    "name": "STARFISH_PIXEL_B_INDEX",
+    "value": "2",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/StarfishBase.h:1081]"
+  },
+  {
+    "name": "STARFISH_PIXEL_A_INDEX",
+    "value": "3",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/StarfishBase.h:1082]"
+  },
+  {
+    "name": "APP_NAME",
+    "value": "\"Netscape\"",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/StarfishInfo.h:23]"
+  },
+  {
+    "name": "APP_CODE_NAME",
+    "value": "\"Mozilla\"",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/StarfishInfo.h:24]"
+  },
+  {
+    "name": "PRODUCT_NAME",
+    "value": "\"Gecko\"",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/StarfishInfo.h:25]"
+  },
+  {
+    "name": "STARFISH_NAME",
+    "value": "\"Starfish\"",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/StarfishInfo.h:26]"
+  },
+  {
+    "name": "VENDOR_NAME",
+    "value": "\"Samsung Electronics Co., Ltd.\"",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/StarfishInfo.h:27]"
+  },
+  {
+    "name": "USER_AGENT_MAXIMUM_DATE_VALUE",
+    "value": "8.64e15",
+    "type": "cpp_const",
+    "language": "cpp",
+    "source": "[Source: src/StarfishInfo.h:31]"
+  }
+]

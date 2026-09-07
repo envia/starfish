@@ -1,0 +1,64 @@
+{
+  "repoRoot": "/home/hwang/work/F/starfish_",
+  "outDir": "/home/hwang/work/F/starfish_/code2spec",
+  "host": "github.sec.samsung.net",
+  "ownerPath": "jh1984-hwang",
+  "ownerSlug": "jh1984-hwang",
+  "repo": "starfish",
+  "branch": "master",
+  "defaultBranch": "master",
+  "remoteUrl": "git@github.sec.samsung.net:jh1984-hwang/starfish.git",
+  "deepLink": {
+    "type": "github",
+    "base": "https://github.sec.samsung.net/jh1984-hwang/starfish/blob/master",
+    "suffix": "",
+    "lineAnchorPrefix": "#L"
+  },
+  "topLevelEntries": [
+    "README.md",
+    "01-introduction.md",
+    "02-architecture.md",
+    "03-design-patterns.md",
+    "04-data-layer.md",
+    "05-external-interfaces.md",
+    "06-configuration-deployment.md",
+    "07-resources.md",
+    "08-security-quality.md",
+    "09-ipc-enum-catalog.md"
+  ],
+  "generatedAt": "2026-08-27T01:50:16.256Z",
+  "description": "Welcome to the Software Design Documentation (SDD) for Starfish, a high-performance, lightweight web engine designed for mobile and embedded platforms (such as Tizen, Android, EFL, and Flutter).",
+  "languages": [
+    "C",
+    "C++",
+    "Python"
+  ],
+  "qualityScore": {
+    "requiredSlots": 100,
+    "wikiStructure": 100,
+    "mermaidSyntax": 100,
+    "moduleFrPairing": 100,
+    "astBaseline": 100,
+    "grounding": 100,
+    "claimGrounding": 100,
+    "symbolCoverage": 5,
+    "packageCoverage": 100,
+    "diagramAccuracy": 100
+  },
+  "qualityBreakdown": {
+    "verifiedAt": "2026-08-27T01:54:02.461Z",
+    "method": "deterministic validators only; CodeWikiBench and LLM-as-judge excluded",
+    "validators": {
+      "requiredSlots": "all 9 required SDD slots present (+ 3 conditional: 04-data-layer.md, 07-resources.md, 09-ipc-enum-catalog.md)",
+      "wikiStructure": "pass",
+      "mermaidSyntax": "[mermaid] ok — 20 block(s) v10-compat linted across 19 file(s)",
+      "moduleFrPairing": "  matched:   17  (100.0%)",
+      "astBaseline": "  status:   pass",
+      "grounding": "[grounding] SCORE — 296/296 (100%) checkable deep-link(s) aligned; 0/296 (0%) misaligned across 0 file(s); score=100",
+      "claimGrounding": "    supported:    1582 (100.0%)\n    contradicted: 0\n  badge links:   990 (trusted 990)",
+      "symbolCoverage": "  covered:  141  (5.1%)",
+      "packageCoverage": "  covered:   1  (100.0%)",
+      "diagramAccuracy": "    supported:      1  (100.0%)"
+    }
+  }
+}

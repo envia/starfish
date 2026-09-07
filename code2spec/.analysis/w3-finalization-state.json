@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "recorded_at": "2026-08-27T10:50:22",
+      "phase": "initial",
+      "exit_code": 1,
+      "llm_repair_rounds": 0,
+      "failure_fingerprint": "",
+      "stop_reason": "",
+      "issue": ""
+    },
+    {
+      "recorded_at": "2026-08-27T10:52:56",
+      "phase": "repair",
+      "exit_code": 0,
+      "llm_repair_rounds": 1,
+      "failure_fingerprint": "wikiStructure,grounding,claimGrounding,diagramAccuracy",
+      "stop_reason": "",
+      "issue": ""
+    },
+    {
+      "recorded_at": "2026-08-27T10:54:10",
+      "phase": "final",
+      "exit_code": 0,
+      "llm_repair_rounds": 2,
+      "failure_fingerprint": "",
+      "stop_reason": "",
+      "issue": ""
+    }
+  ],
+  "latest": {
+    "recorded_at": "2026-08-27T10:54:10",
+    "phase": "final",
+    "exit_code": 0,
+    "llm_repair_rounds": 2,
+    "failure_fingerprint": "",
+    "stop_reason": "",
+    "issue": ""
+  },
+  "final": {
+    "recorded_at": "2026-08-27T10:54:10",
+    "phase": "final",
+    "exit_code": 0,
+    "llm_repair_rounds": 2,
+    "failure_fingerprint": "",
+    "stop_reason": "",
+    "issue": ""
+  }
+}

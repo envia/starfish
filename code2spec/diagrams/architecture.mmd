@@ -1,0 +1,40 @@
+%% code2spec:diagram-type=module-dependency
+graph TD
+  shell["shell"]
+  public_bridge["public-bridge"]
+  engine_core["engine-core"]
+  inc_headers["inc-headers"]
+  bindings["bindings"]
+  browser["browser"]
+  launcher["launcher"]
+  platform_canvas["platform-canvas"]
+  platform_core["platform-core"]
+  platform_file["platform-file"]
+  platform_loader["platform-loader"]
+  platform_multimedia["platform-multimedia"]
+  platform_network["platform-network"]
+  third_party["third-party"]
+  tooling["tooling"]
+  compat_tizen["compat-tizen"]
+  docs_generator["docs-generator"]
+
+  shell --> public_bridge
+  shell --> engine_core
+  shell --> inc_headers
+  public_bridge --> bindings
+  public_bridge --> platform_core
+  public_bridge --> platform_canvas
+  public_bridge --> platform_loader
+  public_bridge --> platform_multimedia
+  public_bridge --> platform_network
+  bindings --> engine_core
+  bindings --> platform_core
+  browser --> platform_loader
+  platform_canvas --> third_party
+  platform_canvas --> platform_core
+  platform_multimedia --> platform_core
+  platform_network --> platform_core
+  platform_loader --> platform_network
+  platform_loader --> platform_file
+  platform_loader --> platform_core
+  engine_core --> platform_core

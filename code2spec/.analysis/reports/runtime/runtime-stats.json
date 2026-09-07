@@ -1,0 +1,168 @@
+{
+  "code2spec_version": "0.5.3",
+  "session_id": "20260827_104156",
+  "run_type": "full",
+  "mode": "detail",
+  "target_path": "/home/hwang/work/F/starfish_",
+  "workspace_root": "/home/hwang/work/F/starfish_",
+  "analysis_target": "/home/hwang/work/F/starfish_",
+  "output_root": "/home/hwang/work/F/starfish_/code2spec",
+  "code_size": {
+    "total_files": 330,
+    "total_lines": 102438,
+    "total_bytes": 3547397,
+    "by_extension": {
+      ".h": {
+        "files": 118,
+        "lines": 21160,
+        "bytes": 685635
+      },
+      ".py": {
+        "files": 43,
+        "lines": 8144,
+        "bytes": 311056
+      },
+      ".js": {
+        "files": 8,
+        "lines": 1504,
+        "bytes": 55406
+      },
+      ".cpp": {
+        "files": 150,
+        "lines": 69922,
+        "bytes": 2437542
+      },
+      ".java": {
+        "files": 11,
+        "lines": 1708,
+        "bytes": 57758
+      }
+    },
+    "filters": {
+      "min_lines": 0
+    },
+    "classes": 373,
+    "functions": 5630,
+    "ast_nodes": 7004
+  },
+  "workflows": {
+    "W1": {
+      "start_time": "2026-08-27T10:41:56",
+      "end_time": "2026-08-27T10:42:04",
+      "duration_seconds": 8,
+      "token_usage": 0,
+      "coding_agent": "gemini-cli",
+      "status": "passed"
+    },
+    "W2": {
+      "start_time": "2026-08-27T10:46:17",
+      "end_time": "2026-08-27T10:47:44",
+      "duration_seconds": 87,
+      "token_usage": 0,
+      "coding_agent": "gemini-cli",
+      "status": "passed"
+    },
+    "W3": {
+      "start_time": "2026-08-27T10:49:15",
+      "end_time": "2026-08-27T10:54:17",
+      "duration_seconds": 302,
+      "token_usage": 0,
+      "coding_agent": "gemini-cli",
+      "status": "passed"
+    }
+  },
+  "total_duration_seconds": 397,
+  "total_token_usage": 0,
+  "telemetry": {
+    "version": "1.0",
+    "events_file": "telemetry-events.jsonl",
+    "event_count": 29,
+    "event_type_counts": {
+      "session_started": 1,
+      "code_size_measured": 1,
+      "workflow_started": 3,
+      "workflow_completed": 3,
+      "module_regenerated": 17,
+      "metrics_computed": 1,
+      "quality_gate_evaluated": 1,
+      "code_size_finalized": 1,
+      "history_finalized": 1
+    },
+    "analysis_scope": 3,
+    "git": {
+      "repo": "github.sec.samsung.net/jh1984-hwang/starfish",
+      "commit": "a1c95481fdf6cb47d19ce98b74c0885efe1468af",
+      "branch": "master"
+    },
+    "workflow_usage": {
+      "total_runs": 3,
+      "by_workflow": {
+        "W1": {
+          "started": 1,
+          "completed": 1,
+          "in_progress": 0,
+          "failed": 0,
+          "attempt_count": 1,
+          "completed_once": true
+        },
+        "W2": {
+          "started": 1,
+          "completed": 1,
+          "in_progress": 0,
+          "failed": 0,
+          "attempt_count": 1,
+          "completed_once": true
+        },
+        "W3": {
+          "started": 1,
+          "completed": 1,
+          "in_progress": 0,
+          "failed": 0,
+          "attempt_count": 1,
+          "completed_once": true
+        },
+        "W-DELTA": {
+          "started": 0,
+          "completed": 0,
+          "in_progress": 0,
+          "failed": 0,
+          "attempt_count": 0,
+          "completed_once": false
+        }
+      }
+    },
+    "module_usage": {
+      "regenerated": 17,
+      "failed": 0,
+      "unique_regenerated": 17,
+      "unique_failed": 0
+    },
+    "coding_agents": [
+      "gemini-cli"
+    ],
+    "latest_event": {
+      "event_type": "history_finalized",
+      "timestamp": "2026-08-27T10:54:17",
+      "coding_agent": "gemini-cli"
+    },
+    "latest_progress_event": {
+      "event_type": "history_finalized",
+      "timestamp": "2026-08-27T10:54:17",
+      "coding_agent": "gemini-cli"
+    },
+    "latest_failure": null,
+    "token_usage": {
+      "status": "unknown",
+      "total": 0
+    },
+    "updated_at": "2026-08-27T10:54:17"
+  },
+  "analysis_scope": 3,
+  "git": {
+    "repo": "github.sec.samsung.net/jh1984-hwang/starfish",
+    "commit": "a1c95481fdf6cb47d19ce98b74c0885efe1468af",
+    "branch": "master"
+  },
+  "coding_agent": "gemini-cli",
+  "last_updated": "2026-08-27T10:54:17"
+}
