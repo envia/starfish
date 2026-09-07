@@ -1,0 +1,16 @@
+{
+  "total": 34,
+  "by_verification": {
+    "candidate": 1,
+    "low": 33
+  },
+  "by_family": {
+    "message": 34
+  },
+  "message": {
+    "total": 34,
+    "confirmed": 0,
+    "likely": 0,
+    "candidate": 1
+  }
+}

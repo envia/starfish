@@ -1,0 +1,122 @@
+[
+  {
+    "name": "LWE_DEFAULT_FONT_SIZE",
+    "value": "16",
+    "type": "c_const",
+    "language": "c",
+    "usage_context": "Default font size for web view rendering",
+    "source": "[Source: compat/tizen_5.0/inc/LWEWebView.h:180]"
+  },
+  {
+    "name": "LWE_MIN_FONT_SIZE",
+    "value": "1",
+    "type": "c_const",
+    "language": "c",
+    "usage_context": "Minimum font size limit for web view rendering",
+    "source": "[Source: compat/tizen_5.0/inc/LWEWebView.h:181]"
+  },
+  {
+    "name": "LWE_MAX_FONT_SIZE",
+    "value": "72",
+    "type": "c_const",
+    "language": "c",
+    "usage_context": "Maximum font size limit for web view rendering",
+    "source": "[Source: compat/tizen_5.0/inc/LWEWebView.h:182]"
+  },
+  {
+    "name": "LWE_EXPORT",
+    "value": "__declspec(dllexport)",
+    "type": "c_define",
+    "language": "c",
+    "usage_context": "Symbol export macro for Windows DLL builds",
+    "source": "[Source: inc/LWEWebView.h:30]"
+  },
+  {
+    "name": "LWE_EXPORT",
+    "value": "__declspec(dllimport)",
+    "type": "c_define",
+    "language": "c",
+    "usage_context": "Symbol import macro for Windows DLL consumers",
+    "source": "[Source: inc/LWEWebView.h:32]"
+  },
+  {
+    "name": "ANNOTATE_RED",
+    "value": "0x0000ff1b",
+    "type": "c_define",
+    "language": "c",
+    "usage_context": "Streamline profiler annotation color: red",
+    "source": "[Source: src/streamline_annotate.h:73]"
+  },
+  {
+    "name": "ANNOTATE_BLUE",
+    "value": "0xff00001b",
+    "type": "c_define",
+    "language": "c",
+    "usage_context": "Streamline profiler annotation color: blue",
+    "source": "[Source: src/streamline_annotate.h:74]"
+  },
+  {
+    "name": "ANNOTATE_GREEN",
+    "value": "0x00ff001b",
+    "type": "c_define",
+    "language": "c",
+    "usage_context": "Streamline profiler annotation color: green",
+    "source": "[Source: src/streamline_annotate.h:75]"
+  },
+  {
+    "name": "ANNOTATE_PURPLE",
+    "value": "0xff00ff1b",
+    "type": "c_define",
+    "language": "c",
+    "usage_context": "Streamline profiler annotation color: purple",
+    "source": "[Source: src/streamline_annotate.h:76]"
+  },
+  {
+    "name": "ANNOTATE_YELLOW",
+    "value": "0x00ffff1b",
+    "type": "c_define",
+    "language": "c",
+    "usage_context": "Streamline profiler annotation color: yellow",
+    "source": "[Source: src/streamline_annotate.h:77]"
+  },
+  {
+    "name": "ANNOTATE_CYAN",
+    "value": "0xffff001b",
+    "type": "c_define",
+    "language": "c",
+    "usage_context": "Streamline profiler annotation color: cyan",
+    "source": "[Source: src/streamline_annotate.h:78]"
+  },
+  {
+    "name": "ANNOTATE_WHITE",
+    "value": "0xffffff1b",
+    "type": "c_define",
+    "language": "c",
+    "usage_context": "Streamline profiler annotation color: white",
+    "source": "[Source: src/streamline_annotate.h:79]"
+  },
+  {
+    "name": "ANNOTATE_LTGRAY",
+    "value": "0xbbbbbb1b",
+    "type": "c_define",
+    "language": "c",
+    "usage_context": "Streamline profiler annotation color: light gray",
+    "source": "[Source: src/streamline_annotate.h:80]"
+  },
+  {
+    "name": "ANNOTATE_DKGRAY",
+    "value": "0x5555551b",
+    "type": "c_define",
+    "language": "c",
+    "usage_context": "Streamline profiler annotation color: dark gray",
+    "source": "[Source: src/streamline_annotate.h:81]"
+  },
+  {
+    "name": "ANNOTATE_BLACK",
+    "value": "0x0000001b",
+    "type": "c_define",
+    "language": "c",
+    "usage_context": "Streamline profiler annotation color: black",
+    "source": "[Source: src/streamline_annotate.h:82]"
+  }
+]

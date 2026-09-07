@@ -1,0 +1,106 @@
+{
+  "version": "1.0",
+  "built_at": "2026-08-27T10:50:48",
+  "deps": {
+    "modules/README.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": ""
+    },
+    "modules/binding.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/binding-fr.md"
+    },
+    "modules/browser-history.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/browser-history-fr.md"
+    },
+    "modules/compat-headers.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/compat-headers-fr.md"
+    },
+    "modules/core-engine.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/core-engine-fr.md"
+    },
+    "modules/launcher.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/launcher-fr.md"
+    },
+    "modules/platform-canvas.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/platform-canvas-fr.md"
+    },
+    "modules/platform-loader.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/platform-loader-fr.md"
+    },
+    "modules/platform-message-loop.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/platform-message-loop-fr.md"
+    },
+    "modules/platform-misc.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/platform-misc-fr.md"
+    },
+    "modules/platform-multimedia.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/platform-multimedia-fr.md"
+    },
+    "modules/platform-network.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/platform-network-fr.md"
+    },
+    "modules/platform-process.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/platform-process-fr.md"
+    },
+    "modules/public-api.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/public-api-fr.md"
+    },
+    "modules/public-bridge.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/public-bridge-fr.md"
+    },
+    "modules/public-contract.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/public-contract-fr.md"
+    },
+    "modules/public-delegate.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/public-delegate-fr.md"
+    },
+    "modules/shell.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/shell-fr.md"
+    },
+    "modules/third-party.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/third-party-fr.md"
+    },
+    "modules/tooling.md": {
+      "source_files": [],
+      "primary_source": "",
+      "fr_doc": "functional-requirements/tooling-fr.md"
+    }
+  }
+}

@@ -1,0 +1,79 @@
+[
+  {
+    "name": "StreamInfo.StreamType",
+    "values": ["StreamTypeUnknown", "StreamTypeAudio", "StreamTypeVideo", "StreamTypeSubtitle"],
+    "type": "c_enum",
+    "language": "c",
+    "source": "[Source: src/platform/multimedia/StreamInfo.h:52]"
+  },
+  {
+    "name": "StreamInfo.MediaCodec",
+    "values": ["MediaCodecUnknown", "MediaCodecAudioAAC", "MediaCodecAudioMP3", "MediaCodecAudioVorbis", "MediaCodecAudioOpus", "MediaCodecVideoH264", "MediaCodecVideoHEVC", "MediaCodecVideoVP9", "MediaCodecVideoAV1"],
+    "type": "c_enum",
+    "language": "c",
+    "source": "[Source: src/platform/multimedia/StreamInfo.h:59]"
+  },
+  {
+    "name": "StreamInfo.AudioSampleFormat",
+    "values": ["AudioSampleFormatNone", "AudioSampleFormatU8", "AudioSampleFormatS16", "AudioSampleFormatS32", "AudioSampleFormatFLT", "AudioSampleFormatDBL", "AudioSampleFormatU8P", "AudioSampleFormatS16P", "AudioSampleFormatS32P", "AudioSampleFormatFLTP", "AudioSampleFormatDBLP"],
+    "type": "c_enum",
+    "language": "c",
+    "source": "[Source: src/platform/multimedia/StreamInfo.h:73]"
+  },
+  {
+    "name": "HTTPStatus.HTTPStatusCode",
+    "values": [],
+    "type": "c_enum",
+    "language": "c",
+    "source": "[Source: src/platform/network/http/HTTPStatus.h:94]"
+  },
+  {
+    "name": "ScreenOrientationType",
+    "values": ["ScreenOrientationUndefined", "ScreenOrientationPortraitPrimary", "ScreenOrientationPortraitSecondary", "ScreenOrientationLandscapePrimary", "ScreenOrientationLandscapeSecondary"],
+    "type": "c_enum",
+    "language": "c",
+    "source": "[Source: src/platform/public/ScreenOrientationType.h:24]"
+  },
+  {
+    "name": "LweWebViewImpl.ImeComposingStatus",
+    "values": ["NORMAL", "COMPOSING_START", "COMPOSING_END"],
+    "type": "java_enum",
+    "language": "java",
+    "source": "[Source: src/public/bridge/android/java/com/samsung/android/lightweightwebengine/internal/LweWebViewImpl.java:93]"
+  },
+  {
+    "name": "LWEWebViewEcoreWl2.Owner",
+    "values": ["FREE", "ENGINE", "READY", "PRESENTING"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/public/bridge/ecore_wl2/LWEWebViewEcoreWl2.cpp:190]"
+  },
+  {
+    "name": "LWEWebViewEFL.Owner",
+    "values": ["FREE", "ENGINE", "READY", "DISPLAYING"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/public/bridge/efl/LWEWebViewEFL.cpp:153]"
+  },
+  {
+    "name": "LWEWebViewFlutter.PORT_WINDOW_BACKEND",
+    "values": ["GB", "GL", "HEADLESS"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/public/bridge/flutter/LWEWebViewFlutter.cpp:82]"
+  },
+  {
+    "name": "LWEWebViewFlutter.PORT_COMPOSITOR_BACKEND",
+    "values": ["CAIRO", "GL", "MOCK"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/public/bridge/flutter/LWEWebViewFlutter.cpp:83]"
+  },
+  {
+    "name": "MiniBrowser.StarfishStartUpFlag",
+    "values": ["enableComputedStyleDump", "enableFrameTreeDump", "enableStackingContextDump", "enableHitTestDump", "enableDebugGraphicsLayer", "enableDebugRepaintRegion", "enableRegressionTest"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/shell/MiniBrowser.cpp:34]"
+  }
+]

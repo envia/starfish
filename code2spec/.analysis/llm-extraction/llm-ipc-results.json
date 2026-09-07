@@ -1,0 +1,92 @@
+[
+  {
+    "name": "wpt_server.HTTPConnection",
+    "mechanism": "socket",
+    "source_component": "wpt_audit.probe",
+    "target_component": "WPT HTTP Server",
+    "data": "HTTPConnection for WPT server health check probe",
+    "language": "python",
+    "source": "[Source: tool/wpt/scripts/wpt_audit.py:probe]"
+  },
+  {
+    "name": "wpt_server.HTTPSConnection",
+    "mechanism": "socket",
+    "source_component": "wpt_audit.probe",
+    "target_component": "WPT HTTPS Server",
+    "data": "HTTPSConnection for WPT server health check probe over TLS",
+    "language": "python",
+    "source": "[Source: tool/wpt/scripts/wpt_audit.py:probe]"
+  },
+  {
+    "name": "wpt_server._port_open",
+    "mechanism": "socket",
+    "source_component": "wpt_server._port_open",
+    "target_component": "WPT Server Port",
+    "data": "connect_ex to check if a port is open on the WPT server",
+    "language": "python",
+    "source": "[Source: tool/wpt/scripts/wpt_server.py:_port_open]"
+  },
+  {
+    "name": "wpt_server._http_ok",
+    "mechanism": "socket",
+    "source_component": "wpt_server._http_ok",
+    "target_component": "WPT HTTP Server",
+    "data": "create_connection, sendall, recv to verify HTTP server is responding",
+    "language": "python",
+    "source": "[Source: tool/wpt/scripts/wpt_server.py:_http_ok]"
+  },
+  {
+    "name": "http_server.RequestHandler",
+    "mechanism": "socket",
+    "source_component": "http_server.RequestHandler.end_headers",
+    "target_component": "HTTP Client",
+    "data": "send_header for HTTP response headers in test HTTP server",
+    "language": "python",
+    "source": "[Source: tool/runner/http_server.py:RequestHandler.end_headers]"
+  },
+  {
+    "name": "perf_tools.server.H",
+    "mechanism": "socket",
+    "source_component": "perf_tools.server.H.do_GET",
+    "target_component": "HTTP Client",
+    "data": "send_response, send_header for HTTP GET responses in benchmark server",
+    "language": "python",
+    "source": "[Source: tool/perf_tools/measure-bench/server.py:H.do_GET]"
+  },
+  {
+    "name": "perf_tools.server.H",
+    "mechanism": "socket",
+    "source_component": "perf_tools.server.H.do_POST",
+    "target_component": "HTTP Client",
+    "data": "send_response, send_header for HTTP POST responses in benchmark server",
+    "language": "python",
+    "source": "[Source: tool/perf_tools/measure-bench/server.py:H.do_POST]"
+  },
+  {
+    "name": "mse_smoke.server.H",
+    "mechanism": "socket",
+    "source_component": "mse_smoke.server.H.do_GET",
+    "target_component": "HTTP Client",
+    "data": "send_response, send_header for HTTP GET responses in MSE smoke test server",
+    "language": "python",
+    "source": "[Source: tool/perf_tools/mse-smoke/server.py:H.do_GET]"
+  },
+  {
+    "name": "style_smoke.server.H",
+    "mechanism": "socket",
+    "source_component": "style_smoke.server.H.do_GET",
+    "target_component": "HTTP Client",
+    "data": "send_response, send_header for HTTP GET responses in style smoke test server",
+    "language": "python",
+    "source": "[Source: tool/perf_tools/style-smoke/server.py:H.do_GET]"
+  },
+  {
+    "name": "wpt_runner._is_connect_refused_on_navigation",
+    "mechanism": "socket",
+    "source_component": "wpt_runner.run_one",
+    "target_component": "WPT Server",
+    "data": "Socket connection check to detect connection refused during navigation",
+    "language": "python",
+    "source": "[Source: tool/wpt/scripts/wpt_runner.py:run_one]"
+  }
+]

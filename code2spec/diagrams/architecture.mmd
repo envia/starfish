@@ -1,0 +1,58 @@
+graph TD
+    subgraph Engine["Core Engine"]
+        CE["core-engine"]
+        BIND["binding"]
+        BH["browser-history"]
+        LAUNCH["launcher"]
+    end
+
+    subgraph Platform["Platform Layer"]
+        PC["platform-canvas"]
+        PL["platform-loader"]
+        PML["platform-message-loop"]
+        PM["platform-multimedia"]
+        PN["platform-network"]
+        PP["platform-process"]
+        PMISC["platform-misc"]
+    end
+
+    subgraph PublicAPI["Public Embedding API"]
+        PA["public-api"]
+        PB["public-bridge"]
+        PCO["public-contract"]
+        PD["public-delegate"]
+    end
+
+    subgraph Shell["Shell"]
+        SH["shell"]
+    end
+
+    subgraph External["External"]
+        CH["compat-headers"]
+        TOOL["tooling"]
+        TP["third-party"]
+    end
+
+    CE --> BIND
+    CE --> BH
+    CE --> LAUNCH
+    CE --> PC
+    CE --> PL
+    CE --> PML
+    CE --> PN
+    CE --> PP
+    CE --> PMISC
+    PC --> PM
+    CH --> PA
+    CE --> PA
+    PCO --> PD
+    PA --> PB
+    CH --> PB
+    CH --> PCO
+    CE --> SH
+    PA --> SH
+    CE --> PD
+    CH --> SH
+    TP --> CE
+    TP --> BIND
+    TOOL --> SH

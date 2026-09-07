@@ -1,0 +1,64 @@
+{
+  "repoRoot": "/home/hwang/work/E/starfish_",
+  "outDir": "/home/hwang/work/E/starfish_/code2spec",
+  "host": "github.sec.samsung.net",
+  "ownerPath": "jh1984-hwang",
+  "ownerSlug": "jh1984-hwang",
+  "repo": "starfish",
+  "branch": "master",
+  "defaultBranch": "master",
+  "remoteUrl": "git@github.sec.samsung.net:jh1984-hwang/starfish.git",
+  "deepLink": {
+    "type": "github",
+    "base": "https://github.sec.samsung.net/jh1984-hwang/starfish/blob/master",
+    "suffix": "",
+    "lineAnchorPrefix": "#L"
+  },
+  "topLevelEntries": [
+    "README.md",
+    "01-introduction.md",
+    "02-architecture.md",
+    "03-design-patterns.md",
+    "04-data-layer.md",
+    "05-external-interfaces.md",
+    "06-configuration-deployment.md",
+    "07-resources.md",
+    "08-security-quality.md",
+    "09-ipc-enum-catalog.md"
+  ],
+  "generatedAt": "2026-08-27T01:51:04.685Z",
+  "description": "- Quick Reference — 코드 수정 전 반드시 확인할 통합 참조 문서",
+  "languages": [
+    "C",
+    "C++",
+    "Python"
+  ],
+  "qualityScore": {
+    "requiredSlots": 100,
+    "wikiStructure": 100,
+    "mermaidSyntax": 100,
+    "moduleFrPairing": 100,
+    "astBaseline": 100,
+    "grounding": 100,
+    "claimGrounding": 100,
+    "symbolCoverage": 9,
+    "packageCoverage": 0,
+    "diagramAccuracy": null
+  },
+  "qualityBreakdown": {
+    "verifiedAt": "2026-08-27T01:56:02.399Z",
+    "method": "deterministic validators only; CodeWikiBench and LLM-as-judge excluded",
+    "validators": {
+      "requiredSlots": "all 9 required SDD slots present (+ 3 conditional: 04-data-layer.md, 07-resources.md, 09-ipc-enum-catalog.md)",
+      "wikiStructure": "[wiki-structure] 16 warning(s) (non-blocking) across 4 file(s)\n  /home/hwang/work/E/starfish_/code2spec/01-introduction.md\n    ⚠ L8  cross-link             broken cross-link \"`docs/Spec.md`\" → docs:Spec.md\n    ⚠ L27  cross-link             broken cross-link \"`AGENTS.md`\" → AGENTS.md\n    ⚠ L33  cross-link             broken cross-link \"`AGENTS.md`\" → AGENTS.md\n    ⚠ L38  cross-link             broken cross-link \"`AGENTS.md`\" → AGENTS.md",
+      "mermaidSyntax": "[mermaid] ok — 20 block(s) v10-compat linted across 20 file(s)",
+      "moduleFrPairing": "  matched:   19  (100.0%)",
+      "astBaseline": "  status:   pass",
+      "grounding": "[grounding] SCORE — 173/173 (100%) checkable deep-link(s) aligned; 0/173 (0%) misaligned across 0 file(s); score=100",
+      "claimGrounding": "    supported:    1161 (100.0%)\n    contradicted: 0\n  badge links:   548 (trusted 548)",
+      "symbolCoverage": "  covered:  149  (8.7%)",
+      "packageCoverage": "  covered:   0  (0.0%)",
+      "diagramAccuracy": "    supported:      0  (N/A)"
+    }
+  }
+}
