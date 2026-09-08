@@ -46,16 +46,20 @@ static size_t getBytesPerPixelWebGL1(GLenum format, GLenum type)
     //
     // Refs: Table 3.4: Valid pixel format and type combinations.
     // https://registry.khronos.org/OpenGL/specs/es/2.0/es_full_spec_2.0.pdf
+    // OES_texture_float uses a GLfloat for each component, not a byte.
+    // https://registry.khronos.org/webgl/extensions/OES_texture_float/
 
     if (type == GL_UNSIGNED_BYTE || type == GL_FLOAT) {
+        const size_t bytesPerComponent =
+            type == GL_FLOAT ? sizeof(GLfloat) : sizeof(GLubyte);
         if (format == GL_RGBA || format == GL_BGRA_EXT) {
-            return 4;
+            return 4 * bytesPerComponent;
         } else if (format == GL_RGB) {
-            return 3;
+            return 3 * bytesPerComponent;
         } else if (format == GL_LUMINANCE_ALPHA) {
-            return 2;
+            return 2 * bytesPerComponent;
         } else if (format == GL_LUMINANCE || format == GL_ALPHA) {
-            return 1;
+            return bytesPerComponent;
         }
     } else if (type == GL_UNSIGNED_SHORT_4_4_4_4) {
         if (format == GL_RGBA || format == GL_BGRA_EXT) {
