@@ -3429,6 +3429,47 @@ bool WebGLRenderingContext::checkInternalFormat(GLint internalFormat,
     return true;
 }
 
+// EXT_color_buffer_float requires ES 3 and makes sized RGBA32F/RGBA16F
+// color-renderable. Use sized storage for WebGL 1's unsized float formats
+// on those drivers while retaining the WebGL enums for input validation.
+// https://registry.khronos.org/OpenGL/extensions/EXT/EXT_color_buffer_float.txt
+GLint WebGLRenderingContext::promotedWebGL1InternalFormat(GLint internalFormat,
+                                                          GLenum type)
+{
+    // Query native support through the WebGL 2 registry entry; this does not
+    // expose or enable the WebGL 2-only extension on a WebGL 1 context.
+    if (webGLVersion() != 1 || !WebGLExtensionRegistry::instance().getGenerator(
+                                   "EXT_color_buffer_float", 2)) {
+        return internalFormat;
+    }
+    if (type == GL_FLOAT) {
+        if (internalFormat == GL_RGBA) {
+            return GL_RGBA32F;
+        } else if (internalFormat == GL_RGB) {
+            return GL_RGB32F;
+        }
+    } else if (type == GL_HALF_FLOAT_OES) {
+        if (internalFormat == GL_RGBA) {
+            return GL_RGBA16F;
+        } else if (internalFormat == GL_RGB) {
+            return GL_RGB16F;
+        }
+    }
+    return internalFormat;
+}
+
+GLenum WebGLRenderingContext::promotedWebGL1Type(GLenum type)
+{
+    if (webGLVersion() != 1 || !WebGLExtensionRegistry::instance().getGenerator(
+                                   "EXT_color_buffer_float", 2)) {
+        return type;
+    }
+    if (type == GL_HALF_FLOAT_OES) {
+        return GL_HALF_FLOAT;
+    }
+    return type;
+}
+
 void WebGLRenderingContext::texImage2D(GLenum target, GLint level,
                                        GLint internalFormat, GLsizei width,
                                        GLsizei height, GLint border,
@@ -3463,9 +3504,15 @@ void WebGLRenderingContext::texImage2D(GLenum target, GLint level,
         return;
     }
 
+    const GLint glInternalFormat =
+        promotedWebGL1InternalFormat(internalFormat, type);
+    const GLenum glType = promotedWebGL1Type(type);
+
     handleTexImageWithArrayBufferView(
         target, level, width, height, format, type, pixels,
         [&](const void* data) {
+            GLint uploadInternalFormat = glInternalFormat;
+            GLenum uploadFormat = format;
 #if defined(PORT_PIXEL_ORDER_BGRA)
             if (!pixels && internalFormat == GL_RGBA && format == GL_RGBA &&
                 type == GL_UNSIGNED_BYTE &&
@@ -3476,12 +3523,12 @@ void WebGLRenderingContext::texImage2D(GLenum target, GLint level,
                 // allocations compatible with later NativeImageData BGRA
                 // uploads, without rewriting float or sized formats.
                 // https://registry.khronos.org/OpenGL/specs/es/2.0/es_full_spec_2.0.pdf
-                internalFormat = GL_BGRA_EXT;
-                format = GL_BGRA_EXT;
+                uploadInternalFormat = GL_BGRA_EXT;
+                uploadFormat = GL_BGRA_EXT;
             }
 #endif
-            m_gl->texImage2D(target, level, internalFormat, width, height, 0,
-                             format, type, data);
+            m_gl->texImage2D(target, level, uploadInternalFormat, width, height,
+                             0, uploadFormat, glType, data);
         });
 }
 
@@ -3544,11 +3591,13 @@ void WebGLRenderingContext::texSubImage2D(
         return;
     }
 
+    const GLenum glType = promotedWebGL1Type(type);
+
     handleTexImageWithArrayBufferView(
         target, level, width, height, format, type, pixels,
         [&](const void* data) {
             m_gl->texSubImage2D(target, level, xoffset, yoffset, width, height,
-                                format, type, data);
+                                format, glType, data);
         });
 }
 

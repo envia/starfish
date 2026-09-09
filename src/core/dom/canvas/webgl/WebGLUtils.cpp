@@ -48,11 +48,21 @@ static size_t getBytesPerPixelWebGL1(GLenum format, GLenum type)
     // https://registry.khronos.org/OpenGL/specs/es/2.0/es_full_spec_2.0.pdf
     // OES_texture_float uses a GLfloat for each component, not a byte.
     // https://registry.khronos.org/webgl/extensions/OES_texture_float/
+    // OES_texture_half_float stores each component in a Uint16Array element.
+    // https://registry.khronos.org/webgl/extensions/OES_texture_half_float/
 
-    if (type == GL_UNSIGNED_BYTE || type == GL_FLOAT) {
-        const size_t bytesPerComponent =
-            type == GL_FLOAT ? sizeof(GLfloat) : sizeof(GLubyte);
-        if (format == GL_RGBA || format == GL_BGRA_EXT) {
+    size_t bytesPerComponent = 0;
+    if (type == GL_UNSIGNED_BYTE) {
+        bytesPerComponent = sizeof(GLubyte);
+    } else if (type == GL_HALF_FLOAT_OES) {
+        bytesPerComponent = sizeof(GLushort);
+    } else if (type == GL_FLOAT) {
+        bytesPerComponent = sizeof(GLfloat);
+    }
+
+    if (bytesPerComponent != 0) {
+        if (format == GL_RGBA ||
+            (format == GL_BGRA_EXT && type == GL_UNSIGNED_BYTE)) {
             return 4 * bytesPerComponent;
         } else if (format == GL_RGB) {
             return 3 * bytesPerComponent;
