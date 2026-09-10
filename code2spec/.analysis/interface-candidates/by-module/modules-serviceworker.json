@@ -1,0 +1,691 @@
+{
+  "context_kind": "module_interface_candidate_context",
+  "compact": true,
+  "module": "modules-serviceworker",
+  "source_files": [
+    "src/core/modules/serviceworker/ConnectionInterface.h",
+    "src/core/modules/serviceworker/ExceptionData.cpp",
+    "src/core/modules/serviceworker/ExceptionData.h",
+    "src/core/modules/serviceworker/FetchCacheStream.cpp",
+    "src/core/modules/serviceworker/FetchCacheStream.h",
+    "src/core/modules/serviceworker/FetchEventData.cpp",
+    "src/core/modules/serviceworker/FetchEventData.h",
+    "src/core/modules/serviceworker/JobQueue.cpp",
+    "src/core/modules/serviceworker/JobQueue.h",
+    "src/core/modules/serviceworker/Message.cpp",
+    "src/core/modules/serviceworker/Message.h",
+    "src/core/modules/serviceworker/MessageServiceWorker.cpp",
+    "src/core/modules/serviceworker/MessageServiceWorker.h",
+    "src/core/modules/serviceworker/RegistrationOptions.cpp",
+    "src/core/modules/serviceworker/RegistrationOptions.h",
+    "src/core/modules/serviceworker/RegistrationStore.cpp",
+    "src/core/modules/serviceworker/RegistrationStore.h",
+    "src/core/modules/serviceworker/ServiceWorker.cpp",
+    "src/core/modules/serviceworker/ServiceWorker.h",
+    "src/core/modules/serviceworker/ServiceWorkerContainer.cpp",
+    "src/core/modules/serviceworker/ServiceWorkerContainer.h",
+    "src/core/modules/serviceworker/ServiceWorkerData.cpp",
+    "src/core/modules/serviceworker/ServiceWorkerData.h",
+    "src/core/modules/serviceworker/ServiceWorkerJob.cpp",
+    "src/core/modules/serviceworker/ServiceWorkerJob.h",
+    "src/core/modules/serviceworker/ServiceWorkerJobData.cpp",
+    "src/core/modules/serviceworker/ServiceWorkerJobData.h",
+    "src/core/modules/serviceworker/ServiceWorkerRegistration.cpp",
+    "src/core/modules/serviceworker/ServiceWorkerRegistration.h",
+    "src/core/modules/serviceworker/ServiceWorkerRegistrationData.cpp",
+    "src/core/modules/serviceworker/ServiceWorkerRegistrationData.h",
+    "src/core/modules/serviceworker/ServiceWorkerRequest.cpp",
+    "src/core/modules/serviceworker/ServiceWorkerRequest.h",
+    "src/core/modules/serviceworker/ServiceWorkerTypes.h",
+    "src/core/modules/serviceworker/ServiceWorkerUpdateViaCache.h",
+    "src/core/modules/serviceworker/Task.h",
+    "src/core/modules/serviceworker/cache/CachePolyfillLoader.cpp",
+    "src/core/modules/serviceworker/cache/CachePolyfillLoader.h",
+    "src/core/modules/serviceworker/cache/CustomStorage.cpp",
+    "src/core/modules/serviceworker/cache/CustomStorage.h",
+    "src/core/modules/serviceworker/cache/deps/cache-storage/rollup.config.js",
+    "src/core/modules/serviceworker/cache/deps/cache-storage/src/cache-storage.js",
+    "src/core/modules/serviceworker/cache/deps/cache-storage/src/cache.js",
+    "src/core/modules/serviceworker/cache/deps/cache-storage/src/index.js",
+    "src/core/modules/serviceworker/cache/deps/cache-storage/test/cache-add.js",
+    "src/core/modules/serviceworker/cache/deps/cache-storage/test/cache-delete.js",
+    "src/core/modules/serviceworker/cache/deps/cache-storage/test/cache-keys.js",
+    "src/core/modules/serviceworker/cache/deps/cache-storage/test/cache-match.js",
+    "src/core/modules/serviceworker/cache/deps/cache-storage/test/cache-matchAll.js",
+    "src/core/modules/serviceworker/cache/deps/cache-storage/test/cache-put.js",
+    "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+    "src/core/modules/serviceworker/cache/deps/cache-storage/test/test.js",
+    "src/core/modules/serviceworker/client/FetchEventHandler.cpp",
+    "src/core/modules/serviceworker/client/FetchEventHandler.h",
+    "src/core/modules/serviceworker/client/RegistrationManager.cpp",
+    "src/core/modules/serviceworker/client/RegistrationManager.h",
+    "src/core/modules/serviceworker/client/ServiceWorkerClientConnection.cpp",
+    "src/core/modules/serviceworker/client/ServiceWorkerClientConnection.h",
+    "src/core/modules/serviceworker/client/ServiceWorkerFetchTask.cpp",
+    "src/core/modules/serviceworker/client/ServiceWorkerFetchTask.h",
+    "src/core/modules/serviceworker/client/ServiceWorkerJobClientInterface.h",
+    "src/core/modules/serviceworker/client/ServiceWorkerProcessManager.cpp",
+    "src/core/modules/serviceworker/client/ServiceWorkerProcessManager.h",
+    "src/core/modules/serviceworker/host/ExtendableEvent.cpp",
+    "src/core/modules/serviceworker/host/ExtendableEvent.h",
+    "src/core/modules/serviceworker/host/FetchEvent.cpp",
+    "src/core/modules/serviceworker/host/FetchEvent.h",
+    "src/core/modules/serviceworker/host/Internal.cpp",
+    "src/core/modules/serviceworker/host/Internal.h",
+    "src/core/modules/serviceworker/host/ServiceWorkerAgent.cpp",
+    "src/core/modules/serviceworker/host/ServiceWorkerAgent.h",
+    "src/core/modules/serviceworker/host/ServiceWorkerFetchJob.cpp",
+    "src/core/modules/serviceworker/host/ServiceWorkerFetchJob.h",
+    "src/core/modules/serviceworker/host/ServiceWorkerGlobalScope.cpp",
+    "src/core/modules/serviceworker/host/ServiceWorkerGlobalScope.h",
+    "src/core/modules/serviceworker/host/ServiceWorkerHostConnection.cpp",
+    "src/core/modules/serviceworker/host/ServiceWorkerHostConnection.h",
+    "src/core/modules/serviceworker/host/ServiceWorkerHostJobHandler.cpp",
+    "src/core/modules/serviceworker/host/ServiceWorkerHostJobHandler.h",
+    "src/core/modules/serviceworker/host/ServiceWorkerScriptController.cpp",
+    "src/core/modules/serviceworker/host/ServiceWorkerScriptController.h",
+    "src/core/modules/serviceworker/host/ServiceWorkerServer.cpp",
+    "src/core/modules/serviceworker/host/ServiceWorkerServer.h",
+    "src/core/modules/serviceworker/host/ServiceWorkerServerInterface.h",
+    "src/core/modules/serviceworker/notification/Notification.cpp",
+    "src/core/modules/serviceworker/notification/Notification.h",
+    "src/core/modules/serviceworker/notification/NotificationJob.cpp",
+    "src/core/modules/serviceworker/notification/NotificationJob.h",
+    "src/core/modules/serviceworker/notification/NotificationOptions.h",
+    "src/core/modules/serviceworker/notification/NotificationService.cpp",
+    "src/core/modules/serviceworker/notification/NotificationService.h",
+    "src/core/modules/serviceworker/push/PushManager.cpp",
+    "src/core/modules/serviceworker/push/PushManager.h",
+    "src/core/modules/serviceworker/push/PushServiceAgent.cpp",
+    "src/core/modules/serviceworker/push/PushServiceAgent.h",
+    "src/core/modules/serviceworker/push/PushSubscription.cpp",
+    "src/core/modules/serviceworker/push/PushSubscription.h",
+    "src/core/modules/serviceworker/push/PushSubscriptionOptions.cpp",
+    "src/core/modules/serviceworker/push/PushSubscriptionOptions.h",
+    "src/core/modules/serviceworker/util/MessageQueue/MessageQueue.h",
+    "src/core/modules/serviceworker/util/MessageQueue/Queue.h",
+    "src/core/modules/serviceworker/util/ParallelTask.cpp",
+    "src/core/modules/serviceworker/util/ParallelTask.h"
+  ],
+  "limits": {
+    "max_context_bytes": 24000,
+    "max_evidence_per_candidate": 3,
+    "max_participants_per_role": 4
+  },
+  "budget_policy": {
+    "basis": "utf8_json_bytes",
+    "packing": "deterministic_priority_prefix",
+    "priority": "verification rank, normalized name, primary file, line, id"
+  },
+  "total_candidate_count": 33,
+  "included_candidate_count": 12,
+  "omitted_candidate_count": 21,
+  "truncated": true,
+  "candidate_ids": [
+    "iface-msg-a63159e3642d",
+    "iface-msg-36b2089bfbbd",
+    "iface-msg-90cafeeae9b6",
+    "iface-msg-5eee9b3dc845",
+    "iface-msg-1946a97062e2",
+    "iface-msg-44f57df882e9",
+    "iface-msg-ee85dc656d89",
+    "iface-msg-e45e9be0bb74",
+    "iface-msg-ffcf4fb96aa2",
+    "iface-msg-fa458f4ecc5b",
+    "iface-msg-e0a4b37bf291",
+    "iface-msg-75b03b58e55d"
+  ],
+  "overflow": {
+    "path": "interface-candidates/overflow/modules-serviceworker.json",
+    "full_source": "interface-candidates.json",
+    "note": "Omitted candidates are not lost; inspect overflow/full source only when needed."
+  },
+  "llm_review_rules": [
+    "Use this compact module-local context, not the full interface-candidates.json, as prompt input.",
+    "Do not promote candidate/low/llm_suggested items to confirmed without source evidence.",
+    "If truncated=true, summarize included high-priority candidates and mention omitted_count.",
+    "For omitted candidates, request or inspect the overflow artifact only if module behavior depends on them."
+  ],
+  "candidates": [
+    {
+      "id": "iface-msg-a63159e3642d",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "afterAll",
+      "normalized_name": "afterAll",
+      "direction": "unknown",
+      "verification": "low",
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "participants": {
+        "sender": [
+          {
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5513,
+            "symbol": "emit",
+            "expression": "this.emit('afterAll', hook);"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5513,
+          "strength": "low",
+          "expression": "this.emit('afterAll', hook);"
+        }
+      ]
+    },
+    {
+      "id": "iface-msg-36b2089bfbbd",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "afterEach",
+      "normalized_name": "afterEach",
+      "direction": "unknown",
+      "verification": "low",
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "participants": {
+        "sender": [
+          {
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5567,
+            "symbol": "emit",
+            "expression": "this.emit('afterEach', hook);"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5567,
+          "strength": "low",
+          "expression": "this.emit('afterEach', hook);"
+        }
+      ]
+    },
+    {
+      "id": "iface-msg-90cafeeae9b6",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "beforeAll",
+      "normalized_name": "beforeAll",
+      "direction": "unknown",
+      "verification": "low",
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "participants": {
+        "sender": [
+          {
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5486,
+            "symbol": "emit",
+            "expression": "this.emit('beforeAll', hook);"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5486,
+          "strength": "low",
+          "expression": "this.emit('beforeAll', hook);"
+        }
+      ]
+    },
+    {
+      "id": "iface-msg-5eee9b3dc845",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "beforeEach",
+      "normalized_name": "beforeEach",
+      "direction": "unknown",
+      "verification": "low",
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "participants": {
+        "sender": [
+          {
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5540,
+            "symbol": "emit",
+            "expression": "this.emit('beforeEach', hook);"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5540,
+          "strength": "low",
+          "expression": "this.emit('beforeEach', hook);"
+        }
+      ]
+    },
+    {
+      "id": "iface-msg-1946a97062e2",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "end",
+      "normalized_name": "end",
+      "direction": "unknown",
+      "verification": "low",
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "participants": {
+        "sender": [
+          {
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 4824,
+            "symbol": "emit",
+            "expression": "this.emit('end');"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 4824,
+          "strength": "low",
+          "expression": "this.emit('end');"
+        }
+      ]
+    },
+    {
+      "id": "iface-msg-44f57df882e9",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "end",
+      "normalized_name": "end",
+      "direction": "unknown",
+      "verification": "low",
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "participants": {
+        "sender": [
+          {
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5177,
+            "symbol": "emit",
+            "expression": "this.emit('end');"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5177,
+          "strength": "low",
+          "expression": "this.emit('end');"
+        }
+      ]
+    },
+    {
+      "id": "iface-msg-ee85dc656d89",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "end",
+      "normalized_name": "end",
+      "direction": "unknown",
+      "verification": "low",
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "participants": {
+        "sender": [
+          {
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5203,
+            "symbol": "emit",
+            "expression": "self.emit('end');"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5203,
+          "strength": "low",
+          "expression": "self.emit('end');"
+        }
+      ]
+    },
+    {
+      "id": "iface-msg-e45e9be0bb74",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "error",
+      "normalized_name": "error",
+      "direction": "unknown",
+      "verification": "low",
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "participants": {
+        "sender": [
+          {
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 4502,
+            "symbol": "emit",
+            "expression": "self.emit('error', err || new Error('done() called multiple times; stacktrace may be inaccurate'));"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 4502,
+          "strength": "low",
+          "expression": "self.emit('error', err || new Error('done() called multiple times; stacktrace may be inaccurate'));"
+        }
+      ]
+    },
+    {
+      "id": "iface-msg-ffcf4fb96aa2",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "fail",
+      "normalized_name": "fail",
+      "direction": "unknown",
+      "verification": "low",
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "participants": {
+        "sender": [
+          {
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 4797,
+            "symbol": "emit",
+            "expression": "this.emit('fail', test, err);"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 4797,
+          "strength": "low",
+          "expression": "this.emit('fail', test, err);"
+        }
+      ]
+    },
+    {
+      "id": "iface-msg-fa458f4ecc5b",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "hook",
+      "normalized_name": "hook",
+      "direction": "unknown",
+      "verification": "low",
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "participants": {
+        "sender": [
+          {
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 4849,
+            "symbol": "emit",
+            "expression": "self.emit('hook', hook);"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 4849,
+          "strength": "low",
+          "expression": "self.emit('hook', hook);"
+        }
+      ]
+    },
+    {
+      "id": "iface-msg-e0a4b37bf291",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "hook end",
+      "normalized_name": "hook end",
+      "direction": "unknown",
+      "verification": "low",
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "participants": {
+        "sender": [
+          {
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 4869,
+            "symbol": "emit",
+            "expression": "self.emit('hook end', hook);"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 4869,
+          "strength": "low",
+          "expression": "self.emit('hook end', hook);"
+        }
+      ]
+    },
+    {
+      "id": "iface-msg-75b03b58e55d",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "pass",
+      "normalized_name": "pass",
+      "direction": "unknown",
+      "verification": "low",
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "participants": {
+        "sender": [
+          {
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5076,
+            "symbol": "emit",
+            "expression": "self.emit('pass', test);"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5076,
+          "strength": "low",
+          "expression": "self.emit('pass', test);"
+        }
+      ]
+    }
+  ]
+}

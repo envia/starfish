@@ -1,0 +1,57 @@
+{
+  "context_kind": "module_interface_candidate_context",
+  "compact": true,
+  "module": "core-storage-fileapi",
+  "source_files": [
+    "src/core/fileapi/Blob.cpp",
+    "src/core/fileapi/Blob.h",
+    "src/core/fileapi/BlobPropertyBag.cpp",
+    "src/core/fileapi/BlobPropertyBag.h",
+    "src/core/fileapi/File.cpp",
+    "src/core/fileapi/File.h",
+    "src/core/fileapi/FilePropertyBag.cpp",
+    "src/core/fileapi/FilePropertyBag.h",
+    "src/core/fileapi/FileReader.cpp",
+    "src/core/fileapi/FileReader.h",
+    "src/core/storage/Storage.cpp",
+    "src/core/storage/Storage.h",
+    "src/core/storage/StorageInternal.cpp",
+    "src/core/storage/StorageInternal.h",
+    "src/core/storage/StorageNamespace.h",
+    "src/core/storage/StorageNamespaceImpl.cpp",
+    "src/core/storage/StorageNamespaceImpl.h",
+    "src/core/storage/StorageNamespaceProvider.h",
+    "src/core/storage/StoragePersistent.cpp",
+    "src/core/storage/StoragePersistent.h",
+    "src/core/storage/StorageType.h",
+    "src/core/storage/WebStorageNamespaceProvider.cpp",
+    "src/core/storage/WebStorageNamespaceProvider.h"
+  ],
+  "limits": {
+    "max_context_bytes": 24000,
+    "max_evidence_per_candidate": 3,
+    "max_participants_per_role": 4
+  },
+  "budget_policy": {
+    "basis": "utf8_json_bytes",
+    "packing": "deterministic_priority_prefix",
+    "priority": "verification rank, normalized name, primary file, line, id"
+  },
+  "total_candidate_count": 0,
+  "included_candidate_count": 0,
+  "omitted_candidate_count": 0,
+  "truncated": false,
+  "candidate_ids": [],
+  "overflow": {
+    "path": "",
+    "full_source": "interface-candidates.json",
+    "note": "Omitted candidates are not lost; inspect overflow/full source only when needed."
+  },
+  "llm_review_rules": [
+    "Use this compact module-local context, not the full interface-candidates.json, as prompt input.",
+    "Do not promote candidate/low/llm_suggested items to confirmed without source evidence.",
+    "If truncated=true, summarize included high-priority candidates and mention omitted_count.",
+    "For omitted candidates, request or inspect the overflow artifact only if module behavior depends on them."
+  ],
+  "candidates": []
+}

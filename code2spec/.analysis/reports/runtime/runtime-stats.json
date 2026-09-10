@@ -56,11 +56,11 @@
       "coding_agent": "claude-code"
     },
     "W2": {
-      "start_time": null,
+      "start_time": "2026-09-10T10:44:46",
       "end_time": null,
       "duration_seconds": 0,
       "token_usage": 0,
-      "coding_agent": null
+      "coding_agent": "claude-code"
     },
     "W3": {
       "start_time": null,
@@ -75,12 +75,13 @@
   "telemetry": {
     "version": "1.0",
     "events_file": "telemetry-events.jsonl",
-    "event_count": 4,
+    "event_count": 19,
     "event_type_counts": {
       "session_started": 1,
       "code_size_measured": 1,
-      "workflow_started": 1,
-      "workflow_completed": 1
+      "workflow_started": 2,
+      "workflow_completed": 1,
+      "module_regenerated": 14
     },
     "analysis_scope": 3,
     "git": {
@@ -89,7 +90,7 @@
       "branch": "master"
     },
     "workflow_usage": {
-      "total_runs": 1,
+      "total_runs": 2,
       "by_workflow": {
         "W1": {
           "started": 1,
@@ -100,11 +101,11 @@
           "completed_once": true
         },
         "W2": {
-          "started": 0,
+          "started": 1,
           "completed": 0,
-          "in_progress": 0,
+          "in_progress": 1,
           "failed": 0,
-          "attempt_count": 0,
+          "attempt_count": 1,
           "completed_once": false
         },
         "W3": {
@@ -126,24 +127,24 @@
       }
     },
     "module_usage": {
-      "regenerated": 0,
+      "regenerated": 14,
       "failed": 0,
-      "unique_regenerated": 0,
+      "unique_regenerated": 14,
       "unique_failed": 0
     },
     "coding_agents": [
       "claude-code"
     ],
     "latest_event": {
-      "event_type": "workflow_completed",
-      "timestamp": "2026-08-27T10:16:25",
-      "workflow": "W1",
+      "event_type": "module_regenerated",
+      "timestamp": "2026-09-10T11:19:43",
+      "module": "modules-indexeddb",
       "coding_agent": "claude-code"
     },
     "latest_progress_event": {
-      "event_type": "workflow_completed",
-      "timestamp": "2026-08-27T10:16:25",
-      "workflow": "W1",
+      "event_type": "module_regenerated",
+      "timestamp": "2026-09-10T11:19:43",
+      "module": "modules-indexeddb",
       "coding_agent": "claude-code"
     },
     "latest_failure": null,
@@ -151,7 +152,7 @@
       "status": "unknown",
       "total": 0
     },
-    "updated_at": "2026-08-27T10:16:25"
+    "updated_at": "2026-09-10T11:19:43"
   },
   "analysis_scope": 3,
   "git": {
@@ -160,5 +161,5 @@
     "branch": "master"
   },
   "coding_agent": "claude-code",
-  "last_updated": "2026-08-27T10:16:25"
+  "last_updated": "2026-09-10T11:19:43"
 }

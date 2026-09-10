@@ -1,0 +1,63 @@
+{
+  "context_kind": "module_interface_candidate_context",
+  "compact": true,
+  "module": "core-fetch",
+  "source_files": [
+    "src/core/fetch/Body.cpp",
+    "src/core/fetch/Body.h",
+    "src/core/fetch/Fetch.cpp",
+    "src/core/fetch/Fetch.h",
+    "src/core/fetch/FetchUtils.cpp",
+    "src/core/fetch/FetchUtils.h",
+    "src/core/fetch/Headers.cpp",
+    "src/core/fetch/Headers.h",
+    "src/core/fetch/HeadersData.cpp",
+    "src/core/fetch/HeadersData.h",
+    "src/core/fetch/Request.cpp",
+    "src/core/fetch/Request.h",
+    "src/core/fetch/RequestData.cpp",
+    "src/core/fetch/RequestData.h",
+    "src/core/fetch/RequestInit.h",
+    "src/core/fetch/Response.cpp",
+    "src/core/fetch/Response.h",
+    "src/core/fetch/ResponseData.cpp",
+    "src/core/fetch/ResponseData.h",
+    "src/core/fetch/stream/ReadRequest.h",
+    "src/core/fetch/stream/ReadableStream.cpp",
+    "src/core/fetch/stream/ReadableStream.h",
+    "src/core/fetch/stream/ReadableStreamBuffer.cpp",
+    "src/core/fetch/stream/ReadableStreamBuffer.h",
+    "src/core/fetch/stream/ReadableStreamChunk.h",
+    "src/core/fetch/stream/ReadableStreamDefaultController.cpp",
+    "src/core/fetch/stream/ReadableStreamDefaultController.h",
+    "src/core/fetch/stream/ReadableStreamDefaultReader.cpp",
+    "src/core/fetch/stream/ReadableStreamDefaultReader.h"
+  ],
+  "limits": {
+    "max_context_bytes": 24000,
+    "max_evidence_per_candidate": 3,
+    "max_participants_per_role": 4
+  },
+  "budget_policy": {
+    "basis": "utf8_json_bytes",
+    "packing": "deterministic_priority_prefix",
+    "priority": "verification rank, normalized name, primary file, line, id"
+  },
+  "total_candidate_count": 0,
+  "included_candidate_count": 0,
+  "omitted_candidate_count": 0,
+  "truncated": false,
+  "candidate_ids": [],
+  "overflow": {
+    "path": "",
+    "full_source": "interface-candidates.json",
+    "note": "Omitted candidates are not lost; inspect overflow/full source only when needed."
+  },
+  "llm_review_rules": [
+    "Use this compact module-local context, not the full interface-candidates.json, as prompt input.",
+    "Do not promote candidate/low/llm_suggested items to confirmed without source evidence.",
+    "If truncated=true, summarize included high-priority candidates and mention omitted_count.",
+    "For omitted candidates, request or inspect the overflow artifact only if module behavior depends on them."
+  ],
+  "candidates": []
+}

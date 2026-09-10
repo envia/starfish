@@ -1,0 +1,65 @@
+{
+  "context_kind": "module_interface_candidate_context",
+  "compact": true,
+  "module": "core-dom-parser",
+  "source_files": [
+    "src/core/dom/parser/AtomicHTMLToken.h",
+    "src/core/dom/parser/HTMLConstructionSite.cpp",
+    "src/core/dom/parser/HTMLConstructionSite.h",
+    "src/core/dom/parser/HTMLElementLookupTrie.cpp",
+    "src/core/dom/parser/HTMLElementLookupTrie.h",
+    "src/core/dom/parser/HTMLElementStack.cpp",
+    "src/core/dom/parser/HTMLElementStack.h",
+    "src/core/dom/parser/HTMLEntityParser.cpp",
+    "src/core/dom/parser/HTMLEntityParser.h",
+    "src/core/dom/parser/HTMLEntitySearch.cpp",
+    "src/core/dom/parser/HTMLEntitySearch.h",
+    "src/core/dom/parser/HTMLEntityTable.cpp",
+    "src/core/dom/parser/HTMLEntityTable.h",
+    "src/core/dom/parser/HTMLFormattingElementList.cpp",
+    "src/core/dom/parser/HTMLFormattingElementList.h",
+    "src/core/dom/parser/HTMLInputStream.h",
+    "src/core/dom/parser/HTMLParser.cpp",
+    "src/core/dom/parser/HTMLParser.h",
+    "src/core/dom/parser/HTMLParserIdioms.cpp",
+    "src/core/dom/parser/HTMLParserIdioms.h",
+    "src/core/dom/parser/HTMLStackItem.cpp",
+    "src/core/dom/parser/HTMLStackItem.h",
+    "src/core/dom/parser/HTMLToken.h",
+    "src/core/dom/parser/HTMLTokenizer.cpp",
+    "src/core/dom/parser/HTMLTokenizer.h",
+    "src/core/dom/parser/HTMLTreeBuilder.cpp",
+    "src/core/dom/parser/HTMLTreeBuilder.h",
+    "src/core/dom/parser/InputStreamPreprocessor.h",
+    "src/core/dom/parser/MarkupTokenizerInlines.h",
+    "src/core/dom/parser/PreloadScanner.cpp",
+    "src/core/dom/parser/PreloadScanner.h"
+  ],
+  "limits": {
+    "max_context_bytes": 24000,
+    "max_evidence_per_candidate": 3,
+    "max_participants_per_role": 4
+  },
+  "budget_policy": {
+    "basis": "utf8_json_bytes",
+    "packing": "deterministic_priority_prefix",
+    "priority": "verification rank, normalized name, primary file, line, id"
+  },
+  "total_candidate_count": 0,
+  "included_candidate_count": 0,
+  "omitted_candidate_count": 0,
+  "truncated": false,
+  "candidate_ids": [],
+  "overflow": {
+    "path": "",
+    "full_source": "interface-candidates.json",
+    "note": "Omitted candidates are not lost; inspect overflow/full source only when needed."
+  },
+  "llm_review_rules": [
+    "Use this compact module-local context, not the full interface-candidates.json, as prompt input.",
+    "Do not promote candidate/low/llm_suggested items to confirmed without source evidence.",
+    "If truncated=true, summarize included high-priority candidates and mention omitted_count.",
+    "For omitted candidates, request or inspect the overflow artifact only if module behavior depends on them."
+  ],
+  "candidates": []
+}

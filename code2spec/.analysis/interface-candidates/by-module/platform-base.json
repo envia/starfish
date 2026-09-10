@@ -1,0 +1,64 @@
+{
+  "context_kind": "module_interface_candidate_context",
+  "compact": true,
+  "module": "platform-base",
+  "source_files": [
+    "src/platform/event/PlatformKeyEventData.h",
+    "src/platform/feedback/TapSoundFeedback.cpp",
+    "src/platform/feedback/TapSoundFeedback.h",
+    "src/platform/file/PlatformDirectory.cpp",
+    "src/platform/file/PlatformDirectory.h",
+    "src/platform/file/PlatformFile.cpp",
+    "src/platform/file/PlatformFile.h",
+    "src/platform/message_loop/MessageLoopGLib.cpp",
+    "src/platform/message_loop/MessageLoopGLib.h",
+    "src/platform/message_loop/MessageLoopLibUV.cpp",
+    "src/platform/message_loop/MessageLoopLibUV.h",
+    "src/platform/message_loop/RunLoopGLib.cpp",
+    "src/platform/message_loop/RunLoopGLib.h",
+    "src/platform/message_loop/RunLoopLibUV.cpp",
+    "src/platform/message_loop/RunLoopLibUV.h",
+    "src/platform/message_loop/TimerGLib.cpp",
+    "src/platform/message_loop/TimerGLib.h",
+    "src/platform/message_loop/TimerLibUV.cpp",
+    "src/platform/message_loop/TimerLibUV.h",
+    "src/platform/process/base/Process.cpp",
+    "src/platform/process/base/Process.h",
+    "src/platform/process/base/ProcessType.h",
+    "src/platform/public/DeviceInfo.cpp",
+    "src/platform/public/DeviceInfo.h",
+    "src/platform/public/ScreenInfo.h",
+    "src/platform/public/ScreenOrientationType.h",
+    "src/platform/tts/TTSBase.cpp",
+    "src/platform/tts/TTSTV.cpp",
+    "src/platform/tts/TTSTizen.cpp",
+    "src/platform/windows/LoggingWindows.cpp"
+  ],
+  "limits": {
+    "max_context_bytes": 24000,
+    "max_evidence_per_candidate": 3,
+    "max_participants_per_role": 4
+  },
+  "budget_policy": {
+    "basis": "utf8_json_bytes",
+    "packing": "deterministic_priority_prefix",
+    "priority": "verification rank, normalized name, primary file, line, id"
+  },
+  "total_candidate_count": 0,
+  "included_candidate_count": 0,
+  "omitted_candidate_count": 0,
+  "truncated": false,
+  "candidate_ids": [],
+  "overflow": {
+    "path": "",
+    "full_source": "interface-candidates.json",
+    "note": "Omitted candidates are not lost; inspect overflow/full source only when needed."
+  },
+  "llm_review_rules": [
+    "Use this compact module-local context, not the full interface-candidates.json, as prompt input.",
+    "Do not promote candidate/low/llm_suggested items to confirmed without source evidence.",
+    "If truncated=true, summarize included high-priority candidates and mention omitted_count.",
+    "For omitted candidates, request or inspect the overflow artifact only if module behavior depends on them."
+  ],
+  "candidates": []
+}

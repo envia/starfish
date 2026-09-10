@@ -1,0 +1,70 @@
+{
+  "context_kind": "module_interface_candidate_context",
+  "compact": true,
+  "module": "modules-indexeddb",
+  "source_files": [
+    "src/core/modules/indexeddb/IDBBackingStore.h",
+    "src/core/modules/indexeddb/IDBConfig.h",
+    "src/core/modules/indexeddb/IDBConnection.cpp",
+    "src/core/modules/indexeddb/IDBConnection.h",
+    "src/core/modules/indexeddb/IDBCursor.cpp",
+    "src/core/modules/indexeddb/IDBCursor.h",
+    "src/core/modules/indexeddb/IDBDatabase.cpp",
+    "src/core/modules/indexeddb/IDBDatabase.h",
+    "src/core/modules/indexeddb/IDBDatabaseIdentifier.cpp",
+    "src/core/modules/indexeddb/IDBDatabaseIdentifier.h",
+    "src/core/modules/indexeddb/IDBFactory.cpp",
+    "src/core/modules/indexeddb/IDBFactory.h",
+    "src/core/modules/indexeddb/IDBIndex.cpp",
+    "src/core/modules/indexeddb/IDBIndex.h",
+    "src/core/modules/indexeddb/IDBKey.cpp",
+    "src/core/modules/indexeddb/IDBKey.h",
+    "src/core/modules/indexeddb/IDBKeyPath.cpp",
+    "src/core/modules/indexeddb/IDBKeyPath.h",
+    "src/core/modules/indexeddb/IDBKeyRange.cpp",
+    "src/core/modules/indexeddb/IDBKeyRange.h",
+    "src/core/modules/indexeddb/IDBObjectStore.cpp",
+    "src/core/modules/indexeddb/IDBObjectStore.h",
+    "src/core/modules/indexeddb/IDBOpenDBRequest.cpp",
+    "src/core/modules/indexeddb/IDBOpenDBRequest.h",
+    "src/core/modules/indexeddb/IDBRequest.cpp",
+    "src/core/modules/indexeddb/IDBRequest.h",
+    "src/core/modules/indexeddb/IDBStorageManager.cpp",
+    "src/core/modules/indexeddb/IDBStorageManager.h",
+    "src/core/modules/indexeddb/IDBTaskQueue.cpp",
+    "src/core/modules/indexeddb/IDBTaskQueue.h",
+    "src/core/modules/indexeddb/IDBTransaction.cpp",
+    "src/core/modules/indexeddb/IDBTransaction.h",
+    "src/core/modules/indexeddb/IDBUtils.cpp",
+    "src/core/modules/indexeddb/IDBUtils.h",
+    "src/core/modules/indexeddb/MemoryBackingStore.cpp",
+    "src/core/modules/indexeddb/MemoryBackingStore.h"
+  ],
+  "limits": {
+    "max_context_bytes": 24000,
+    "max_evidence_per_candidate": 3,
+    "max_participants_per_role": 4
+  },
+  "budget_policy": {
+    "basis": "utf8_json_bytes",
+    "packing": "deterministic_priority_prefix",
+    "priority": "verification rank, normalized name, primary file, line, id"
+  },
+  "total_candidate_count": 0,
+  "included_candidate_count": 0,
+  "omitted_candidate_count": 0,
+  "truncated": false,
+  "candidate_ids": [],
+  "overflow": {
+    "path": "",
+    "full_source": "interface-candidates.json",
+    "note": "Omitted candidates are not lost; inspect overflow/full source only when needed."
+  },
+  "llm_review_rules": [
+    "Use this compact module-local context, not the full interface-candidates.json, as prompt input.",
+    "Do not promote candidate/low/llm_suggested items to confirmed without source evidence.",
+    "If truncated=true, summarize included high-priority candidates and mention omitted_count.",
+    "For omitted candidates, request or inspect the overflow artifact only if module behavior depends on them."
+  ],
+  "candidates": []
+}

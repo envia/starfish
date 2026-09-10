@@ -1,0 +1,72 @@
+{
+  "context_kind": "module_interface_candidate_context",
+  "compact": true,
+  "module": "core-page",
+  "source_files": [
+    "src/core/page/A11yAtspiTreeSource.cpp",
+    "src/core/page/A11yAtspiTreeSource.h",
+    "src/core/page/A11yTouchExploration.cpp",
+    "src/core/page/A11yTouchExploration.h",
+    "src/core/page/BrowsingContext.cpp",
+    "src/core/page/BrowsingContext.h",
+    "src/core/page/EventSource.cpp",
+    "src/core/page/EventSource.h",
+    "src/core/page/EventSourceParser.cpp",
+    "src/core/page/EventSourceParser.h",
+    "src/core/page/GlobalScope.h",
+    "src/core/page/HashChangeEvent.cpp",
+    "src/core/page/HashChangeEvent.h",
+    "src/core/page/History.cpp",
+    "src/core/page/History.h",
+    "src/core/page/Location.cpp",
+    "src/core/page/Location.h",
+    "src/core/page/MediaCapabilities.cpp",
+    "src/core/page/MediaCapabilities.h",
+    "src/core/page/Navigator.cpp",
+    "src/core/page/Navigator.h",
+    "src/core/page/NavigatorMixin.cpp",
+    "src/core/page/NavigatorMixin.h",
+    "src/core/page/PopStateEvent.cpp",
+    "src/core/page/PopStateEvent.h",
+    "src/core/page/RenderResult.h",
+    "src/core/page/Screen.cpp",
+    "src/core/page/Screen.h",
+    "src/core/page/ScrollOptions.h",
+    "src/core/page/WebBase.cpp",
+    "src/core/page/WebBase.h",
+    "src/core/page/WebView.cpp",
+    "src/core/page/WebView.h",
+    "src/core/page/Window.cpp",
+    "src/core/page/Window.h",
+    "src/core/page/WindowOrWorkerGlobalScope.cpp",
+    "src/core/page/WindowOrWorkerGlobalScope.h",
+    "src/core/page/spatial-navigation-polyfill.js"
+  ],
+  "limits": {
+    "max_context_bytes": 24000,
+    "max_evidence_per_candidate": 3,
+    "max_participants_per_role": 4
+  },
+  "budget_policy": {
+    "basis": "utf8_json_bytes",
+    "packing": "deterministic_priority_prefix",
+    "priority": "verification rank, normalized name, primary file, line, id"
+  },
+  "total_candidate_count": 0,
+  "included_candidate_count": 0,
+  "omitted_candidate_count": 0,
+  "truncated": false,
+  "candidate_ids": [],
+  "overflow": {
+    "path": "",
+    "full_source": "interface-candidates.json",
+    "note": "Omitted candidates are not lost; inspect overflow/full source only when needed."
+  },
+  "llm_review_rules": [
+    "Use this compact module-local context, not the full interface-candidates.json, as prompt input.",
+    "Do not promote candidate/low/llm_suggested items to confirmed without source evidence.",
+    "If truncated=true, summarize included high-priority candidates and mention omitted_count.",
+    "For omitted candidates, request or inspect the overflow artifact only if module behavior depends on them."
+  ],
+  "candidates": []
+}

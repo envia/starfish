@@ -2,28 +2,29 @@
   "session_id": "20260827_101623",
   "total_modules": 32,
   "chunk_size": 10,
-  "completed": [],
-  "in_progress": null,
-  "pending": [
-    "core-dom",
-    "core-style",
+  "completed": [
     "core-dom-svg",
-    "modules-serviceworker",
-    "core-layout",
-    "modules-workers",
+    "core-style",
     "modules-mediastream",
+    "modules-workers",
+    "core-dom",
+    "public-embedder-api",
     "core-dom-canvas",
     "core-cdp",
-    "public-embedder-api",
-    "modules-web-apis",
+    "modules-serviceworker",
+    "core-layout",
+    "modules-runtime",
+    "shell",
     "support-tools",
+    "modules-indexeddb"
+  ],
+  "in_progress": null,
+  "pending": [
+    "modules-web-apis",
     "modules-canvas",
     "core-util",
-    "shell",
     "core-page",
     "binding",
-    "modules-indexeddb",
-    "modules-runtime",
     "platform-network-loader",
     "platform-multimedia",
     "core-dom-parser",
@@ -39,5 +40,6 @@
     "support-vendor-robin-map"
   ],
   "failed": [],
-  "last_updated": "2026-08-27T10:16:25"
+  "last_updated": "2026-09-10T11:19:43",
+  "completed_count": 14
 }

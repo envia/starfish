@@ -1,0 +1,72 @@
+{
+  "context_kind": "module_interface_candidate_context",
+  "compact": true,
+  "module": "binding",
+  "source_files": [
+    "src/binding/CharacterDataCustomBinding.cpp",
+    "src/binding/DocumentCustomBinding.cpp",
+    "src/binding/DocumentHoldable.cpp",
+    "src/binding/DocumentHoldable.h",
+    "src/binding/EventTargetCustomBinding.cpp",
+    "src/binding/GeolocationCustomBinding.cpp",
+    "src/binding/HTMLElementCustomBinding.cpp",
+    "src/binding/HTMLInputElementCustomBinding.cpp",
+    "src/binding/ImageDataCustomBinding.cpp",
+    "src/binding/Iterable.h",
+    "src/binding/IterationSource.h",
+    "src/binding/Maplike.h",
+    "src/binding/MediaStreamCustomBinding.cpp",
+    "src/binding/ObservableArray.cpp",
+    "src/binding/ObservableArray.h",
+    "src/binding/ScriptBindingInstance.cpp",
+    "src/binding/ScriptBindingInstance.h",
+    "src/binding/ScriptBindingSecurity.cpp",
+    "src/binding/ScriptBindingSecurity.h",
+    "src/binding/ScriptBindingWindowInstance.cpp",
+    "src/binding/ScriptBindingWindowInstance.h",
+    "src/binding/ScriptBindingWorkerInstance.cpp",
+    "src/binding/ScriptBindingWorkerInstance.h",
+    "src/binding/ScriptEngineInstance.cpp",
+    "src/binding/ScriptEngineInstance.h",
+    "src/binding/ScriptWrappable.cpp",
+    "src/binding/ScriptWrappable.h",
+    "src/binding/StarfishHoldable.h",
+    "src/binding/URLSearchParamsCustomBinding.cpp",
+    "src/binding/WebViewHoldable.cpp",
+    "src/binding/WebViewHoldable.h",
+    "src/binding/WindowCustomBinding.cpp",
+    "src/binding/WindowHoldable.cpp",
+    "src/binding/WindowHoldable.h",
+    "src/binding/WindowProxy.cpp",
+    "src/binding/WindowProxy.h",
+    "src/binding/WorkerGlobalScopeCustomBinding.cpp",
+    "src/binding/XMLHttpRequestCustomBinding.cpp"
+  ],
+  "limits": {
+    "max_context_bytes": 24000,
+    "max_evidence_per_candidate": 3,
+    "max_participants_per_role": 4
+  },
+  "budget_policy": {
+    "basis": "utf8_json_bytes",
+    "packing": "deterministic_priority_prefix",
+    "priority": "verification rank, normalized name, primary file, line, id"
+  },
+  "total_candidate_count": 0,
+  "included_candidate_count": 0,
+  "omitted_candidate_count": 0,
+  "truncated": false,
+  "candidate_ids": [],
+  "overflow": {
+    "path": "",
+    "full_source": "interface-candidates.json",
+    "note": "Omitted candidates are not lost; inspect overflow/full source only when needed."
+  },
+  "llm_review_rules": [
+    "Use this compact module-local context, not the full interface-candidates.json, as prompt input.",
+    "Do not promote candidate/low/llm_suggested items to confirmed without source evidence.",
+    "If truncated=true, summarize included high-priority candidates and mention omitted_count.",
+    "For omitted candidates, request or inspect the overflow artifact only if module behavior depends on them."
+  ],
+  "candidates": []
+}

@@ -1,0 +1,39 @@
+{
+  "context_kind": "module_interface_candidate_context",
+  "compact": true,
+  "module": "support-vendor-robin-map",
+  "source_files": [
+    "third_party/robin_map/include/tsl/robin_growth_policy.h",
+    "third_party/robin_map/include/tsl/robin_hash.h",
+    "third_party/robin_map/include/tsl/robin_map.h",
+    "third_party/robin_map/include/tsl/robin_set.h",
+    "third_party/robin_map/include/tsl/robin_vector.h"
+  ],
+  "limits": {
+    "max_context_bytes": 24000,
+    "max_evidence_per_candidate": 3,
+    "max_participants_per_role": 4
+  },
+  "budget_policy": {
+    "basis": "utf8_json_bytes",
+    "packing": "deterministic_priority_prefix",
+    "priority": "verification rank, normalized name, primary file, line, id"
+  },
+  "total_candidate_count": 0,
+  "included_candidate_count": 0,
+  "omitted_candidate_count": 0,
+  "truncated": false,
+  "candidate_ids": [],
+  "overflow": {
+    "path": "",
+    "full_source": "interface-candidates.json",
+    "note": "Omitted candidates are not lost; inspect overflow/full source only when needed."
+  },
+  "llm_review_rules": [
+    "Use this compact module-local context, not the full interface-candidates.json, as prompt input.",
+    "Do not promote candidate/low/llm_suggested items to confirmed without source evidence.",
+    "If truncated=true, summarize included high-priority candidates and mention omitted_count.",
+    "For omitted candidates, request or inspect the overflow artifact only if module behavior depends on them."
+  ],
+  "candidates": []
+}

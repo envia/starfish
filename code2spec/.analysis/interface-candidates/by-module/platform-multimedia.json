@@ -1,0 +1,67 @@
+{
+  "context_kind": "module_interface_candidate_context",
+  "compact": true,
+  "module": "platform-multimedia",
+  "source_files": [
+    "src/platform/multimedia/Demuxer.cpp",
+    "src/platform/multimedia/Demuxer.h",
+    "src/platform/multimedia/DemuxerMP4.cpp",
+    "src/platform/multimedia/DemuxerSource.h",
+    "src/platform/multimedia/DemuxerWebM.cpp",
+    "src/platform/multimedia/MP4PacketGenerator.cpp",
+    "src/platform/multimedia/MediaPlayer.cpp",
+    "src/platform/multimedia/MediaPlayer.h",
+    "src/platform/multimedia/MediaPlayerAudio.cpp",
+    "src/platform/multimedia/MediaPlayerAudio.h",
+    "src/platform/multimedia/MediaPlayerAudioLinux.cpp",
+    "src/platform/multimedia/MediaPlayerAudioLinux.h",
+    "src/platform/multimedia/MediaPlayerAudioTizen.cpp",
+    "src/platform/multimedia/MediaPlayerAudioTizen.h",
+    "src/platform/multimedia/MediaPlayerESPlusPlayer.cpp",
+    "src/platform/multimedia/MediaPlayerESPlusPlayer.h",
+    "src/platform/multimedia/MediaPlayerLinux.cpp",
+    "src/platform/multimedia/MediaPlayerLinux.h",
+    "src/platform/multimedia/MediaPlayerTV.cpp",
+    "src/platform/multimedia/MediaPlayerTizen.cpp",
+    "src/platform/multimedia/MediaPlayerTizen.h",
+    "src/platform/multimedia/MediaPlayerTizenBase.cpp",
+    "src/platform/multimedia/MediaPlayerWebRtc.cpp",
+    "src/platform/multimedia/MediaPlayerWebRtc.h",
+    "src/platform/multimedia/MediaPlayerWebRtcLinux.cpp",
+    "src/platform/multimedia/MediaPlayerWebRtcLinux.h",
+    "src/platform/multimedia/MediaPlayerWebRtcTizen.cpp",
+    "src/platform/multimedia/MediaPlayerWebRtcTizen.h",
+    "src/platform/multimedia/MockMediaPlayer.cpp",
+    "src/platform/multimedia/MockMediaPlayer.h",
+    "src/platform/multimedia/PacketGenerator.h",
+    "src/platform/multimedia/StreamInfo.cpp",
+    "src/platform/multimedia/StreamInfo.h"
+  ],
+  "limits": {
+    "max_context_bytes": 24000,
+    "max_evidence_per_candidate": 3,
+    "max_participants_per_role": 4
+  },
+  "budget_policy": {
+    "basis": "utf8_json_bytes",
+    "packing": "deterministic_priority_prefix",
+    "priority": "verification rank, normalized name, primary file, line, id"
+  },
+  "total_candidate_count": 0,
+  "included_candidate_count": 0,
+  "omitted_candidate_count": 0,
+  "truncated": false,
+  "candidate_ids": [],
+  "overflow": {
+    "path": "",
+    "full_source": "interface-candidates.json",
+    "note": "Omitted candidates are not lost; inspect overflow/full source only when needed."
+  },
+  "llm_review_rules": [
+    "Use this compact module-local context, not the full interface-candidates.json, as prompt input.",
+    "Do not promote candidate/low/llm_suggested items to confirmed without source evidence.",
+    "If truncated=true, summarize included high-priority candidates and mention omitted_count.",
+    "For omitted candidates, request or inspect the overflow artifact only if module behavior depends on them."
+  ],
+  "candidates": []
+}

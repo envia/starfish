@@ -1,0 +1,70 @@
+{
+  "context_kind": "module_interface_candidate_context",
+  "compact": true,
+  "module": "modules-runtime",
+  "source_files": [
+    "src/core/modules/message_loop/MessageLoop.cpp",
+    "src/core/modules/message_loop/MessageLoop.h",
+    "src/core/modules/message_loop/MessageLoopInterface.h",
+    "src/core/modules/message_loop/RunLoop.cpp",
+    "src/core/modules/message_loop/RunLoop.h",
+    "src/core/modules/message_loop/Timer.cpp",
+    "src/core/modules/message_loop/Timer.h",
+    "src/core/modules/profiling/FrameRateCounter.cpp",
+    "src/core/modules/profiling/FrameRateCounter.h",
+    "src/core/modules/profiling/LayoutFlowLoggerBuilder.cpp",
+    "src/core/modules/profiling/LayoutFlowLoggerBuilder.h",
+    "src/core/modules/profiling/Logger.h",
+    "src/core/modules/profiling/Profiling.cpp",
+    "src/core/modules/profiling/Profiling.h",
+    "src/core/modules/renderer/Renderer.cpp",
+    "src/core/modules/renderer/Renderer.h",
+    "src/core/modules/renderer/RendererFactory.h",
+    "src/core/modules/renderer/RendererGL.cpp",
+    "src/core/modules/renderer/RendererHeadless.cpp",
+    "src/core/modules/renderer/RendererSoftware.cpp",
+    "src/core/modules/renderer/VirtualCursor.h",
+    "src/core/modules/renderer/VirtualCursorData.cpp",
+    "src/core/modules/threading/AdaptedThread.cpp",
+    "src/core/modules/threading/AdaptedThread.h",
+    "src/core/modules/threading/IRunnable.h",
+    "src/core/modules/threading/Locker.h",
+    "src/core/modules/threading/Mutex.cpp",
+    "src/core/modules/threading/Mutex.h",
+    "src/core/modules/threading/ParallelJobExecutor.h",
+    "src/core/modules/threading/Semaphore.cpp",
+    "src/core/modules/threading/Semaphore.h",
+    "src/core/modules/threading/Thread.cpp",
+    "src/core/modules/threading/Thread.h",
+    "src/core/modules/threading/ThreadClient.h",
+    "src/core/modules/threading/ThreadPool.cpp",
+    "src/core/modules/threading/ThreadPool.h"
+  ],
+  "limits": {
+    "max_context_bytes": 24000,
+    "max_evidence_per_candidate": 3,
+    "max_participants_per_role": 4
+  },
+  "budget_policy": {
+    "basis": "utf8_json_bytes",
+    "packing": "deterministic_priority_prefix",
+    "priority": "verification rank, normalized name, primary file, line, id"
+  },
+  "total_candidate_count": 0,
+  "included_candidate_count": 0,
+  "omitted_candidate_count": 0,
+  "truncated": false,
+  "candidate_ids": [],
+  "overflow": {
+    "path": "",
+    "full_source": "interface-candidates.json",
+    "note": "Omitted candidates are not lost; inspect overflow/full source only when needed."
+  },
+  "llm_review_rules": [
+    "Use this compact module-local context, not the full interface-candidates.json, as prompt input.",
+    "Do not promote candidate/low/llm_suggested items to confirmed without source evidence.",
+    "If truncated=true, summarize included high-priority candidates and mention omitted_count.",
+    "For omitted candidates, request or inspect the overflow artifact only if module behavior depends on them."
+  ],
+  "candidates": []
+}

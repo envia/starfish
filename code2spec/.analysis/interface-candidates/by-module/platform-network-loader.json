@@ -1,0 +1,68 @@
+{
+  "context_kind": "module_interface_candidate_context",
+  "compact": true,
+  "module": "platform-network-loader",
+  "source_files": [
+    "src/platform/loader/ElementResourceClient.cpp",
+    "src/platform/loader/ElementResourceClient.h",
+    "src/platform/loader/FontResource.cpp",
+    "src/platform/loader/FontResource.h",
+    "src/platform/loader/HeaderResource.cpp",
+    "src/platform/loader/HeaderResource.h",
+    "src/platform/loader/ImageResource.cpp",
+    "src/platform/loader/ImageResource.h",
+    "src/platform/loader/Resource.cpp",
+    "src/platform/loader/Resource.h",
+    "src/platform/loader/ResourceClient.h",
+    "src/platform/loader/ResourceLoader.cpp",
+    "src/platform/loader/ResourceLoader.h",
+    "src/platform/loader/ResourceURL.cpp",
+    "src/platform/loader/ResourceURL.h",
+    "src/platform/loader/TextResource.cpp",
+    "src/platform/loader/TextResource.h",
+    "src/platform/network/curl/NetworkSharedResourceManager.cpp",
+    "src/platform/network/curl/NetworkSharedResourceManager.h",
+    "src/platform/network/http/HTTPCache.cpp",
+    "src/platform/network/http/HTTPCache.h",
+    "src/platform/network/http/HTTPCacheEntry.cpp",
+    "src/platform/network/http/HTTPCacheEntry.h",
+    "src/platform/network/http/HTTPHeaderMap.cpp",
+    "src/platform/network/http/HTTPHeaderMap.h",
+    "src/platform/network/http/HTTPRequest.cpp",
+    "src/platform/network/http/HTTPRequest.h",
+    "src/platform/network/http/HTTPResponse.cpp",
+    "src/platform/network/http/HTTPResponse.h",
+    "src/platform/network/http/HTTPStatus.h",
+    "src/platform/network/http/HTTPTransaction.cpp",
+    "src/platform/network/http/HTTPTransaction.h",
+    "src/platform/network/http/HTTPUtil.cpp",
+    "src/platform/network/http/HTTPUtil.h"
+  ],
+  "limits": {
+    "max_context_bytes": 24000,
+    "max_evidence_per_candidate": 3,
+    "max_participants_per_role": 4
+  },
+  "budget_policy": {
+    "basis": "utf8_json_bytes",
+    "packing": "deterministic_priority_prefix",
+    "priority": "verification rank, normalized name, primary file, line, id"
+  },
+  "total_candidate_count": 0,
+  "included_candidate_count": 0,
+  "omitted_candidate_count": 0,
+  "truncated": false,
+  "candidate_ids": [],
+  "overflow": {
+    "path": "",
+    "full_source": "interface-candidates.json",
+    "note": "Omitted candidates are not lost; inspect overflow/full source only when needed."
+  },
+  "llm_review_rules": [
+    "Use this compact module-local context, not the full interface-candidates.json, as prompt input.",
+    "Do not promote candidate/low/llm_suggested items to confirmed without source evidence.",
+    "If truncated=true, summarize included high-priority candidates and mention omitted_count.",
+    "For omitted candidates, request or inspect the overflow artifact only if module behavior depends on them."
+  ],
+  "candidates": []
+}

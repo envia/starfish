@@ -1,0 +1,73 @@
+{
+  "context_kind": "module_interface_candidate_context",
+  "compact": true,
+  "module": "shell",
+  "source_files": [
+    "src/shell/APIReplayer.cpp",
+    "src/shell/APIReplayer.h",
+    "src/shell/AppLoop.h",
+    "src/shell/Console.cpp",
+    "src/shell/Console.h",
+    "src/shell/MiniBrowser.cpp",
+    "src/shell/MiniBrowser.h",
+    "src/shell/RendererDelegate.h",
+    "src/shell/Shell.cpp",
+    "src/shell/Shell.h",
+    "src/shell/ShellConfig.h",
+    "src/shell/UnitTestRunner.cpp",
+    "src/shell/UnitTestRunner.h",
+    "src/shell/Window.h",
+    "src/shell/WindowKeyType.h",
+    "src/shell/dummy/WindowDummy.cpp",
+    "src/shell/ecore/AppLoopEcore.cpp",
+    "src/shell/ecore/ConsoleEcore.cpp",
+    "src/shell/efl/AppLoopEFL.cpp",
+    "src/shell/efl/AppLoopEFLHeadless.cpp",
+    "src/shell/efl/ConsoleEFL.cpp",
+    "src/shell/efl/WindowEFL.cpp",
+    "src/shell/glib/AppLoopGlib.cpp",
+    "src/shell/glib/ConsoleGlib.cpp",
+    "src/shell/headless/WindowHeadless.cpp",
+    "src/shell/libuv/AppLoopLibuv.cpp",
+    "src/shell/libuv/ConsoleLibuv.cpp",
+    "src/shell/tcore_wl/AppLoopTcoreWl.cpp",
+    "src/shell/tcore_wl/ConsoleTcoreWl.cpp",
+    "src/shell/test/APIRecorderTest.cpp",
+    "src/shell/test/CookieManagerTest.cpp",
+    "src/shell/test/LWETest.cpp",
+    "src/shell/test/SettingsTest.cpp",
+    "src/shell/test/WebContainerTest.cpp",
+    "src/shell/test/WebViewTest.cpp",
+    "src/shell/windows/RendererWGL.cpp",
+    "src/shell/windows/RendererWGL.h",
+    "src/shell/windows/StarfishShell.cpp",
+    "src/shell/x11_webcontainer/WindowX11Webcontainer.cpp"
+  ],
+  "limits": {
+    "max_context_bytes": 24000,
+    "max_evidence_per_candidate": 3,
+    "max_participants_per_role": 4
+  },
+  "budget_policy": {
+    "basis": "utf8_json_bytes",
+    "packing": "deterministic_priority_prefix",
+    "priority": "verification rank, normalized name, primary file, line, id"
+  },
+  "total_candidate_count": 0,
+  "included_candidate_count": 0,
+  "omitted_candidate_count": 0,
+  "truncated": false,
+  "candidate_ids": [],
+  "overflow": {
+    "path": "",
+    "full_source": "interface-candidates.json",
+    "note": "Omitted candidates are not lost; inspect overflow/full source only when needed."
+  },
+  "llm_review_rules": [
+    "Use this compact module-local context, not the full interface-candidates.json, as prompt input.",
+    "Do not promote candidate/low/llm_suggested items to confirmed without source evidence.",
+    "If truncated=true, summarize included high-priority candidates and mention omitted_count.",
+    "For omitted candidates, request or inspect the overflow artifact only if module behavior depends on them."
+  ],
+  "candidates": []
+}

@@ -1,0 +1,5 @@
+
+## Chunk 1 완료 (10/32)
+완료 모듈: core-dom-svg, core-style, modules-mediastream, modules-workers, core-dom, public-embedder-api, core-dom-canvas, core-cdp, modules-serviceworker, core-layout
+핵심 패턴: Chunk 1 (10 modules): DOM/style/layout core (Node->Element->HTMLElement chain, Frame hierarchy, CSSParser/ComputedStyle), Boehm-GC allocated objects, IDL-generated bindings as script entry points, Design Cards with verified deep-links; cross-process IPC found only in modules-serviceworker (12 JSON messages over nanomsg pair + process launch), modules-workers (NN_BUS control messages + NN_PAIR data channel over ipc://), core-cdp (TCP 9222 + WebSocket framing, 20 domain handlers), core-dom (MessagePort), public-embedder-api (AT-SPI D-Bus gesture; dlopen ABI-epoch ProcTable)
+주요 의존성: All modules depend on engine-entry base headers (Starfish.h/StarfishConfig.h); core-layout->core-dom/core-style; core-style->core-dom; modules-serviceworker->core-util/modules-workers; platform backends reached via modules-canvas; external libs: Escargot, Boehm GC, ICU, Skia matrix, nanomsg, rapidjson, libwebrtc (versions not in code)
