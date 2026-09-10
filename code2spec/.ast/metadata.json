@@ -1,0 +1,6 @@
+{
+  "repoRoot": "/home/hwang/work/D/starfish_",
+  "lang": "auto",
+  "extractor": "ast_adapter.py (code2spec tree-sitter)",
+  "include": "code2spec code-to-ast graph"
+}

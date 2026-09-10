@@ -1,0 +1,4 @@
+tree-sitter>=0.26,<0.27
+tree-sitter-language-pack>=1.8.1,<2
+networkx>=3.2,<4
+pyyaml>=6.0,<7

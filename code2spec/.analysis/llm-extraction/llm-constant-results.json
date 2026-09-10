@@ -1,0 +1,3842 @@
+[
+  {
+    "name": "LWE_EXPORT",
+    "value": "__declspec(dllexport)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "LWE WebView public API header (Tizen 5.0 compat) (LWEWebView.h)",
+    "source": "[Source: compat/tizen_5.0/inc/LWEWebView.h:25]"
+  },
+  {
+    "name": "LWE_EXPORT",
+    "value": "__attribute__((visibility(\"default\")))",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "LWE WebView public API header (Tizen 5.0 compat) (LWEWebView.h)",
+    "source": "[Source: compat/tizen_5.0/inc/LWEWebView.h:27]"
+  },
+  {
+    "name": "TIZEN_COMPAT_HEADER_5_0",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "LWE WebView public API header (Tizen 5.0 compat) (LWEWebView.h)",
+    "source": "[Source: compat/tizen_5.0/inc/LWEWebView.h:85]"
+  },
+  {
+    "name": "LWE_DEFAULT_FONT_SIZE",
+    "value": "16",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "LWE WebView public API header (Tizen 5.0 compat) (LWEWebView.h)",
+    "source": "[Source: compat/tizen_5.0/inc/LWEWebView.h:180]"
+  },
+  {
+    "name": "LWE_MIN_FONT_SIZE",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "LWE WebView public API header (Tizen 5.0 compat) (LWEWebView.h)",
+    "source": "[Source: compat/tizen_5.0/inc/LWEWebView.h:181]"
+  },
+  {
+    "name": "LWE_MAX_FONT_SIZE",
+    "value": "72",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "LWE WebView public API header (Tizen 5.0 compat) (LWEWebView.h)",
+    "source": "[Source: compat/tizen_5.0/inc/LWEWebView.h:182]"
+  },
+  {
+    "name": "SCRIPT_PATH",
+    "value": "N/A",
+    "type": "python_const",
+    "language": "python",
+    "usage_context": "Docs generator script (run.py)",
+    "source": "[Source: docs/generator/run.py:7]"
+  },
+  {
+    "name": "LWE_EXPORT",
+    "value": "__declspec(dllexport)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "LWE WebView public API header (LWEWebView.h)",
+    "source": "[Source: inc/LWEWebView.h:30]"
+  },
+  {
+    "name": "LWE_EXPORT",
+    "value": "__declspec(dllimport)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "LWE WebView public API header (LWEWebView.h)",
+    "source": "[Source: inc/LWEWebView.h:32]"
+  },
+  {
+    "name": "LWE_EXPORT",
+    "value": "__attribute__((visibility(\"default\")))",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "LWE WebView public API header (LWEWebView.h)",
+    "source": "[Source: inc/LWEWebView.h:35]"
+  },
+  {
+    "name": "LWE_DEFAULT_FONT_SIZE",
+    "value": "16",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "LWE WebView public API header (LWEWebView.h)",
+    "source": "[Source: inc/LWEWebView.h:190]"
+  },
+  {
+    "name": "LWE_MIN_FONT_SIZE",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "LWE WebView public API header (LWEWebView.h)",
+    "source": "[Source: inc/LWEWebView.h:191]"
+  },
+  {
+    "name": "LWE_MAX_FONT_SIZE",
+    "value": "72",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "LWE WebView public API header (LWEWebView.h)",
+    "source": "[Source: inc/LWEWebView.h:192]"
+  },
+  {
+    "name": "LWE_EXPORT",
+    "value": "__declspec(dllexport)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "LWE Worker public API header (LWEWorker.h)",
+    "source": "[Source: inc/LWEWorker.h:30]"
+  },
+  {
+    "name": "LWE_EXPORT",
+    "value": "__declspec(dllimport)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "LWE Worker public API header (LWEWorker.h)",
+    "source": "[Source: inc/LWEWorker.h:32]"
+  },
+  {
+    "name": "LWE_EXPORT",
+    "value": "__attribute__((visibility(\"default\")))",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "LWE Worker public API header (LWEWorker.h)",
+    "source": "[Source: inc/LWEWorker.h:35]"
+  },
+  {
+    "name": "STARFISH_LINE_BREAK_ITERATOR_POOL_SIZE",
+    "value": "4",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Engine initialization (Starfish.cpp)",
+    "source": "[Source: src/Starfish.cpp:81]"
+  },
+  {
+    "name": "BDWGC_FREE_SPACE_DIVISOR",
+    "value": "12",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Engine configuration (Starfish.h)",
+    "source": "[Source: src/Starfish.h:40]"
+  },
+  {
+    "name": "COMPILER_CLANG",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:85]"
+  },
+  {
+    "name": "COMPILER_MSVC",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:87]"
+  },
+  {
+    "name": "COMPILER_GCC",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:89]"
+  },
+  {
+    "name": "COMPILER_SUPPORTS_CXX_OVERRIDE_CONTROL",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:100]"
+  },
+  {
+    "name": "COMPILER_QUIRK_FINAL_IS_CALLED_SEALED",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:101]"
+  },
+  {
+    "name": "ALWAYS_INLINE",
+    "value": "inline __attribute__((__always_inline__))",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:108]"
+  },
+  {
+    "name": "ALWAYS_INLINE",
+    "value": "__forceinline",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:110]"
+  },
+  {
+    "name": "ALWAYS_INLINE",
+    "value": "inline",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:112]"
+  },
+  {
+    "name": "NEVER_INLINE",
+    "value": "__attribute__((__noinline__))",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:119]"
+  },
+  {
+    "name": "NEVER_INLINE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:121]"
+  },
+  {
+    "name": "NO_RETURN",
+    "value": "__attribute((__noreturn__))",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:146]"
+  },
+  {
+    "name": "NO_RETURN",
+    "value": "__declspec(noreturn)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:148]"
+  },
+  {
+    "name": "NO_RETURN",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:150]"
+  },
+  {
+    "name": "EXPORT",
+    "value": "__declspec(dllexport)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:157]"
+  },
+  {
+    "name": "EXPORT",
+    "value": "__attribute__((visibility(\"default\")))",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:159]"
+  },
+  {
+    "name": "FALLTHROUGH",
+    "value": "__attribute__((fallthrough))",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:166]"
+  },
+  {
+    "name": "FALLTHROUGH",
+    "value": "/* fall through */",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:168]"
+  },
+  {
+    "name": "FALLTHROUGH",
+    "value": "/* fall through */",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:171]"
+  },
+  {
+    "name": "FALLTHROUGH",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:173]"
+  },
+  {
+    "name": "NULLABLE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:176]"
+  },
+  {
+    "name": "ENSURE_ENUM_UNSIGNED",
+    "value": ": unsigned int",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:184]"
+  },
+  {
+    "name": "ENSURE_ENUM_UNSIGNED",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:186]"
+  },
+  {
+    "name": "OS_WINDOWS",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:190]"
+  },
+  {
+    "name": "OS_WINDOWS",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:192]"
+  },
+  {
+    "name": "OS_POSIX",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:196]"
+  },
+  {
+    "name": "OS_POSIX",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:198]"
+  },
+  {
+    "name": "OS_POSIX",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:200]"
+  },
+  {
+    "name": "OS_POSIX",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:205]"
+  },
+  {
+    "name": "OS_POSIX",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:207]"
+  },
+  {
+    "name": "OS_POSIX",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:209]"
+  },
+  {
+    "name": "NOMINMAX",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:215]"
+  },
+  {
+    "name": "WIN32_LEAN_AND_MEAN",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:224]"
+  },
+  {
+    "name": "ESCARGOT",
+    "value": "// for use additional functions in GCutil",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:230]"
+  },
+  {
+    "name": "TRUE",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:256]"
+  },
+  {
+    "name": "FALSE",
+    "value": "0",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:260]"
+  },
+  {
+    "name": "DEFAULT_CLEAR_STACK_SIZE",
+    "value": "102400",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:279]"
+  },
+  {
+    "name": "ELABORATE_CLEAR_STACK_SIZE",
+    "value": "DEFAULT_CLEAR_STACK_SIZE * 4",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:280]"
+  },
+  {
+    "name": "STARFISH_32",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:308]"
+  },
+  {
+    "name": "STARFISH_64",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:310]"
+  },
+  {
+    "name": "STARFISH_X86_64",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:317]"
+  },
+  {
+    "name": "STARFISH_X86",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:323]"
+  },
+  {
+    "name": "STARFISH_ARM",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:327]"
+  },
+  {
+    "name": "STARFISH_ARM_NEON",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:329]"
+  },
+  {
+    "name": "STARFISH_ARM64",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:333]"
+  },
+  {
+    "name": "STARFISH_ARM_NEON",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:334]"
+  },
+  {
+    "name": "STARFISH_RISCV32",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:337]"
+  },
+  {
+    "name": "STARFISH_RISCV64",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:340]"
+  },
+  {
+    "name": "STARFISH_ENABLE_PROFILE_TIMER",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:358]"
+  },
+  {
+    "name": "STARFISH_ENABLE_PROFILE_LOADING",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:359]"
+  },
+  {
+    "name": "STARFISH_LOG_TAG",
+    "value": "\"[WORKER] \"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:363]"
+  },
+  {
+    "name": "STARFISH_LOG_TAG",
+    "value": "\"\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:365]"
+  },
+  {
+    "name": "STARFISH_CRASH",
+    "value": "STARFISH_RELEASE_ASSERT_SHOULD_NOT_BE_HERE",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:476]"
+  },
+  {
+    "name": "WARN_UNUSED_RETURN",
+    "value": "__attribute__((__warn_unused_result__))",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:578]"
+  },
+  {
+    "name": "WARN_UNUSED_RETURN",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:582]"
+  },
+  {
+    "name": "STARFISH_PIXEL_R_INDEX",
+    "value": "0",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:1079]"
+  },
+  {
+    "name": "STARFISH_PIXEL_G_INDEX",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:1080]"
+  },
+  {
+    "name": "STARFISH_PIXEL_B_INDEX",
+    "value": "2",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:1081]"
+  },
+  {
+    "name": "STARFISH_PIXEL_A_INDEX",
+    "value": "3",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:1082]"
+  },
+  {
+    "name": "STARFISH_PIXEL_R_INDEX",
+    "value": "2",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:1084]"
+  },
+  {
+    "name": "STARFISH_PIXEL_G_INDEX",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:1085]"
+  },
+  {
+    "name": "STARFISH_PIXEL_B_INDEX",
+    "value": "0",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:1086]"
+  },
+  {
+    "name": "STARFISH_PIXEL_A_INDEX",
+    "value": "3",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Base compiler/platform configuration macro (StarfishBase.h)",
+    "source": "[Source: src/StarfishBase.h:1087]"
+  },
+  {
+    "name": "APP_NAME",
+    "value": "\"Netscape\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Browser identification value (navigator/user-agent) (StarfishInfo.h)",
+    "source": "[Source: src/StarfishInfo.h:23]"
+  },
+  {
+    "name": "APP_CODE_NAME",
+    "value": "\"Mozilla\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Browser identification value (navigator/user-agent) (StarfishInfo.h)",
+    "source": "[Source: src/StarfishInfo.h:24]"
+  },
+  {
+    "name": "PRODUCT_NAME",
+    "value": "\"Gecko\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Browser identification value (navigator/user-agent) (StarfishInfo.h)",
+    "source": "[Source: src/StarfishInfo.h:25]"
+  },
+  {
+    "name": "STARFISH_NAME",
+    "value": "\"Starfish\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Browser identification value (navigator/user-agent) (StarfishInfo.h)",
+    "source": "[Source: src/StarfishInfo.h:26]"
+  },
+  {
+    "name": "VENDOR_NAME",
+    "value": "\"Samsung Electronics Co., Ltd.\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Browser identification value (navigator/user-agent) (StarfishInfo.h)",
+    "source": "[Source: src/StarfishInfo.h:27]"
+  },
+  {
+    "name": "VERSION",
+    "value": "STARFISH_VERSION_STR",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Browser identification value (navigator/user-agent) (StarfishInfo.h)",
+    "source": "[Source: src/StarfishInfo.h:28]"
+  },
+  {
+    "name": "USER_AGENT_MAXIMUM_DATE_VALUE",
+    "value": "8.64e15",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Browser identification value (navigator/user-agent) (StarfishInfo.h)",
+    "source": "[Source: src/StarfishInfo.h:31]"
+  },
+  {
+    "name": "PORT_CANVAS_BACKEND_CAIRO",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:24]"
+  },
+  {
+    "name": "PORT_EVENTLOOP_BACKEND_GLIB",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:25]"
+  },
+  {
+    "name": "PORT_IMAGEDECODER_BACKEND_MISC",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:26]"
+  },
+  {
+    "name": "PORT_PIXEL_ORDER_BGRA",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:27]"
+  },
+  {
+    "name": "PORT_CANVAS_BACKEND_CAIRO",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:29]"
+  },
+  {
+    "name": "PORT_EVENTLOOP_BACKEND_LIBUV",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:30]"
+  },
+  {
+    "name": "PORT_IMAGEDECODER_BACKEND_MISC",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:31]"
+  },
+  {
+    "name": "PORT_PIXEL_ORDER_BGRA",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:32]"
+  },
+  {
+    "name": "PORT_GRAPHIC_BACKEND_MOCK",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:34]"
+  },
+  {
+    "name": "PORT_CANVAS_BACKEND_MOCK",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:35]"
+  },
+  {
+    "name": "PORT_EVENTLOOP_BACKEND_GLIB",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:36]"
+  },
+  {
+    "name": "PORT_IMAGEDECODER_BACKEND_MOCK",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:37]"
+  },
+  {
+    "name": "PORT_PIXEL_ORDER_BGRA",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:38]"
+  },
+  {
+    "name": "PORT_CANVAS_BACKEND_CAIRO",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:40]"
+  },
+  {
+    "name": "PORT_EVENTLOOP_BACKEND_LIBUV",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:41]"
+  },
+  {
+    "name": "PORT_IMAGEDECODER_BACKEND_MISC",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:42]"
+  },
+  {
+    "name": "PORT_PIXEL_ORDER_BGRA",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:43]"
+  },
+  {
+    "name": "PORT_CANVAS_BACKEND_CAIRO",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:45]"
+  },
+  {
+    "name": "PORT_EVENTLOOP_BACKEND_LIBUV",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:46]"
+  },
+  {
+    "name": "PORT_IMAGEDECODER_BACKEND_MISC",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:47]"
+  },
+  {
+    "name": "PORT_PIXEL_ORDER_BGRA",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:48]"
+  },
+  {
+    "name": "PORT_CANVAS_BACKEND_CAIRO",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:50]"
+  },
+  {
+    "name": "PORT_EVENTLOOP_BACKEND_LIBUV",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:51]"
+  },
+  {
+    "name": "PORT_IMAGEDECODER_BACKEND_MISC",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:52]"
+  },
+  {
+    "name": "PORT_PIXEL_ORDER_BGRA",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:53]"
+  },
+  {
+    "name": "PORT_CANVAS_BACKEND_CAIRO",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:55]"
+  },
+  {
+    "name": "PORT_EVENTLOOP_BACKEND_LIBUV",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:56]"
+  },
+  {
+    "name": "PORT_IMAGEDECODER_BACKEND_MISC",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:57]"
+  },
+  {
+    "name": "PORT_PIXEL_ORDER_BGRA",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:58]"
+  },
+  {
+    "name": "PORT_WEBVIEW_BRIDGE_FLUTTER",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:59]"
+  },
+  {
+    "name": "PORT_BACKEND_GL_WITH_EXTERNAL_TBM",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:60]"
+  },
+  {
+    "name": "PORT_CANVAS_NEEDS_PREMULTIPLIED_ALPHA",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:64]"
+  },
+  {
+    "name": "STARFISH_WEBWORKER_NOT_HOST",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Port/backend selection flag (StarfishPlatform.h)",
+    "source": "[Source: src/StarfishPlatform.h:68]"
+  },
+  {
+    "name": "STARFISH_LOCAL_STORAGE_FILE_NAME",
+    "value": "\"localStorage.txt\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Storage file/directory name (StoragePathProvider.cpp)",
+    "source": "[Source: src/StoragePathProvider.cpp:27]"
+  },
+  {
+    "name": "STARFISH_COOKIES_FILE_NAME",
+    "value": "\"cookies.txt\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Storage file/directory name (StoragePathProvider.cpp)",
+    "source": "[Source: src/StoragePathProvider.cpp:28]"
+  },
+  {
+    "name": "STARFISH_CACHE_DIR_NAME",
+    "value": "\"cache\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Storage file/directory name (StoragePathProvider.cpp)",
+    "source": "[Source: src/StoragePathProvider.cpp:29]"
+  },
+  {
+    "name": "STARFISH_SHARED_WORKER_DIR_NAME",
+    "value": "\"shared_worker\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Storage file/directory name (StoragePathProvider.cpp)",
+    "source": "[Source: src/StoragePathProvider.cpp:30]"
+  },
+  {
+    "name": "STARFISH_SERVICE_WORKER_DIR_NAME",
+    "value": "\"service_worker\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Storage file/directory name (StoragePathProvider.cpp)",
+    "source": "[Source: src/StoragePathProvider.cpp:31]"
+  },
+  {
+    "name": "STARFISH_NATIVEGRADIENT_CACHE_SIZE",
+    "value": "1920 * 1080 * 4 * 2",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (Document.h)",
+    "source": "[Source: src/core/dom/Document.h:33]"
+  },
+  {
+    "name": "HTML_NAMESPACE",
+    "value": "\"http://www.w3.org/1999/xhtml\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (Document.h)",
+    "source": "[Source: src/core/dom/Document.h:92]"
+  },
+  {
+    "name": "SVG_NAMESPACE",
+    "value": "\"http://www.w3.org/2000/svg\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (Document.h)",
+    "source": "[Source: src/core/dom/Document.h:94]"
+  },
+  {
+    "name": "XML_NAMESPACE",
+    "value": "\"http://www.w3.org/XML/1998/namespace\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (Document.h)",
+    "source": "[Source: src/core/dom/Document.h:95]"
+  },
+  {
+    "name": "XMLNS_NAMESPACE",
+    "value": "\"http://www.w3.org/2000/xmlns/\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (Document.h)",
+    "source": "[Source: src/core/dom/Document.h:96]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (Document.h)",
+    "source": "[Source: src/core/dom/Document.h:709]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (Document.h)",
+    "source": "[Source: src/core/dom/Document.h:710]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "virtual",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (HTMLBodyElement.h)",
+    "source": "[Source: src/core/dom/HTMLBodyElement.h:40]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "override",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (HTMLBodyElement.h)",
+    "source": "[Source: src/core/dom/HTMLBodyElement.h:41]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (HTMLBodyElement.h)",
+    "source": "[Source: src/core/dom/HTMLBodyElement.h:51]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (HTMLBodyElement.h)",
+    "source": "[Source: src/core/dom/HTMLBodyElement.h:52]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (HTMLElement.h)",
+    "source": "[Source: src/core/dom/HTMLElement.h:97]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (HTMLElement.h)",
+    "source": "[Source: src/core/dom/HTMLElement.h:98]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "virtual",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (HTMLElement.h)",
+    "source": "[Source: src/core/dom/HTMLElement.h:173]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (HTMLElement.h)",
+    "source": "[Source: src/core/dom/HTMLElement.h:174]"
+  },
+  {
+    "name": "STARFISH_DEFAULT_IFRAME_WIDTH",
+    "value": "300",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (HTMLIFrameElement.h)",
+    "source": "[Source: src/core/dom/HTMLIFrameElement.h:27]"
+  },
+  {
+    "name": "STARFISH_DEFAULT_IFRAME_HEIGHT",
+    "value": "150",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (HTMLIFrameElement.h)",
+    "source": "[Source: src/core/dom/HTMLIFrameElement.h:28]"
+  },
+  {
+    "name": "STARFISH_OBJECT_ELEMENT_DEFAULT_WIDTH",
+    "value": "300",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (HTMLObjectElement.h)",
+    "source": "[Source: src/core/dom/HTMLObjectElement.h:25]"
+  },
+  {
+    "name": "STARFISH_OBJECT_ELEMENT_DEFAULT_HEIGHT",
+    "value": "150",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (HTMLObjectElement.h)",
+    "source": "[Source: src/core/dom/HTMLObjectElement.h:26]"
+  },
+  {
+    "name": "STARFISH_SCROLL_START_THRESHOLD",
+    "value": "10",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (Scrolling.cpp)",
+    "source": "[Source: src/core/dom/Scrolling.cpp:40]"
+  },
+  {
+    "name": "STARFISH_SCROLL_START_FLING_THRESHOLD",
+    "value": "100",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (Scrolling.cpp)",
+    "source": "[Source: src/core/dom/Scrolling.cpp:41]"
+  },
+  {
+    "name": "STARFISH_SCROLL_FLING_LENGTH_MULTIPLY_BASE",
+    "value": "500",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (Scrolling.cpp)",
+    "source": "[Source: src/core/dom/Scrolling.cpp:42]"
+  },
+  {
+    "name": "STARFISH_SCROLL_FLING_LENGTH_MULTIPLY_RATIO",
+    "value": "1500",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (Scrolling.cpp)",
+    "source": "[Source: src/core/dom/Scrolling.cpp:43]"
+  },
+  {
+    "name": "STARFISH_SCROLL_FLING_BASE_TIME_IN_MS",
+    "value": "1000",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (Scrolling.cpp)",
+    "source": "[Source: src/core/dom/Scrolling.cpp:44]"
+  },
+  {
+    "name": "STARFISH_SCROLL_FLING_SPEED_RATIO",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (Scrolling.cpp)",
+    "source": "[Source: src/core/dom/Scrolling.cpp:45]"
+  },
+  {
+    "name": "STARFISH_SCROLL_ACTIVE_TIME_IN_MS",
+    "value": "500",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (Scrolling.cpp)",
+    "source": "[Source: src/core/dom/Scrolling.cpp:46]"
+  },
+  {
+    "name": "STARFISH_SCROLLBAR_THICKNESS",
+    "value": "4",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (Scrolling.cpp)",
+    "source": "[Source: src/core/dom/Scrolling.cpp:579]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (ShadowRoot.h)",
+    "source": "[Source: src/core/dom/ShadowRoot.h:166]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (ShadowRoot.h)",
+    "source": "[Source: src/core/dom/ShadowRoot.h:167]"
+  },
+  {
+    "name": "TEXTTRACK_INVALID_TIMEVALUE",
+    "value": "-1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (TextTrack.h)",
+    "source": "[Source: src/core/dom/TextTrack.h:32]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (TextTrackCue.h)",
+    "source": "[Source: src/core/dom/TextTrackCue.h:103]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "DOM implementation (TextTrackCue.h)",
+    "source": "[Source: src/core/dom/TextTrackCue.h:104]"
+  },
+  {
+    "name": "CRASH",
+    "value": "STARFISH_CRASH",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Canvas element binding (CanvasRenderingContext2DMixIn.cpp)",
+    "source": "[Source: src/core/dom/canvas/CanvasRenderingContext2DMixIn.cpp:62]"
+  },
+  {
+    "name": "NEEDS_UNPREMULTIPLIED",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Canvas element binding (CanvasRenderingContext2DMixIn.cpp)",
+    "source": "[Source: src/core/dom/canvas/CanvasRenderingContext2DMixIn.cpp:67]"
+  },
+  {
+    "name": "STARFISH_CANVAS_DEFAULT_WIDTH",
+    "value": "300",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Canvas element binding (HTMLCanvasElement.h)",
+    "source": "[Source: src/core/dom/canvas/HTMLCanvasElement.h:29]"
+  },
+  {
+    "name": "STARFISH_CANVAS_DEFAULT_HEIGHT",
+    "value": "150",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Canvas element binding (HTMLCanvasElement.h)",
+    "source": "[Source: src/core/dom/canvas/HTMLCanvasElement.h:30]"
+  },
+  {
+    "name": "CRASH",
+    "value": "STARFISH_RELEASE_ASSERT_SHOULD_NOT_BE_HERE",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Canvas element binding (ImageData.cpp)",
+    "source": "[Source: src/core/dom/canvas/ImageData.cpp:31]"
+  },
+  {
+    "name": "READABLE_STREAM_BUFFER_CHUNK_SIZE",
+    "value": "65536",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Fetch stream buffering (ReadableStreamBuffer.h)",
+    "source": "[Source: src/core/fetch/stream/ReadableStreamBuffer.h:32]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "File API (FileReader.h)",
+    "source": "[Source: src/core/fileapi/FileReader.h:65]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "File API (FileReader.h)",
+    "source": "[Source: src/core/fileapi/FileReader.h:66]"
+  },
+  {
+    "name": "STARFISH_NATIVEGRADIENT_MAX_SIZE",
+    "value": "512",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Layout engine (FrameBox.cpp)",
+    "source": "[Source: src/core/layout/FrameBox.cpp:1850]"
+  },
+  {
+    "name": "FRAMEBOX_RAREDATA_TAG",
+    "value": "0x3",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Layout engine (FrameBox.h)",
+    "source": "[Source: src/core/layout/FrameBox.h:65]"
+  },
+  {
+    "name": "STARFISH_GRAPHICS_BUFFER_ADDITIONAL_FACTOR_MAX_SCALE",
+    "value": "6",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Layout engine (StackingContext.cpp)",
+    "source": "[Source: src/core/layout/StackingContext.cpp:1424]"
+  },
+  {
+    "name": "STARFISH_CANVAS_SURFACE_TILE_SIZE",
+    "value": "128",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Canvas rendering module (Canvas.cpp)",
+    "source": "[Source: src/core/modules/canvas/Canvas.cpp:79]"
+  },
+  {
+    "name": "NEEDS_UNPREMULTIPLIED",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Canvas rendering module (Canvas.cpp)",
+    "source": "[Source: src/core/modules/canvas/Canvas.cpp:847]"
+  },
+  {
+    "name": "STARFISH_CANVAS_LENGTH_MAX",
+    "value": "65535",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Canvas rendering module (Canvas.h)",
+    "source": "[Source: src/core/modules/canvas/Canvas.h:23]"
+  },
+  {
+    "name": "SPACE_SIZE_DENOMINATOR",
+    "value": "60",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Canvas rendering module (Font.h)",
+    "source": "[Source: src/core/modules/canvas/font/Font.h:187]"
+  },
+  {
+    "name": "ESCARGOT",
+    "value": "// for GCutil",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Canvas rendering module (BufferedNativeImageData.cpp)",
+    "source": "[Source: src/core/modules/canvas/image/BufferedNativeImageData.cpp:21]"
+  },
+  {
+    "name": "NEEDS_PREMULTIPLIED_ALPHA",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Canvas rendering module (ImageDecoder.cpp)",
+    "source": "[Source: src/core/modules/canvas/image/ImageDecoder.cpp:25]"
+  },
+  {
+    "name": "PNG_SKIP_SETJMP_CHECK",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Canvas rendering module (ImageDecoder.cpp)",
+    "source": "[Source: src/core/modules/canvas/image/ImageDecoder.cpp:28]"
+  },
+  {
+    "name": "STARFISH_ENABLE_WEBP",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Canvas rendering module (ImageDecoder.cpp)",
+    "source": "[Source: src/core/modules/canvas/image/ImageDecoder.cpp:52]"
+  },
+  {
+    "name": "GIF_DISPOSE_SHIFT",
+    "value": "2",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Canvas rendering module (ImageDecoder.cpp)",
+    "source": "[Source: src/core/modules/canvas/image/ImageDecoder.cpp:55]"
+  },
+  {
+    "name": "GIF_TRANSPARENT_MASK",
+    "value": "0x01",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Canvas rendering module (ImageDecoder.cpp)",
+    "source": "[Source: src/core/modules/canvas/image/ImageDecoder.cpp:56]"
+  },
+  {
+    "name": "GIF_DISPOSE_MASK",
+    "value": "0x07",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Canvas rendering module (ImageDecoder.cpp)",
+    "source": "[Source: src/core/modules/canvas/image/ImageDecoder.cpp:57]"
+  },
+  {
+    "name": "CV_STATUS_TIMEOUT_MS",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL module (BaseRunnable.cpp)",
+    "source": "[Source: src/core/modules/cast/BaseRunnable.cpp:27]"
+  },
+  {
+    "name": "CAST_APP_INFOR_BUFFER_SIZE",
+    "value": "1024",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL module (CastApplication.cpp)",
+    "source": "[Source: src/core/modules/cast/CastApplication.cpp:31]"
+  },
+  {
+    "name": "DEVICE_VENDOR_NAME",
+    "value": "VENDOR_NAME",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.cpp)",
+    "source": "[Source: src/core/modules/cast/CastConfig.cpp:27]"
+  },
+  {
+    "name": "DEVICE_MODEL_NAME",
+    "value": "STARFISH_NAME",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.cpp)",
+    "source": "[Source: src/core/modules/cast/CastConfig.cpp:28]"
+  },
+  {
+    "name": "DEVICE_PRODUCT_NAME",
+    "value": "STARFISH_NAME",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.cpp)",
+    "source": "[Source: src/core/modules/cast/CastConfig.cpp:29]"
+  },
+  {
+    "name": "DEVICE_PRODUCT_VERSION",
+    "value": "VERSION",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.cpp)",
+    "source": "[Source: src/core/modules/cast/CastConfig.cpp:30]"
+  },
+  {
+    "name": "DEVICE_TYPE",
+    "value": "\"urn:dial-multiscreen-org:service:dial:1\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.cpp)",
+    "source": "[Source: src/core/modules/cast/CastConfig.cpp:31]"
+  },
+  {
+    "name": "DEVICE_UUID",
+    "value": "\"9ad8fd1a-e0f5-44e9-8322-61dd08533c04\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.cpp)",
+    "source": "[Source: src/core/modules/cast/CastConfig.cpp:32]"
+  },
+  {
+    "name": "DEVICE_FRIENDLY_NAME",
+    "value": "\"LWE:StarFish\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.cpp)",
+    "source": "[Source: src/core/modules/cast/CastConfig.cpp:33]"
+  },
+  {
+    "name": "DEVICE_PRODUCT_NAME_AND_VERSION",
+    "value": "DEVICE_PRODUCT_NAME \"/\" DEVICE_PRODUCT_VERSION",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.cpp)",
+    "source": "[Source: src/core/modules/cast/CastConfig.cpp:34]"
+  },
+  {
+    "name": "SERVICE_ID",
+    "value": "\"upnp::id::lwe\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.cpp)",
+    "source": "[Source: src/core/modules/cast/CastConfig.cpp:36]"
+  },
+  {
+    "name": "DIAL_VERSION",
+    "value": "\"2.1\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.cpp)",
+    "source": "[Source: src/core/modules/cast/CastConfig.cpp:37]"
+  },
+  {
+    "name": "CAST_APP_SERVICE_TYPE",
+    "value": "\"urn:dial-multiscreen-org:schemas:dial\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.cpp)",
+    "source": "[Source: src/core/modules/cast/CastConfig.cpp:38]"
+  },
+  {
+    "name": "SSDP_GROUP",
+    "value": "\"239.255.255.250\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.h)",
+    "source": "[Source: src/core/modules/cast/CastConfig.h:27]"
+  },
+  {
+    "name": "SSDP_PORT",
+    "value": "1900",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.h)",
+    "source": "[Source: src/core/modules/cast/CastConfig.h:28]"
+  },
+  {
+    "name": "SSDP_ST",
+    "value": "\"urn:dial-multiscreen-org:service:dial:1\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.h)",
+    "source": "[Source: src/core/modules/cast/CastConfig.h:29]"
+  },
+  {
+    "name": "LOCATION_PORT",
+    "value": "5696",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.h)",
+    "source": "[Source: src/core/modules/cast/CastConfig.h:31]"
+  },
+  {
+    "name": "LOCATION_DESC",
+    "value": "\"/deviceDescription.xml\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.h)",
+    "source": "[Source: src/core/modules/cast/CastConfig.h:32]"
+  },
+  {
+    "name": "CAST_APP_URL",
+    "value": "\"/apps\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.h)",
+    "source": "[Source: src/core/modules/cast/CastConfig.h:33]"
+  },
+  {
+    "name": "LOG_ID",
+    "value": "\"DEBUG_CAST\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.h)",
+    "source": "[Source: src/core/modules/cast/CastConfig.h:49]"
+  },
+  {
+    "name": "COLOR_RESET",
+    "value": "\"\\033[0m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.h)",
+    "source": "[Source: src/core/modules/cast/CastConfig.h:56]"
+  },
+  {
+    "name": "COLOR_YELLOW",
+    "value": "\"\\033[0;33m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.h)",
+    "source": "[Source: src/core/modules/cast/CastConfig.h:57]"
+  },
+  {
+    "name": "COLOR_RED",
+    "value": "\"\\033[31m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.h)",
+    "source": "[Source: src/core/modules/cast/CastConfig.h:58]"
+  },
+  {
+    "name": "COLOR_GREEN",
+    "value": "\"\\033[32m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.h)",
+    "source": "[Source: src/core/modules/cast/CastConfig.h:59]"
+  },
+  {
+    "name": "COLOR_MAGENTA",
+    "value": "\"\\033[35m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.h)",
+    "source": "[Source: src/core/modules/cast/CastConfig.h:60]"
+  },
+  {
+    "name": "COLOR_CYAN",
+    "value": "\"\\033[36m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL service configuration (CastConfig.h)",
+    "source": "[Source: src/core/modules/cast/CastConfig.h:61]"
+  },
+  {
+    "name": "CAST_SERVER_THREAD_POOL_SIZE",
+    "value": "5",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL module (CastServer.cpp)",
+    "source": "[Source: src/core/modules/cast/CastServer.cpp:34]"
+  },
+  {
+    "name": "CAST_DIAL_BUFFER_SIZE",
+    "value": "256",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL module (DIALRunnable.cpp)",
+    "source": "[Source: src/core/modules/cast/DIALRunnable.cpp:31]"
+  },
+  {
+    "name": "MAX_BUFFER_SIZE",
+    "value": "5000",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL module (SSDPRunnable.cpp)",
+    "source": "[Source: src/core/modules/cast/SSDPRunnable.cpp:29]"
+  },
+  {
+    "name": "RECV_SLEEP_MS",
+    "value": "300",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Cast/DIAL module (SSDPRunnable.cpp)",
+    "source": "[Source: src/core/modules/cast/SSDPRunnable.cpp:30]"
+  },
+  {
+    "name": "IDB_LOCAL_STORAGE_DIR_PATH",
+    "value": "\"/indexedDB\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "IndexedDB module (IDBConfig.h)",
+    "source": "[Source: src/core/modules/indexeddb/IDBConfig.h:27]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "IndexedDB module (IDBOpenDBRequest.h)",
+    "source": "[Source: src/core/modules/indexeddb/IDBOpenDBRequest.h:61]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "IndexedDB module (IDBOpenDBRequest.h)",
+    "source": "[Source: src/core/modules/indexeddb/IDBOpenDBRequest.h:62]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "IndexedDB module (IDBRequest.h)",
+    "source": "[Source: src/core/modules/indexeddb/IDBRequest.h:85]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "IndexedDB module (IDBRequest.h)",
+    "source": "[Source: src/core/modules/indexeddb/IDBRequest.h:86]"
+  },
+  {
+    "name": "STARFISH_MAX_MEDIASOURCE_BUFFERSPACE",
+    "value": "8 * 1024 * 1024",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media Source buffering (MediaSource.h)",
+    "source": "[Source: src/core/modules/mediasource/MediaSource.h:26]"
+  },
+  {
+    "name": "STARFISH_MAX_MEDIASOURCE_BUFFERSPACE_1080P",
+    "value": "16 * 1024 * 1024",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media Source buffering (MediaSource.h)",
+    "source": "[Source: src/core/modules/mediasource/MediaSource.h:30]"
+  },
+  {
+    "name": "STARFISH_MAX_MEDIASOURCE_BUFFERSPACE_4K",
+    "value": "60 * 1024 * 1024",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media Source buffering (MediaSource.h)",
+    "source": "[Source: src/core/modules/mediasource/MediaSource.h:34]"
+  },
+  {
+    "name": "STARFISH_FRAME_EVICTION_BACKWARD_DUR",
+    "value": "500",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media Source buffering (SourceBuffer.cpp)",
+    "source": "[Source: src/core/modules/mediasource/SourceBuffer.cpp:44]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "WebRTC module (RTCDataChannel.h)",
+    "source": "[Source: src/core/modules/mediastream/RTCDataChannel.h:87]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "WebRTC module (RTCDataChannel.h)",
+    "source": "[Source: src/core/modules/mediastream/RTCDataChannel.h:88]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "WebRTC module (RTCDtlsTransport.h)",
+    "source": "[Source: src/core/modules/mediastream/RTCDtlsTransport.h:57]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "WebRTC module (RTCDtlsTransport.h)",
+    "source": "[Source: src/core/modules/mediastream/RTCDtlsTransport.h:58]"
+  },
+  {
+    "name": "STARFISH_WEBRTC_DEBUG",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "WebRTC module (RTCPeerConnection.h)",
+    "source": "[Source: src/core/modules/mediastream/RTCPeerConnection.h:45]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "WebRTC module (RTCPeerConnection.h)",
+    "source": "[Source: src/core/modules/mediastream/RTCPeerConnection.h:376]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "WebRTC module (RTCPeerConnection.h)",
+    "source": "[Source: src/core/modules/mediastream/RTCPeerConnection.h:377]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "WebRTC module (RTCSctpTransport.h)",
+    "source": "[Source: src/core/modules/mediastream/RTCSctpTransport.h:54]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "WebRTC module (RTCSctpTransport.h)",
+    "source": "[Source: src/core/modules/mediastream/RTCSctpTransport.h:55]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "WebSocket module (WebSocket.h)",
+    "source": "[Source: src/core/modules/networking/WebSocket.h:93]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "WebSocket module (WebSocket.h)",
+    "source": "[Source: src/core/modules/networking/WebSocket.h:94]"
+  },
+  {
+    "name": "DELTA_EPOCH_IN_MICROSECS",
+    "value": "11644473600000000Ui64",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Profiling module (Profiling.cpp)",
+    "source": "[Source: src/core/modules/profiling/Profiling.cpp:53]"
+  },
+  {
+    "name": "DELTA_EPOCH_IN_MICROSECS",
+    "value": "11644473600000000ULL",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Profiling module (Profiling.cpp)",
+    "source": "[Source: src/core/modules/profiling/Profiling.cpp:55]"
+  },
+  {
+    "name": "STARFISH_ENABLE_PROFILE_TIMER",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Profiling module (Profiling.h)",
+    "source": "[Source: src/core/modules/profiling/Profiling.h:104]"
+  },
+  {
+    "name": "MOUSE_MOVE_EVENT_THRESHOLD",
+    "value": "100",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Renderer event handling (Renderer.cpp)",
+    "source": "[Source: src/core/modules/renderer/Renderer.cpp:44]"
+  },
+  {
+    "name": "MOUSE_MOVE_DRAG_EVENT_THRESHOLD",
+    "value": "16",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Renderer event handling (Renderer.cpp)",
+    "source": "[Source: src/core/modules/renderer/Renderer.cpp:48]"
+  },
+  {
+    "name": "STARFISH_CURL_HANDLE_CACHE_CLEAR_TIMEOUT_IN_MS",
+    "value": "5000",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Resource request handling (NetworkURLResourceRequestJobDelegate.cpp)",
+    "source": "[Source: src/core/modules/resource_request/NetworkURLResourceRequestJobDelegate.cpp:54]"
+  },
+  {
+    "name": "SERVICE_WORKER_THREAD_POOL_SIZE",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Service Worker module (ServiceWorkerProcessManager.cpp)",
+    "source": "[Source: src/core/modules/serviceworker/client/ServiceWorkerProcessManager.cpp:77]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Shared Worker module (SharedWorkerGlobalScope.h)",
+    "source": "[Source: src/core/modules/sharedworker/host/SharedWorkerGlobalScope.h:67]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Shared Worker module (SharedWorkerGlobalScope.h)",
+    "source": "[Source: src/core/modules/sharedworker/host/SharedWorkerGlobalScope.h:68]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Speech synthesis module (SpeechSynthesis.h)",
+    "source": "[Source: src/core/modules/tts/SpeechSynthesis.h:187]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Speech synthesis module (SpeechSynthesis.h)",
+    "source": "[Source: src/core/modules/tts/SpeechSynthesis.h:188]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Web Audio module (AudioScheduledSourceNode.h)",
+    "source": "[Source: src/core/modules/webaudio/AudioScheduledSourceNode.h:40]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Web Audio module (AudioScheduledSourceNode.h)",
+    "source": "[Source: src/core/modules/webaudio/AudioScheduledSourceNode.h:41]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Web Audio module (BaseAudioContext.h)",
+    "source": "[Source: src/core/modules/webaudio/BaseAudioContext.h:129]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Web Audio module (BaseAudioContext.h)",
+    "source": "[Source: src/core/modules/webaudio/BaseAudioContext.h:130]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Web Worker module (AbstractWorker.h)",
+    "source": "[Source: src/core/modules/worker/AbstractWorker.h:43]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Web Worker module (AbstractWorker.h)",
+    "source": "[Source: src/core/modules/worker/AbstractWorker.h:44]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Web Worker module (DedicatedWorkerGlobalScope.h)",
+    "source": "[Source: src/core/modules/worker/DedicatedWorkerGlobalScope.h:64]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Web Worker module (DedicatedWorkerGlobalScope.h)",
+    "source": "[Source: src/core/modules/worker/DedicatedWorkerGlobalScope.h:65]"
+  },
+  {
+    "name": "IO_EVENT_POLLING_TIMEOUT_MS",
+    "value": "300",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Web Worker module (PerProcess.cpp)",
+    "source": "[Source: src/core/modules/worker/PerProcess.cpp:40]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Web Worker module (Worker.h)",
+    "source": "[Source: src/core/modules/worker/Worker.h:58]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Web Worker module (Worker.h)",
+    "source": "[Source: src/core/modules/worker/Worker.h:59]"
+  },
+  {
+    "name": "WORKER_IPC_PROCESS_NAME",
+    "value": "\"ipc\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Web Worker module (WorkerConfig.h)",
+    "source": "[Source: src/core/modules/worker/WorkerConfig.h:27]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Web Worker module (WorkerGlobalScope.h)",
+    "source": "[Source: src/core/modules/worker/WorkerGlobalScope.h:152]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Web Worker module (WorkerGlobalScope.h)",
+    "source": "[Source: src/core/modules/worker/WorkerGlobalScope.h:153]"
+  },
+  {
+    "name": "RECV_TIMEOUT",
+    "value": "1000",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Worker IPC socket networking (Connection.cpp)",
+    "source": "[Source: src/core/modules/worker/util/network/Connection.cpp:39]"
+  },
+  {
+    "name": "COLOR_SEND",
+    "value": "\"\\033[0;36m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Worker IPC socket networking (Connection.cpp)",
+    "source": "[Source: src/core/modules/worker/util/network/Connection.cpp:40]"
+  },
+  {
+    "name": "COLOR_RECV",
+    "value": "\"\\033[0;32m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Worker IPC socket networking (Connection.cpp)",
+    "source": "[Source: src/core/modules/worker/util/network/Connection.cpp:41]"
+  },
+  {
+    "name": "COLOR_RESET",
+    "value": "\"\\033[0m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Worker IPC socket networking (Connection.cpp)",
+    "source": "[Source: src/core/modules/worker/util/network/Connection.cpp:42]"
+  },
+  {
+    "name": "MAX_LISTEN_SOCKET",
+    "value": "50",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Worker IPC socket networking (IORunnable.cpp)",
+    "source": "[Source: src/core/modules/worker/util/network/IORunnable.cpp:35]"
+  },
+  {
+    "name": "SCK_WAIT",
+    "value": "0",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Worker IPC socket networking (SocketNN.h)",
+    "source": "[Source: src/core/modules/worker/util/network/SocketNN.h:27]"
+  },
+  {
+    "name": "SCK_DONTWAIT",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Worker IPC socket networking (SocketNN.h)",
+    "source": "[Source: src/core/modules/worker/util/network/SocketNN.h:28]"
+  },
+  {
+    "name": "SOCKETNN_INVALID_END_POINT",
+    "value": "-1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Worker IPC socket networking (SocketNN.h)",
+    "source": "[Source: src/core/modules/worker/util/network/SocketNN.h:29]"
+  },
+  {
+    "name": "STARFISH_TOUCH_SLOP_PX",
+    "value": "20.0",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Page/WebView core (BrowsingContext.cpp)",
+    "source": "[Source: src/core/page/BrowsingContext.cpp:88]"
+  },
+  {
+    "name": "STARFISH_THREAD_POOL_SIZE",
+    "value": "6",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Page/WebView core (WebBase.cpp)",
+    "source": "[Source: src/core/page/WebBase.cpp:62]"
+  },
+  {
+    "name": "ANNOTATE_SETUP",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Page/WebView core (WebView.cpp)",
+    "source": "[Source: src/core/page/WebView.cpp:95]"
+  },
+  {
+    "name": "ANNOTATE_BLUE",
+    "value": "0xff00001b",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Page/WebView core (WebView.cpp)",
+    "source": "[Source: src/core/page/WebView.cpp:98]"
+  },
+  {
+    "name": "STARFISH_FILLING_GRAPHICS_BUFFER_TIME_LIMIT",
+    "value": "100",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Page/WebView core (WebView.cpp)",
+    "source": "[Source: src/core/page/WebView.cpp:236]"
+  },
+  {
+    "name": "STARFISH_FILLING_GRAPHICS_BUFFER_TIME_LIMIT",
+    "value": "10",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Page/WebView core (WebView.cpp)",
+    "source": "[Source: src/core/page/WebView.cpp:238]"
+  },
+  {
+    "name": "STARFISH_IMAGE_DECODE_THREAD_THREAD_POOL_SIZE",
+    "value": "4",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Page/WebView core (WebView.cpp)",
+    "source": "[Source: src/core/page/WebView.cpp:377]"
+  },
+  {
+    "name": "VIRTUAL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Page/WebView core (Window.h)",
+    "source": "[Source: src/core/page/Window.h:315]"
+  },
+  {
+    "name": "OVERRIDE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Page/WebView core (Window.h)",
+    "source": "[Source: src/core/page/Window.h:316]"
+  },
+  {
+    "name": "CSSTOKENSTRING_BUILTIN_BUFFER_SIZE",
+    "value": "24",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "CSS style engine (CSSParser.h)",
+    "source": "[Source: src/core/style/CSSParser.h:1256]"
+  },
+  {
+    "name": "CSSTOKEN_POOL_INITIAL_SIZE",
+    "value": "24",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "CSS style engine (CSSParser.h)",
+    "source": "[Source: src/core/style/CSSParser.h:1708]"
+  },
+  {
+    "name": "MUL",
+    "value": "true",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "CSS style engine (CalcData.cpp)",
+    "source": "[Source: src/core/style/CalcData.cpp:102]"
+  },
+  {
+    "name": "DIV",
+    "value": "false",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "CSS style engine (CalcData.cpp)",
+    "source": "[Source: src/core/style/CalcData.cpp:103]"
+  },
+  {
+    "name": "ENABLE_PARALLEL_BLUR",
+    "value": "0",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "CSS style engine (FilterFunctions.cpp)",
+    "source": "[Source: src/core/style/FilterFunctions.cpp:29]"
+  },
+  {
+    "name": "CACHEABLE_GRADIENT_ITEM_EXTENT",
+    "value": "(25.0f * 25.0f)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "CSS style engine (GradientData.h)",
+    "source": "[Source: src/core/style/GradientData.h:27]"
+  },
+  {
+    "name": "CACHEABLE_GRADIENT_ITEM_EXTENT",
+    "value": "(256.0f * 256.0f)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "CSS style engine (GradientData.h)",
+    "source": "[Source: src/core/style/GradientData.h:31]"
+  },
+  {
+    "name": "MAX_TYPE_NAME",
+    "value": "30",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Core utility (Archivable.h)",
+    "source": "[Source: src/core/util/Archivable.h:48]"
+  },
+  {
+    "name": "DOCUMENT",
+    "value": "reinterpret_cast<rapidjson::Document*>(mDocument)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Core utility (Archiver.cpp)",
+    "source": "[Source: src/core/util/Archiver.cpp:75]"
+  },
+  {
+    "name": "STACK",
+    "value": "(reinterpret_cast<JsonReaderStack*>(mStack))",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Core utility (Archiver.cpp)",
+    "source": "[Source: src/core/util/Archiver.cpp:76]"
+  },
+  {
+    "name": "TOP",
+    "value": "(STACK->top())",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Core utility (Archiver.cpp)",
+    "source": "[Source: src/core/util/Archiver.cpp:77]"
+  },
+  {
+    "name": "CURRENT",
+    "value": "(*TOP.value)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Core utility (Archiver.cpp)",
+    "source": "[Source: src/core/util/Archiver.cpp:78]"
+  },
+  {
+    "name": "WRITER",
+    "value": "reinterpret_cast<rapidjson::PrettyWriter<rapidjson::StringBuffer>*>(mWriter)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Core utility (Archiver.cpp)",
+    "source": "[Source: src/core/util/Archiver.cpp:358]"
+  },
+  {
+    "name": "STREAM",
+    "value": "reinterpret_cast<rapidjson::StringBuffer*>(mStream)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Core utility (Archiver.cpp)",
+    "source": "[Source: src/core/util/Archiver.cpp:360]"
+  },
+  {
+    "name": "NUM_SUPPORTED_CRYPTO_ALGORITHM_TYPE",
+    "value": "3",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Core utility (Cryptographic.h)",
+    "source": "[Source: src/core/util/Cryptographic.h:32]"
+  },
+  {
+    "name": "ID_INITIAL_VALUE",
+    "value": "0",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Core utility (Id.h)",
+    "source": "[Source: src/core/util/Id.h:29]"
+  },
+  {
+    "name": "CALLED_CONSTRUCTOR_WITHOUT_NEW",
+    "value": "\"Constructor '%s' requires 'new'\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Script binding error message template (Messages.h)",
+    "source": "[Source: src/core/util/Messages.h:25]"
+  },
+  {
+    "name": "FAILED_TO_CONSTRUCT",
+    "value": "\"Failed to construct '%s': %s\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Script binding error message template (Messages.h)",
+    "source": "[Source: src/core/util/Messages.h:26]"
+  },
+  {
+    "name": "FAILED_TO_EXECUTE",
+    "value": "\"Failed to execute '%s' on '%s': %s\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Script binding error message template (Messages.h)",
+    "source": "[Source: src/core/util/Messages.h:27]"
+  },
+  {
+    "name": "FAILED_TO_SET_PROPERTY",
+    "value": "\"Failed to set the '%s' property on '%s': %s\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Script binding error message template (Messages.h)",
+    "source": "[Source: src/core/util/Messages.h:28]"
+  },
+  {
+    "name": "ILLEGAL_INVOKE",
+    "value": "\"Illegal invocation\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Script binding error message template (Messages.h)",
+    "source": "[Source: src/core/util/Messages.h:29]"
+  },
+  {
+    "name": "ARGS_NOT_ENOUGH",
+    "value": "\"needs %s parameter, but only %s present.\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Script binding error message template (Messages.h)",
+    "source": "[Source: src/core/util/Messages.h:32]"
+  },
+  {
+    "name": "ARG_TYPE_IS_NONFINITE",
+    "value": "\"The provided double value is non-finite\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Script binding error message template (Messages.h)",
+    "source": "[Source: src/core/util/Messages.h:33]"
+  },
+  {
+    "name": "ARG_TYPE_MISMATCH",
+    "value": "\"parameter %s ('%s') is not a(n) %s.\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Script binding error message template (Messages.h)",
+    "source": "[Source: src/core/util/Messages.h:34]"
+  },
+  {
+    "name": "ARG_TYPE_MISMATCH_2",
+    "value": "\"parameter %s ('%s') must be either a '%s' or '%s' element.\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Script binding error message template (Messages.h)",
+    "source": "[Source: src/core/util/Messages.h:35]"
+  },
+  {
+    "name": "ARG_TYPE_MISMATCH_WITH_INDEXABLE_TYPE",
+    "value": "\"The parameter %s ('%s') is neither an array, nor does it have indexed \" \"properties.\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Script binding error message template (Messages.h)",
+    "source": "[Source: src/core/util/Messages.h:37]"
+  },
+  {
+    "name": "ARG_TYPE_MISMATCH_WITH_ENUM",
+    "value": "\"The provided value is not a valid enum value of type %s.\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Script binding error message template (Messages.h)",
+    "source": "[Source: src/core/util/Messages.h:40]"
+  },
+  {
+    "name": "SIGNATURE_NOT_FOUND",
+    "value": "\"No function was found that matched the signature provided.\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Script binding error message template (Messages.h)",
+    "source": "[Source: src/core/util/Messages.h:42]"
+  },
+  {
+    "name": "QUERY_SELECTOR_IS_EMPTY",
+    "value": "\"The provided selector is empty.\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Script binding error message template (Messages.h)",
+    "source": "[Source: src/core/util/Messages.h:44]"
+  },
+  {
+    "name": "INVALID_SIZE",
+    "value": "\"The value provided %s, which is an invalid size.\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Script binding error message template (Messages.h)",
+    "source": "[Source: src/core/util/Messages.h:45]"
+  },
+  {
+    "name": "INVALID_TARGET_ORIGIN",
+    "value": "\"Invalid target origin '%s' in a call to '%s'\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Script binding error message template (Messages.h)",
+    "source": "[Source: src/core/util/Messages.h:46]"
+  },
+  {
+    "name": "INVALID_DATA_CLONE",
+    "value": "\"'%s' could not be cloned.\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Script binding error message template (Messages.h)",
+    "source": "[Source: src/core/util/Messages.h:47]"
+  },
+  {
+    "name": "ORIGINS_ARE_NOT_MATCHED",
+    "value": "\"The target origin provided('%s') does not match the recipient window's \" \"origin('%s')\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Script binding error message template (Messages.h)",
+    "source": "[Source: src/core/util/Messages.h:48]"
+  },
+  {
+    "name": "NOT_POSITIVE",
+    "value": "\"The value provided (%s) is not positive or 0.\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Script binding error message template (Messages.h)",
+    "source": "[Source: src/core/util/Messages.h:51]"
+  },
+  {
+    "name": "EXCEED_MIN_BOUNDARY",
+    "value": "\"The value provided (%s) is less than the minimum boundary (%s).\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Script binding error message template (Messages.h)",
+    "source": "[Source: src/core/util/Messages.h:52]"
+  },
+  {
+    "name": "EXCEED_MAX_BOUNDARY",
+    "value": "\"The value provided (%s) is greater than the maximum boundary (%s).\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Script binding error message template (Messages.h)",
+    "source": "[Source: src/core/util/Messages.h:54]"
+  },
+  {
+    "name": "CHECK_REF_COUNTED_LIFECYCLE",
+    "value": "0",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Core utility (RefCounted.h)",
+    "source": "[Source: src/core/util/RefCounted.h:31]"
+  },
+  {
+    "name": "CHECK_REF_COUNTED_LIFECYCLE",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Core utility (RefCounted.h)",
+    "source": "[Source: src/core/util/RefCounted.h:33]"
+  },
+  {
+    "name": "STRING_BUILDER_INLINE_STORAGE_MAX",
+    "value": "64",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Core utility (String.h)",
+    "source": "[Source: src/core/util/String.h:1604]"
+  },
+  {
+    "name": "TYPE_LENGTH_LIMIT",
+    "value": "5",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:33]"
+  },
+  {
+    "name": "TRACE_ID_LENGTH_LIMIT",
+    "value": "10",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:34]"
+  },
+  {
+    "name": "CLR_RESET",
+    "value": "\"\\033[0m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:35]"
+  },
+  {
+    "name": "CLR_DIM",
+    "value": "\"\\033[0;2m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:36]"
+  },
+  {
+    "name": "CLR_RED",
+    "value": "\"\\033[0;31m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:39]"
+  },
+  {
+    "name": "CLR_GREEN",
+    "value": "\"\\033[0;32m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:40]"
+  },
+  {
+    "name": "CLR_GREY",
+    "value": "\"\\033[0;37m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:41]"
+  },
+  {
+    "name": "CLR_BLACK",
+    "value": "\"\\033[0;30m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:42]"
+  },
+  {
+    "name": "CLR_YELLOW",
+    "value": "\"\\033[0;33m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:43]"
+  },
+  {
+    "name": "CLR_BLUE",
+    "value": "\"\\033[0;34m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:44]"
+  },
+  {
+    "name": "CLR_MAGENTA",
+    "value": "\"\\033[0;35m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:45]"
+  },
+  {
+    "name": "CLR_CYAN",
+    "value": "\"\\033[0;36m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:46]"
+  },
+  {
+    "name": "CLR_DARKGREY",
+    "value": "\"\\033[01;30m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:47]"
+  },
+  {
+    "name": "CLR_BRED",
+    "value": "\"\\033[01;31m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:48]"
+  },
+  {
+    "name": "CLR_BYELLOW",
+    "value": "\"\\033[01;33m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:49]"
+  },
+  {
+    "name": "CLR_BBLUE",
+    "value": "\"\\033[01;34m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:50]"
+  },
+  {
+    "name": "CLR_BMAGENTA",
+    "value": "\"\\033[01;35m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:51]"
+  },
+  {
+    "name": "CLR_BCYAN",
+    "value": "\"\\033[01;36m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:52]"
+  },
+  {
+    "name": "CLR_BGREEN",
+    "value": "\"\\033[01;32m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:53]"
+  },
+  {
+    "name": "CLR_WHITE",
+    "value": "\"\\033[01;37m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:54]"
+  },
+  {
+    "name": "CLR_REDBG",
+    "value": "\"\\033[0;41m\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.cpp)",
+    "source": "[Source: src/core/util/debug/Trace.cpp:55]"
+  },
+  {
+    "name": "ENABLE_TRACE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Debug trace output (Trace.h)",
+    "source": "[Source: src/core/util/debug/Trace.h:33]"
+  },
+  {
+    "name": "CAIRO_FORMAT",
+    "value": "CAIRO_FORMAT_ARGB32",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Compositor/canvas platform layer (CanvasCairo.cpp)",
+    "source": "[Source: src/platform/canvas/CanvasCairo.cpp:68]"
+  },
+  {
+    "name": "CAIRO_FORMAT",
+    "value": "CAIRO_FORMAT_ARGB32",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Compositor/canvas platform layer (CompositorCairo.cpp)",
+    "source": "[Source: src/platform/canvas/CompositorCairo.cpp:38]"
+  },
+  {
+    "name": "EVAS_GL_IMAGE_PRESERVED",
+    "value": "0x30D2",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Compositor/canvas platform layer (CompositorGL.cpp)",
+    "source": "[Source: src/platform/canvas/CompositorGL.cpp:161]"
+  },
+  {
+    "name": "EVAS_GL_NATIVE_SURFACE_TIZEN",
+    "value": "0x32A1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Compositor/canvas platform layer (CompositorGL.cpp)",
+    "source": "[Source: src/platform/canvas/CompositorGL.cpp:162]"
+  },
+  {
+    "name": "EGL_TRUE",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Compositor/canvas platform layer (CompositorGL.cpp)",
+    "source": "[Source: src/platform/canvas/CompositorGL.cpp:166]"
+  },
+  {
+    "name": "EGL_NONE",
+    "value": "0x3038",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Compositor/canvas platform layer (CompositorGL.cpp)",
+    "source": "[Source: src/platform/canvas/CompositorGL.cpp:167]"
+  },
+  {
+    "name": "EGL_IMAGE_PRESERVED_KHR",
+    "value": "0x30D2",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Compositor/canvas platform layer (CompositorGL.cpp)",
+    "source": "[Source: src/platform/canvas/CompositorGL.cpp:168]"
+  },
+  {
+    "name": "EGL_NATIVE_SURFACE_TIZEN",
+    "value": "0x32A1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Compositor/canvas platform layer (CompositorGL.cpp)",
+    "source": "[Source: src/platform/canvas/CompositorGL.cpp:169]"
+  },
+  {
+    "name": "EGL_DMA_BUF_PLANE3_FD_EXT",
+    "value": "0x3440",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Compositor/canvas platform layer (CompositorGL.cpp)",
+    "source": "[Source: src/platform/canvas/CompositorGL.cpp:180]"
+  },
+  {
+    "name": "EGL_DMA_BUF_PLANE3_OFFSET_EXT",
+    "value": "0x3441",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Compositor/canvas platform layer (CompositorGL.cpp)",
+    "source": "[Source: src/platform/canvas/CompositorGL.cpp:183]"
+  },
+  {
+    "name": "EGL_DMA_BUF_PLANE3_PITCH_EXT",
+    "value": "0x3442",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Compositor/canvas platform layer (CompositorGL.cpp)",
+    "source": "[Source: src/platform/canvas/CompositorGL.cpp:186]"
+  },
+  {
+    "name": "EGL_ATTRIBUTE_MAX",
+    "value": "50",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Compositor/canvas platform layer (CompositorGL.cpp)",
+    "source": "[Source: src/platform/canvas/CompositorGL.cpp:188]"
+  },
+  {
+    "name": "EGL_NATIVE_SURFACE_TIZEN",
+    "value": "0x32A1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Compositor/canvas platform layer (CompositorGL.cpp)",
+    "source": "[Source: src/platform/canvas/CompositorGL.cpp:190]"
+  },
+  {
+    "name": "MIN_MAX_TEXTURE_SIZE",
+    "value": "2048",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Compositor/canvas platform layer (CompositorGL.cpp)",
+    "source": "[Source: src/platform/canvas/CompositorGL.cpp:295]"
+  },
+  {
+    "name": "RRCLIP_EGL_SAMPLER_PREAMBLE",
+    "value": "\"#extension GL_OES_EGL_image_external : require\\n\" \"uniform samplerExternalOES uTexture;\\n\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Compositor/canvas platform layer (CompositorGL.cpp)",
+    "source": "[Source: src/platform/canvas/CompositorGL.cpp:2053]"
+  },
+  {
+    "name": "GAUSSIAN_KERNEL_HALF_WIDTH",
+    "value": "11",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Compositor/canvas platform layer (CompositorGL.cpp)",
+    "source": "[Source: src/platform/canvas/CompositorGL.cpp:2250]"
+  },
+  {
+    "name": "GAUSSIAN_KERNEL_STEP",
+    "value": "0.2",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Compositor/canvas platform layer (CompositorGL.cpp)",
+    "source": "[Source: src/platform/canvas/CompositorGL.cpp:2251]"
+  },
+  {
+    "name": "GL_DEBUG_OUTPUT",
+    "value": "0x92E0",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Compositor/canvas platform layer (CompositorGL.cpp)",
+    "source": "[Source: src/platform/canvas/CompositorGL.cpp:2662]"
+  },
+  {
+    "name": "GL_DEBUG_OUTPUT_SYNCHRONOUS",
+    "value": "0x8242",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Compositor/canvas platform layer (CompositorGL.cpp)",
+    "source": "[Source: src/platform/canvas/CompositorGL.cpp:2665]"
+  },
+  {
+    "name": "UBLOCK_SUPPLEMENTAL_SYMBOLS_AND_PICTOGRAPHS",
+    "value": "298",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Font rendering (FontImplCairo.cpp)",
+    "source": "[Source: src/platform/canvas/font/FontImplCairo.cpp:608]"
+  },
+  {
+    "name": "STARFISH_FONT_CAIRO_MIN_ENABLE_KERNING_SIZE",
+    "value": "48",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Font rendering (FontImplCairo.h)",
+    "source": "[Source: src/platform/canvas/font/FontImplCairo.h:42]"
+  },
+  {
+    "name": "CHECK_ERROR",
+    "value": "if (error) { STARFISH_RELEASE_ASSERT_SHOULD_NOT_BE_HERE(); }",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Font rendering (FontImplCairo.h)",
+    "source": "[Source: src/platform/canvas/font/FontImplCairo.h:47]"
+  },
+  {
+    "name": "HB_UNUSED",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Font rendering (HarfBuzzICU.cpp)",
+    "source": "[Source: src/platform/canvas/font/hb-icu/HarfBuzzICU.cpp:53]"
+  },
+  {
+    "name": "HB_ICU_H",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Font rendering (HarfBuzzICU.h)",
+    "source": "[Source: src/platform/canvas/font/hb-icu/HarfBuzzICU.h:30]"
+  },
+  {
+    "name": "GL_NONE",
+    "value": "0",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (GLTypes.h)",
+    "source": "[Source: src/platform/canvas/gl/GLTypes.h:55]"
+  },
+  {
+    "name": "EGL_NO_CONTEXT",
+    "value": "((EGLContext)0)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (GenericGL.cpp)",
+    "source": "[Source: src/platform/canvas/gl/GenericGL.cpp:30]"
+  },
+  {
+    "name": "GLAPIENTRY",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (GenericGL.cpp)",
+    "source": "[Source: src/platform/canvas/gl/GenericGL.cpp:48]"
+  },
+  {
+    "name": "GL_GLEXT_PROTOTYPES",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:27]"
+  },
+  {
+    "name": "EGL_EGLEXT_PROTOTYPES",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:42]"
+  },
+  {
+    "name": "GL_GLEXT_PROTOTYPES",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:43]"
+  },
+  {
+    "name": "GL_TEXTURE_EXTERNAL_OES",
+    "value": "0x8D65",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:57]"
+  },
+  {
+    "name": "GL_BGRA_EXT",
+    "value": "0x80E1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:61]"
+  },
+  {
+    "name": "GL_MAJOR_VERSION",
+    "value": "0x821B",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:65]"
+  },
+  {
+    "name": "GL_MINOR_VERSION",
+    "value": "0x821C",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:69]"
+  },
+  {
+    "name": "GL_UNPACK_ROW_LENGTH",
+    "value": "0x0CF2",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:73]"
+  },
+  {
+    "name": "GL_UNPACK_SKIP_ROWS",
+    "value": "0x0CF3",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:77]"
+  },
+  {
+    "name": "GL_UNPACK_SKIP_PIXELS",
+    "value": "0x0CF4",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:81]"
+  },
+  {
+    "name": "GL_DEPTH_STENCIL",
+    "value": "0x84F9",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:85]"
+  },
+  {
+    "name": "GL_UNSIGNED_INT_24_8",
+    "value": "0x84FA",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:89]"
+  },
+  {
+    "name": "GL_TEXTURE_SWIZZLE_R",
+    "value": "0x8E42",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:93]"
+  },
+  {
+    "name": "GL_TEXTURE_SWIZZLE_G",
+    "value": "0x8E43",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:96]"
+  },
+  {
+    "name": "GL_TEXTURE_SWIZZLE_B",
+    "value": "0x8E44",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:99]"
+  },
+  {
+    "name": "GL_TEXTURE_SWIZZLE_A",
+    "value": "0x8E45",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:102]"
+  },
+  {
+    "name": "TEXTURE_SWIZZLE_RGBA",
+    "value": "0x8E46",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:105]"
+  },
+  {
+    "name": "GL_RED",
+    "value": "0x1903",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:109]"
+  },
+  {
+    "name": "GL_GREEN",
+    "value": "0x1904",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:112]"
+  },
+  {
+    "name": "GL_BLUE",
+    "value": "0x1905",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:115]"
+  },
+  {
+    "name": "GL_ALPHA",
+    "value": "0x1906",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:118]"
+  },
+  {
+    "name": "GL_R8",
+    "value": "0x8229",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "GL/EGL constant (IncludeGL.h)",
+    "source": "[Source: src/platform/canvas/gl/IncludeGL.h:121]"
+  },
+  {
+    "name": "STARFISH_RESOURCE_CACHE_SIZE",
+    "value": "1024 * 1024 * 4",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Resource loader (ResourceLoader.cpp)",
+    "source": "[Source: src/platform/loader/ResourceLoader.cpp:45]"
+  },
+  {
+    "name": "MAX_PORT_DIGITS",
+    "value": "5",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Resource loader (ResourceURL.cpp)",
+    "source": "[Source: src/platform/loader/ResourceURL.cpp:25]"
+  },
+  {
+    "name": "MAX_PORT_NUMBER",
+    "value": "65535",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Resource loader (ResourceURL.cpp)",
+    "source": "[Source: src/platform/loader/ResourceURL.cpp:26]"
+  },
+  {
+    "name": "MINUMUM_ANIMATOR_WAIT_TIME",
+    "value": "3000 // us",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Timer/message loop (TimerLibUV.cpp)",
+    "source": "[Source: src/platform/message_loop/TimerLibUV.cpp:137]"
+  },
+  {
+    "name": "STARFISH_VIDEO_WIDTH_WHEN_VIDEO_NOT_EXISTS",
+    "value": "300",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayer.h)",
+    "source": "[Source: src/platform/multimedia/MediaPlayer.h:24]"
+  },
+  {
+    "name": "STARFISH_VIDEO_HEIGHT_WHEN_VIDEO_NOT_EXISTS",
+    "value": "150",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayer.h)",
+    "source": "[Source: src/platform/multimedia/MediaPlayer.h:25]"
+  },
+  {
+    "name": "STARFISH_ESPP_SUBMIT_BYTES_RATE",
+    "value": "0.3",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerESPlusPlayer.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerESPlusPlayer.cpp:57]"
+  },
+  {
+    "name": "STARFISH_ESPP_MAX_AV_DIFF_IN_MS",
+    "value": "1500",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerESPlusPlayer.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerESPlusPlayer.cpp:60]"
+  },
+  {
+    "name": "STARFISH_ESPP_FEED_WAIT_US",
+    "value": "(1000 * 25)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerESPlusPlayer.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerESPlusPlayer.cpp:62]"
+  },
+  {
+    "name": "STARFISH_ESPP_TOTAL_BUFFER_SIZE",
+    "value": "(64 * 1024 * 1024)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerESPlusPlayer.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerESPlusPlayer.cpp:65]"
+  },
+  {
+    "name": "STARFISH_ESPP_AUDIO_BUFFER_SIZE",
+    "value": "(768 * 1024)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerESPlusPlayer.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerESPlusPlayer.cpp:66]"
+  },
+  {
+    "name": "STARFISH_ESPP_MIN_BYTE_THRESHOLD",
+    "value": "10",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerESPlusPlayer.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerESPlusPlayer.cpp:77]"
+  },
+  {
+    "name": "STARFISH_ESPP_SEEK_IDR_MAX_LOOKBACK_MS",
+    "value": "20000",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerESPlusPlayer.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerESPlusPlayer.cpp:85]"
+  },
+  {
+    "name": "STARFISH_ESPP_SEEK_IDR_MAX_LOOKAHEAD_MS",
+    "value": "20000",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerESPlusPlayer.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerESPlusPlayer.cpp:97]"
+  },
+  {
+    "name": "STARFISH_ESPP_MAX_SKIP_AHEAD_MS",
+    "value": "30000",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerESPlusPlayer.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerESPlusPlayer.cpp:105]"
+  },
+  {
+    "name": "STARFISH_ESPP_SUBMIT_RETRY_BACKOFF_PREROLL_MS",
+    "value": "50",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerESPlusPlayer.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerESPlusPlayer.cpp:112]"
+  },
+  {
+    "name": "STARFISH_ESPP_SUBMIT_RETRY_BACKOFF_STEADY_MS",
+    "value": "500",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerESPlusPlayer.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerESPlusPlayer.cpp:113]"
+  },
+  {
+    "name": "STARFISH_ESPP_DEFAULT_FRAMERATE_NUM",
+    "value": "2997",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerESPlusPlayer.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerESPlusPlayer.cpp:116]"
+  },
+  {
+    "name": "STARFISH_ESPP_DEFAULT_FRAMERATE_DEN",
+    "value": "100",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerESPlusPlayer.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerESPlusPlayer.cpp:117]"
+  },
+  {
+    "name": "STARFISH_ESPP_SEEK_WATCHDOG_MS",
+    "value": "12000",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerESPlusPlayer.h)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerESPlusPlayer.h:51]"
+  },
+  {
+    "name": "STARFISH_VIDEO_MAX_WIDTH",
+    "value": "1920",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerLinux.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerLinux.cpp:134]"
+  },
+  {
+    "name": "STARFISH_VIDEO_MAX_HEIGHT",
+    "value": "1080",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerLinux.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerLinux.cpp:135]"
+  },
+  {
+    "name": "STARFISH_VIDEO_DEFAULT_FRAMERATE_NUM",
+    "value": "2997",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerLinux.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerLinux.cpp:136]"
+  },
+  {
+    "name": "STARFISH_VIDEO_DEFAULT_FRAMERATE_DEN",
+    "value": "100",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerLinux.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerLinux.cpp:137]"
+  },
+  {
+    "name": "STARFISH_MSE_SUBMIT_BYTES_RATE",
+    "value": "0.3",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerLinux.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerLinux.cpp:138]"
+  },
+  {
+    "name": "STARFISH_MSE_MIN_MARGIN_IN_MS",
+    "value": "3000",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerLinux.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerLinux.cpp:139]"
+  },
+  {
+    "name": "SEEK_LAND_TOLERANCE_MS",
+    "value": "5000",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerLinux.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerLinux.cpp:144]"
+  },
+  {
+    "name": "STARFISH_DECODE_LOOKAHEAD_MS_DEFAULT",
+    "value": "400",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerLinux.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerLinux.cpp:152]"
+  },
+  {
+    "name": "STARFISH_RUN_MSE_THREAD_WAIT_TIME",
+    "value": "1000 * 25 // 25ms",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerLinux.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerLinux.cpp:1799]"
+  },
+  {
+    "name": "MAX_WAITING_SECONDS_FOR_SEEK_OPERATION",
+    "value": "30000",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerLinux.h)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerLinux.h:26]"
+  },
+  {
+    "name": "STARFISH_RUN_MSE_THREAD",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerLinux.h)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerLinux.h:29]"
+  },
+  {
+    "name": "STARFISH_VIDEO_MAX_WIDTH",
+    "value": "1920",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerTV.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerTV.cpp:45]"
+  },
+  {
+    "name": "STARFISH_VIDEO_MAX_HEIGHT",
+    "value": "1080",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerTV.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerTV.cpp:46]"
+  },
+  {
+    "name": "STARFISH_VIDEO_DEFAULT_FRAMERATE_NUM",
+    "value": "2997",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerTV.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerTV.cpp:47]"
+  },
+  {
+    "name": "STARFISH_VIDEO_DEFAULT_FRAMERATE_DEN",
+    "value": "100",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerTV.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerTV.cpp:48]"
+  },
+  {
+    "name": "STARFISH_MSE_SUBMIT_BYTES_RATE",
+    "value": "0.3",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerTV.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerTV.cpp:49]"
+  },
+  {
+    "name": "STARFISH_VIDEO_MAX_WIDTH",
+    "value": "1920",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerTizen.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerTizen.cpp:50]"
+  },
+  {
+    "name": "STARFISH_VIDEO_MAX_HEIGHT",
+    "value": "1080",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerTizen.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerTizen.cpp:51]"
+  },
+  {
+    "name": "STARFISH_VIDEO_DEFAULT_FRAMERATE_NUM",
+    "value": "2997",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerTizen.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerTizen.cpp:52]"
+  },
+  {
+    "name": "STARFISH_VIDEO_DEFAULT_FRAMERATE_DEN",
+    "value": "100",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerTizen.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerTizen.cpp:53]"
+  },
+  {
+    "name": "STARFISH_MSE_SUBMIT_BYTES_RATE",
+    "value": "0.3",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerTizen.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerTizen.cpp:54]"
+  },
+  {
+    "name": "STARFISH_MSE_MIN_MARGIN_IN_MS",
+    "value": "3000",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerTizen.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerTizen.cpp:55]"
+  },
+  {
+    "name": "STARFISH_RUN_MSE_THREAD_WAIT_TIME",
+    "value": "1000 * 25 // 25ms",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerTizen.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerTizen.cpp:1228]"
+  },
+  {
+    "name": "EFL_BETA_API_SUPPORT",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerTizen.h)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerTizen.h:36]"
+  },
+  {
+    "name": "MAX_WAITING_SECONDS_FOR_SEEK_OPERATION",
+    "value": "30000",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerTizen.h)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerTizen.h:48]"
+  },
+  {
+    "name": "STARFISH_RUN_MSE_THREAD",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerTizen.h)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerTizen.h:51]"
+  },
+  {
+    "name": "STARFISH_VIDEO_MAX_WIDTH",
+    "value": "1920",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerTizenBase.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerTizenBase.cpp:47]"
+  },
+  {
+    "name": "STARFISH_VIDEO_MAX_HEIGHT",
+    "value": "1080",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerTizenBase.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerTizenBase.cpp:48]"
+  },
+  {
+    "name": "STARFISH_VIDEO_DEFAULT_FRAMERATE_NUM",
+    "value": "2997",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerTizenBase.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerTizenBase.cpp:49]"
+  },
+  {
+    "name": "STARFISH_VIDEO_DEFAULT_FRAMERATE_DEN",
+    "value": "100",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerTizenBase.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerTizenBase.cpp:50]"
+  },
+  {
+    "name": "STARFISH_MSE_SUBMIT_BYTES_RATE",
+    "value": "0.3",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MediaPlayerTizenBase.cpp)",
+    "source": "[Source: src/platform/multimedia/MediaPlayerTizenBase.cpp:51]"
+  },
+  {
+    "name": "STARFISH_FRAME_EVICTION_BACKWARD_DUR",
+    "value": "500",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Media player tuning (MockMediaPlayer.cpp)",
+    "source": "[Source: src/platform/multimedia/MockMediaPlayer.cpp:43]"
+  },
+  {
+    "name": "CURLHANDLE_CACHE_PRUNE_MINIMUM_SIZE",
+    "value": "12",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Network/HTTP layer (NetworkSharedResourceManager.cpp)",
+    "source": "[Source: src/platform/network/curl/NetworkSharedResourceManager.cpp:42]"
+  },
+  {
+    "name": "CURLHANDLE_CACHE_PRUNE_MINIMUM_INTERVAL_S",
+    "value": "0.5",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Network/HTTP layer (NetworkSharedResourceManager.cpp)",
+    "source": "[Source: src/platform/network/curl/NetworkSharedResourceManager.cpp:43]"
+  },
+  {
+    "name": "CURLHANDLE_CACHE_IDLE_TIME_LIMIT_S",
+    "value": "60",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Network/HTTP layer (NetworkSharedResourceManager.cpp)",
+    "source": "[Source: src/platform/network/curl/NetworkSharedResourceManager.cpp:50]"
+  },
+  {
+    "name": "CURLPIPE_MULTIPLEX",
+    "value": "0",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Network/HTTP layer (NetworkSharedResourceManager.cpp)",
+    "source": "[Source: src/platform/network/curl/NetworkSharedResourceManager.cpp:795]"
+  },
+  {
+    "name": "INDEX_FILE_NAME",
+    "value": "\"/index.txt\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Network/HTTP layer (HTTPCache.cpp)",
+    "source": "[Source: src/platform/network/http/HTTPCache.cpp:43]"
+  },
+  {
+    "name": "DEFAULT_HTTP_CACHE_SIZE",
+    "value": "1024 * 1024 * 50",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Network/HTTP layer (HTTPCache.cpp)",
+    "source": "[Source: src/platform/network/http/HTTPCache.cpp:44]"
+  },
+  {
+    "name": "MAX_ENTRY_FILE_SIZE",
+    "value": "(DEFAULT_HTTP_CACHE_SIZE * 0.04)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Network/HTTP layer (HTTPCache.cpp)",
+    "source": "[Source: src/platform/network/http/HTTPCache.cpp:45]"
+  },
+  {
+    "name": "NUM_OF_COL",
+    "value": "18",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Network/HTTP layer (HTTPCache.cpp)",
+    "source": "[Source: src/platform/network/http/HTTPCache.cpp:46]"
+  },
+  {
+    "name": "CURLPIPE_MULTIPLEX",
+    "value": "0",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Network/HTTP layer (HTTPTransaction.cpp)",
+    "source": "[Source: src/platform/network/http/HTTPTransaction.cpp:161]"
+  },
+  {
+    "name": "TTS_MODE_INTERRUPT",
+    "value": "3",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "TTS platform layer (TTSTV.cpp)",
+    "source": "[Source: src/platform/tts/TTSTV.cpp:43]"
+  },
+  {
+    "name": "TTS_REMOVED_INSTANCE_SIZE",
+    "value": "5",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "TTS platform layer (TTSTV.cpp)",
+    "source": "[Source: src/platform/tts/TTSTV.cpp:44]"
+  },
+  {
+    "name": "VCONFKEY_SETAPPL_ACCESSIBILITY_TTS",
+    "value": "\"db/setting/accessibility/tts\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "TTS platform layer (TTSTizen.cpp)",
+    "source": "[Source: src/platform/tts/TTSTizen.cpp:63]"
+  },
+  {
+    "name": "VCONFKEY_SETAPPL_ACCESSIBILITY_TTS_TEMPORARY",
+    "value": "\"db/setting/accessibility/tts/temporary\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "TTS platform layer (TTSTizen.cpp)",
+    "source": "[Source: src/platform/tts/TTSTizen.cpp:68]"
+  },
+  {
+    "name": "TTS_REMOVED_INSTANCE_SIZE",
+    "value": "5",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "TTS platform layer (TTSTizen.cpp)",
+    "source": "[Source: src/platform/tts/TTSTizen.cpp:71]"
+  },
+  {
+    "name": "STARFISH_ENABLE_PROFILE_TIMER",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (LWEWebViewEcoreWl2.cpp)",
+    "source": "[Source: src/public/bridge/ecore_wl2/LWEWebViewEcoreWl2.cpp:22]"
+  },
+  {
+    "name": "STARFISH_ENABLE_PROFILE_TIMER",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (LWEWebViewEcoreX.cpp)",
+    "source": "[Source: src/public/bridge/ecore_x/LWEWebViewEcoreX.cpp:22]"
+  },
+  {
+    "name": "VCONFKEY_SETAPPL_ACCESSIBILITY_TTS",
+    "value": "\"db/setting/accessibility/tts\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (A11yAtspiBridge.cpp)",
+    "source": "[Source: src/public/bridge/efl/A11yAtspiBridge.cpp:54]"
+  },
+  {
+    "name": "VCONFKEY_SETAPPL_ACCESSIBILITY_TTS_TEMPORARY",
+    "value": "\"db/setting/accessibility/tts/temporary\"",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (A11yAtspiBridge.cpp)",
+    "source": "[Source: src/public/bridge/efl/A11yAtspiBridge.cpp:59]"
+  },
+  {
+    "name": "STARFISH_ATK_PLUG_TYPE",
+    "value": "(starfish_atk_plug_get_type())",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (A11yAtspiBridge.cpp)",
+    "source": "[Source: src/public/bridge/efl/A11yAtspiBridge.cpp:188]"
+  },
+  {
+    "name": "STARFISH_ATK_NODE_TYPE",
+    "value": "(starfish_atk_node_get_type())",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (A11yAtspiBridge.cpp)",
+    "source": "[Source: src/public/bridge/efl/A11yAtspiBridge.cpp:407]"
+  },
+  {
+    "name": "STARFISH_ENABLE_PROFILE_TIMER",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (LWEWebViewEFL.cpp)",
+    "source": "[Source: src/public/bridge/efl/LWEWebViewEFL.cpp:32]"
+  },
+  {
+    "name": "EVAS_GL_NO_GL_H_CHECK",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (LWEWebViewEFL.cpp)",
+    "source": "[Source: src/public/bridge/efl/LWEWebViewEFL.cpp:53]"
+  },
+  {
+    "name": "EGL_NATIVE_SURFACE_TIZEN",
+    "value": "0x32A1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (LWEWebViewEFL.cpp)",
+    "source": "[Source: src/public/bridge/efl/LWEWebViewEFL.cpp:64]"
+  },
+  {
+    "name": "EGL_IMAGE_PRESERVED_KHR",
+    "value": "0x30D2",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (LWEWebViewEFL.cpp)",
+    "source": "[Source: src/public/bridge/efl/LWEWebViewEFL.cpp:67]"
+  },
+  {
+    "name": "EFL_BETA_API_SUPPORT",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (LWEWebViewEFL.cpp)",
+    "source": "[Source: src/public/bridge/efl/LWEWebViewEFL.cpp:75]"
+  },
+  {
+    "name": "ANNOTATE_SETUP",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (LWEWebViewEFL.cpp)",
+    "source": "[Source: src/public/bridge/efl/LWEWebViewEFL.cpp:103]"
+  },
+  {
+    "name": "ANNOTATE_GREEN",
+    "value": "0x00ff001b",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (LWEWebViewEFL.cpp)",
+    "source": "[Source: src/public/bridge/efl/LWEWebViewEFL.cpp:106]"
+  },
+  {
+    "name": "EVAS_GL_OPTIONS_DIRECT_MEMORY_OPTIMIZE",
+    "value": "(1 << 12)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (LWEWebViewEFL.cpp)",
+    "source": "[Source: src/public/bridge/efl/LWEWebViewEFL.cpp:981]"
+  },
+  {
+    "name": "EVAS_GL_OPTIONS_DIRECT_OVERRIDE",
+    "value": "(1 << 13)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (LWEWebViewEFL.cpp)",
+    "source": "[Source: src/public/bridge/efl/LWEWebViewEFL.cpp:982]"
+  },
+  {
+    "name": "STARFISH_ENABLE_PROFILE_TIMER",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (LWEWebViewFlutter.cpp)",
+    "source": "[Source: src/public/bridge/flutter/LWEWebViewFlutter.cpp:40]"
+  },
+  {
+    "name": "EFL_BETA_API_SUPPORT",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (LWEWebViewFlutter.cpp)",
+    "source": "[Source: src/public/bridge/flutter/LWEWebViewFlutter.cpp:42]"
+  },
+  {
+    "name": "ANNOTATE_SETUP",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (LWEWebViewFlutter.cpp)",
+    "source": "[Source: src/public/bridge/flutter/LWEWebViewFlutter.cpp:56]"
+  },
+  {
+    "name": "ANNOTATE_GREEN",
+    "value": "0x00ff001b",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (LWEWebViewFlutter.cpp)",
+    "source": "[Source: src/public/bridge/flutter/LWEWebViewFlutter.cpp:59]"
+  },
+  {
+    "name": "STARFISH_ENABLE_PROFILE_TIMER",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (LWEWebViewTcoreWl.cpp)",
+    "source": "[Source: src/public/bridge/tcore_wl/LWEWebViewTcoreWl.cpp:22]"
+  },
+  {
+    "name": "STARFISH_ENABLE_PROFILE_TIMER",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (LWEWebViewX11.cpp)",
+    "source": "[Source: src/public/bridge/x11/LWEWebViewX11.cpp:22]"
+  },
+  {
+    "name": "GC_CPP_H",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Platform bridge (LWEWebViewX11.cpp)",
+    "source": "[Source: src/public/bridge/x11/LWEWebViewX11.cpp:25]"
+  },
+  {
+    "name": "EXPORT_UNMANAGED_API",
+    "value": "__declspec(dllexport)",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Public delegate contract (LWEDelegateConfig.h)",
+    "source": "[Source: src/public/contract/LWEDelegateConfig.h:24]"
+  },
+  {
+    "name": "EXPORT_UNMANAGED_API",
+    "value": "__attribute__((visibility(\"default\")))",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Public delegate contract (LWEDelegateConfig.h)",
+    "source": "[Source: src/public/contract/LWEDelegateConfig.h:26]"
+  },
+  {
+    "name": "LWE_DEFAULT_FONT_SIZE",
+    "value": "16",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Public delegate implementation (LWEWebContainerDelegate.cpp)",
+    "source": "[Source: src/public/delegate/LWEWebContainerDelegate.cpp:59]"
+  },
+  {
+    "name": "LWE_MIN_FONT_SIZE",
+    "value": "1",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Public delegate implementation (LWEWebContainerDelegate.cpp)",
+    "source": "[Source: src/public/delegate/LWEWebContainerDelegate.cpp:60]"
+  },
+  {
+    "name": "LWE_MAX_FONT_SIZE",
+    "value": "72",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Public delegate implementation (LWEWebContainerDelegate.cpp)",
+    "source": "[Source: src/public/delegate/LWEWebContainerDelegate.cpp:61]"
+  },
+  {
+    "name": "LWE_DEFAULT_FONT_SIZE",
+    "value": "16",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Public delegate implementation (SettingsDelegate.cpp)",
+    "source": "[Source: src/public/delegate/SettingsDelegate.cpp:29]"
+  },
+  {
+    "name": "THREAD_MINIMUM_STACK_SIZE",
+    "value": "4 * 1024 * 1024 // we need at least 4MB for stack",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Public delegate implementation (ThreadedCallHelper.cpp)",
+    "source": "[Source: src/public/delegate/ThreadedCallHelper.cpp:27]"
+  },
+  {
+    "name": "SHELL_ENABLE_ELEMENTARY_GL",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Shell configuration (ShellConfig.h)",
+    "source": "[Source: src/shell/ShellConfig.h:25]"
+  },
+  {
+    "name": "SHELL_X86_64",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Shell configuration (ShellConfig.h)",
+    "source": "[Source: src/shell/ShellConfig.h:30]"
+  },
+  {
+    "name": "SHELL_ENABLE_BACKTRACE",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Shell configuration (ShellConfig.h)",
+    "source": "[Source: src/shell/ShellConfig.h:35]"
+  },
+  {
+    "name": "SHELL_ENABLE_TEST",
+    "value": "N/A",
+    "type": "cpp_define",
+    "language": "cpp",
+    "usage_context": "Shell configuration (ShellConfig.h)",
+    "source": "[Source: src/shell/ShellConfig.h:39]"
+  }
+]

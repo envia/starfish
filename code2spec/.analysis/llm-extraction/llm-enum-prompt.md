@@ -1,0 +1,603 @@
+
+You are an expert code analyzer. Extract ENUM definitions from the Semantic Markdown below.
+
+## Input Format
+The input is pre-filtered Semantic Markdown — only enum-relevant nodes are included.
+Languages are auto-detected from file extensions and shown in the header.
+Each line format: `[language] EnumName | VALUE1, VALUE2, ... | file:line`
+
+## Output Format
+Return a JSON array where each enum entry has:
+{
+    "name": "EnumName",
+    "values": ["VALUE1", "VALUE2"],
+    "type": "<language>_enum",
+    "language": "java|kotlin|cpp|typescript|python|swift|csharp|go|rust|other",
+    "source": "[Source: file/path.ext:line_number]"
+}
+
+The `type` field uses the language prefix (e.g., "kotlin_enum", "java_intdef", "cpp_enum").
+The `language` field identifies the programming language.
+
+## CRITICAL: Qualified ENUM Names
+Every ENUM name MUST use the format `EnclosingClass.EnumName` or `FileName.EnumName`:
+- If enum is nested inside a class/struct, qualify with parent: `PeerInfo.Type`, `AdbPairingClient.State`
+- If enum is top-level but language uses file-scoped naming, qualify with file stem: `ShizukuSettings.LaunchMethod`
+- If enum is inside a namespace/module, qualify with namespace: `Network.ConnectionState`
+- NEVER return a bare generic name like `Type`, `State`, `Mode`, `Kind`, `Status` — always qualify it with its parent class or file name
+
+## Non-Standard ENUM Patterns to Detect (ALL languages)
+In addition to standard enum declarations, extract these patterns:
+1. **Annotation-style enums** (Java/Android @IntDef, @StringDef): Groups of integer/string constants annotated with @IntDef/@StringDef — extract as ENUM with type "java_intdef"
+2. **Sealed class/interface hierarchies** (Kotlin, Scala, Swift): `sealed class` with object/enum subclasses — extract as ENUM with type "kotlin_sealed_class" / "swift_sealed_enum"
+3. **Companion object constant groups** (Kotlin): `companion object` where ALL members are `const val` of same type — extract as ENUM with type "kotlin_companion_enum"
+4. **Static final constant groups** (Java/C#): `interface` or `class` where ALL fields are `static final` constants forming a logical group — extract as ENUM with type "java_constant_enum" / "csharp_constant_enum"
+5. **C/C++ #define groups**: Consecutive `#define` macros with same prefix forming a logical enumeration — extract as ENUM with type "cpp_define_enum"
+6. **Python module-level constant groups**: Module-level UPPER_CASE = integer groups forming a logical enumeration — extract as ENUM with type "python_constant_enum"
+7. **Go iota constant groups**: `const` blocks using `iota` — extract as ENUM with type "go_iota_enum"
+8. **Rust enum-like patterns**: `struct` with a `kind`/`type` field + constant implementations — extract as ENUM with type "rust_adt_enum"
+
+## Instructions
+1. Read the Languages header to identify which languages are present
+2. For EACH language found, extract all enum-like patterns from the markdown lines
+3. Use the correct language prefix in `type`
+4. Include the `language` field in every entry
+5. Return ONLY the JSON array, no additional text
+6. Every entry MUST include source citation: [Source: file:line]
+7. ALWAYS qualify enum names with their enclosing class or file name
+
+## Semantic Markdown to Analyze
+# Languages: c (930), cpp (809), java (11), javascript (22), python (43)
+
+## Enum Definitions
+- [c] class | ? | /home/hwang/work/D/starfish_/compat/tizen_5.0/inc/LWEWebView.h:50
+- [c] class | ? | /home/hwang/work/D/starfish_/compat/tizen_5.0/inc/LWEWebView.h:184
+- [javascript] generateFlagTag | ? | /home/hwang/work/D/starfish_/docs/webpages/webapi/webapi_main.js:53
+- [c] class | ? | /home/hwang/work/D/starfish_/inc/LWEWebView.h:58
+- [c] class | ? | /home/hwang/work/D/starfish_/inc/LWEWebView.h:194
+- [c] class | ? | /home/hwang/work/D/starfish_/inc/LWEWorker.h:44
+- [c] KeyValue | UnidentifiedKey=auto, AltLeftKey=auto, AltRightKey=auto, ControlLeftKey=auto, ControlRightKey=auto, CapsLockKey=auto, FnKey=auto, FnLockKey=auto, HyperKey=auto, MetaKey=auto, NumLockKey=auto, ScrollLockKey=auto, ShiftLeftKey=auto, ShiftRightKey=auto, SuperKey=auto, SymbolKey=auto, SymbolLockKey=auto, EnterKey=auto, TabKey=auto, ArrowDownKey=auto | /home/hwang/work/D/starfish_/inc/PlatformIntegrationData.h:7
+- [c] MouseButtonValue | NoButton=0, LeftButton=0, MiddleButton=1, RightButton=2 | /home/hwang/work/D/starfish_/inc/PlatformIntegrationData.h:239
+- [c] MouseButtonsValue | NoButtonDown=0, LeftButtonDown=1, RightButtonDown=auto, MiddleButtonDown=auto | /home/hwang/work/D/starfish_/inc/PlatformIntegrationData.h:246
+- [c] TTSMode | Default=0, Forced=1 | /home/hwang/work/D/starfish_/inc/PlatformIntegrationData.h:253
+- [c] class | ? | /home/hwang/work/D/starfish_/inc/PlatformIntegrationData.h:258
+- [c] class | ? | /home/hwang/work/D/starfish_/inc/PlatformIntegrationData.h:260
+- [c] class | ? | /home/hwang/work/D/starfish_/src/Starfish.h:43
+- [c] ENSURE_ENUM_UNSIGNED | ? | /home/hwang/work/D/starfish_/src/StarfishBase.h:184
+- [c] ENSURE_ENUM_UNSIGNED | ? | /home/hwang/work/D/starfish_/src/StarfishBase.h:186
+- [c] NullOptionType | NullOption=auto | /home/hwang/work/D/starfish_/src/StarfishBase.h:591
+- [c] class | ? | /home/hwang/work/D/starfish_/src/browser/history/HistoryManager.h:33
+- [c] HistoryManagerOwner | OwnerIsWebView=auto, OwnerIsHTMLIFrame=auto | /home/hwang/work/D/starfish_/src/browser/history/HistoryManager.h:119
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/animation/AnimatedValue.h:36
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/animation/AnimationApplier.h:27
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/animation/AnimationExecutor.h:32
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/animation/AnimationExecutor.h:33
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/animation/AnimationExecutor.h:34
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/animation/AnimationExecutor.h:172
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/animation/AnimationExecutor.h:178
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/animation/AnimationTask.h:36
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/animation/CubicBezier.h:27
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/animation/SVGAnimationApplier.h:27
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/animation/Steps.h:30
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/animation/TimingFunction.h:30
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/animation/TimingOptions.h:29
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/animation/TimingOptions.h:30
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/cdp/CDPConnection.h:34
+- [cpp] PropEnumData | ? | /home/hwang/work/D/starfish_/src/core/cdp/domains/RuntimeDomain.cpp:723
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/csp/ContentSecurityPolicy.h:27
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/csp/ContentSecurityPolicy.h:29
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/csp/ContentSecurityPolicy.h:36
+- [cpp] FlagSetter | ? | /home/hwang/work/D/starfish_/src/core/dom/CustomElementRegistry.cpp:197
+- [cpp] FlagSetter | ? | /home/hwang/work/D/starfish_/src/core/dom/CustomElementRegistry.cpp:199
+- [cpp] ~FlagSetter | ? | /home/hwang/work/D/starfish_/src/core/dom/CustomElementRegistry.cpp:211
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/CustomElementRegistry.h:101
+- [c] Code | DOM_EXCEPTION=0, INDEX_SIZE_ERR=1, HIERARCHY_REQUEST_ERR=3, WRONG_DOCUMENT_ERR=4, INVALID_CHARACTER_ERR=5, NO_MODIFICATION_ALLOWED_ERR=7, NOT_FOUND_ERR=8, NOT_SUPPORTED_ERR=9, INUSE_ATTRIBUTE_ERR=10, INVALID_STATE_ERR=11, SYNTAX_ERR=12, INVALID_MODIFICATION_ERR=13, NAMESPACE_ERR=14, INVALID_ACCESS_ERR=15, TYPE_MISMATCH_ERR=17, SECURITY_ERR=18, NETWORK_ERR=19, ABORT_ERR=20, URL_MISMATCH_ERR=21, QUOTA_EXCEEDED_ERR=22 | /home/hwang/work/D/starfish_/src/core/dom/DOMException.h:29
+- [cpp] defaultNamedEnumerator | ? | /home/hwang/work/D/starfish_/src/core/dom/DOMStringMap.cpp:152
+- [c] defaultNamedEnumerator | ? | /home/hwang/work/D/starfish_/src/core/dom/DOMStringMap.h:41
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/Document.h:75
+- [c] VisibilityState | ? | /home/hwang/work/D/starfish_/src/core/dom/Document.h:78
+- [c] DocumentReadyState | ? | /home/hwang/work/D/starfish_/src/core/dom/Document.h:85
+- [c] CompatibilityMode | ? | /home/hwang/work/D/starfish_/src/core/dom/Document.h:122
+- [cpp] ErrorArgumentSequence | ERROR_ARG_MESSAGE=auto, ERROR_ARG_SRC=auto, ERROR_ARG_LINENO=auto, ERROR_ARG_COLNO=auto, ERROR_ARG_ERROR=auto, ERROR_ARG_SIZE=auto | /home/hwang/work/D/starfish_/src/core/dom/EventTarget.cpp:53
+- [cpp] DefaultArgumentSequence | DEFAULT_ARG_EVENT=auto, DEFAULT_ARG_SIZE=auto | /home/hwang/work/D/starfish_/src/core/dom/EventTarget.cpp:62
+- [c] GlobalPointingEventKind | GlobalPointingEventKindDown=auto, GlobalPointingEventKindUp=auto, GlobalPointingEventKindMove=auto | /home/hwang/work/D/starfish_/src/core/dom/EventTarget.h:239
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/HTMLAreaElement.h:31
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/HTMLFormElement.h:33
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/HTMLFormElement.h:34
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/HTMLIFrameElement.h:34
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/HTMLImageElement.h:32
+- [c] NetworkState | NETWORK_EMPTY=auto, NETWORK_IDLE=auto, NETWORK_LOADING=auto, NETWORK_NO_SOURCE=auto | /home/hwang/work/D/starfish_/src/core/dom/HTMLMediaElement.h:241
+- [c] ReadyState | HAVE_NOTHING=auto, HAVE_METADATA=auto, HAVE_CURRENT_DATA=auto, HAVE_FUTURE_DATA=auto, HAVE_ENOUGH_DATA=auto | /home/hwang/work/D/starfish_/src/core/dom/HTMLMediaElement.h:248
+- [c] PreloadState | PRELOAD_NONE=auto, PRELOAD_METADATA=auto, PRELOAD_AUTOMATIC=auto | /home/hwang/work/D/starfish_/src/core/dom/HTMLMediaElement.h:256
+- [cpp] checkPlatformFlags | ? | /home/hwang/work/D/starfish_/src/core/dom/HTMLMetaElement.cpp:97
+- [c] checkPlatformFlags | ? | /home/hwang/work/D/starfish_/src/core/dom/HTMLMetaElement.h:49
+- [c] ValueModeFlag | ? | /home/hwang/work/D/starfish_/src/core/dom/HTMLOutputElement.h:32
+- [c] Rules | UnsetRules=auto, NoneRules=auto, GroupsRules=auto, RowsRules=auto, ColsRules=auto, AllRules=auto | /home/hwang/work/D/starfish_/src/core/dom/HTMLTableElement.h:32
+- [c] CellBorders | NoBorders=auto, InsetBorders=auto, SolidBordersRowsOnly=auto, SolidBordersColsOnly=auto, SolidBorders=auto | /home/hwang/work/D/starfish_/src/core/dom/HTMLTableElement.h:41
+- [c] EditStatus | None=auto, PreeditStart=auto, PreeditEnd=auto, Commit=auto | /home/hwang/work/D/starfish_/src/core/dom/HTMLTextEditable.h:27
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/ImageBitmapOptions.h:25
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/ImageBitmapOptions.h:27
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/ImageBitmapOptions.h:28
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/ImageBitmapOptions.h:29
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/ImageBitmapOptions.h:30
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/MutationObservationScope.h:29
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/MutationObserver.h:30
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/Node.h:52
+- [c] NodeType | ELEMENT_NODE=1, ATTRIBUTE_NODE=2, TEXT_NODE=3, CDATA_SECTION_NODE=4, ENTITY_REFERENCE_NODE=5, ENTITY_NODE=6, PROCESSING_INSTRUCTION_NODE=7, COMMENT_NODE=8, DOCUMENT_NODE=9, DOCUMENT_TYPE_NODE=10, DOCUMENT_FRAGMENT_NODE=11, NOTATION_NODE=12 | /home/hwang/work/D/starfish_/src/core/dom/Node.h:181
+- [c] DocumentPosition | DOCUMENT_POSITION_DISCONNECTED=0x01, DOCUMENT_POSITION_PRECEDING=0x02, DOCUMENT_POSITION_FOLLOWING=0x04, DOCUMENT_POSITION_CONTAINS=0x08, DOCUMENT_POSITION_CONTAINED_BY=0x10, DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC=0x20 | /home/hwang/work/D/starfish_/src/core/dom/Node.h:196
+- [c] NodeState | NodeStateNormal=0, NodeStateActive=auto, NodeStateFocused=auto, NodeStateHovered=auto, NodeStateTarget=auto, NodeStateLink=auto | /home/hwang/work/D/starfish_/src/core/dom/Node.h:451
+- [c] ProcessingType | Extract=auto, Clone=auto, Delete=auto | /home/hwang/work/D/starfish_/src/core/dom/Range.h:129
+- [cpp] ClassElementListBehavior | AllElements=auto, OnlyRoots=auto | /home/hwang/work/D/starfish_/src/core/dom/SelectorQuery.cpp:43
+- [c] MatchTraverseRootState | DoesNotMatchTraverseRoots=auto, MatchesTraverseRoots=auto | /home/hwang/work/D/starfish_/src/core/dom/SelectorQuery.h:32
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/ShadowRootInit.h:25
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/ShadowRootInit.h:26
+- [c] Mode | InvalidMode=auto, Off=auto, Hidden=auto, Showing=auto | /home/hwang/work/D/starfish_/src/core/dom/TextTrack.h:36
+- [c] Kind | InvalidKind=auto, Subtitles=auto, Captions=auto, Descriptions=auto, Chapters=auto, Metadata=auto | /home/hwang/work/D/starfish_/src/core/dom/TextTrack.h:43
+- [cpp] AutoResetActiveFlag | ? | /home/hwang/work/D/starfish_/src/core/dom/TreeWalker.cpp:314
+- [cpp] AutoResetActiveFlag | ? | /home/hwang/work/D/starfish_/src/core/dom/TreeWalker.cpp:316
+- [cpp] ~AutoResetActiveFlag | ? | /home/hwang/work/D/starfish_/src/core/dom/TreeWalker.cpp:322
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/canvas/CanvasDirection.h:24
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/canvas/CanvasFillRule.h:24
+- [c] originCleanFlag | ? | /home/hwang/work/D/starfish_/src/core/dom/canvas/CanvasPattern.h:47
+- [c] setOriginCleanFlag | ? | /home/hwang/work/D/starfish_/src/core/dom/canvas/CanvasPattern.h:52
+- [c] originCleanFlag | ? | /home/hwang/work/D/starfish_/src/core/dom/canvas/CanvasRenderingContext.h:42
+- [c] setOriginCleanFlag | ? | /home/hwang/work/D/starfish_/src/core/dom/canvas/CanvasRenderingContext.h:47
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/canvas/CanvasRenderingContext2DMixIn.h:46
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/canvas/CanvasRenderingContext2DMixIn.h:47
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/canvas/CanvasRenderingContext2DMixIn.h:48
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/canvas/CanvasRenderingContext2DMixIn.h:49
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/canvas/CanvasTextAlign.h:24
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/canvas/CanvasTextBaseline.h:24
+- [c] CanvasContextMode | CanvasContextModeNone=auto, CanvasContextModePlaceHolder=auto, CanvasContextMode2D=auto, CanvasContextModeBitmapRenderer=auto, CanvasContextModeWebGL=auto, CanvasContextModeWebGL2=auto | /home/hwang/work/D/starfish_/src/core/dom/canvas/HTMLCanvasElement.h:43
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/canvas/ImageSmoothingQuality.h:24
+- [cpp] GLenum | ? | /home/hwang/work/D/starfish_/src/core/dom/canvas/webgl/WebGL2RenderingContext.cpp:41
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/canvas/webgl/WebGLContextAttributes.h:33
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/canvas/webgl/gl/SurfaceCreationScope.h:31
+- [c] Operation | Insert=auto, InsertText=auto, InsertAlreadyParsedChild=auto, Reparent=auto, TakeAllChildren=auto | /home/hwang/work/D/starfish_/src/core/dom/parser/HTMLConstructionSite.h:56
+- [c] WhitespaceMode | WhitespaceUnknown=auto, NotAllWhitespace=auto, AllWhitespace=auto | /home/hwang/work/D/starfish_/src/core/dom/parser/HTMLConstructionSite.h:90
+- [cpp] EntityState | Initial=auto, Number=auto, MaybeHexLowerCaseX=auto, MaybeHexUpperCaseX=auto, Hex=auto, Decimal=auto, Named=auto | /home/hwang/work/D/starfish_/src/core/dom/parser/HTMLEntityParser.cpp:197
+- [c] CompareResult | Before=auto, Prefix=auto, After=auto | /home/hwang/work/D/starfish_/src/core/dom/parser/HTMLEntitySearch.h:74
+- [c] MarkerEntryType | MarkerEntry=auto | /home/hwang/work/D/starfish_/src/core/dom/parser/HTMLFormattingElementList.h:69
+- [c] Sign | Positive=auto, Negative=auto | /home/hwang/work/D/starfish_/src/core/dom/parser/HTMLParserIdioms.h:61
+- [c] CharacterWidth | Likely8Bit=auto, Force8Bit=auto, Force16Bit=auto | /home/hwang/work/D/starfish_/src/core/dom/parser/HTMLParserIdioms.h:351
+- [c] Type | Uninitialized=auto, DOCTYPE=auto, StartTag=auto, EndTag=auto, Comment=auto, Character=auto, EndOfFile=auto | /home/hwang/work/D/starfish_/src/core/dom/parser/HTMLToken.h:77
+- [c] State | DataState=auto, CharacterReferenceInDataState=auto, RCDATAState=auto, CharacterReferenceInRCDATAState=auto, RAWTEXTState=auto, ScriptDataState=auto, PLAINTEXTState=auto, TagOpenState=auto, EndTagOpenState=auto, TagNameState=auto, RCDATALessThanSignState=auto, RCDATAEndTagOpenState=auto, RCDATAEndTagNameState=auto, RAWTEXTLessThanSignState=auto, RAWTEXTEndTagOpenState=auto, RAWTEXTEndTagNameState=auto, ScriptDataLessThanSignState=auto, ScriptDataEndTagOpenState=auto, ScriptDataEndTagNameState=auto, ScriptDataEscapeStartState=auto | /home/hwang/work/D/starfish_/src/core/dom/parser/HTMLTokenizer.h:60
+- [c] InsertionMode | InitialMode=auto, BeforeHTMLMode=auto, BeforeHeadMode=auto, InHeadMode=auto, InHeadNoscriptMode=auto, AfterHeadMode=auto, TemplateContentsMode=auto, InBodyMode=auto, TextMode=auto, InTableMode=auto, InTableTextMode=auto, InCaptionMode=auto, InColumnGroupMode=auto, InTableBodyMode=auto, InRowMode=auto, InCellMode=auto, InSelectMode=auto, InSelectInTableMode=auto, AfterBodyMode=auto, InFramesetMode=auto | /home/hwang/work/D/starfish_/src/core/dom/parser/HTMLTreeBuilder.h:164
+- [cpp] Mode | ModeAttr=auto, ModeValueWaitFirstQuotationMark=auto, ModeValueWaitValue=auto | /home/hwang/work/D/starfish_/src/core/dom/parser/PreloadScanner.cpp:72
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGAnimateTransformElement.h:27
+- [cpp] /home/hwang/work/D/starfish_/src/core/dom/svg/SVGAnimatedEnumeration.cpp | ? | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGAnimatedEnumeration.cpp:1
+- [cpp] SVGAnimatedEnumeration | ? | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGAnimatedEnumeration.cpp:35
+- [c] /home/hwang/work/D/starfish_/src/core/dom/svg/SVGAnimatedEnumeration.h | ? | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGAnimatedEnumeration.h:1
+- [c] __StarfishSVGAnimatedEnumeration__ | ? | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGAnimatedEnumeration.h:21
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGAnimationElement.h:28
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGAnimationElement.h:33
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGAnimationElement.h:42
+- [c] ComponentTransferType | SVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN=auto, SVG_FECOMPONENTTRANSFER_TYPE_IDENTITY=auto, SVG_FECOMPONENTTRANSFER_TYPE_TABLE=auto, SVG_FECOMPONENTTRANSFER_TYPE_DISCRETE=auto, SVG_FECOMPONENTTRANSFER_TYPE_LINEAR=auto, SVG_FECOMPONENTTRANSFER_TYPE_GAMMA=auto | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGComponentTransferFunctionElement.h:29
+- [c] TurbulenceType | SVG_TURBULENCE_TYPE_UNKNOWN=0, SVG_TURBULENCE_TYPE_FRACTALNOISE=auto, SVG_TURBULENCE_TYPE_TURBULENCE=auto | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGFETurbulenceElement.h:42
+- [c] StitchType | SVG_STITCHTYPE_UNKNOWN=0, SVG_STITCHTYPE_STITCH=auto, SVG_STITCHTYPE_NOSTITCH=auto | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGFETurbulenceElement.h:52
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGImageElement.h:29
+- [c] UnitType | SVG_LENGTHTYPE_UNKNOWN=0, SVG_LENGTHTYPE_NUMBER=auto, SVG_LENGTHTYPE_PERCENTAGE=auto, SVG_LENGTHTYPE_EMS=auto, SVG_LENGTHTYPE_EXS=auto, SVG_LENGTHTYPE_PX=auto, SVG_LENGTHTYPE_CM=auto, SVG_LENGTHTYPE_MM=auto, SVG_LENGTHTYPE_IN=auto, SVG_LENGTHTYPE_PT=auto, SVG_LENGTHTYPE_PC=auto | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGLength.h:32
+- [c] UNIT | SVG_MARKERUNTIS_UNKNOWN=0, SVG_MARKERUNITS_USERSPACEONUSE=auto, SVG_MARKERUNITS_STROKEWIDTH=auto | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGMarkerElement.h:37
+- [c] ORIENT | SVG_MARKER_ORIENT_UNKNOWN=0, SVG_MARKER_ORIENT_AUTO=auto, SVG_MARKER_ORIENT_ANGLE=auto | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGMarkerElement.h:43
+- [cpp] parseNumber | ? | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGPathElement.cpp:253
+- [cpp] lexArcFlag | ? | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGPathElement.cpp:292
+- [cpp] Mode | WaitCommand=auto, WaitCoordsX=auto, WaitCoordsY=auto, WaitCoordsX2=auto, WaitCoordsY2=auto, WaitCoordsX3=auto, WaitCoordsY3=auto, WaitCoordsX4=auto, WaitCoordsY4=auto | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGPathElement.cpp:401
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGTextElement.h:33
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGTextElement.h:39
+- [c] Type | SVG_TRANSFORM_UNKOWN=0, SVG_TRANSFORM_MATRIX=auto, SVG_TRANSFORM_TRANSLATE=auto, SVG_TRANSFORM_SCALE=auto, SVG_TRANSFORM_ROTATE=auto, SVG_TRANSFORM_SKEWX=auto, SVG_TRANSFORM_SKEWY=auto | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGTransform.h:34
+- [c] UnitTypes | SVG_UNIT_TYPE_UNKNOWN=0, SVG_UNIT_TYPE_USERSPACEONUSE=auto, SVG_UNIT_TYPE_OBJECTBOUNDINGBOX=auto | /home/hwang/work/D/starfish_/src/core/dom/svg/SVGUnitTypes.h:27
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/extra/Console.h:48
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/fetch/Body.h:36
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/fetch/Headers.h:31
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/fetch/HeadersData.h:29
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/fetch/RequestData.h:30
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/fetch/RequestData.h:47
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/fetch/RequestData.h:55
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/fetch/RequestData.h:61
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/fetch/RequestData.h:70
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/fetch/RequestData.h:76
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/fetch/RequestData.h:99
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/fetch/RequestData.h:106
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/fetch/ResponseData.h:30
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/fetch/stream/ReadableStream.h:30
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/fetch/stream/ReadableStreamBuffer.h:28
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/fileapi/BlobPropertyBag.h:25
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/fileapi/FileReader.h:31
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/fileapi/FileReader.h:37
+- [cpp] computePaintingFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/Frame.cpp:1478
+- [cpp] computeStyleFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/Frame.cpp:1597
+- [c] PaintingStage | PaintingNormalFlowBlock=auto, PaintingNonPositionedFloats=auto, PaintingReplacedBlock=auto, PaintingNormalFlowInline=auto, PaintingStageEnd=auto | /home/hwang/work/D/starfish_/src/core/layout/Frame.h:71
+- [c] HitTestStage | HitTestPositionedElements=auto, HitTestNormalFlowInline=auto, HitTestNonPositionedFloats=auto, HitTestNormalFlowBlock=auto, HitTestStageEnd=auto | /home/hwang/work/D/starfish_/src/core/layout/Frame.h:82
+- [c] CachedBasisSizeFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/Frame.h:755
+- [c] HasFloat | HasNone=auto, HasLeft=auto, HasRight=auto | /home/hwang/work/D/starfish_/src/core/layout/Frame.h:886
+- [c] WordType | CollapsibleWhiteSpace=auto, NonCollapsibleWhiteSpace=auto, ForcedNewline=auto, General=auto | /home/hwang/work/D/starfish_/src/core/layout/Frame.h:892
+- [c] computeStyleFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/Frame.h:1219
+- [c] LayoutWantToResolve | ResolveWidth=1, ResolveHeight=auto, ResolveAll=auto | /home/hwang/work/D/starfish_/src/core/layout/Frame.h:1842
+- [c] PaintingKind | NormalFlowBlockChild=auto, NonPositionedFloats=auto, NormalFlowInline=auto, ReplacedBlock=auto | /home/hwang/work/D/starfish_/src/core/layout/Frame.h:1859
+- [c] computePaintingFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/Frame.h:1865
+- [c] establishesStackingContextIfNeedsAndComputingPaintingFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/Frame.h:1924
+- [c] ComputePurpose | Scrolling=auto, GraphicsBufferBySelf=auto, GraphicsBufferByOtherLayer=auto | /home/hwang/work/D/starfish_/src/core/layout/Frame.h:1930
+- [c] FrameFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/Frame.h:2409
+- [cpp] establishesStackingContextIfNeedsAndComputingPaintingFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/FrameBlockBox.cpp:958
+- [c] establishesStackingContextIfNeedsAndComputingPaintingFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/FrameBlockBox.h:304
+- [c] InlineNonReplacedBoxMBPStatus | MBPStatusNone=0, ProcessedStaringMBP=1, ProcessedEndingMBP=2, SetLeftMBP=4, SetRightMBP=8 | /home/hwang/work/D/starfish_/src/core/layout/FrameBlockBox.h:487
+- [c] establishesStackingContextIfNeedsAndComputingPaintingFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/FrameBlockBox.h:546
+- [c] establishesStackingContextIfNeedsAndComputingPaintingFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/FrameBlockBox.h:848
+- [c] Direction | None=auto, LtrDirection=auto, RtlDirection=auto | /home/hwang/work/D/starfish_/src/core/layout/FrameBlockBox.h:1164
+- [cpp] establishesStackingContextIfNeedsAndComputingPaintingFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/FrameBox.cpp:3600
+- [cpp] ComputeMatrixFor | Screen=auto, GraphicsLayer=auto, Window=auto, GraphicsLayerOnGraphicsLayer=auto | /home/hwang/work/D/starfish_/src/core/layout/FrameBox.cpp:4533
+- [c] PaintingInlineStage | PaintingInlineBox=auto, PaintingAtomicInlineBoxButInlineReplaced=auto, PaintingInlineReplaced=auto, PaintingInlineStageEnd=auto | /home/hwang/work/D/starfish_/src/core/layout/FrameBox.h:279
+- [c] CopyFlag | PositionCopy=auto, WidthAndHeightCopy=auto, MarginCopy=auto, BorderCopy=auto, PaddingCopy=auto, BorderBoxCopy=auto | /home/hwang/work/D/starfish_/src/core/layout/FrameBox.h:444
+- [c] BoxSide | TopSide=auto, RightSide=auto, BottomSide=auto, LeftSide=auto | /home/hwang/work/D/starfish_/src/core/layout/FrameBox.h:453
+- [c] establishesStackingContextIfNeedsAndComputingPaintingFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/FrameBox.h:978
+- [c] setCountingOutdatedFlag | ? | /home/hwang/work/D/starfish_/src/core/layout/FrameDocument.h:66
+- [c] popCountingOutdatedFlag | ? | /home/hwang/work/D/starfish_/src/core/layout/FrameDocument.h:71
+- [c] setQuoteOutdatedFlag | ? | /home/hwang/work/D/starfish_/src/core/layout/FrameDocument.h:78
+- [c] popQuoteOutdatedFlag | ? | /home/hwang/work/D/starfish_/src/core/layout/FrameDocument.h:83
+- [cpp] Violations | None=auto, Min=auto, Max=auto | /home/hwang/work/D/starfish_/src/core/layout/FrameFlexibleBox.cpp:549
+- [cpp] computeStyleFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/FrameGridBox.cpp:2284
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/layout/FrameGridBox.h:242
+- [c] computeStyleFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/FrameGridBox.h:523
+- [c] computeStyleFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/FrameReplacedCanvas.h:31
+- [cpp] establishesStackingContextIfNeedsAndComputingPaintingFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/FrameReplacedIFrame.cpp:102
+- [c] computeStyleFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/FrameReplacedIFrame.h:35
+- [cpp] computeStyleFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/FrameReplacedObject.cpp:58
+- [c] computeStyleFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/FrameReplacedObject.h:35
+- [c] computeStyleFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/FrameReplacedVideo.h:36
+- [c] AspectRatioFit | ? | /home/hwang/work/D/starfish_/src/core/layout/LayoutUtil.h:140
+- [cpp] computeSurfaceFlag | ? | /home/hwang/work/D/starfish_/src/core/layout/StackingContext.cpp:1106
+- [c] NeedsGraphicsLayerReason | ? | /home/hwang/work/D/starfish_/src/core/layout/StackingContext.h:37
+- [c] RepaintingWhenScrollingReason | ? | /home/hwang/work/D/starfish_/src/core/layout/StackingContext.h:49
+- [cpp] Mode | WaitCoordsX=auto, WaitCoordsY=auto | /home/hwang/work/D/starfish_/src/core/layout/svg/FrameSVGBox.cpp:814
+- [c] computeStyleFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/svg/FrameSVGBox.h:45
+- [c] computeStyleFlags | ? | /home/hwang/work/D/starfish_/src/core/layout/svg/FrameSVGSVGBox.h:54
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/canvas/BlendMode.h:26
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/canvas/Canvas.h:45
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/canvas/Canvas.h:46
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/canvas/Canvas.h:47
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/canvas/Canvas.h:48
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/canvas/Canvas.h:52
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/canvas/Canvas.h:69
+- [c] CanvasSurfaceFlag | PlainElement=0, PreferEGLImage=1, PreferUnitedTexture=auto, PreferRetainCPUBufferWhenUnmap=auto | /home/hwang/work/D/starfish_/src/core/modules/canvas/Canvas.h:161
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/canvas/CanvasFillStrokeSource.h:29
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/canvas/Path.h:26
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/canvas/Path.h:27
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/canvas/Path.h:28
+- [c] FixedSourcePlace | SourceGraphic=auto | /home/hwang/work/D/starfish_/src/core/modules/canvas/filter/Filter.h:96
+- [c] FontStyle | FontStyleNormal=auto, FontStyleItalic=auto, FontStyleOblique=auto | /home/hwang/work/D/starfish_/src/core/modules/canvas/font/Font.h:31
+- [c] FontWeight | FontWeightStart=1, FontWeightNormal=4, FontWeightEnd=9 | /home/hwang/work/D/starfish_/src/core/modules/canvas/font/Font.h:37
+- [c] FontKerningValue | FontKerningAutoValue=auto, FontKerningNormalValue=auto, FontKerningNoneValue=auto | /home/hwang/work/D/starfish_/src/core/modules/canvas/font/Font.h:43
+- [c] spaceSizeNumerator | ? | /home/hwang/work/D/starfish_/src/core/modules/canvas/font/Font.h:188
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/canvas/image/ImageDecoder.h:81
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/canvas/image/ImageEncoder.h:27
+- [c] PreserveAspectRatioAlign | ? | /home/hwang/work/D/starfish_/src/core/modules/canvas/image/NativeImageData.h:38
+- [c] PreserveAspectRatioMeetOrSlice | Meet=auto, Slice=auto | /home/hwang/work/D/starfish_/src/core/modules/canvas/image/NativeImageData.h:51
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/indexeddb/IDBBackingStore.h:29
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/indexeddb/IDBConnection.h:35
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/indexeddb/IDBDatabase.h:35
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/indexeddb/IDBKey.h:31
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/indexeddb/IDBRequest.h:35
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/indexeddb/IDBRequest.h:42
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/indexeddb/IDBTransaction.h:32
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/indexeddb/IDBUtils.h:28
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/indexeddb/IDBUtils.h:29
+- [c] ReadyState | Closed=auto, Open=auto, Ended=auto | /home/hwang/work/D/starfish_/src/core/modules/mediasource/MediaSource.h:48
+- [c] EndOfStreamError | None=auto, Network=auto, Decode=auto | /home/hwang/work/D/starfish_/src/core/modules/mediasource/MediaSource.h:58
+- [c] UpdateState | Success=auto, Error=auto, Abort=auto | /home/hwang/work/D/starfish_/src/core/modules/mediasource/SourceBuffer.h:135
+- [c] AppendMode | Segments=auto, Sequence=auto | /home/hwang/work/D/starfish_/src/core/modules/mediasource/SourceBuffer.h:141
+- [c] AppendState | WaitingForSegment=auto, ParsingInitSegment=auto, ParsingMediaSegment=auto | /home/hwang/work/D/starfish_/src/core/modules/mediasource/SourceBuffer.h:146
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/mediastream/MediaStreamTrack.h:47
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/mediastream/RTCConfiguration.h:35
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/mediastream/RTCConfiguration.h:37
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/mediastream/RTCConfiguration.h:43
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/mediastream/RTCDtlsTransport.h:33
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/mediastream/RTCError.h:33
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/mediastream/RTCIceServer.h:34
+- [c] RTCIceTransportState | New=auto, Checking=auto, Connected=auto, Completed=auto, Disconnected=auto, Failed=auto, Closed=auto | /home/hwang/work/D/starfish_/src/core/modules/mediastream/RTCIceTransport.h:34
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/mediastream/RTCPeerConnection.h:75
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/mediastream/RTCPeerConnection.h:84
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/mediastream/RTCPeerConnection.h:90
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/mediastream/RTCPeerConnection.h:99
+- [c] RTCRtpTransceiverDirection | Sendrecv=auto, Sendonly=auto, Recvonly=auto, Inactive=auto, Stopped=auto | /home/hwang/work/D/starfish_/src/core/modules/mediastream/RTCRtpTransceiverInit.h:33
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/mediastream/RTCSctpTransport.h:30
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/mediastream/RTCSessionDescription.h:34
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/networking/BinaryType.h:24
+- [cpp] lws_callback_reasons | ? | /home/hwang/work/D/starfish_/src/core/modules/networking/SocketLWS.cpp:112
+- [c] SocketLWSDataType | TEXT=auto, BINARY=auto | /home/hwang/work/D/starfish_/src/core/modules/networking/SocketLWS.h:37
+- [c] LwsEvent | OPEN=auto, ERROR=auto, CLOSE=auto, ONMESSAGE=auto | /home/hwang/work/D/starfish_/src/core/modules/networking/SocketLWS.h:65
+- [c] ReadyState | CONNECTING=auto, OPEN=auto, CLOSING=auto, CLOSED=auto | /home/hwang/work/D/starfish_/src/core/modules/networking/WebSocket.h:35
+- [c] CloseCode | NormalClosure=1000, GoingAway=auto, ProtocolError=auto, Reserved_1004=auto, UnsupportedData=auto, NoStatusReceived=auto, AbnormalClosure=auto, InvalidFramePayloadData=auto, PolicyViolation=auto, MessageTooBig=auto, MissingExtension=auto, InternalError=auto, ServiceRestart=auto, TryAgainLater=auto, BadGateway=auto, TLSHandshake=auto | /home/hwang/work/D/starfish_/src/core/modules/networking/WebSocket.h:37
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/profiling/Profiling.h:31
+- [c] WindowHandlerKind | WindowHandlerShowDropdownMenu=auto, WindowHandlerShowAlert=auto, WindowHandlerOnDropdownMenuItemSelected=auto | /home/hwang/work/D/starfish_/src/core/modules/renderer/Renderer.h:30
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/renderer/Renderer.h:71
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/renderer/Renderer.h:78
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/renderer/Renderer.h:86
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/renderer/Renderer.h:88
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/resize_observer/ResizeObserverOptions.h:28
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/resource_request/ResourceRequest.h:42
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/resource_request/ResourceRequest.h:43
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/resource_request/ResourceRequest.h:45
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/resource_request/ResourceRequest.h:53
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/resource_request/ResourceRequest.h:64
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/resource_request/ResourceRequest.h:71
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/resource_request/ResourceRequest.h:77
+- [c] useCorsPreflightFlag | ? | /home/hwang/work/D/starfish_/src/core/modules/resource_request/ResourceRequest.h:376
+- [c] setUseCorsPreflightFlag | ? | /home/hwang/work/D/starfish_/src/core/modules/resource_request/ResourceRequest.h:382
+- [c] unsafeRequestFlag | ? | /home/hwang/work/D/starfish_/src/core/modules/resource_request/ResourceRequest.h:388
+- [c] setUnsafeRequestFlag | ? | /home/hwang/work/D/starfish_/src/core/modules/resource_request/ResourceRequest.h:394
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/serviceworker/MessageServiceWorker.h:69
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/serviceworker/ServiceWorkerContainer.h:96
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/serviceworker/ServiceWorkerData.h:32
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/serviceworker/ServiceWorkerTypes.h:38
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/serviceworker/ServiceWorkerTypes.h:47
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/serviceworker/ServiceWorkerTypes.h:53
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/serviceworker/ServiceWorkerUpdateViaCache.h:27
+- [cpp] defaultNamedEnumerator | ? | /home/hwang/work/D/starfish_/src/core/modules/serviceworker/cache/CustomStorage.cpp:54
+- [c] defaultNamedEnumerator | ? | /home/hwang/work/D/starfish_/src/core/modules/serviceworker/cache/CustomStorage.h:49
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/serviceworker/notification/NotificationOptions.h:28
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/serviceworker/notification/NotificationOptions.h:29
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/serviceworker/push/PushServiceAgent.h:28
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/sharedworker/IPCConnection.h:32
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/sharedworker/IPCMessageSerializer.h:29
+- [c] AriaByType | AriaLabelledBy=auto, ArialDescribedBy=auto | /home/hwang/work/D/starfish_/src/core/modules/tts/TextAlternativeHelper.h:34
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/webaudio/AudioNode.h:32
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/webaudio/AudioNode.h:34
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/webaudio/BaseAudioContext.h:36
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/worker/WorkerAgent.h:31
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/worker/WorkerScriptController.h:32
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/worker/WorkerThread.h:56
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/worker/WorkerType.h:30
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/modules/worker/util/LocalStorageHelper.h:37
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/A11yAtspiTreeSource.h:101
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/A11yTouchExploration.h:83
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/A11yTouchExploration.h:84
+- [cpp] initFlags | ? | /home/hwang/work/D/starfish_/src/core/page/BrowsingContext.cpp:144
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/BrowsingContext.h:50
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/BrowsingContext.h:51
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/BrowsingContext.h:52
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/BrowsingContext.h:53
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/BrowsingContext.h:54
+- [c] initFlags | ? | /home/hwang/work/D/starfish_/src/core/page/BrowsingContext.h:79
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/EventSource.h:32
+- [c] ReadyState | CONNECTING=auto, OPEN=auto, CLOSED=auto | /home/hwang/work/D/starfish_/src/core/page/EventSource.h:80
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/MediaCapabilities.h:31
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/MediaCapabilities.h:37
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/MediaCapabilities.h:39
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/MediaCapabilities.h:41
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/MediaCapabilities.h:43
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/MediaCapabilities.h:45
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/ScrollOptions.h:27
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/ScrollOptions.h:160
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/WebBase.h:26
+- [c] StarfishPubicWebViewHandlerKind | OnPageStarted=auto, OnPageLoaded=auto, OnPageParsed=auto, OnLoadResource=auto, OnReceivedError=auto, OnProgressChanged=auto, OnDownloadStart=auto, OnIdle=auto, ShouldOverrideUrlLoading=auto, DebuggerShouldInit=auto, DebuggerShouldContinueWaiting=auto | /home/hwang/work/D/starfish_/src/core/page/WebBase.h:43
+- [cpp] initRenderingFlags | ? | /home/hwang/work/D/starfish_/src/core/page/WebView.cpp:2100
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/WebView.h:29
+- [c] StarfishStartUpFlag | enableComputedStyleDump=auto, enableFrameTreeDump=auto, enableStackingContextDump=auto, enableHitTestDump=auto, enableDebugGraphicsLayer=auto, enableDebugRepaintRegion=auto, enableRegressionTest=auto | /home/hwang/work/D/starfish_/src/core/page/WebView.h:34
+- [c] StarfishDeviceKind | deviceKindUseMouse=0, deviceKindUseTouchScreen=auto | /home/hwang/work/D/starfish_/src/core/page/WebView.h:44
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/WebView.h:92
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/WebView.h:93
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/WebView.h:94
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/WebView.h:95
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/page/WebView.h:96
+- [c] startUpFlag | ? | /home/hwang/work/D/starfish_/src/core/page/WebView.h:295
+- [c] initRenderingFlags | ? | /home/hwang/work/D/starfish_/src/core/page/WebView.h:600
+- [cpp] ScriptValueSerializerTag | Undefined=auto, Null=auto, TruePrimitive=auto, FalsePrimitive=auto, Int32Primitive=auto, Uint32Primitive=auto, DoublePrimitive=auto, OneByteStringPrimitive=auto, TwoByteStringPrimitive=auto, BeginObject=auto, EndObject=auto, BeginArrayObject=auto, EndArrayObject=auto, ArrayBuffer=auto, ArrayBufferView=auto, Int8Array=auto, Uint8Array=auto, Int16Array=auto, Uint16Array=auto, Int32Array=auto | /home/hwang/work/D/starfish_/src/core/serialize/MemorySerializer.cpp:123
+- [c] Type | Undefined=auto, Null=auto, BooleanPrimitive=auto, Int32Primitive=auto, Uint32Primitive=auto, NumberPrimitive=auto, StringPrimitive=auto, Boolean=auto, Number=auto, String=auto, Date=auto, RegExp=auto, SharedArrayBuffer=auto, ArrayBuffer=auto, ArrayBufferView=auto, Map=auto, Set=auto, Array=auto, PlatformObject=auto, Object=auto | /home/hwang/work/D/starfish_/src/core/serialize/Serializer.h:680
+- [cpp] defaultNamedEnumerator | ? | /home/hwang/work/D/starfish_/src/core/storage/Storage.cpp:56
+- [c] defaultNamedEnumerator | ? | /home/hwang/work/D/starfish_/src/core/storage/Storage.h:53
+- [c] StorageType | Session=auto, Local=auto | /home/hwang/work/D/starfish_/src/core/storage/StorageType.h:25
+- [c] InitiallyZero | InitiallyZeroValue=auto | /home/hwang/work/D/starfish_/src/core/style/BorderData.h:36
+- [c] Kind | UNSPECIFIED=auto, DEG=auto, GRAD=auto, RAD=auto, TURN=auto | /home/hwang/work/D/starfish_/src/core/style/CSSAngle.h:32
+- [cpp] parseNumberOrPercentageFilter | ? | /home/hwang/work/D/starfish_/src/core/style/CSSFilterFunction.cpp:99
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/CSSFilterFunction.h:24
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/CSSGradientValue.h:30
+- [c] SideOrConer | toLeft=auto, toRight=auto, toTop=auto, toBottom=auto | /home/hwang/work/D/starfish_/src/core/style/CSSGradientValue.h:32
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/CSSGradientValue.h:188
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/CSSGradientValue.h:272
+- [c] Kind | PX=auto, EM=auto, EX=auto, INCH=auto, CM=auto, MM=auto, PT=auto, PC=auto, VW=auto, VH=auto, VMIN=auto, VMAX=auto, REM=auto, CH=auto, PERCENT=auto | /home/hwang/work/D/starfish_/src/core/style/CSSLength.h:33
+- [c] CSSNumericBaseType | Length=auto, Angle=auto, Time=auto, Frequency=auto, Resolution=auto, Flex=auto, Percent=auto, Null=auto | /home/hwang/work/D/starfish_/src/core/style/CSSNumericValue.h:33
+- [cpp] parseNumber | ? | /home/hwang/work/D/starfish_/src/core/style/CSSParser.cpp:493
+- [cpp] getAttributeFlags | ? | /home/hwang/work/D/starfish_/src/core/style/CSSParser.cpp:1274
+- [cpp] CompoundSelectorFlags | HasPseudoElementForRightmostCompound=auto, HasContentPseudoElement=auto | /home/hwang/work/D/starfish_/src/core/style/CSSParser.cpp:1680
+- [cpp] extractCompoundFlags | ? | /home/hwang/work/D/starfish_/src/core/style/CSSParser.cpp:1685
+- [c] consumeNumber | ? | /home/hwang/work/D/starfish_/src/core/style/CSSParser.h:286
+- [c] consumeNumber | ? | /home/hwang/work/D/starfish_/src/core/style/CSSParser.h:358
+- [c] parseNumber | ? | /home/hwang/work/D/starfish_/src/core/style/CSSParser.h:741
+- [c] parseNumberOrPercentage | ? | /home/hwang/work/D/starfish_/src/core/style/CSSParser.h:784
+- [c] createNumberValueToken | ? | /home/hwang/work/D/starfish_/src/core/style/CSSParser.h:1351
+- [c] MediaFeature | MediaFeatureNone=auto, MediaFeatureAspectRatio=auto, MediaFeatureMinWidth=auto, MediaFeatureDeviceAspectRatio=auto, MediaFeatureMinDeviceWidth=auto | /home/hwang/work/D/starfish_/src/core/style/CSSParser.h:1648
+- [c] NumericSign | NoSign=auto, PlusSign=auto, MinusSign=auto | /home/hwang/work/D/starfish_/src/core/style/CSSParser.h:1751
+- [c] LogicOp | And=auto, Or=auto, Not=auto | /home/hwang/work/D/starfish_/src/core/style/CSSParser.h:1757
+- [c] TruthOp | False=0, True=1, Paren=3 | /home/hwang/work/D/starfish_/src/core/style/CSSParser.h:1763
+- [c] AllowedRulesType | AllowCharsetRules=auto, AllowImportRules=auto, AllowNamespaceRules=auto, RegularRules=auto, KeyframeRules=auto, ApplyRules=auto, NoRules=auto | /home/hwang/work/D/starfish_/src/core/style/CSSParser.h:1769
+- [c] RuleListType | TopLevelRuleList=auto, RegularRuleList=auto, KeyframesRuleList=auto | /home/hwang/work/D/starfish_/src/core/style/CSSParser.h:1784
+- [c] ParseResult | Consumed=auto, ErrorFounded=auto, Failed=auto | /home/hwang/work/D/starfish_/src/core/style/CSSParser.h:1786
+- [c] extractCompoundFlags | ? | /home/hwang/work/D/starfish_/src/core/style/CSSParser.h:1889
+- [c] getAttributeFlags | ? | /home/hwang/work/D/starfish_/src/core/style/CSSParser.h:1894
+- [c] MediaQueryParserType | MediaQuerySetParser=auto, MediaConditionParser=auto | /home/hwang/work/D/starfish_/src/core/style/CSSParser.h:1929
+- [c] Type | STYLE_RULE=1, CHARSET_RULE=2, IMPORT_RULE=3, MEDIA_RULE=4, FONT_FACE_RULE=5, PAGE_RULE=6, KEYFRAMES_RULE=7, KEYFRAME_RULE=8, MARGIN_RULE=9, NAMESPACE_RULE=10, COUNTER_STYLE_RULE=11, SUPPORTS_RULE=12, DOCUMENT_RULE=13, FONT_FEATURE_VALUES_RULE=14, VIEWPORT_RULE=15, REGION_STYLE_RULE=16 | /home/hwang/work/D/starfish_/src/core/style/CSSRule.h:36
+- [cpp] defaultNamedEnumerator | ? | /home/hwang/work/D/starfish_/src/core/style/CSSStyleDeclaration.cpp:2208
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/CSSStyleDeclaration.h:237
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/CSSStyleDeclaration.h:532
+- [c] Kind | S=auto, MS=auto | /home/hwang/work/D/starfish_/src/core/style/CSSTime.h:30
+- [cpp] TokenType | VARIABLE=auto, VARIABLEBLOCKOPEN=auto, VARIABLEBLOCKCLOSE=auto, COMMA=auto, RAWVALUE=auto, EMPTY=auto, END=auto | /home/hwang/work/D/starfish_/src/core/style/CSSVariableSyntaxTreeBuilder.cpp:56
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/CalcData.h:309
+- [c] ComputedStyleDamage | ComputedStyleDamageNone=0, ComputedStyleDamageInherited=1, ComputedStyleDamageRebuildFrame=auto, ComputedStyleDamageLayout=auto, ComputedStyleDamageEstablishesStackingContext=auto, ComputedStyleDamageComputeStackingContextProperties=auto, ComputedStyleDamagePainting=auto, ComputedStyleDamageComposite=auto, ComputedStyleDamageAnimation=auto, ComputedStyleDamageSVGViewportContent=auto | /home/hwang/work/D/starfish_/src/core/style/ComputedStyle.h:56
+- [c] KeyKind | Order=auto, ZIndex=auto, FlexGrow=auto, FlexShrink=auto, Opacity=auto, Border=auto, BorderBlockStart=auto, BorderBlockEnd=auto, BorderInlineStart=auto, BorderInlineEnd=auto, BoxDecorationBreak=auto, BoxShadow=auto, Width=auto, Height=auto, Padding=auto, PaddingBlockStart=auto, PaddingBlockEnd=auto, PaddingInlineEnd=auto, PaddingInlineStart=auto, Margin=auto | /home/hwang/work/D/starfish_/src/core/style/ComputedStyle.h:91
+- [c] ContentType | None=auto, Text=auto, Image=auto, Counter=auto, Quote=auto | /home/hwang/work/D/starfish_/src/core/style/ContentData.h:132
+- [c] System | NoneSystem=auto, CyclicSystem=auto, FixedSystem=auto, SymbolicSystem=auto, AlphabeticSystem=auto, NumericSystem=auto, AdditiveSystem=auto, ExtendsSystem=auto | /home/hwang/work/D/starfish_/src/core/style/CounterStyle.h:29
+- [c] Type | Auto=auto, Content=auto, Width=auto | /home/hwang/work/D/starfish_/src/core/style/FlexBasisData.h:28
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/FlowRelativeBorderData.h:28
+- [c] LoadFrom | Local=auto, URL=auto | /home/hwang/work/D/starfish_/src/core/style/FontFaceSrcData.h:33
+- [c] Format | Unknown=auto, NotSpecified=auto, SVG=auto, WOFF2=auto, EmbeddedOpenType=auto, OpenType=auto, TrueType=auto, WOFF=auto | /home/hwang/work/D/starfish_/src/core/style/FontFaceSrcData.h:36
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/GradientData.h:43
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/GradientData.h:44
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/GradientData.h:45
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/GradientData.h:46
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/GridLength.h:25
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/GridTrackSize.h:27
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/GridTrackSize.h:161
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/ImageValue.h:32
+- [c] inheritableNumber | ? | /home/hwang/work/D/starfish_/src/core/style/Length.h:248
+- [c] RestrictorType | Only=auto, Not=auto, None=auto | /home/hwang/work/D/starfish_/src/core/style/MediaQuery.h:55
+- [cpp] MediaFeaturePrefix | NoPrefix=auto, MinPrefix=auto, MaxPrefix=auto | /home/hwang/work/D/starfish_/src/core/style/MediaQueryEvaluator.cpp:58
+- [c] NamedColorValue | currentColor=auto | /home/hwang/work/D/starfish_/src/core/style/NamedColors.h:179
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/StrokeLineCap.h:24
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/StrokeLineJoin.h:24
+- [cpp] updateValueNumber | ? | /home/hwang/work/D/starfish_/src/core/style/Style.cpp:12576
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:67
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:68
+- [c] UnitType | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:73
+- [c] DisplayValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:120
+- [c] PositionValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:145
+- [c] FloatValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:152
+- [c] ClearValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:158
+- [c] BoxOrientValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:166
+- [c] FlexDirectionValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:172
+- [c] FlexWrapValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:179
+- [c] JustifyContentValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:185
+- [c] AlignItemValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:201
+- [c] AlignContentValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:211
+- [c] FlexBasisValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:220
+- [c] VerticalAlignValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:225
+- [c] TextAlignValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:237
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:248
+- [c] DirectionValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:258
+- [c] BackgroundSizeValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:264
+- [c] RepeatStyleValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:271
+- [c] BoxValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:279
+- [c] BackgroundAttachmentValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:285
+- [c] FontSizeValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:291
+- [c] WhiteSpaceValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:304
+- [c] OverflowValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:312
+- [c] PointerEventsValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:319
+- [c] CursorValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:332
+- [c] BorderImageRepeatValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:344
+- [c] BorderShorthandValueType | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:351
+- [c] BorderStyleValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:358
+- [c] BorderWidthValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:371
+- [c] BorderCollapseValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:377
+- [c] CaptionSideValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:382
+- [c] TableLayoutValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:387
+- [c] EmptyCellsValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:392
+- [c] TextDecorationLineValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:397
+- [c] TextDecorationStyleValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:405
+- [c] TextUnderlinePositionValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:413
+- [c] FontStyleValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:420
+- [c] FontWeightValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:426
+- [c] WordWrapValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:442
+- [c] VisibilityValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:448
+- [c] UnicodeBidiValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:454
+- [c] ObjectFitValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:460
+- [c] ImageRenderingValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:468
+- [c] TimingFunctionValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:474
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:484
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:491
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:496
+- [c] BoxSizingValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:503
+- [c] QuoteValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:508
+- [c] FillRuleValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:515
+- [c] TextTransformValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:520
+- [c] ListStylePositionValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:527
+- [c] UserSelectValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:532
+- [c] HyphensValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:539
+- [c] LineBreakValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:544
+- [c] WordBreakValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:550
+- [c] AppearanceValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:557
+- [c] ResizeValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:562
+- [c] WidthHeightKeywordValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:574
+- [c] BoxDecorationBreakValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:581
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:586
+- [c] MaskTypeValue | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:594
+- [c] Kind | None=auto, Matrix=auto, Matrix3D=auto, Translate=auto, Translate3D=auto, TranslateX=auto, TranslateY=auto, TranslateZ=auto, Scale=auto, Scale3D=auto, ScaleX=auto, ScaleY=auto, ScaleZ=auto, Rotate=auto, Rotate3D=auto, Skew=auto, SkewX=auto, SkewY=auto, Perspective=auto | /home/hwang/work/D/starfish_/src/core/style/Style.h:915
+- [c] ValueKind | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:1052
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:1214
+- [c] setFlagImportant | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:1281
+- [c] updateValueNumber | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:2662
+- [c] CalcParserOption | LengthParser=0, AngleParser=1, TimeParser=2, LineheightParser=3 | /home/hwang/work/D/starfish_/src/core/style/Style.h:2664
+- [c] RelationType | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:3033
+- [c] Type | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:3072
+- [c] PseudoType | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:3097
+- [c] AttributeMatchType | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:3105
+- [c] PseudoElementType | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:3386
+- [c] Match | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:3408
+- [c] StyleDamageSource | ? | /home/hwang/work/D/starfish_/src/core/style/Style.h:3418
+- [cpp] initFlagsRelatedWithSelectorList | ? | /home/hwang/work/D/starfish_/src/core/style/StyleRule.cpp:104
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/style/StyleRule.h:168
+- [c] initFlagsRelatedWithSelectorList | ? | /home/hwang/work/D/starfish_/src/core/style/StyleRule.h:250
+- [c] OperationType | Matrix=auto, Translate=auto, Scale=auto, Rotate=auto, Skew=auto, None=auto | /home/hwang/work/D/starfish_/src/core/style/StyleTransformData.h:37
+- [c] TextOverflowValue | TextOverflowClipValue=1, TextOverflowEllipsisValue=3 | /home/hwang/work/D/starfish_/src/core/style/TextOverflowData.h:29
+- [cpp] State | BeforeStart=auto, Started=auto, Closed=auto | /home/hwang/work/D/starfish_/src/core/util/Archiver.cpp:58
+- [c] MatchType | MatchName=auto, MatchNS=auto, MatchAll=auto | /home/hwang/work/D/starfish_/src/core/util/AttributeName.h:28
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/util/Cryptographic.h:25
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/util/Cryptographic.h:34
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/util/Id.h:27
+- [c] LineBreakIteratorMode | LineBreakIteratorModeUAX14=auto, LineBreakIteratorModeUAX14Loose=auto, LineBreakIteratorModeUAX14Normal=auto, LineBreakIteratorModeUAX14Strict=auto | /home/hwang/work/D/starfish_/src/core/util/LineBreakerIteratorPool.h:28
+- [c] ARG_TYPE_MISMATCH_WITH_ENUM | ? | /home/hwang/work/D/starfish_/src/core/util/Messages.h:40
+- [c] AdoptTag | Adopt=auto | /home/hwang/work/D/starfish_/src/core/util/RefPtr.h:77
+- [c] AdoptTag | Adopt=auto | /home/hwang/work/D/starfish_/src/core/util/RefPtr.h:279
+- [c] HashTableDeletedValueType | ? | /home/hwang/work/D/starfish_/src/core/util/RefPtr.h:399
+- [cpp] setExcludeLineNumbers | ? | /home/hwang/work/D/starfish_/src/core/util/String.cpp:2708
+- [cpp] advanceAndUpdateLineNumber8 | ? | /home/hwang/work/D/starfish_/src/core/util/String.cpp:2891
+- [cpp] advanceAndUpdateLineNumber16 | ? | /home/hwang/work/D/starfish_/src/core/util/String.cpp:2904
+- [cpp] advanceAndUpdateLineNumberSlowCase | ? | /home/hwang/work/D/starfish_/src/core/util/String.cpp:2944
+- [c] CharDirection | ? | /home/hwang/work/D/starfish_/src/core/util/String.h:590
+- [c] CharCategory | NoCategory=0, Other_NotAssigned=auto, Letter_Uppercase=auto, Letter_Lowercase=auto, Letter_Titlecase=auto, Letter_Modifier=auto, Letter_Other=auto, Mark_NonSpacing=auto, Mark_Enclosing=auto, Mark_SpacingCombining=auto, Number_DecimalDigit=auto, Number_Letter=auto, Number_Other=auto, Separator_Space=auto, Separator_Line=auto, Separator_Paragraph=auto, Other_Control=auto, Other_Format=auto, Other_PrivateUse=auto, Other_Surrogate=auto | /home/hwang/work/D/starfish_/src/core/util/String.h:597
+- [c] BufferDataKind | ASCIIData=auto, BMPData=auto, UTF32Data=auto | /home/hwang/work/D/starfish_/src/core/util/String.h:642
+- [c] TakeBuffer | TakeBufferValue=auto | /home/hwang/work/D/starfish_/src/core/util/String.h:1063
+- [c] Type | StringPiece=auto, ConstChar=auto, Char=auto | /home/hwang/work/D/starfish_/src/core/util/String.h:1617
+- [c] setExcludeLineNumbers | ? | /home/hwang/work/D/starfish_/src/core/util/String.h:1789
+- [c] setExcludeLineNumbers | ? | /home/hwang/work/D/starfish_/src/core/util/String.h:1964
+- [c] LookAheadResult | DidNotMatch=auto, DidMatch=auto, NotEnoughCharacters=auto | /home/hwang/work/D/starfish_/src/core/util/String.h:1990
+- [c] advanceAndUpdateLineNumber | ? | /home/hwang/work/D/starfish_/src/core/util/String.h:2024
+- [c] advancePastNewlineAndUpdateLineNumber | ? | /home/hwang/work/D/starfish_/src/core/util/String.h:2077
+- [c] FastPathFlags | NoFastPath=0, Use8BitAdvanceAndUpdateLineNumbers=auto, Use8BitAdvance=auto | /home/hwang/work/D/starfish_/src/core/util/String.h:2135
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/xml/FormData.h:29
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/xml/XMLHttpRequest.h:27
+- [c] class | ? | /home/hwang/work/D/starfish_/src/core/xml/XMLHttpRequest.h:28
+- [cpp] setDoneFlag | ? | /home/hwang/work/D/starfish_/src/launcher/ServiceWorkerEntry.cpp:32
+- [cpp] setDoneFlag | ? | /home/hwang/work/D/starfish_/src/launcher/SharedWorkerEntry.cpp:32
+- [cpp] Command | MoveTo=auto, LineTo=auto, ArcNegative=auto | /home/hwang/work/D/starfish_/src/platform/canvas/CompositorGL.cpp:477
+- [c] class | ? | /home/hwang/work/D/starfish_/src/platform/canvas/PathCairo.h:26
+- [c] class | ? | /home/hwang/work/D/starfish_/src/platform/canvas/PathMock.h:25
+- [c] GLenum | ? | /home/hwang/work/D/starfish_/src/platform/canvas/gl/GLTypes.h:27
+- [c] FileMode | Read=1, Write=auto, ReadWrite=auto | /home/hwang/work/D/starfish_/src/platform/file/PlatformFile.h:35
+- [c] Whence | SEEK_SET=auto, SEEK_CUR=auto, SEEK_END=auto | /home/hwang/work/D/starfish_/src/platform/file/PlatformFile.h:41
+- [c] State | BeforeSend=auto, Receiving=auto, Finished=auto, Failed=auto, Canceled=auto | /home/hwang/work/D/starfish_/src/platform/loader/Resource.h:42
+- [c] Type | ResourceType=auto, ImageResourceType=auto, TextResourceType=auto, FontResourceType=auto | /home/hwang/work/D/starfish_/src/platform/loader/Resource.h:50
+- [c] Protocol | FILE_PROTOCOL=auto, BLOB_PROTOCOL=auto, DATA_PROTOCOL=auto, ABOUT_PROTOCOL=auto, HTTP_PROTOCOL=auto, HTTPS_PROTOCOL=auto, JAVASCRIPT_PROTOCOL=auto, WS_PROTOCOL=auto, WSS_PROTOCOL=auto, UNKNOWN=auto | /home/hwang/work/D/starfish_/src/platform/loader/ResourceURL.h:35
+- [c] Protocol | ? | /home/hwang/work/D/starfish_/src/platform/loader/ResourceURL.h:253
+- [c] class | ? | /home/hwang/work/D/starfish_/src/platform/loader/ResourceURL.h:282
+- [cpp] RendezvousOwner | None=auto, MainBlockedOnLWE=auto, LWEPausingMain=auto | /home/hwang/work/D/starfish_/src/platform/message_loop/MessageLoopGLib.cpp:99
+- [c] SeekWhence | SeekWhenceSet=auto, SeekWhenceCurrent=auto, SeekWhenceEnd=auto, SeekWhenceLookSize=auto | /home/hwang/work/D/starfish_/src/platform/multimedia/DemuxerSource.h:26
+- [c] PlaybackState | PLAYBACK_STATE_NONE=auto, PLAYBACK_STATE_PLAYING=auto, PLAYBACK_STATE_PAUSED=auto, PLAYBACK_STATE_END=auto | /home/hwang/work/D/starfish_/src/platform/multimedia/MediaPlayer.h:67
+- [c] SeekState | SEEKSTATE_NO_SEEK=auto, SEEKSTATE_SEEKING=auto, SEEKSTATE_WAITING=auto | /home/hwang/work/D/starfish_/src/platform/multimedia/MediaPlayer.h:73
+- [c] class | ? | /home/hwang/work/D/starfish_/src/platform/multimedia/MediaPlayerLinux.h:163
+- [c] StreamType | StreamTypeUnknown=1, StreamTypeAudio=auto, StreamTypeVideo=auto, StreamTypeSubtitle=auto | /home/hwang/work/D/starfish_/src/platform/multimedia/StreamInfo.h:52
+- [c] MediaCodec | MediaCodecUnknown=auto, MediaCodecAudioAAC=auto, MediaCodecAudioMP3=auto, MediaCodecAudioVorbis=auto, MediaCodecAudioOpus=auto, MediaCodecVideoH264=auto, MediaCodecVideoHEVC=auto, MediaCodecVideoVP9=auto, MediaCodecVideoAV1=auto | /home/hwang/work/D/starfish_/src/platform/multimedia/StreamInfo.h:59
+- [c] AudioSampleFormat | AudioSampleFormatNone=-1, AudioSampleFormatU8=auto, AudioSampleFormatS16=auto, AudioSampleFormatS32=auto, AudioSampleFormatFLT=auto, AudioSampleFormatDBL=auto, AudioSampleFormatU8P=auto, AudioSampleFormatS16P=auto, AudioSampleFormatS32P=auto, AudioSampleFormatFLTP=auto, AudioSampleFormatDBLP=auto | /home/hwang/work/D/starfish_/src/platform/multimedia/StreamInfo.h:73
+- [c] HTTPStatusCode | ? | /home/hwang/work/D/starfish_/src/platform/network/http/HTTPStatus.h:94
+- [c] ScreenOrientationType | ScreenOrientationUndefined=0, ScreenOrientationPortraitPrimary=auto, ScreenOrientationPortraitSecondary=auto, ScreenOrientationLandscapePrimary=auto, ScreenOrientationLandscapeSecondary=auto | /home/hwang/work/D/starfish_/src/platform/public/ScreenOrientationType.h:24
+- [c] class | ? | /home/hwang/work/D/starfish_/src/public/LWEDelegateLoader.h:34
+- [c] class | ? | /home/hwang/work/D/starfish_/src/public/LWELoaderUtils.h:29
+- [c] class | ? | /home/hwang/work/D/starfish_/src/public/LWEWorkerDelegateLoader.h:31
+- [java] ImeComposingStatus | NORMAL=auto, COMPOSING_START=auto, COMPOSING_END=auto | type: int | /home/hwang/work/D/starfish_/src/public/bridge/android/java/com/samsung/android/lightweightwebengine/internal/LweWebViewImpl.java:93
+- [cpp] Owner | FREE=auto, ENGINE=auto, READY=auto, PRESENTING=auto | /home/hwang/work/D/starfish_/src/public/bridge/ecore_wl2/LWEWebViewEcoreWl2.cpp:190
+- [cpp] Owner | FREE=auto, ENGINE=auto, READY=auto, DISPLAYING=auto | /home/hwang/work/D/starfish_/src/public/bridge/efl/LWEWebViewEFL.cpp:153
+- [cpp] PORT_WINDOW_BACKEND | GB=auto, GL=auto, HEADLESS=auto | /home/hwang/work/D/starfish_/src/public/bridge/flutter/LWEWebViewFlutter.cpp:82
+- [cpp] PORT_COMPOSITOR_BACKEND | CAIRO=auto, GL=auto, MOCK=auto | /home/hwang/work/D/starfish_/src/public/bridge/flutter/LWEWebViewFlutter.cpp:83
+- [c] class | ? | /home/hwang/work/D/starfish_/src/public/contract/LWEWorkerDelegate.h:28
+- [cpp] StarfishStartUpFlag | enableComputedStyleDump=auto, enableFrameTreeDump=auto, enableStackingContextDump=auto, enableHitTestDump=auto, enableDebugGraphicsLayer=auto, enableDebugRepaintRegion=auto, enableRegressionTest=auto | /home/hwang/work/D/starfish_/src/shell/MiniBrowser.cpp:34
+- [c] class | ? | /home/hwang/work/D/starfish_/src/shell/WindowKeyType.h:25
+- [c] class | ? | /home/hwang/work/D/starfish_/src/shell/WindowKeyType.h:44
+- [c] class | ? | /home/hwang/work/D/starfish_/src/shell/WindowKeyType.h:49
+- [cpp] setDoneFlag | ? | /home/hwang/work/D/starfish_/src/shell/libuv/AppLoopLibuv.cpp:39
+- [cpp] GLenum | ? | /home/hwang/work/D/starfish_/src/shell/windows/RendererWGL.cpp:36
+- [python] ABIDW_FLAGS | ? | /home/hwang/work/D/starfish_/tool/lint/check_contract_abi.py:117
+- [python] COMPILE_FLAGS | ? | /home/hwang/work/D/starfish_/tool/lint/check_contract_abi.py:128
+- [python] ENUM_RE | ? | /home/hwang/work/D/starfish_/tool/lint/check_contract_abi.py:136
+- [python] extract_enum_fp | ? | /home/hwang/work/D/starfish_/tool/lint/check_contract_abi.py:438
+- [python] _fixture_enum_renumber | ? | /home/hwang/work/D/starfish_/tool/lint/check_contract_abi.py:1112
+- [python] enumerate_tests | ? | /home/hwang/work/D/starfish_/tool/wpt/scripts/wpt_status.py:136
+
+<!-- Total: 28929 nodes, 549 relevant -->

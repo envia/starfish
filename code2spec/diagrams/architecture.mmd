@@ -1,0 +1,102 @@
+graph TD
+%% Starfish system architecture — W1 initial architecture / system-context diagram
+%% Nodes: 32 confirmed Core logical modules from .analysis/analysis-notes/module-priority-reviewed.md
+%% Edges: aggregated file-level IMPORTS_FROM relations from .analysis/cache/code-to-ast/graph-raw.json
+%%        direction preserved: A --> B means files in module A import files in module B
+
+  subgraph api_layer["Embedder API and Entry"]
+    public_embedder_api["public-embedder-api (src/public, inc)"]
+    engine_entry["engine-entry (src/Starfish.cpp, StarfishConfig.h)"]
+    shell["shell (src/shell ports)"]
+    binding["binding (src/binding JS bindings)"]
+  end
+
+  subgraph dom_layer["Core DOM"]
+    core_dom["core-dom (src/core/dom)"]
+    core_dom_svg["core-dom-svg"]
+    core_dom_canvas["core-dom-canvas (canvas, webgl)"]
+    core_dom_parser["core-dom-parser (HTML parser)"]
+  end
+
+  subgraph engine_layer["Core Engine"]
+    core_style["core-style (CSS)"]
+    core_layout["core-layout"]
+    core_page["core-page (WebView, Window)"]
+    core_animation["core-animation"]
+    core_fetch["core-fetch"]
+    core_cdp["core-cdp (DevTools protocol)"]
+    core_util["core-util"]
+    core_storage_fileapi["core-storage-fileapi"]
+    core_csp["core-csp"]
+    core_extras["core-extras (serialize, xml, inspector)"]
+  end
+
+  subgraph modules_layer["Web Feature Modules"]
+    modules_serviceworker["modules-serviceworker"]
+    modules_workers["modules-workers (worker, sharedworker)"]
+    modules_mediastream["modules-mediastream (WebRTC)"]
+    modules_canvas["modules-canvas (compositing, filters)"]
+    modules_indexeddb["modules-indexeddb"]
+    modules_media["modules-media (webaudio, mediasource)"]
+    modules_runtime["modules-runtime (threading, message_loop)"]
+    modules_web_apis["modules-web-apis (cast, location, networking)"]
+  end
+
+  subgraph platform_layer["Platform Layer"]
+    platform_multimedia["platform-multimedia"]
+    platform_canvas["platform-canvas (graphics backend)"]
+    platform_network_loader["platform-network-loader (curl, loader)"]
+    platform_base["platform-base (file, process, tts)"]
+  end
+
+  subgraph support_layer["Support Artifacts"]
+    support_tools["support-tools (tool, docs)"]
+    support_vendor_robin_map["support-vendor-robin-map (third_party)"]
+  end
+
+  core_dom --> engine_entry
+  core_layout --> core_dom
+  core_dom_svg --> engine_entry
+  core_layout --> core_style
+  core_dom --> core_page
+  core_page --> core_dom
+  core_style --> core_dom
+  modules_serviceworker --> core_util
+  core_style --> engine_entry
+  modules_mediastream --> core_dom
+  modules_serviceworker --> engine_entry
+  core_layout --> engine_entry
+  modules_mediastream --> engine_entry
+  core_dom --> binding
+  modules_serviceworker --> modules_workers
+  modules_workers --> engine_entry
+  core_cdp --> engine_entry
+  core_dom_svg --> core_dom
+  modules_serviceworker --> core_dom
+  core_layout --> modules_canvas
+  modules_web_apis --> core_dom
+  platform_multimedia --> modules_runtime
+  core_cdp --> core_dom
+  core_dom --> core_style
+  platform_canvas --> modules_canvas
+  core_dom_svg --> core_style
+  modules_media --> core_dom
+  binding --> core_dom
+  core_dom_canvas --> core_dom
+  core_util --> engine_entry
+  core_animation --> core_style
+  core_dom_parser --> core_dom
+  platform_base --> modules_runtime
+  public_embedder_api --> engine_entry
+  modules_canvas --> engine_entry
+  modules_indexeddb --> core_dom
+  modules_runtime --> engine_entry
+  platform_network_loader --> engine_entry
+  core_extras --> core_dom
+  core_fetch --> binding
+  core_storage_fileapi --> engine_entry
+  support_tools --> public_embedder_api
+  engine_entry --> core_util
+  core_csp --> engine_entry
+  shell --> public_embedder_api
+  engine_entry --> support_vendor_robin_map

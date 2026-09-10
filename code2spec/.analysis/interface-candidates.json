@@ -1,0 +1,1833 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-27T01:04:22Z",
+  "analysis_target": "/home/hwang/work/D/starfish_",
+  "output_dir": "/home/hwang/work/D/starfish_/code2spec/.analysis",
+  "generator": {
+    "name": "interface-candidate-scanner",
+    "version": "0.1.0"
+  },
+  "families": [
+    "message"
+  ],
+  "candidates": [
+    {
+      "id": "iface-msg-58f3d474789f",
+      "family": "message",
+      "kind": "worker_message",
+      "platform": "node",
+      "framework": "web_worker",
+      "mechanism": "postMessage",
+      "name": "postMessage",
+      "normalized_name": "postMessage",
+      "direction": "sends",
+      "origin": "scanner",
+      "verification": "candidate",
+      "confidence": {
+        "label": "low",
+        "score": 0.35,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/dom/picker.js",
+            "line": 48,
+            "symbol": "postMessage",
+            "expression": "\"        frame.contentWindow.postMessage(JSON.stringify(args), '*');\\n\"",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "postMessage",
+          "file": "src/core/dom/picker.js",
+          "line_start": 48,
+          "line_end": 48,
+          "expression": "\"        frame.contentWindow.postMessage(JSON.stringify(args), '*');\\n\"",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "worker_boundary_not_resolved",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-a63159e3642d",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "afterAll",
+      "normalized_name": "afterAll",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5513,
+            "symbol": "emit",
+            "expression": "this.emit('afterAll', hook);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5513,
+          "line_end": 5513,
+          "expression": "this.emit('afterAll', hook);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-36b2089bfbbd",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "afterEach",
+      "normalized_name": "afterEach",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5567,
+            "symbol": "emit",
+            "expression": "this.emit('afterEach', hook);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5567,
+          "line_end": 5567,
+          "expression": "this.emit('afterEach', hook);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-90cafeeae9b6",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "beforeAll",
+      "normalized_name": "beforeAll",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5486,
+            "symbol": "emit",
+            "expression": "this.emit('beforeAll', hook);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5486,
+          "line_end": 5486,
+          "expression": "this.emit('beforeAll', hook);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-5eee9b3dc845",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "beforeEach",
+      "normalized_name": "beforeEach",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5540,
+            "symbol": "emit",
+            "expression": "this.emit('beforeEach', hook);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5540,
+          "line_end": 5540,
+          "expression": "this.emit('beforeEach', hook);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-1946a97062e2",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "end",
+      "normalized_name": "end",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 4824,
+            "symbol": "emit",
+            "expression": "this.emit('end');",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 4824,
+          "line_end": 4824,
+          "expression": "this.emit('end');",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-44f57df882e9",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "end",
+      "normalized_name": "end",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5177,
+            "symbol": "emit",
+            "expression": "this.emit('end');",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5177,
+          "line_end": 5177,
+          "expression": "this.emit('end');",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-ee85dc656d89",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "end",
+      "normalized_name": "end",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5203,
+            "symbol": "emit",
+            "expression": "self.emit('end');",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5203,
+          "line_end": 5203,
+          "expression": "self.emit('end');",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-e45e9be0bb74",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "error",
+      "normalized_name": "error",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 4502,
+            "symbol": "emit",
+            "expression": "self.emit('error', err || new Error('done() called multiple times; stacktrace may be inaccurate'));",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 4502,
+          "line_end": 4502,
+          "expression": "self.emit('error', err || new Error('done() called multiple times; stacktrace may be inaccurate'));",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-ffcf4fb96aa2",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "fail",
+      "normalized_name": "fail",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 4797,
+            "symbol": "emit",
+            "expression": "this.emit('fail', test, err);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 4797,
+          "line_end": 4797,
+          "expression": "this.emit('fail', test, err);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-fa458f4ecc5b",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "hook",
+      "normalized_name": "hook",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 4849,
+            "symbol": "emit",
+            "expression": "self.emit('hook', hook);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 4849,
+          "line_end": 4849,
+          "expression": "self.emit('hook', hook);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-e0a4b37bf291",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "hook end",
+      "normalized_name": "hook end",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 4869,
+            "symbol": "emit",
+            "expression": "self.emit('hook end', hook);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 4869,
+          "line_end": 4869,
+          "expression": "self.emit('hook end', hook);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-75b03b58e55d",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "pass",
+      "normalized_name": "pass",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5076,
+            "symbol": "emit",
+            "expression": "self.emit('pass', test);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5076,
+          "line_end": 5076,
+          "expression": "self.emit('pass', test);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-44c64fbbacce",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "pending",
+      "normalized_name": "pending",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5040,
+            "symbol": "emit",
+            "expression": "self.emit('pending', test);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5040,
+          "line_end": 5040,
+          "expression": "self.emit('pending', test);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-09fb2dc6638f",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "pending",
+      "normalized_name": "pending",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5050,
+            "symbol": "emit",
+            "expression": "self.emit('pending', test);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5050,
+          "line_end": 5050,
+          "expression": "self.emit('pending', test);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-679ee107e4a4",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "pending",
+      "normalized_name": "pending",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5062,
+            "symbol": "emit",
+            "expression": "self.emit('pending', test);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5062,
+          "line_end": 5062,
+          "expression": "self.emit('pending', test);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-8b06648dcf76",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "post-require",
+      "normalized_name": "post-require",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 1597,
+            "symbol": "emit",
+            "expression": "suite.emit('post-require', global, file, self);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 1597,
+          "line_end": 1597,
+          "expression": "suite.emit('post-require', global, file, self);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-0c7fff7fcb08",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "pre-require",
+      "normalized_name": "pre-require",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 1595,
+            "symbol": "emit",
+            "expression": "suite.emit('pre-require', global, file, self);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 1595,
+          "line_end": 1595,
+          "expression": "suite.emit('pre-require', global, file, self);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-293aa5ddd360",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "pre-require",
+      "normalized_name": "pre-require",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 6522,
+            "symbol": "emit",
+            "expression": "this.suite.emit('pre-require', global, null, this);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 6522,
+          "line_end": 6522,
+          "expression": "this.suite.emit('pre-require', global, null, this);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-b8e6efeefe4c",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "require",
+      "normalized_name": "require",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 1596,
+            "symbol": "emit",
+            "expression": "suite.emit('require', require(file), file, self);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 1596,
+          "line_end": 1596,
+          "expression": "suite.emit('require', require(file), file, self);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-94229ea11d6f",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "run",
+      "normalized_name": "run",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5661,
+            "symbol": "emit",
+            "expression": "this.emit('run');",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5661,
+          "line_end": 5661,
+          "expression": "this.emit('run');",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-908b31288e65",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "start",
+      "normalized_name": "start",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5200,
+            "symbol": "emit",
+            "expression": "self.emit('start');",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5200,
+          "line_end": 5200,
+          "expression": "self.emit('start');",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-89d49a884b49",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "suite",
+      "normalized_name": "suite",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5105,
+            "symbol": "emit",
+            "expression": "this.emit('suite', this.suite = suite);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5105,
+          "line_end": 5105,
+          "expression": "this.emit('suite', this.suite = suite);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-59e2425890b7",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "suite",
+      "normalized_name": "suite",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5586,
+            "symbol": "emit",
+            "expression": "this.emit('suite', suite);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5586,
+          "line_end": 5586,
+          "expression": "this.emit('suite', suite);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-9b7126fc6bd0",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "suite end",
+      "normalized_name": "suite end",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5131,
+            "symbol": "emit",
+            "expression": "self.emit('suite end', suite);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5131,
+          "line_end": 5131,
+          "expression": "self.emit('suite end', suite);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-43b01ca715e1",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "test",
+      "normalized_name": "test",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5046,
+            "symbol": "emit",
+            "expression": "self.emit('test', self.test = test);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5046,
+          "line_end": 5046,
+          "expression": "self.emit('test', self.test = test);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-fca6ecd24421",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "test",
+      "normalized_name": "test",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5605,
+            "symbol": "emit",
+            "expression": "this.emit('test', test);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5605,
+          "line_end": 5605,
+          "expression": "this.emit('test', test);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-28ee3b9bbbe3",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "test end",
+      "normalized_name": "test end",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 2764,
+            "symbol": "emit",
+            "expression": "if ('hook' == test.type) runner.emit('test end', test);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 2764,
+          "line_end": 2764,
+          "expression": "if ('hook' == test.type) runner.emit('test end', test);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-1e5b95109957",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "test end",
+      "normalized_name": "test end",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5041,
+            "symbol": "emit",
+            "expression": "self.emit('test end', test);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5041,
+          "line_end": 5041,
+          "expression": "self.emit('test end', test);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-fa609e0ea67e",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "test end",
+      "normalized_name": "test end",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5051,
+            "symbol": "emit",
+            "expression": "self.emit('test end', test);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5051,
+          "line_end": 5051,
+          "expression": "self.emit('test end', test);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-2c58590e0906",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "test end",
+      "normalized_name": "test end",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5066,
+            "symbol": "emit",
+            "expression": "self.emit('test end', test);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5066,
+          "line_end": 5066,
+          "expression": "self.emit('test end', test);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-f472c462a7b2",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "test end",
+      "normalized_name": "test end",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5077,
+            "symbol": "emit",
+            "expression": "self.emit('test end', test);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5077,
+          "line_end": 5077,
+          "expression": "self.emit('test end', test);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-a5b85091e0b2",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "test end",
+      "normalized_name": "test end",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5171,
+            "symbol": "emit",
+            "expression": "this.emit('test end', runnable);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5171,
+          "line_end": 5171,
+          "expression": "this.emit('test end', runnable);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    },
+    {
+      "id": "iface-msg-ab75eb29a78a",
+      "family": "message",
+      "kind": "event_name",
+      "platform": "unknown",
+      "framework": "unknown",
+      "mechanism": "generic_emit",
+      "name": "waiting",
+      "normalized_name": "waiting",
+      "direction": "unknown",
+      "origin": "scanner",
+      "verification": "low",
+      "confidence": {
+        "label": "low",
+        "score": 0.2,
+        "reasons": [
+          "generic_api"
+        ]
+      },
+      "promotion": "analysis_only",
+      "needs_human_review": true,
+      "participants": {
+        "sender": [
+          {
+            "role": "sender",
+            "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+            "line": 5222,
+            "symbol": "emit",
+            "expression": "this.emit('waiting', rootSuite);",
+            "module": "",
+            "confidence": "candidate"
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "type": "generic_api",
+          "label": "emit",
+          "file": "src/core/modules/serviceworker/cache/deps/cache-storage/test/mocha.js",
+          "line_start": 5222,
+          "line_end": 5222,
+          "expression": "this.emit('waiting', rootSuite);",
+          "source": "source_scan",
+          "strength": "low"
+        }
+      ],
+      "module_refs": [],
+      "unresolved": [
+        "no_known_framework_import",
+        "no_matching_receiver"
+      ],
+      "notes": []
+    }
+  ],
+  "metrics": {
+    "total": 34,
+    "by_verification": {
+      "candidate": 1,
+      "low": 33
+    },
+    "by_family": {
+      "message": 34
+    },
+    "message": {
+      "total": 34,
+      "confirmed": 0,
+      "likely": 0,
+      "candidate": 1
+    }
+  }
+}

@@ -1,0 +1,5 @@
+# code2spec scan overrides — read after .gitignore, later rules win.
+# .gitignore ignores `core` (core-dump files); the code2spec exporter matches
+# ignore entries as plain directory names, which wrongly skips src/core and
+# cannot apply the `!src/core` negation. Re-include `core` here.
+!core

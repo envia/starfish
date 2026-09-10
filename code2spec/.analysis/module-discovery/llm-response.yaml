@@ -1,0 +1,195 @@
+modules:
+  - name: "core-dom"
+    include:
+      - "src/core/dom"
+    exclude:
+      - "src/core/dom/svg"
+      - "src/core/dom/canvas"
+      - "src/core/dom/parser"
+    rationale: "DOM tree/node/element/event implementation directory (keywords: element, event, node, document); svg/canvas/parser subtrees split out as their own review surfaces; builder/ and xml/ leaf helpers stay with the DOM directory"
+    confidence: 0.92
+  - name: "core-dom-svg"
+    include:
+      - "src/core/dom/svg"
+    rationale: "SVG element DOM subtree (SVGAngle, SVGAnimateElement, ...) is a large self-contained sibling directory (125 files)"
+    confidence: 0.93
+  - name: "core-dom-canvas"
+    include:
+      - "src/core/dom/canvas"
+    rationale: "Canvas 2D rendering-context DOM directory including its webgl/ subdirectory (WebGL2RenderingContext, shaders, buffers)"
+    confidence: 0.92
+  - name: "core-dom-parser"
+    include:
+      - "src/core/dom/parser"
+    rationale: "HTML tokenizer/parser/construction-site directory (AtomicHTMLToken, HTMLConstructionSite) is a distinct parsing surface"
+    confidence: 0.92
+  - name: "core-style"
+    include:
+      - "src/core/style"
+    rationale: "CSS style system directory (style, value, media, query, border keywords), single cohesive surface"
+    confidence: 0.93
+  - name: "core-layout"
+    include:
+      - "src/core/layout"
+    rationale: "Layout engine directory (Frame, box, block, inline) including its svg/ layout subdirectory which shares the Frame* naming"
+    confidence: 0.92
+  - name: "core-cdp"
+    include:
+      - "src/core/cdp"
+    rationale: "Chrome DevTools Protocol server directory (CDPServer, dispatcher, connection) with per-domain handlers in domains/"
+    confidence: 0.92
+  - name: "core-util"
+    include:
+      - "src/core/util"
+    rationale: "Core utility directory (string/text pools, Archivable/Archiver) plus its debug/ leaf"
+    confidence: 0.9
+  - name: "core-page"
+    include:
+      - "src/core/page"
+    rationale: "Page/window/navigator and accessibility tree directory (WebView, Window, A11y*)"
+    confidence: 0.9
+  - name: "core-fetch"
+    include:
+      - "src/core/fetch"
+    rationale: "Fetch API directory (Fetch, Body, headers, request/response)"
+    confidence: 0.9
+  - name: "core-animation"
+    include:
+      - "src/core/animation"
+    rationale: "Animation directory (Animation, AnimatedValue, timing, executor)"
+    confidence: 0.9
+  - name: "core-storage-fileapi"
+    include:
+      - "src/core/storage"
+      - "src/core/fileapi"
+    rationale: "Two small sibling persistence-API directories (Web Storage and File API) merged as one review surface"
+    confidence: 0.85
+  - name: "core-csp"
+    include:
+      - "src/core/csp"
+    rationale: "Content-Security-Policy directory kept separate for security review visibility despite small size"
+    confidence: 0.85
+  - name: "core-extras"
+    include:
+      - "src/core/extra"
+      - "src/core/serialize"
+      - "src/core/xml"
+      - "src/core/inspector"
+      - "src/core/event"
+    rationale: "Small sibling leaf directories under src/core (extra, serialize, xml, inspector, event) merged as one support review surface instead of five tiny modules"
+    confidence: 0.8
+  - name: "modules-serviceworker"
+    include:
+      - "src/core/modules/serviceworker"
+    rationale: "ServiceWorker feature directory with host/ and client/ process-side subtrees (registration, job, fetch, message keywords)"
+    confidence: 0.92
+  - name: "modules-workers"
+    include:
+      - "src/core/modules/worker"
+      - "src/core/modules/sharedworker"
+    rationale: "Dedicated worker and shared worker sibling directories are one workers review surface (worker, host, proxy, message port keywords; sharedworker contains IPCConnection/IPCMessageHandler)"
+    confidence: 0.88
+  - name: "modules-mediastream"
+    include:
+      - "src/core/modules/mediastream"
+    rationale: "MediaStream/WebRTC directory (rtp, ice, peer, connection, track keywords)"
+    confidence: 0.92
+  - name: "modules-canvas"
+    include:
+      - "src/core/modules/canvas"
+    rationale: "Canvas compositing/filter module directory (BlendMode, shadow, filter/ subdirectory with color-matrix/composite filters)"
+    confidence: 0.9
+  - name: "modules-indexeddb"
+    include:
+      - "src/core/modules/indexeddb"
+    rationale: "IndexedDB directory (IDBBackingStore, database, cursor, connection)"
+    confidence: 0.92
+  - name: "modules-media"
+    include:
+      - "src/core/modules/webaudio"
+      - "src/core/modules/mediasource"
+    rationale: "Two small sibling media-API directories (Web Audio, Media Source Extensions) merged as one media review surface"
+    confidence: 0.82
+  - name: "modules-runtime"
+    include:
+      - "src/core/modules/threading"
+      - "src/core/modules/message_loop"
+      - "src/core/modules/profiling"
+      - "src/core/modules/renderer"
+    rationale: "Engine-runtime support sibling directories under modules (threading, message_loop, profiling, renderer) grouped as one infrastructure surface"
+    confidence: 0.78
+  - name: "modules-web-apis"
+    include:
+      - "src/core/modules/cast"
+      - "src/core/modules/location"
+      - "src/core/modules/networking"
+      - "src/core/modules/tts"
+      - "src/core/modules/resize_observer"
+      - "src/core/modules/resource_request"
+      - "src/core/modules/battery"
+      - "src/core/modules/crypto"
+    rationale: "Remaining small sibling web-API feature directories (cast, location, networking/WebSocket, tts, resize_observer, resource_request, battery, crypto) merged as one review surface to avoid eight tiny modules"
+    confidence: 0.75
+  - name: "platform-multimedia"
+    include:
+      - "src/platform/multimedia"
+    rationale: "Platform media player/demuxer directory (player, demuxer, audio, tizen/linux backends)"
+    confidence: 0.9
+  - name: "platform-canvas"
+    include:
+      - "src/platform/canvas"
+    rationale: "Platform canvas/graphics backend directory"
+    confidence: 0.9
+  - name: "platform-network-loader"
+    include:
+      - "src/platform/network"
+      - "src/platform/loader"
+    rationale: "Network stack (curl/http) and the resource loader that consumes it are adjacent sibling directories forming one loading surface"
+    confidence: 0.82
+  - name: "platform-base"
+    include:
+      - "src/platform/message_loop"
+      - "src/platform/file"
+      - "src/platform/public"
+      - "src/platform/process"
+      - "src/platform/tts"
+      - "src/platform/feedback"
+      - "src/platform/event"
+      - "src/platform/windows"
+    rationale: "Small sibling platform service directories (message loop, file, process launch, tts, feedback, event, windows) merged as the platform base-services surface"
+    confidence: 0.78
+  - name: "public-embedder-api"
+    include:
+      - "src/public"
+      - "inc"
+      - "compat"
+    rationale: "Public embedder API implementation (src/public/LWEWebView.cpp, bridge/, delegate/, contract/) with its exported headers inc/LWEWebView.h, inc/LWEWorker.h and the compat/tizen_5.0 header copy — strong LWEWebView name match across directories"
+    confidence: 0.88
+  - name: "binding"
+    include:
+      - "src/binding"
+    rationale: "JS engine custom binding directory (CustomBinding, Holdable naming)"
+    confidence: 0.9
+  - name: "shell"
+    include:
+      - "src/shell"
+    rationale: "Windowing/shell port directories (efl, glib, libuv, x11, windows, headless, dummy); shell/test stays with its directory module"
+    confidence: 0.88
+  - name: "engine-entry"
+    include:
+      - "src/*"
+      - "src/browser"
+      - "src/launcher"
+    rationale: "Engine bootstrap/config root files (Starfish.cpp/h, StarfishConfig.h, StaticStrings, StoragePathProvider) plus the tiny browser/ and launcher/ app directories"
+    confidence: 0.8
+  - name: "support-tools"
+    include:
+      - "tool"
+      - "docs"
+    rationale: "Developer tooling (drivers, wpt, runner, perf_tools, pixel_test, coverage, lint, ci, reftest, imgdiff) and docs generator/webpages — support artifacts, not product domain modules"
+    confidence: 0.85
+  - name: "support-vendor-robin-map"
+    include:
+      - "third_party/robin_map"
+    rationale: "Vendored third-party hash-map library — support/vendor artifact, not a business module"
+    confidence: 0.9

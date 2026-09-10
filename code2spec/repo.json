@@ -1,0 +1,30 @@
+{
+  "repoRoot": "/home/hwang/work/D/starfish_",
+  "outDir": "/home/hwang/work/D/starfish_/code2spec",
+  "host": "github.sec.samsung.net",
+  "ownerPath": "jh1984-hwang",
+  "ownerSlug": "jh1984-hwang",
+  "repo": "starfish",
+  "branch": "master",
+  "defaultBranch": "master",
+  "remoteUrl": "git@github.sec.samsung.net:jh1984-hwang/starfish.git",
+  "deepLink": {
+    "type": "github",
+    "base": "https://github.sec.samsung.net/jh1984-hwang/starfish/blob/master",
+    "suffix": "",
+    "lineAnchorPrefix": "#L"
+  },
+  "topLevelEntries": [
+    "README.md",
+    "01-introduction.md",
+    "02-architecture.md",
+    "03-design-patterns.md",
+    "04-data-layer.md",
+    "05-external-interfaces.md",
+    "06-configuration-deployment.md",
+    "07-resources.md",
+    "08-security-quality.md",
+    "09-ipc-enum-catalog.md"
+  ],
+  "generatedAt": "2026-08-27T01:17:26.604Z"
+}

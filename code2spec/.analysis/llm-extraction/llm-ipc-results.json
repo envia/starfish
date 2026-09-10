@@ -1,0 +1,385 @@
+[
+  {
+    "mechanism": "socket",
+    "name": "CDPServer::acceptLoop",
+    "source_component": "CDPServer (DevTools server IO thread)",
+    "target_component": "DevTools frontend (CDP client, e.g. Chrome DevTools/puppeteer)",
+    "data": "Creates AF_INET SOCK_STREAM TCP listen socket, setsockopt(SO_REUSEADDR), bind()/listen() on configured port, then accept() loop; each accepted fd becomes a CDPConnection pumped until close; on client disconnect notifies dispatcher->onConnectionClosed(). Log: 'cdp: devtools server listening on port %d'.",
+    "language": "cpp",
+    "source": "[Source: src/core/cdp/CDPServer.cpp:97]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "CDPConnection::CDPConnection",
+    "source_component": "CDPConnection (CDPServer per-client handler)",
+    "target_component": "DevTools frontend (CDP client)",
+    "data": "Per-connection handler over the accepted TCP fd; serves HTTP discovery endpoints (/json/version, /json, /json/list returning Browser/Protocol-Version and webSocketDebuggerUrl ws://127.0.0.1:<port>/) and performs RFC6455 WebSocket handshake (GUID 258EAFA5-E914-47DA-95CA-C5AB0DC85B11) to carry CDP JSON; writes via send(fd, ..., MSG_NOSIGNAL), closes fd in destructor.",
+    "language": "cpp",
+    "source": "[Source: src/core/cdp/CDPConnection.cpp:39]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "CDPCommand::emit",
+    "source_component": "CDPCommand/CDPDispatcher (Starfish CDP backend)",
+    "target_component": "DevTools frontend (CDP client)",
+    "data": "Serializes a rapidjson CDP response/event document (adding sessionId when present) and sends the UTF-8 JSON text via CDPServer::sendText -> CDPConnection over the DevTools socket. Used by sendResult()/sendResultEmpty()/sendEvent().",
+    "language": "cpp",
+    "source": "[Source: src/core/cdp/CDPCommand.cpp:42]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "CDPDispatcher::route",
+    "source_component": "DevTools frontend (CDP client)",
+    "target_component": "CDPDispatcher domain handlers (Starfish)",
+    "data": "Routes each incoming CDP command (domain.method with CDPCommand payload) to per-domain processMessage handlers: Target, Page, Runtime, DOM, DOMDebugger, Log, Network, Fetch, Input, Emulation, CSS, DOMSnapshot, DOMStorage, Storage, Accessibility, Performance, Memory, Animation, Tracing, Overlay, plus inline IO.read/IO.close stream support for Page.printToPDF ReturnAsStream (drained by puppeteer).",
+    "language": "cpp",
+    "source": "[Source: src/core/cdp/CDPDispatcher.cpp:390]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "CDPDispatcher::onConnectionClosed",
+    "source_component": "CDPServer accept loop (IO thread)",
+    "target_component": "CDPDispatcher (main thread session state)",
+    "data": "Invoked when the DevTools client's socket connection closes; resets connection-scoped CDP session state on the main thread so the next client gets a fresh attach handshake (otherwise browser.pages() is empty on reconnect).",
+    "language": "cpp",
+    "source": "[Source: src/core/cdp/CDPDispatcher.cpp:214]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "CDPDispatcher::emitConsoleForWebView",
+    "source_component": "Starfish page console API (per WebView)",
+    "target_component": "DevTools frontend (CDP client)",
+    "data": "Builds a Runtime.consoleAPICalled event (level, args array of {type,value}, executionContextId) for the session owning the WebView and sends it over the CDP connection via CDPCommand::sendEvent.",
+    "language": "cpp",
+    "source": "[Source: src/core/cdp/CDPDispatcher.cpp:1594]",
+    "message_ids": [
+      {
+        "id": "Runtime.consoleAPICalled",
+        "value": "Runtime.consoleAPICalled",
+        "direction": "Server→Client",
+        "payload": "type/level, args ({type,value} list), executionContextId",
+        "handler": "CDPDispatcher::emitConsoleForWebView"
+      }
+    ]
+  },
+  {
+    "mechanism": "socket",
+    "name": "CDPDispatcher::emitBindingCalled",
+    "source_component": "Page JavaScript binding call (WebView)",
+    "target_component": "DevTools frontend (CDP client)",
+    "data": "Routes to the TargetContext/session owning the originating WebView and, when runtimeEnabled, emits Runtime.bindingCalled with params {name, payload, executionContextId}.",
+    "language": "cpp",
+    "source": "[Source: src/core/cdp/CDPDispatcher.cpp:1701]",
+    "message_ids": [
+      {
+        "id": "Runtime.bindingCalled",
+        "value": "Runtime.bindingCalled",
+        "direction": "Server→Client",
+        "payload": "name, payload string, executionContextId",
+        "handler": "CDPDispatcher::emitBindingCalled"
+      }
+    ]
+  },
+  {
+    "mechanism": "socket",
+    "name": "bindingNativeCallback (RuntimeDomain)",
+    "source_component": "Page JavaScript (window[name](payload) call)",
+    "target_component": "DevTools frontend (CDP client)",
+    "data": "Native callback installed by Runtime.addBinding: resolves the originating WebView from the executing global object, extracts the string payload argument, and forwards it via cdpServer()->dispatcher()->emitBindingCalled (Runtime.bindingCalled). Returns undefined to page JS; puppeteer's helper tracks the result via a separate callback.",
+    "language": "cpp",
+    "source": "[Source: src/core/cdp/domains/RuntimeDomain.cpp:289]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "RuntimeDomain::injectBinding",
+    "source_component": "DevTools frontend (Runtime.addBinding command)",
+    "target_component": "Page JavaScript global object",
+    "data": "Defines a native window[name] function (with BindingExtra name) in the page's script context; calls to it are relayed back to the DevTools client as Runtime.bindingCalled events. Re-injected on navigation by PageDomain::finishNavigation.",
+    "language": "cpp",
+    "source": "[Source: src/core/cdp/domains/RuntimeDomain.cpp:320]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "RuntimeDomain::processMessage",
+    "source_component": "DevTools frontend (CDP client)",
+    "target_component": "RuntimeDomain (Starfish)",
+    "data": "Handles incoming CDP Runtime.* commands: processMessage(CDPCommand& cmd, const std::string& method); replies over the DevTools connection via CDPCommand.",
+    "language": "cpp",
+    "source": "[Source: src/core/cdp/domains/RuntimeDomain.cpp:67]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "RuntimeDomain::callFunctionOn",
+    "source_component": "DevTools frontend (CDP client)",
+    "target_component": "Page JavaScript context (via RuntimeDomain)",
+    "data": "CDP Runtime callFunctionOn handler: callFunctionOn(WebView* wv, BrowsingContext* bc, CDPCommand& cmd) executes a function on a remote object in the page context and returns the result over the DevTools connection.",
+    "language": "cpp",
+    "source": "[Source: src/core/cdp/domains/RuntimeDomain.cpp:458]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "RuntimeDomain::compileScript",
+    "source_component": "DevTools frontend (CDP client)",
+    "target_component": "Page JavaScript context (via RuntimeDomain)",
+    "data": "CDP Runtime compileScript handler: compileScript(WebView* wv, BrowsingContext* bc, CDPCommand& cmd) compiles script source in the page context and replies via CDPCommand.",
+    "language": "cpp",
+    "source": "[Source: src/core/cdp/domains/RuntimeDomain.cpp:623]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "RuntimeDomain::getProperties",
+    "source_component": "DevTools frontend (CDP client)",
+    "target_component": "Page JavaScript context (via RuntimeDomain)",
+    "data": "CDP Runtime getProperties handler: getProperties(WebView* wv, BrowsingContext* bc, CDPCommand& cmd) inspects a remote object's properties and replies via CDPCommand.",
+    "language": "cpp",
+    "source": "[Source: src/core/cdp/domains/RuntimeDomain.cpp:753]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "RuntimeDomain::globalLexicalScopeNames",
+    "source_component": "DevTools frontend (CDP client)",
+    "target_component": "Page JavaScript context (via RuntimeDomain)",
+    "data": "CDP Runtime globalLexicalScopeNames handler: globalLexicalScopeNames(WebView* wv, CDPCommand& cmd) returns global lexical scope names via CDPCommand.",
+    "language": "cpp",
+    "source": "[Source: src/core/cdp/domains/RuntimeDomain.cpp:845]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "RuntimeDomain::evaluateSource",
+    "source_component": "DevTools frontend (CDP client)",
+    "target_component": "Page JavaScript context (via RuntimeDomain)",
+    "data": "CDP Runtime evaluate implementation: evaluateSource(WebView* wv, BrowsingContext* bc, const std::string& exprStr, bool returnByValue, bool awaitPromise, CDPCommand& cmd) evaluates an expression string in the browsing context and replies over the DevTools connection.",
+    "language": "cpp",
+    "source": "[Source: src/core/cdp/domains/RuntimeDomain.cpp:892]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "DOMDomain::processMessage",
+    "source_component": "DevTools frontend (CDP client)",
+    "target_component": "DOMDomain (Starfish)",
+    "data": "Handles incoming CDP DOM.* commands: processMessage(CDPCommand& cmd, const std::string& method).",
+    "language": "cpp",
+    "source": "[Source: src/core/cdp/domains/DOMDomain.cpp:87]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "DOMDebuggerDomain::processMessage",
+    "source_component": "DevTools frontend (CDP client)",
+    "target_component": "DOMDebuggerDomain (Starfish)",
+    "data": "Handles incoming CDP DOMDebugger.* commands: processMessage(CDPCommand& cmd, const std::string& method).",
+    "language": "cpp",
+    "source": "[Source: src/core/cdp/domains/DOMDebuggerDomain.cpp:58]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "TracingDomain::processMessage",
+    "source_component": "DevTools frontend (CDP client)",
+    "target_component": "TracingDomain (Starfish)",
+    "data": "Handles incoming CDP Tracing.* commands: processMessage(CDPCommand& cmd, const std::string& method).",
+    "language": "cpp",
+    "source": "[Source: src/core/cdp/domains/TracingDomain.cpp:71]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "PageDomain::finishNavigation",
+    "source_component": "PageDomain (Starfish)",
+    "target_component": "DevTools frontend (CDP client)",
+    "data": "On navigation completion for a CDP session: evaluates Page.addScriptToEvaluateOnNewDocument scripts before page script runs, re-injects Runtime.addBinding bindings into the new document's main world, resets node/remote-object handle registries and child frames, and (when pageEnabled) builds and emits a frame lifecycle event with the frame object to the client.",
+    "language": "cpp",
+    "source": "[Source: src/core/cdp/domains/PageDomain.cpp:1120]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "initDebuggerIfNeeds",
+    "source_component": "ScriptBindingInstance (Starfish window script context)",
+    "target_component": "Remote script debugger client (Escargot debugger protocol)",
+    "data": "When STARFISH_ENABLE_DEBUGGER is defined: for window contexts with scripting enabled, asks the WebView host via DebuggerShouldInit handler (url, port), then starts the Escargot script debugger server with startDebugger(port, 1000), listening on TCP port starting at 6501 for the top-level browsing context and incrementing per context.",
+    "language": "cpp",
+    "source": "[Source: src/binding/ScriptWrappable.cpp:1431]"
+  },
+  {
+    "mechanism": "nanomsg",
+    "name": "Inspector::worker",
+    "source_component": "Inspector (WebView remote inspection thread)",
+    "target_component": "Remote inspector client (nanomsg NN_PAIR peer)",
+    "data": "Creates nn::socket(AF_SP, NN_PAIR), binds to the configured address, then recv(NN_MSG, NN_DONTWAIT) loop parsing JSON {\"command\", \"content\"}: 'ping' is answered with {\"command\":\"pong\"}; 'eval' evaluates JavaScript in the WebView (via commandEvaluator on the main loop) and returns the result as a console-info message.",
+    "language": "cpp",
+    "source": "[Source: src/core/inspector/Inspector.cpp:197]",
+    "message_ids": [
+      {
+        "id": "ping",
+        "value": "ping",
+        "direction": "Client→Server",
+        "payload": "JSON {\"command\":\"ping\"}",
+        "handler": "Inspector::worker"
+      },
+      {
+        "id": "pong",
+        "value": "pong",
+        "direction": "Server→Client",
+        "payload": "JSON {\"command\":\"pong\"}",
+        "handler": "Inspector::worker"
+      },
+      {
+        "id": "eval",
+        "value": "eval",
+        "direction": "Client→Server",
+        "payload": "JSON {\"command\":\"eval\",\"content\":<JS source>}; result returned as console-info",
+        "handler": "Inspector::commandEvaluator"
+      }
+    ]
+  },
+  {
+    "mechanism": "nanomsg",
+    "name": "Inspector::sendInfoMessage",
+    "source_component": "Inspector (Starfish WebView)",
+    "target_component": "Remote inspector client (nanomsg NN_PAIR peer)",
+    "data": "Sends JSON {\"command\":\"console-info\",\"content\":<message text>} over the nanomsg NN_PAIR socket (m_nnmSocket->send).",
+    "language": "cpp",
+    "source": "[Source: src/core/inspector/Inspector.cpp:58]",
+    "message_ids": [
+      {
+        "id": "console-info",
+        "value": "console-info",
+        "direction": "Server→Client",
+        "payload": "console info text (content field)",
+        "handler": "Inspector::sendInfoMessage"
+      }
+    ]
+  },
+  {
+    "mechanism": "nanomsg",
+    "name": "Inspector::sendErrorMessage",
+    "source_component": "Inspector (Starfish WebView)",
+    "target_component": "Remote inspector client (nanomsg NN_PAIR peer)",
+    "data": "Sends JSON {\"command\":\"console-error\",\"content\":<message text>} over the nanomsg NN_PAIR socket.",
+    "language": "cpp",
+    "source": "[Source: src/core/inspector/Inspector.cpp:89]",
+    "message_ids": [
+      {
+        "id": "console-error",
+        "value": "console-error",
+        "direction": "Server→Client",
+        "payload": "console error text (content field)",
+        "handler": "Inspector::sendErrorMessage"
+      }
+    ]
+  },
+  {
+    "mechanism": "nanomsg",
+    "name": "Inspector::sendWarnMessage",
+    "source_component": "Inspector (Starfish WebView)",
+    "target_component": "Remote inspector client (nanomsg NN_PAIR peer)",
+    "data": "Sends JSON {\"command\":\"console-warn\",\"content\":<message text>} over the nanomsg NN_PAIR socket.",
+    "language": "cpp",
+    "source": "[Source: src/core/inspector/Inspector.cpp:120]",
+    "message_ids": [
+      {
+        "id": "console-warn",
+        "value": "console-warn",
+        "direction": "Server→Client",
+        "payload": "console warning text (content field)",
+        "handler": "Inspector::sendWarnMessage"
+      }
+    ]
+  },
+  {
+    "mechanism": "nanomsg",
+    "name": "Inspector::sendDebugMessage",
+    "source_component": "Inspector (Starfish WebView)",
+    "target_component": "Remote inspector client (nanomsg NN_PAIR peer)",
+    "data": "Sends JSON {\"command\":\"console-debug\",\"content\":<message text>} over the nanomsg NN_PAIR socket.",
+    "language": "cpp",
+    "source": "[Source: src/core/inspector/Inspector.cpp:151]",
+    "message_ids": [
+      {
+        "id": "console-debug",
+        "value": "console-debug",
+        "direction": "Server→Client",
+        "payload": "console debug text (content field)",
+        "handler": "Inspector::sendDebugMessage"
+      }
+    ]
+  },
+  {
+    "mechanism": "socket",
+    "name": "SSDPRunnable::initSocket",
+    "source_component": "SSDPRunnable (Starfish cast module)",
+    "target_component": "SSDP multicast group / cast sender devices on local network",
+    "data": "Creates UDP socket (AF_INET, SOCK_DGRAM|SOCK_NONBLOCK|SOCK_CLOEXEC) with SO_REUSEADDR, binds to SSDP_GROUP:SSDP_PORT and joins the IP multicast group (IP_ADD_MEMBERSHIP with the local interface address) to receive SSDP M-SEARCH discovery requests and answer with M-SEARCH responses pointing at the DIAL location URL.",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/cast/SSDPRunnable.cpp:118]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "SSDPRunnable::preRun",
+    "source_component": "SSDPRunnable (Starfish cast module thread)",
+    "target_component": "SSDP multicast group on local network",
+    "data": "Thread pre-run hook: initializes the SSDP UDP multicast socket via initSocket() before the recvfrom/sendto discovery loop (M-SEARCH requests answered with templateMSearchResponse containing local address and LOCATION_PORT).",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/cast/SSDPRunnable.cpp:42]"
+  },
+  {
+    "mechanism": "socket",
+    "name": "DIALRunnable::doRun",
+    "source_component": "DIALRunnable (Starfish cast module, httplib::Server)",
+    "target_component": "DIAL client devices on local network (cast senders)",
+    "data": "Runs an httplib HTTP server listening on the local address at LOCATION_PORT: GET LOCATION_DESC returns the DIAL device description XML with Application-URL header (http://<local>:<port><CAST_APP_URL>); registers CastApplication 'YouTube' (http://www.youtube.com/tv?) DIAL application endpoints; debug builds log all GET/POST paths.",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/cast/DIALRunnable.cpp:43]"
+  },
+  {
+    "mechanism": "websocket",
+    "name": "ExecutionContext::addActiveWebSockets",
+    "source_component": "ExecutionContext (page/worker context)",
+    "target_component": "Remote WebSocket server (Not identifiable from code)",
+    "data": "Registers an active WebSocket client connection with the execution context (guarded by STARFISH_ENABLE_WEBSOCKET); the context tracks all open WebSocket connections for lifecycle management.",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/ExecutionContext.cpp:182]"
+  },
+  {
+    "mechanism": "websocket",
+    "name": "ExecutionContext::disposeActiveWebSockets",
+    "source_component": "ExecutionContext (page/worker context)",
+    "target_component": "Remote WebSocket server (Not identifiable from code)",
+    "data": "On context teardown, disposes (closes) every remaining active WebSocket connection via webSocket->dispose().",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/ExecutionContext.cpp:196]"
+  },
+  {
+    "mechanism": "message_port",
+    "name": "MessageChannel::MessageChannel",
+    "source_component": "JS context creating the channel (port1 holder)",
+    "target_component": "JS context receiving the transferred port (port2 holder)",
+    "data": "Creates two MessagePort objects (port1/port2) and entangles them via MessagePort::entangle, forming a two-way message channel whose ports are transferable to other contexts.",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/MessageChannel.cpp:27]"
+  },
+  {
+    "mechanism": "message_port",
+    "name": "MessagePort::MessagePort",
+    "source_component": "MessagePort endpoint",
+    "target_component": "Entangled MessagePort peer (other JS context)",
+    "data": "Message-port endpoint holding a PortMessageQueue and structured-clone serializer (Serializer::serializeWithTransfer). postMessage(message, transfer) serializes with transfer per the HTML spec and dispatches a MessageEvent on the entangled port; transfer()/transferReceive() ship the port (TransferedMessagePort) to another context, moving queued tasks and re-entangling.",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/MessagePort.cpp:33]"
+  },
+  {
+    "mechanism": "message_port",
+    "name": "MessagePort::setOnmessage",
+    "source_component": "Entangled MessagePort peer (message sender)",
+    "target_component": "This MessagePort's onmessage EventListener",
+    "data": "Registers the 'message' attribute event listener; per spec, the first assignment enables the port message queue as if start() had been called, so queued MessageEvents begin to be delivered.",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/MessagePort.cpp:178]"
+  },
+  {
+    "mechanism": "http_client",
+    "name": "Fetch::fetch",
+    "source_component": "Page JavaScript fetch() API (Fetch, Starfish)",
+    "target_component": "Remote HTTP server (URL from Request; Not identifiable from code)",
+    "data": "fetch(ExecutionContext*, RequestInfo&) and the RequestInit overload (line 133) create a Request and Promise, then Fetch::start() issues the network ResourceRequest. On success, fills Response with status, statusText, redirected, type, mimeType, url, response headers and body stream, fulfilling the promise; on failure rejects with TypeError 'Failed to fetch'.",
+    "language": "cpp",
+    "source": "[Source: src/core/fetch/Fetch.cpp:122]"
+  }
+]

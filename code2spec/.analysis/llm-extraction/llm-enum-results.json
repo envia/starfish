@@ -1,0 +1,1185 @@
+[
+  {
+    "name": "LWEWebView.InitializeOption",
+    "values": ["None", "PreferSeparateThread", "PreferIncrementalGC"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: compat/tizen_5.0/inc/LWEWebView.h:50]"
+  },
+  {
+    "name": "LWEWebView.InitializeOption",
+    "values": ["None", "PreferSeparateThread", "PreferIncrementalGC"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: inc/LWEWebView.h:58]"
+  },
+  {
+    "name": "LWEWorker.WorkerProcessState",
+    "values": ["None", "Terminated"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: inc/LWEWorker.h:44]"
+  },
+  {
+    "name": "PlatformIntegrationData.KeyValue",
+    "values": ["UnidentifiedKey", "AltLeftKey", "AltRightKey", "ControlLeftKey", "ControlRightKey", "CapsLockKey", "FnKey", "FnLockKey", "HyperKey", "MetaKey", "NumLockKey", "ScrollLockKey", "ShiftLeftKey", "ShiftRightKey", "SuperKey", "SymbolKey", "SymbolLockKey", "EnterKey", "TabKey", "ArrowDownKey"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: inc/PlatformIntegrationData.h:7]"
+  },
+  {
+    "name": "PlatformIntegrationData.MouseButtonValue",
+    "values": ["NoButton", "LeftButton", "MiddleButton", "RightButton"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: inc/PlatformIntegrationData.h:239]"
+  },
+  {
+    "name": "PlatformIntegrationData.MouseButtonsValue",
+    "values": ["NoButtonDown", "LeftButtonDown", "RightButtonDown", "MiddleButtonDown"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: inc/PlatformIntegrationData.h:246]"
+  },
+  {
+    "name": "PlatformIntegrationData.TTSMode",
+    "values": ["Default", "Forced"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: inc/PlatformIntegrationData.h:253]"
+  },
+  {
+    "name": "PlatformIntegrationData.WebSecurityMode",
+    "values": ["Enable", "Disable"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: inc/PlatformIntegrationData.h:258]"
+  },
+  {
+    "name": "PlatformIntegrationData.IdleModeJob",
+    "values": ["ClearDrawnBuffers", "ForceGC", "DropDecodedImageBuffer", "ClearFontCache", "IdleModeFull", "IdleModeMiddle", "IdleModeNone"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: inc/PlatformIntegrationData.h:260]"
+  },
+  {
+    "name": "Starfish.StarfishRendererType",
+    "values": ["kOpenGL", "kSoftware", "kHeadless"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/Starfish.h:43]"
+  },
+  {
+    "name": "StarfishBase.NullOptionType",
+    "values": ["NullOption"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/StarfishBase.h:591]"
+  },
+  {
+    "name": "HistoryManager.HistoryManagerOwner",
+    "values": ["OwnerIsWebView", "OwnerIsHTMLIFrame"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/browser/history/HistoryManager.h:119]"
+  },
+  {
+    "name": "DOMException.Code",
+    "values": ["DOM_EXCEPTION", "INDEX_SIZE_ERR", "HIERARCHY_REQUEST_ERR", "WRONG_DOCUMENT_ERR", "INVALID_CHARACTER_ERR", "NO_MODIFICATION_ALLOWED_ERR", "NOT_FOUND_ERR", "NOT_SUPPORTED_ERR", "INUSE_ATTRIBUTE_ERR", "INVALID_STATE_ERR", "SYNTAX_ERR", "INVALID_MODIFICATION_ERR", "NAMESPACE_ERR", "INVALID_ACCESS_ERR", "TYPE_MISMATCH_ERR", "SECURITY_ERR", "NETWORK_ERR", "ABORT_ERR", "URL_MISMATCH_ERR", "QUOTA_EXCEEDED_ERR"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/DOMException.h:29]"
+  },
+  {
+    "name": "Document.VisibilityState",
+    "values": ["VisibilityStateHidden", "VisibilityStateVisible", "VisibilityStatePrerender", "VisibilityStateUnloaded"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/Document.h:78]"
+  },
+  {
+    "name": "Document.DocumentReadyState",
+    "values": ["DocumentReadyStateLoading", "DocumentReadyStateInteractive", "DocumentReadyStateComplete"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/Document.h:85]"
+  },
+  {
+    "name": "Document.CompatibilityMode",
+    "values": ["QuirksMode", "LimitedQuirksMode", "NoQuirksMode", "NoQuirksModeForce"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/Document.h:122]"
+  },
+  {
+    "name": "EventTarget.ErrorArgumentSequence",
+    "values": ["ERROR_ARG_MESSAGE", "ERROR_ARG_SRC", "ERROR_ARG_LINENO", "ERROR_ARG_COLNO", "ERROR_ARG_ERROR", "ERROR_ARG_SIZE"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/EventTarget.cpp:53]"
+  },
+  {
+    "name": "EventTarget.DefaultArgumentSequence",
+    "values": ["DEFAULT_ARG_EVENT", "DEFAULT_ARG_SIZE"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/EventTarget.cpp:62]"
+  },
+  {
+    "name": "EventTarget.GlobalPointingEventKind",
+    "values": ["GlobalPointingEventKindDown", "GlobalPointingEventKindUp", "GlobalPointingEventKindMove"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/EventTarget.h:239]"
+  },
+  {
+    "name": "HTMLMediaElement.NetworkState",
+    "values": ["NETWORK_EMPTY", "NETWORK_IDLE", "NETWORK_LOADING", "NETWORK_NO_SOURCE"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/HTMLMediaElement.h:241]"
+  },
+  {
+    "name": "HTMLMediaElement.ReadyState",
+    "values": ["HAVE_NOTHING", "HAVE_METADATA", "HAVE_CURRENT_DATA", "HAVE_FUTURE_DATA", "HAVE_ENOUGH_DATA"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/HTMLMediaElement.h:248]"
+  },
+  {
+    "name": "HTMLMediaElement.PreloadState",
+    "values": ["PRELOAD_NONE", "PRELOAD_METADATA", "PRELOAD_AUTOMATIC"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/HTMLMediaElement.h:256]"
+  },
+  {
+    "name": "HTMLTableElement.Rules",
+    "values": ["UnsetRules", "NoneRules", "GroupsRules", "RowsRules", "ColsRules", "AllRules"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/HTMLTableElement.h:32]"
+  },
+  {
+    "name": "HTMLTableElement.CellBorders",
+    "values": ["NoBorders", "InsetBorders", "SolidBordersRowsOnly", "SolidBordersColsOnly", "SolidBorders"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/HTMLTableElement.h:41]"
+  },
+  {
+    "name": "HTMLTextEditable.EditStatus",
+    "values": ["None", "PreeditStart", "PreeditEnd", "Commit"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/HTMLTextEditable.h:27]"
+  },
+  {
+    "name": "Node.NodeType",
+    "values": ["ELEMENT_NODE", "ATTRIBUTE_NODE", "TEXT_NODE", "CDATA_SECTION_NODE", "ENTITY_REFERENCE_NODE", "ENTITY_NODE", "PROCESSING_INSTRUCTION_NODE", "COMMENT_NODE", "DOCUMENT_NODE", "DOCUMENT_TYPE_NODE", "DOCUMENT_FRAGMENT_NODE", "NOTATION_NODE"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/Node.h:181]"
+  },
+  {
+    "name": "Node.DocumentPosition",
+    "values": ["DOCUMENT_POSITION_DISCONNECTED", "DOCUMENT_POSITION_PRECEDING", "DOCUMENT_POSITION_FOLLOWING", "DOCUMENT_POSITION_CONTAINS", "DOCUMENT_POSITION_CONTAINED_BY", "DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/Node.h:196]"
+  },
+  {
+    "name": "Node.NodeState",
+    "values": ["NodeStateNormal", "NodeStateActive", "NodeStateFocused", "NodeStateHovered", "NodeStateTarget", "NodeStateLink"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/Node.h:451]"
+  },
+  {
+    "name": "Range.ProcessingType",
+    "values": ["Extract", "Clone", "Delete"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/Range.h:129]"
+  },
+  {
+    "name": "SelectorQuery.ClassElementListBehavior",
+    "values": ["AllElements", "OnlyRoots"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/SelectorQuery.cpp:43]"
+  },
+  {
+    "name": "SelectorQuery.MatchTraverseRootState",
+    "values": ["DoesNotMatchTraverseRoots", "MatchesTraverseRoots"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/SelectorQuery.h:32]"
+  },
+  {
+    "name": "TextTrack.Mode",
+    "values": ["InvalidMode", "Off", "Hidden", "Showing"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/TextTrack.h:36]"
+  },
+  {
+    "name": "TextTrack.Kind",
+    "values": ["InvalidKind", "Subtitles", "Captions", "Descriptions", "Chapters", "Metadata"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/TextTrack.h:43]"
+  },
+  {
+    "name": "HTMLCanvasElement.CanvasContextMode",
+    "values": ["CanvasContextModeNone", "CanvasContextModePlaceHolder", "CanvasContextMode2D", "CanvasContextModeBitmapRenderer", "CanvasContextModeWebGL", "CanvasContextModeWebGL2"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/canvas/HTMLCanvasElement.h:43]"
+  },
+  {
+    "name": "HTMLConstructionSite.Operation",
+    "values": ["Insert", "InsertText", "InsertAlreadyParsedChild", "Reparent", "TakeAllChildren"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/parser/HTMLConstructionSite.h:56]"
+  },
+  {
+    "name": "HTMLConstructionSite.WhitespaceMode",
+    "values": ["WhitespaceUnknown", "NotAllWhitespace", "AllWhitespace"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/parser/HTMLConstructionSite.h:90]"
+  },
+  {
+    "name": "HTMLEntityParser.EntityState",
+    "values": ["Initial", "Number", "MaybeHexLowerCaseX", "MaybeHexUpperCaseX", "Hex", "Decimal", "Named"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/parser/HTMLEntityParser.cpp:197]"
+  },
+  {
+    "name": "HTMLEntitySearch.CompareResult",
+    "values": ["Before", "Prefix", "After"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/parser/HTMLEntitySearch.h:74]"
+  },
+  {
+    "name": "HTMLFormattingElementList.MarkerEntryType",
+    "values": ["MarkerEntry"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/parser/HTMLFormattingElementList.h:69]"
+  },
+  {
+    "name": "HTMLParserIdioms.Sign",
+    "values": ["Positive", "Negative"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/parser/HTMLParserIdioms.h:61]"
+  },
+  {
+    "name": "HTMLParserIdioms.CharacterWidth",
+    "values": ["Likely8Bit", "Force8Bit", "Force16Bit"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/parser/HTMLParserIdioms.h:351]"
+  },
+  {
+    "name": "HTMLToken.Type",
+    "values": ["Uninitialized", "DOCTYPE", "StartTag", "EndTag", "Comment", "Character", "EndOfFile"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/parser/HTMLToken.h:77]"
+  },
+  {
+    "name": "HTMLTokenizer.State",
+    "values": ["DataState", "CharacterReferenceInDataState", "RCDATAState", "CharacterReferenceInRCDATAState", "RAWTEXTState", "ScriptDataState", "PLAINTEXTState", "TagOpenState", "EndTagOpenState", "TagNameState", "RCDATALessThanSignState", "RCDATAEndTagOpenState", "RCDATAEndTagNameState", "RAWTEXTLessThanSignState", "RAWTEXTEndTagOpenState", "RAWTEXTEndTagNameState", "ScriptDataLessThanSignState", "ScriptDataEndTagOpenState", "ScriptDataEndTagNameState", "ScriptDataEscapeStartState"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/parser/HTMLTokenizer.h:60]"
+  },
+  {
+    "name": "HTMLTreeBuilder.InsertionMode",
+    "values": ["InitialMode", "BeforeHTMLMode", "BeforeHeadMode", "InHeadMode", "InHeadNoscriptMode", "AfterHeadMode", "TemplateContentsMode", "InBodyMode", "TextMode", "InTableMode", "InTableTextMode", "InCaptionMode", "InColumnGroupMode", "InTableBodyMode", "InRowMode", "InCellMode", "InSelectMode", "InSelectInTableMode", "AfterBodyMode", "InFramesetMode"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/parser/HTMLTreeBuilder.h:164]"
+  },
+  {
+    "name": "PreloadScanner.Mode",
+    "values": ["ModeAttr", "ModeValueWaitFirstQuotationMark", "ModeValueWaitValue"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/parser/PreloadScanner.cpp:72]"
+  },
+  {
+    "name": "SVGComponentTransferFunctionElement.ComponentTransferType",
+    "values": ["SVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN", "SVG_FECOMPONENTTRANSFER_TYPE_IDENTITY", "SVG_FECOMPONENTTRANSFER_TYPE_TABLE", "SVG_FECOMPONENTTRANSFER_TYPE_DISCRETE", "SVG_FECOMPONENTTRANSFER_TYPE_LINEAR", "SVG_FECOMPONENTTRANSFER_TYPE_GAMMA"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/svg/SVGComponentTransferFunctionElement.h:29]"
+  },
+  {
+    "name": "SVGFETurbulenceElement.TurbulenceType",
+    "values": ["SVG_TURBULENCE_TYPE_UNKNOWN", "SVG_TURBULENCE_TYPE_FRACTALNOISE", "SVG_TURBULENCE_TYPE_TURBULENCE"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/svg/SVGFETurbulenceElement.h:42]"
+  },
+  {
+    "name": "SVGFETurbulenceElement.StitchType",
+    "values": ["SVG_STITCHTYPE_UNKNOWN", "SVG_STITCHTYPE_STITCH", "SVG_STITCHTYPE_NOSTITCH"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/svg/SVGFETurbulenceElement.h:52]"
+  },
+  {
+    "name": "SVGLength.UnitType",
+    "values": ["SVG_LENGTHTYPE_UNKNOWN", "SVG_LENGTHTYPE_NUMBER", "SVG_LENGTHTYPE_PERCENTAGE", "SVG_LENGTHTYPE_EMS", "SVG_LENGTHTYPE_EXS", "SVG_LENGTHTYPE_PX", "SVG_LENGTHTYPE_CM", "SVG_LENGTHTYPE_MM", "SVG_LENGTHTYPE_IN", "SVG_LENGTHTYPE_PT", "SVG_LENGTHTYPE_PC"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/svg/SVGLength.h:32]"
+  },
+  {
+    "name": "SVGMarkerElement.UNIT",
+    "values": ["SVG_MARKERUNTIS_UNKNOWN", "SVG_MARKERUNITS_USERSPACEONUSE", "SVG_MARKERUNITS_STROKEWIDTH"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/svg/SVGMarkerElement.h:37]"
+  },
+  {
+    "name": "SVGMarkerElement.ORIENT",
+    "values": ["SVG_MARKER_ORIENT_UNKNOWN", "SVG_MARKER_ORIENT_AUTO", "SVG_MARKER_ORIENT_ANGLE"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/svg/SVGMarkerElement.h:43]"
+  },
+  {
+    "name": "SVGPathElement.Mode",
+    "values": ["WaitCommand", "WaitCoordsX", "WaitCoordsY", "WaitCoordsX2", "WaitCoordsY2", "WaitCoordsX3", "WaitCoordsY3", "WaitCoordsX4", "WaitCoordsY4"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/svg/SVGPathElement.cpp:401]"
+  },
+  {
+    "name": "SVGTransform.Type",
+    "values": ["SVG_TRANSFORM_UNKOWN", "SVG_TRANSFORM_MATRIX", "SVG_TRANSFORM_TRANSLATE", "SVG_TRANSFORM_SCALE", "SVG_TRANSFORM_ROTATE", "SVG_TRANSFORM_SKEWX", "SVG_TRANSFORM_SKEWY"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/svg/SVGTransform.h:34]"
+  },
+  {
+    "name": "SVGUnitTypes.UnitTypes",
+    "values": ["SVG_UNIT_TYPE_UNKNOWN", "SVG_UNIT_TYPE_USERSPACEONUSE", "SVG_UNIT_TYPE_OBJECTBOUNDINGBOX"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/dom/svg/SVGUnitTypes.h:27]"
+  },
+  {
+    "name": "Frame.PaintingStage",
+    "values": ["PaintingNormalFlowBlock", "PaintingNonPositionedFloats", "PaintingReplacedBlock", "PaintingNormalFlowInline", "PaintingStageEnd"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/layout/Frame.h:71]"
+  },
+  {
+    "name": "Frame.HitTestStage",
+    "values": ["HitTestPositionedElements", "HitTestNormalFlowInline", "HitTestNonPositionedFloats", "HitTestNormalFlowBlock", "HitTestStageEnd"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/layout/Frame.h:82]"
+  },
+  {
+    "name": "Frame.HasFloat",
+    "values": ["HasNone", "HasLeft", "HasRight"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/layout/Frame.h:886]"
+  },
+  {
+    "name": "Frame.WordType",
+    "values": ["CollapsibleWhiteSpace", "NonCollapsibleWhiteSpace", "ForcedNewline", "General"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/layout/Frame.h:892]"
+  },
+  {
+    "name": "Frame.LayoutWantToResolve",
+    "values": ["ResolveWidth", "ResolveHeight", "ResolveAll"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/layout/Frame.h:1842]"
+  },
+  {
+    "name": "Frame.PaintingKind",
+    "values": ["NormalFlowBlockChild", "NonPositionedFloats", "NormalFlowInline", "ReplacedBlock"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/layout/Frame.h:1859]"
+  },
+  {
+    "name": "Frame.ComputePurpose",
+    "values": ["Scrolling", "GraphicsBufferBySelf", "GraphicsBufferByOtherLayer"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/layout/Frame.h:1930]"
+  },
+  {
+    "name": "FrameBlockBox.InlineNonReplacedBoxMBPStatus",
+    "values": ["MBPStatusNone", "ProcessedStaringMBP", "ProcessedEndingMBP", "SetLeftMBP", "SetRightMBP"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/layout/FrameBlockBox.h:487]"
+  },
+  {
+    "name": "FrameBlockBox.Direction",
+    "values": ["None", "LtrDirection", "RtlDirection"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/layout/FrameBlockBox.h:1164]"
+  },
+  {
+    "name": "FrameBox.ComputeMatrixFor",
+    "values": ["Screen", "GraphicsLayer", "Window", "GraphicsLayerOnGraphicsLayer"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/layout/FrameBox.cpp:4533]"
+  },
+  {
+    "name": "FrameBox.PaintingInlineStage",
+    "values": ["PaintingInlineBox", "PaintingAtomicInlineBoxButInlineReplaced", "PaintingInlineReplaced", "PaintingInlineStageEnd"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/layout/FrameBox.h:279]"
+  },
+  {
+    "name": "FrameBox.CopyFlag",
+    "values": ["PositionCopy", "WidthAndHeightCopy", "MarginCopy", "BorderCopy", "PaddingCopy", "BorderBoxCopy"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/layout/FrameBox.h:444]"
+  },
+  {
+    "name": "FrameBox.BoxSide",
+    "values": ["TopSide", "RightSide", "BottomSide", "LeftSide"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/layout/FrameBox.h:453]"
+  },
+  {
+    "name": "FrameFlexibleBox.Violations",
+    "values": ["None", "Min", "Max"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/layout/FrameFlexibleBox.cpp:549]"
+  },
+  {
+    "name": "StackingContext.NeedsGraphicsLayerReason",
+    "values": ["NeedsGraphicsLayerReasonNone", "NeedsGraphicsLayerReasonBySelf", "NeedsGraphicsLayerReasonNotCoveredByParent", "NeedsGraphicsLayerReasonCollapsedWithSiblingLayer", "NeedsGraphicsLayerReasonSiblingLayerNeedsAnimation", "NeedsGraphicsLayerReasonNeedsScroll"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/layout/StackingContext.h:37]"
+  },
+  {
+    "name": "StackingContext.RepaintingWhenScrollingReason",
+    "values": ["RepaintingWhenScrollingReasonNone", "RepaintingWhenScrollingReasonNoGraphicsBuffer", "RepaintingWhenScrollingReasonBorder", "RepaintingWhenScrollingReasonBoxShadow", "RepaintingWhenScrollingReasonOutline", "RepaintingWhenScrollingReasonBackgroundSize"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/layout/StackingContext.h:49]"
+  },
+  {
+    "name": "FrameSVGBox.Mode",
+    "values": ["WaitCoordsX", "WaitCoordsY"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/layout/svg/FrameSVGBox.cpp:814]"
+  },
+  {
+    "name": "LayoutUtil.AspectRatioFit",
+    "values": ["ShrinkAspectRatioFit", "GrowAspectRatioFit"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/layout/LayoutUtil.h:140]"
+  },
+  {
+    "name": "Canvas.CanvasSurfaceFlag",
+    "values": ["PlainElement", "PreferEGLImage", "PreferUnitedTexture", "PreferRetainCPUBufferWhenUnmap"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/canvas/Canvas.h:161]"
+  },
+  {
+    "name": "Filter.FixedSourcePlace",
+    "values": ["SourceGraphic"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/canvas/filter/Filter.h:96]"
+  },
+  {
+    "name": "Font.FontStyle",
+    "values": ["FontStyleNormal", "FontStyleItalic", "FontStyleOblique"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/canvas/font/Font.h:31]"
+  },
+  {
+    "name": "Font.FontWeight",
+    "values": ["FontWeightStart", "FontWeightNormal", "FontWeightEnd"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/canvas/font/Font.h:37]"
+  },
+  {
+    "name": "Font.FontKerningValue",
+    "values": ["FontKerningAutoValue", "FontKerningNormalValue", "FontKerningNoneValue"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/canvas/font/Font.h:43]"
+  },
+  {
+    "name": "NativeImageData.PreserveAspectRatioAlign",
+    "values": ["None", "xMinYMin", "xMidYMin", "xMaxYMin", "xMinYMid", "xMidYMid", "xMaxYMid", "xMinYMax", "xMidYMax", "xMaxYMax"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/canvas/image/NativeImageData.h:38]"
+  },
+  {
+    "name": "NativeImageData.PreserveAspectRatioMeetOrSlice",
+    "values": ["Meet", "Slice"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/canvas/image/NativeImageData.h:51]"
+  },
+  {
+    "name": "MediaSource.ReadyState",
+    "values": ["Closed", "Open", "Ended"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/mediasource/MediaSource.h:48]"
+  },
+  {
+    "name": "MediaSource.EndOfStreamError",
+    "values": ["None", "Network", "Decode"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/mediasource/MediaSource.h:58]"
+  },
+  {
+    "name": "SourceBuffer.UpdateState",
+    "values": ["Success", "Error", "Abort"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/mediasource/SourceBuffer.h:135]"
+  },
+  {
+    "name": "SourceBuffer.AppendMode",
+    "values": ["Segments", "Sequence"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/mediasource/SourceBuffer.h:141]"
+  },
+  {
+    "name": "SourceBuffer.AppendState",
+    "values": ["WaitingForSegment", "ParsingInitSegment", "ParsingMediaSegment"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/mediasource/SourceBuffer.h:146]"
+  },
+  {
+    "name": "RTCIceTransport.RTCIceTransportState",
+    "values": ["New", "Checking", "Connected", "Completed", "Disconnected", "Failed", "Closed"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/mediastream/RTCIceTransport.h:34]"
+  },
+  {
+    "name": "RTCRtpTransceiverInit.RTCRtpTransceiverDirection",
+    "values": ["Sendrecv", "Sendonly", "Recvonly", "Inactive", "Stopped"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/mediastream/RTCRtpTransceiverInit.h:33]"
+  },
+  {
+    "name": "SocketLWS.SocketLWSDataType",
+    "values": ["TEXT", "BINARY"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/networking/SocketLWS.h:37]"
+  },
+  {
+    "name": "SocketLWS.LwsEvent",
+    "values": ["OPEN", "ERROR", "CLOSE", "ONMESSAGE"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/networking/SocketLWS.h:65]"
+  },
+  {
+    "name": "WebSocket.ReadyState",
+    "values": ["CONNECTING", "OPEN", "CLOSING", "CLOSED"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/networking/WebSocket.h:35]"
+  },
+  {
+    "name": "WebSocket.CloseCode",
+    "values": ["NormalClosure", "GoingAway", "ProtocolError", "Reserved_1004", "UnsupportedData", "NoStatusReceived", "AbnormalClosure", "InvalidFramePayloadData", "PolicyViolation", "MessageTooBig", "MissingExtension", "InternalError", "ServiceRestart", "TryAgainLater", "BadGateway", "TLSHandshake"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/networking/WebSocket.h:37]"
+  },
+  {
+    "name": "Renderer.WindowHandlerKind",
+    "values": ["WindowHandlerShowDropdownMenu", "WindowHandlerShowAlert", "WindowHandlerOnDropdownMenuItemSelected"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/renderer/Renderer.h:30]"
+  },
+  {
+    "name": "TextAlternativeHelper.AriaByType",
+    "values": ["AriaLabelledBy", "ArialDescribedBy"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/tts/TextAlternativeHelper.h:34]"
+  },
+  {
+    "name": "Starfish.WorkerType",
+    "values": ["Classic", "Module"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/modules/worker/WorkerType.h:30]"
+  },
+  {
+    "name": "EventSource.ReadyState",
+    "values": ["CONNECTING", "OPEN", "CLOSED"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/page/EventSource.h:80]"
+  },
+  {
+    "name": "WebBase.StarfishPubicWebViewHandlerKind",
+    "values": ["OnPageStarted", "OnPageLoaded", "OnPageParsed", "OnLoadResource", "OnReceivedError", "OnProgressChanged", "OnDownloadStart", "OnIdle", "ShouldOverrideUrlLoading", "DebuggerShouldInit", "DebuggerShouldContinueWaiting"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/page/WebBase.h:43]"
+  },
+  {
+    "name": "WebView.StarfishStartUpFlag",
+    "values": ["enableComputedStyleDump", "enableFrameTreeDump", "enableStackingContextDump", "enableHitTestDump", "enableDebugGraphicsLayer", "enableDebugRepaintRegion", "enableRegressionTest"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/page/WebView.h:34]"
+  },
+  {
+    "name": "WebView.StarfishDeviceKind",
+    "values": ["deviceKindUseMouse", "deviceKindUseTouchScreen"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/page/WebView.h:44]"
+  },
+  {
+    "name": "MemorySerializer.ScriptValueSerializerTag",
+    "values": ["Undefined", "Null", "TruePrimitive", "FalsePrimitive", "Int32Primitive", "Uint32Primitive", "DoublePrimitive", "OneByteStringPrimitive", "TwoByteStringPrimitive", "BeginObject", "EndObject", "BeginArrayObject", "EndArrayObject", "ArrayBuffer", "ArrayBufferView", "Int8Array", "Uint8Array", "Int16Array", "Uint16Array", "Int32Array"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/serialize/MemorySerializer.cpp:123]"
+  },
+  {
+    "name": "Serializer.Type",
+    "values": ["Undefined", "Null", "BooleanPrimitive", "Int32Primitive", "Uint32Primitive", "NumberPrimitive", "StringPrimitive", "Boolean", "Number", "String", "Date", "RegExp", "SharedArrayBuffer", "ArrayBuffer", "ArrayBufferView", "Map", "Set", "Array", "PlatformObject", "Object"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/serialize/Serializer.h:680]"
+  },
+  {
+    "name": "Starfish.StorageType",
+    "values": ["Session", "Local"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/storage/StorageType.h:25]"
+  },
+  {
+    "name": "BorderData.InitiallyZero",
+    "values": ["InitiallyZeroValue"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/BorderData.h:36]"
+  },
+  {
+    "name": "CSSAngle.Kind",
+    "values": ["UNSPECIFIED", "DEG", "GRAD", "RAD", "TURN"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/CSSAngle.h:32]"
+  },
+  {
+    "name": "CSSGradientValue.SideOrConer",
+    "values": ["toLeft", "toRight", "toTop", "toBottom"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/CSSGradientValue.h:32]"
+  },
+  {
+    "name": "CSSLength.Kind",
+    "values": ["PX", "EM", "EX", "INCH", "CM", "MM", "PT", "PC", "VW", "VH", "VMIN", "VMAX", "REM", "CH", "PERCENT"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/CSSLength.h:33]"
+  },
+  {
+    "name": "CSSNumericValue.CSSNumericBaseType",
+    "values": ["Length", "Angle", "Time", "Frequency", "Resolution", "Flex", "Percent", "Null"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/CSSNumericValue.h:33]"
+  },
+  {
+    "name": "CSSParser.CompoundSelectorFlags",
+    "values": ["HasPseudoElementForRightmostCompound", "HasContentPseudoElement"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/CSSParser.cpp:1680]"
+  },
+  {
+    "name": "CSSParser.MediaFeature",
+    "values": ["MediaFeatureNone", "MediaFeatureAspectRatio", "MediaFeatureMinWidth", "MediaFeatureDeviceAspectRatio", "MediaFeatureMinDeviceWidth"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/CSSParser.h:1648]"
+  },
+  {
+    "name": "CSSParser.NumericSign",
+    "values": ["NoSign", "PlusSign", "MinusSign"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/CSSParser.h:1751]"
+  },
+  {
+    "name": "CSSParser.LogicOp",
+    "values": ["And", "Or", "Not"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/CSSParser.h:1757]"
+  },
+  {
+    "name": "CSSParser.TruthOp",
+    "values": ["False", "True", "Paren"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/CSSParser.h:1763]"
+  },
+  {
+    "name": "CSSParser.AllowedRulesType",
+    "values": ["AllowCharsetRules", "AllowImportRules", "AllowNamespaceRules", "RegularRules", "KeyframeRules", "ApplyRules", "NoRules"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/CSSParser.h:1769]"
+  },
+  {
+    "name": "CSSParser.RuleListType",
+    "values": ["TopLevelRuleList", "RegularRuleList", "KeyframesRuleList"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/CSSParser.h:1784]"
+  },
+  {
+    "name": "CSSParser.ParseResult",
+    "values": ["Consumed", "ErrorFounded", "Failed"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/CSSParser.h:1786]"
+  },
+  {
+    "name": "CSSParser.MediaQueryParserType",
+    "values": ["MediaQuerySetParser", "MediaConditionParser"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/CSSParser.h:1929]"
+  },
+  {
+    "name": "CSSRule.Type",
+    "values": ["STYLE_RULE", "CHARSET_RULE", "IMPORT_RULE", "MEDIA_RULE", "FONT_FACE_RULE", "PAGE_RULE", "KEYFRAMES_RULE", "KEYFRAME_RULE", "MARGIN_RULE", "NAMESPACE_RULE", "COUNTER_STYLE_RULE", "SUPPORTS_RULE", "DOCUMENT_RULE", "FONT_FEATURE_VALUES_RULE", "VIEWPORT_RULE", "REGION_STYLE_RULE"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/CSSRule.h:36]"
+  },
+  {
+    "name": "CSSTime.Kind",
+    "values": ["S", "MS"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/CSSTime.h:30]"
+  },
+  {
+    "name": "CSSVariableSyntaxTreeBuilder.TokenType",
+    "values": ["VARIABLE", "VARIABLEBLOCKOPEN", "VARIABLEBLOCKCLOSE", "COMMA", "RAWVALUE", "EMPTY", "END"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/CSSVariableSyntaxTreeBuilder.cpp:56]"
+  },
+  {
+    "name": "ComputedStyle.ComputedStyleDamage",
+    "values": ["ComputedStyleDamageNone", "ComputedStyleDamageInherited", "ComputedStyleDamageRebuildFrame", "ComputedStyleDamageLayout", "ComputedStyleDamageEstablishesStackingContext", "ComputedStyleDamageComputeStackingContextProperties", "ComputedStyleDamagePainting", "ComputedStyleDamageComposite", "ComputedStyleDamageAnimation", "ComputedStyleDamageSVGViewportContent"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/ComputedStyle.h:56]"
+  },
+  {
+    "name": "ComputedStyle.KeyKind",
+    "values": ["Order", "ZIndex", "FlexGrow", "FlexShrink", "Opacity", "Border", "BorderBlockStart", "BorderBlockEnd", "BorderInlineStart", "BorderInlineEnd", "BoxDecorationBreak", "BoxShadow", "Width", "Height", "Padding", "PaddingBlockStart", "PaddingBlockEnd", "PaddingInlineEnd", "PaddingInlineStart", "Margin"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/ComputedStyle.h:91]"
+  },
+  {
+    "name": "ContentData.ContentType",
+    "values": ["None", "Text", "Image", "Counter", "Quote"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/ContentData.h:132]"
+  },
+  {
+    "name": "CounterStyle.System",
+    "values": ["NoneSystem", "CyclicSystem", "FixedSystem", "SymbolicSystem", "AlphabeticSystem", "NumericSystem", "AdditiveSystem", "ExtendsSystem"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/CounterStyle.h:29]"
+  },
+  {
+    "name": "FlexBasisData.Type",
+    "values": ["Auto", "Content", "Width"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/FlexBasisData.h:28]"
+  },
+  {
+    "name": "FontFaceSrcData.LoadFrom",
+    "values": ["Local", "URL"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/FontFaceSrcData.h:33]"
+  },
+  {
+    "name": "FontFaceSrcData.Format",
+    "values": ["Unknown", "NotSpecified", "SVG", "WOFF2", "EmbeddedOpenType", "OpenType", "TrueType", "WOFF"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/FontFaceSrcData.h:36]"
+  },
+  {
+    "name": "MediaQuery.RestrictorType",
+    "values": ["Only", "Not", "None"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/MediaQuery.h:55]"
+  },
+  {
+    "name": "MediaQueryEvaluator.MediaFeaturePrefix",
+    "values": ["NoPrefix", "MinPrefix", "MaxPrefix"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/MediaQueryEvaluator.cpp:58]"
+  },
+  {
+    "name": "NamedColors.NamedColorValue",
+    "values": ["currentColor"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/NamedColors.h:179]"
+  },
+  {
+    "name": "Style.DisplayValue",
+    "values": ["InlineDisplayValue", "BlockDisplayValue", "ListItemDisplayValue", "InlineListItemDisplayValue", "InlineBlockDisplayValue", "TableDisplayValue", "InlineTableDisplayValue", "TableRowGroupDisplayValue", "TableHeaderGroupDisplayValue", "TableFooterGroupDisplayValue", "TableRowDisplayValue", "TableColumnGroupDisplayValue", "TableColumnDisplayValue", "TableCellDisplayValue", "TableCaptionDisplayValue", "FlexDisplayValue", "InlineFlexDisplayValue", "GridDisplayValue", "InlineGridDisplayValue", "BoxDisplayValue", "InlineBoxDisplayValue", "NoneDisplayValue"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/Style.h:120]"
+  },
+  {
+    "name": "Style.PositionValue",
+    "values": ["StaticPositionValue", "RelativePositionValue", "AbsolutePositionValue", "FixedPositionValue"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/Style.h:145]"
+  },
+  {
+    "name": "CSSTransformFunction.Kind",
+    "values": ["None", "Matrix", "Matrix3D", "Translate", "Translate3D", "TranslateX", "TranslateY", "TranslateZ", "Scale", "Scale3D", "ScaleX", "ScaleY", "ScaleZ", "Rotate", "Rotate3D", "Skew", "SkewX", "SkewY", "Perspective"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/Style.h:915]"
+  },
+  {
+    "name": "CSSStyleValuePair.ValueKind",
+    "values": ["Initial", "Inherit", "Unset", "Length", "Percentage", "Auto", "None", "Number", "Int32", "Angle", "Time", "Normal", "StringValueKind", "AtomicStringValueKind", "KeywordValueKind", "ColorValueKind", "NamedColorValueKind", "UrlValueKind", "PathFunctionValueKind", "CSSPropertyNameValueKind", "FilterFunctionValueKind", "CalcValueKind", "FontFaceSrcDataValueKind", "DisplayValueKind", "PositionValueKind", "FloatValueKind", "ClearValueKind", "VerticalAlignValueKind", "TextAlignValueKind", "SideValueKind", "DirectionValueKind", "WhiteSpaceValueKind", "ValueListKind", "ValuePairKind", "BackgroundSizeValueKind", "RepeatStyleValueKind", "BackgroundAttachmentValueKind", "BoxValueKind", "FontSizeValueKind", "FontStyleValueKind", "..."],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/Style.h:1052]"
+  },
+  {
+    "name": "Style.CalcParserOption",
+    "values": ["LengthParser", "AngleParser", "TimeParser", "LineheightParser"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/Style.h:2664]"
+  },
+  {
+    "name": "StyleTransformData.OperationType",
+    "values": ["Matrix", "Translate", "Scale", "Rotate", "Skew", "None"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/StyleTransformData.h:37]"
+  },
+  {
+    "name": "TextOverflowData.TextOverflowValue",
+    "values": ["TextOverflowClipValue", "TextOverflowEllipsisValue"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/style/TextOverflowData.h:29]"
+  },
+  {
+    "name": "Archiver.State",
+    "values": ["BeforeStart", "Started", "Closed"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/util/Archiver.cpp:58]"
+  },
+  {
+    "name": "AttributeName.MatchType",
+    "values": ["MatchName", "MatchNS", "MatchAll"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/util/AttributeName.h:28]"
+  },
+  {
+    "name": "LineBreakerIteratorPool.LineBreakIteratorMode",
+    "values": ["LineBreakIteratorModeUAX14", "LineBreakIteratorModeUAX14Loose", "LineBreakIteratorModeUAX14Normal", "LineBreakIteratorModeUAX14Strict"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/util/LineBreakerIteratorPool.h:28]"
+  },
+  {
+    "name": "PassRef.AdoptTag",
+    "values": ["Adopt"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/util/RefPtr.h:77]"
+  },
+  {
+    "name": "PassRefPtr.AdoptTag",
+    "values": ["Adopt"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/util/RefPtr.h:279]"
+  },
+  {
+    "name": "String.CharDirection",
+    "values": ["Ltr", "Rtl", "Mixed", "Neutral"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/util/String.h:590]"
+  },
+  {
+    "name": "String.CharCategory",
+    "values": ["NoCategory", "Other_NotAssigned", "Letter_Uppercase", "Letter_Lowercase", "Letter_Titlecase", "Letter_Modifier", "Letter_Other", "Mark_NonSpacing", "Mark_Enclosing", "Mark_SpacingCombining", "Number_DecimalDigit", "Number_Letter", "Number_Other", "Separator_Space", "Separator_Line", "Separator_Paragraph", "Other_Control", "Other_Format", "Other_PrivateUse", "Other_Surrogate"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/util/String.h:597]"
+  },
+  {
+    "name": "String.BufferDataKind",
+    "values": ["ASCIIData", "BMPData", "UTF32Data"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/util/String.h:642]"
+  },
+  {
+    "name": "String.TakeBuffer",
+    "values": ["TakeBufferValue"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/util/String.h:1063]"
+  },
+  {
+    "name": "StringBuilderPiece.Type",
+    "values": ["StringPiece", "ConstChar", "Char"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/util/String.h:1617]"
+  },
+  {
+    "name": "String.LookAheadResult",
+    "values": ["DidNotMatch", "DidMatch", "NotEnoughCharacters"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/util/String.h:1990]"
+  },
+  {
+    "name": "String.FastPathFlags",
+    "values": ["NoFastPath", "Use8BitAdvanceAndUpdateLineNumbers", "Use8BitAdvance"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/core/util/String.h:2135]"
+  },
+  {
+    "name": "CompositorGL.Command",
+    "values": ["MoveTo", "LineTo", "ArcNegative"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/canvas/CompositorGL.cpp:477]"
+  },
+  {
+    "name": "PlatformFile.FileMode",
+    "values": ["Read", "Write", "ReadWrite"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/file/PlatformFile.h:35]"
+  },
+  {
+    "name": "PlatformFile.Whence",
+    "values": ["SEEK_SET", "SEEK_CUR", "SEEK_END"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/file/PlatformFile.h:41]"
+  },
+  {
+    "name": "Resource.State",
+    "values": ["BeforeSend", "Receiving", "Finished", "Failed", "Canceled"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/loader/Resource.h:42]"
+  },
+  {
+    "name": "Resource.Type",
+    "values": ["ResourceType", "ImageResourceType", "TextResourceType", "FontResourceType"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/loader/Resource.h:50]"
+  },
+  {
+    "name": "ResourceURL.Protocol",
+    "values": ["FILE_PROTOCOL", "BLOB_PROTOCOL", "DATA_PROTOCOL", "ABOUT_PROTOCOL", "HTTP_PROTOCOL", "HTTPS_PROTOCOL", "JAVASCRIPT_PROTOCOL", "WS_PROTOCOL", "WSS_PROTOCOL", "UNKNOWN"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/loader/ResourceURL.h:35]"
+  },
+  {
+    "name": "MessageLoopGLib.RendezvousOwner",
+    "values": ["None", "MainBlockedOnLWE", "LWEPausingMain"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/message_loop/MessageLoopGLib.cpp:99]"
+  },
+  {
+    "name": "DemuxerSource.SeekWhence",
+    "values": ["SeekWhenceSet", "SeekWhenceCurrent", "SeekWhenceEnd", "SeekWhenceLookSize"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/multimedia/DemuxerSource.h:26]"
+  },
+  {
+    "name": "MediaPlayer.PlaybackState",
+    "values": ["PLAYBACK_STATE_NONE", "PLAYBACK_STATE_PLAYING", "PLAYBACK_STATE_PAUSED", "PLAYBACK_STATE_END"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/multimedia/MediaPlayer.h:67]"
+  },
+  {
+    "name": "MediaPlayer.SeekState",
+    "values": ["SEEKSTATE_NO_SEEK", "SEEKSTATE_SEEKING", "SEEKSTATE_WAITING"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/multimedia/MediaPlayer.h:73]"
+  },
+  {
+    "name": "StreamInfo.StreamType",
+    "values": ["StreamTypeUnknown", "StreamTypeAudio", "StreamTypeVideo", "StreamTypeSubtitle"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/multimedia/StreamInfo.h:52]"
+  },
+  {
+    "name": "StreamInfo.MediaCodec",
+    "values": ["MediaCodecUnknown", "MediaCodecAudioAAC", "MediaCodecAudioMP3", "MediaCodecAudioVorbis", "MediaCodecAudioOpus", "MediaCodecVideoH264", "MediaCodecVideoHEVC", "MediaCodecVideoVP9", "MediaCodecVideoAV1"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/multimedia/StreamInfo.h:59]"
+  },
+  {
+    "name": "StreamInfo.AudioSampleFormat",
+    "values": ["AudioSampleFormatNone", "AudioSampleFormatU8", "AudioSampleFormatS16", "AudioSampleFormatS32", "AudioSampleFormatFLT", "AudioSampleFormatDBL", "AudioSampleFormatU8P", "AudioSampleFormatS16P", "AudioSampleFormatS32P", "AudioSampleFormatFLTP", "AudioSampleFormatDBLP"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/multimedia/StreamInfo.h:73]"
+  },
+  {
+    "name": "HTTPStatus.HTTPStatusCode",
+    "values": ["HTTP_STATUS_CONTINUE", "HTTP_STATUS_SWITCHING_PROTOCOLS", "HTTP_STATUS_PROCESSING", "HTTP_STATUS_OK", "HTTP_STATUS_CREATED", "HTTP_STATUS_ACCEPTED", "HTTP_STATUS_NON_AUTHORITATIVE_INFORMATION", "HTTP_STATUS_NO_CONTENT", "HTTP_STATUS_RESET_CONTENT", "HTTP_STATUS_PARTIAL_CONTENT", "HTTP_STATUS_MULTI_STATUS", "HTTP_STATUS_ALREADY_REPORTED", "HTTP_STATUS_IM_USED", "HTTP_STATUS_MULTIPLE_CHOICES", "HTTP_STATUS_MOVED_PERMANENTLY", "HTTP_STATUS_FOUND", "HTTP_STATUS_SEE_OTHER", "HTTP_STATUS_NOT_MODIFIED", "HTTP_STATUS_USE_PROXY", "HTTP_STATUS_TEMPORARY_REDIRECT", "HTTP_STATUS_PERMANENT_REDIRECT", "HTTP_STATUS_BAD_REQUEST", "HTTP_STATUS_UNAUTHORIZED", "HTTP_STATUS_PAYMENT_REQUIRED", "HTTP_STATUS_FORBIDDEN", "HTTP_STATUS_NOT_FOUND", "HTTP_STATUS_METHOD_NOT_ALLOWED", "HTTP_STATUS_NOT_ACCEPTABLE", "HTTP_STATUS_PROXY_AUTHENTICATION_REQUIRED", "HTTP_STATUS_REQUEST_TIMEOUT", "HTTP_STATUS_CONFLICT", "HTTP_STATUS_GONE", "HTTP_STATUS_LENGTH_REQUIRED", "HTTP_STATUS_PRECONDITION_FAILED", "HTTP_STATUS_PAYLOAD_TOO_LARGE", "HTTP_STATUS_URI_TOO_LONG", "HTTP_STATUS_UNSUPPORTED_MEDIA_TYPE", "HTTP_STATUS_RANGE_NOT_SATISFIABLE", "HTTP_STATUS_EXPECTATION_FAILED", "HTTP_STATUS_MISDIRECTED_REQUEST", "..."],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/network/http/HTTPStatus.h:94]"
+  },
+  {
+    "name": "Starfish.ScreenOrientationType",
+    "values": ["ScreenOrientationUndefined", "ScreenOrientationPortraitPrimary", "ScreenOrientationPortraitSecondary", "ScreenOrientationLandscapePrimary", "ScreenOrientationLandscapeSecondary"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/platform/public/ScreenOrientationType.h:24]"
+  },
+  {
+    "name": "LweWebViewImpl.ImeComposingStatus",
+    "values": ["NORMAL", "COMPOSING_START", "COMPOSING_END"],
+    "type": "java_enum",
+    "language": "java",
+    "source": "[Source: src/public/bridge/android/java/com/samsung/android/lightweightwebengine/internal/LweWebViewImpl.java:93]"
+  },
+  {
+    "name": "LWEWebViewEcoreWl2.Owner",
+    "values": ["FREE", "ENGINE", "READY", "PRESENTING"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/public/bridge/ecore_wl2/LWEWebViewEcoreWl2.cpp:190]"
+  },
+  {
+    "name": "LWEWebViewEFL.Owner",
+    "values": ["FREE", "ENGINE", "READY", "DISPLAYING"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/public/bridge/efl/LWEWebViewEFL.cpp:153]"
+  },
+  {
+    "name": "LWEWebViewFlutter.PORT_WINDOW_BACKEND",
+    "values": ["GB", "GL", "HEADLESS"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/public/bridge/flutter/LWEWebViewFlutter.cpp:82]"
+  },
+  {
+    "name": "LWEWebViewFlutter.PORT_COMPOSITOR_BACKEND",
+    "values": ["CAIRO", "GL", "MOCK"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/public/bridge/flutter/LWEWebViewFlutter.cpp:83]"
+  },
+  {
+    "name": "MiniBrowser.StarfishStartUpFlag",
+    "values": ["enableComputedStyleDump", "enableFrameTreeDump", "enableStackingContextDump", "enableHitTestDump", "enableDebugGraphicsLayer", "enableDebugRepaintRegion", "enableRegressionTest"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/shell/MiniBrowser.cpp:34]"
+  },
+  {
+    "name": "WindowKeyType.INPUT",
+    "values": ["NONE", "RELEASE", "PRESS", "ACTION_END", "MOUSE_LBUTTON", "TYPE_END", "LEFT", "UP", "RIGHT", "DOWN", "CODE_END"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/shell/WindowKeyType.h:25]"
+  },
+  {
+    "name": "WindowKeyType.MOD",
+    "values": ["SHIFT", "CONTROL"],
+    "type": "cpp_enum",
+    "language": "cpp",
+    "source": "[Source: src/shell/WindowKeyType.h:44]"
+  }
+]

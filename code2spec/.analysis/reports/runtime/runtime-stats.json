@@ -1,0 +1,164 @@
+{
+  "code2spec_version": "0.5.2",
+  "session_id": "20260827_101623",
+  "run_type": "full",
+  "mode": "detail",
+  "target_path": "/home/hwang/work/D/starfish_",
+  "workspace_root": "/home/hwang/work/D/starfish_",
+  "analysis_target": "/home/hwang/work/D/starfish_",
+  "output_root": "/home/hwang/work/D/starfish_/code2spec",
+  "code_size": {
+    "total_files": 1815,
+    "total_lines": 468351,
+    "total_bytes": 15929342,
+    "by_extension": {
+      ".h": {
+        "files": 930,
+        "lines": 132793,
+        "bytes": 3960614
+      },
+      ".py": {
+        "files": 43,
+        "lines": 8144,
+        "bytes": 311056
+      },
+      ".js": {
+        "files": 22,
+        "lines": 11883,
+        "bytes": 366995
+      },
+      ".cpp": {
+        "files": 808,
+        "lines": 313509,
+        "bytes": 11224080
+      },
+      ".hpp": {
+        "files": 1,
+        "lines": 314,
+        "bytes": 8839
+      },
+      ".java": {
+        "files": 11,
+        "lines": 1708,
+        "bytes": 57758
+      }
+    },
+    "filters": {
+      "min_lines": 0
+    }
+  },
+  "workflows": {
+    "W1": {
+      "start_time": "2026-08-27T10:16:23",
+      "end_time": "2026-08-27T10:16:25",
+      "duration_seconds": 2,
+      "token_usage": 0,
+      "coding_agent": "claude-code"
+    },
+    "W2": {
+      "start_time": null,
+      "end_time": null,
+      "duration_seconds": 0,
+      "token_usage": 0,
+      "coding_agent": null
+    },
+    "W3": {
+      "start_time": null,
+      "end_time": null,
+      "duration_seconds": 0,
+      "token_usage": 0,
+      "coding_agent": null
+    }
+  },
+  "total_duration_seconds": 2,
+  "total_token_usage": 0,
+  "telemetry": {
+    "version": "1.0",
+    "events_file": "telemetry-events.jsonl",
+    "event_count": 4,
+    "event_type_counts": {
+      "session_started": 1,
+      "code_size_measured": 1,
+      "workflow_started": 1,
+      "workflow_completed": 1
+    },
+    "analysis_scope": 3,
+    "git": {
+      "repo": "github.sec.samsung.net/jh1984-hwang/starfish",
+      "commit": "a1c95481fdf6cb47d19ce98b74c0885efe1468af",
+      "branch": "master"
+    },
+    "workflow_usage": {
+      "total_runs": 1,
+      "by_workflow": {
+        "W1": {
+          "started": 1,
+          "completed": 1,
+          "in_progress": 0,
+          "failed": 0,
+          "attempt_count": 1,
+          "completed_once": true
+        },
+        "W2": {
+          "started": 0,
+          "completed": 0,
+          "in_progress": 0,
+          "failed": 0,
+          "attempt_count": 0,
+          "completed_once": false
+        },
+        "W3": {
+          "started": 0,
+          "completed": 0,
+          "in_progress": 0,
+          "failed": 0,
+          "attempt_count": 0,
+          "completed_once": false
+        },
+        "W-DELTA": {
+          "started": 0,
+          "completed": 0,
+          "in_progress": 0,
+          "failed": 0,
+          "attempt_count": 0,
+          "completed_once": false
+        }
+      }
+    },
+    "module_usage": {
+      "regenerated": 0,
+      "failed": 0,
+      "unique_regenerated": 0,
+      "unique_failed": 0
+    },
+    "coding_agents": [
+      "claude-code"
+    ],
+    "latest_event": {
+      "event_type": "workflow_completed",
+      "timestamp": "2026-08-27T10:16:25",
+      "workflow": "W1",
+      "coding_agent": "claude-code"
+    },
+    "latest_progress_event": {
+      "event_type": "workflow_completed",
+      "timestamp": "2026-08-27T10:16:25",
+      "workflow": "W1",
+      "coding_agent": "claude-code"
+    },
+    "latest_failure": null,
+    "token_usage": {
+      "status": "unknown",
+      "total": 0
+    },
+    "updated_at": "2026-08-27T10:16:25"
+  },
+  "analysis_scope": 3,
+  "git": {
+    "repo": "github.sec.samsung.net/jh1984-hwang/starfish",
+    "commit": "a1c95481fdf6cb47d19ce98b74c0885efe1468af",
+    "branch": "master"
+  },
+  "coding_agent": "claude-code",
+  "last_updated": "2026-08-27T10:16:25"
+}
