@@ -869,6 +869,7 @@ test/cairo/internal-test/blob/blob_arraybuffer_text_test.html
 test/cairo/internal-test/file/file_constructor.html
 test/cairo/internal-test/file/file_text.html
 test/cairo/internal-test/crash/gif-playback-crash.html
+test/cairo/internal-test/image/gif-transparency.html
 test/cairo/internal-test/crash/chartjs.html
 test/cairo/internal-test/crash/js-module-01.html
 test/cairo/internal-test/crash/svg-gradient-href-crash.html

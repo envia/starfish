@@ -97,7 +97,7 @@ public:
 
             if (!m_image) {
                 STARFISH_ASSERT(m_stride == m_width * 4);
-                m_image = (uint8_t*)malloc(m_width * m_height * 4);
+                m_image = (uint8_t*)calloc(m_height, m_stride);
                 STARFISH_RELEASE_ASSERT(m_image != nullptr);
             }
 
