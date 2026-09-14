@@ -745,6 +745,8 @@ static ImageDecoder::DecodeResult decodeGIF(
                 colorMapEntry = &colorMap->Colors[gifRow[w]];
                 if (gifRow[w] != transparentIndex) {
                     setTargetPixel(buffer, colorMapEntry);
+                } else {
+                    makeTranparentPixel(buffer);
                 }
                 buffer = buffer + 4;
             }
@@ -994,19 +996,23 @@ ImageDecoder::DecodeResult ImageDecoder::nextFrameOfAnimatedGIF(
             }
 
             if (disposeMethod == GifDisposeMethod::Background) {
-                // Clear background
-                GifColorType* colorMapEntry =
-                    &colorMap->Colors[gifFile->SBackGroundColor];
-                for (int h = 0; h < (int)result.m_height; h++) {
-                    for (int w = 0; w < (int)result.m_width; w++) {
-                        GifByteType* buffer =
-                            result.m_buffer + h * result.m_stride + w * 4;
-                        if (gifFile->SBackGroundColor != transparentIndex) {
+                // GIF89a section 23: transparent pixels preserve the display
+                // underneath. For a transparent image, restore that canvas
+                // to transparent even if the background and transparent
+                // palette indices differ.
+                // https://www.w3.org/Graphics/GIF/spec-gif89a.txt
+                if (transparentIndex != -1) {
+                    memset(result.m_buffer, 0,
+                           result.m_stride * result.m_height);
+                } else {
+                    GifColorType* colorMapEntry =
+                        &colorMap->Colors[gifFile->SBackGroundColor];
+                    for (int h = 0; h < (int)result.m_height; h++) {
+                        for (int w = 0; w < (int)result.m_width; w++) {
+                            GifByteType* buffer =
+                                result.m_buffer + h * result.m_stride + w * 4;
                             setTargetPixel(buffer, colorMapEntry);
-                        } else {
-                            makeTranparentPixel(buffer);
                         }
-                        buffer = buffer + 4;
                     }
                 }
             }
