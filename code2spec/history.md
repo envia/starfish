@@ -36,7 +36,7 @@
   16 label/line corrections applied, `README.md` index written.
 - W1 status: **complete**. Next step: W2 (`code2spec-modules`).
 
-## 2026-09-10 — W2 code2spec-modules (partial, resumable)
+## 2026-09-10 — W2 code2spec-modules (partial, resumable; recorded 2026-09-15)
 
 - Chunk 1 (10 modules) and 4 modules of chunk 2 completed and verified: core-dom, core-style, core-dom-svg,
   modules-serviceworker, core-layout, modules-workers, modules-mediastream, core-dom-canvas, core-cdp,
