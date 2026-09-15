@@ -35,3 +35,14 @@
   `src:` deep links, no absolute URLs), grounding recheck of 1,641 symbol deep links with
   16 label/line corrections applied, `README.md` index written.
 - W1 status: **complete**. Next step: W2 (`code2spec-modules`).
+
+## 2026-09-10 — W2 code2spec-modules (partial, resumable)
+
+- Chunk 1 (10 modules) and 4 modules of chunk 2 completed and verified: core-dom, core-style, core-dom-svg,
+  modules-serviceworker, core-layout, modules-workers, modules-mediastream, core-dom-canvas, core-cdp,
+  public-embedder-api, modules-runtime, shell, support-tools, modules-indexeddb (14/32; spec-cache updated for
+  every file of each completed module).
+- Six chunk-2 agents (core-page, modules-canvas, modules-web-apis, platform-network-loader, core-util, binding)
+  were terminated by an API spend-limit error; their draft Design Cards/FR docs exist on disk but are
+  UNVERIFIED and not marked done — the next W2 run regenerates/verifies them.
+- Resume: run `/code2spec-modules` from /home/hwang/work/D/starfish_ (18 pending in analysis-progress.json).
