@@ -402,7 +402,8 @@ Optional<GCVector<String*>> WebGLRenderingContext::getSupportedExtensions()
 {
     ENTER_CONTEXT_SCOPE(Optional<GCVector<String*>>());
 
-    return WebGLExtensionRegistry::instance().getSupportedExtensions();
+    return WebGLExtensionRegistry::instance().getSupportedExtensions(
+        webGLVersion());
 }
 
 bool WebGLRenderingContext::isContextLost()
@@ -429,7 +430,7 @@ Optional<ScriptObject> WebGLRenderingContext::getExtension(
     }
 
     Optional<ExtensionGenerator> maybeGenerator =
-        WebGLExtensionRegistry::instance().getGenerator(name);
+        WebGLExtensionRegistry::instance().getGenerator(name, webGLVersion());
 
     if (!maybeGenerator.hasValue()) {
         return Optional<ScriptObject>();
