@@ -1901,8 +1901,87 @@ void WebGL2RenderingContext::readPixels(GLint x, GLint y, GLsizei width,
                                         GLenum type,
                                         Optional<ScriptArrayBufferView> dstData)
 {
+    // WebGL 2.0 5.14.12: the ArrayBufferView overload reads into client
+    // memory, which is not allowed while a PIXEL_PACK_BUFFER is bound.
+    // https://registry.khronos.org/webgl/specs/latest/2.0/#5.14.12
+    if (getState()->getBoundBuffer(GL_PIXEL_PACK_BUFFER)) {
+        ENTER_CONTEXT_SCOPE();
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
     WebGLRenderingContext::readPixels(x, y, width, height, format, type,
                                       dstData);
+}
+
+void WebGL2RenderingContext::readPixels(GLint x, GLint y, GLsizei width,
+                                        GLsizei height, GLenum format,
+                                        GLenum type, GLintptr offset)
+{
+    ENTER_CONTEXT_SCOPE();
+
+    // WebGL 2.0 5.14.12: this overload writes into the PIXEL_PACK_BUFFER at
+    // offset. GL would validate the pack buffer itself, but the size check
+    // below is what keeps a too-small buffer from becoming an out-of-bounds
+    // write in the driver.
+    // https://registry.khronos.org/webgl/specs/latest/2.0/#5.14.12
+    if (!getState()->getBoundBuffer(GL_PIXEL_PACK_BUFFER)) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+    if (width < 0 || height < 0 || offset < 0) {
+        setGLError(GL_INVALID_VALUE);
+        return;
+    }
+
+    // Only color formats can be read back; LUMINANCE, ALPHA and the depth
+    // formats are texture-only, as in the WebGL 1 readPixels path.
+    const size_t bytesPerPixel = getBytesPerPixel(format, type);
+    if (bytesPerPixel == 0 || format == GL_LUMINANCE ||
+        format == GL_LUMINANCE_ALPHA || format == GL_ALPHA ||
+        format == GL_DEPTH_COMPONENT || format == GL_DEPTH_STENCIL) {
+        setGLError(GL_INVALID_ENUM);
+        return;
+    }
+
+    // Bytes the read touches, following the OpenGL ES 3.0 4.3.2 pack layout:
+    // rows are PACK_ROW_LENGTH (or width) pixels rounded up to
+    // PACK_ALIGNMENT, preceded by PACK_SKIP_ROWS rows and PACK_SKIP_PIXELS
+    // pixels. A non-zero PACK_ROW_LENGTH smaller than width is invalid.
+    // https://registry.khronos.org/OpenGL/specs/es/3.0/es_spec_3.0.pdf
+    GLint packAlignment = 4, packRowLength = 0, packSkipRows = 0,
+          packSkipPixels = 0;
+    gl()->getIntegerv(GL_PACK_ALIGNMENT, &packAlignment);
+    gl()->getIntegerv(GL_PACK_ROW_LENGTH, &packRowLength);
+    gl()->getIntegerv(GL_PACK_SKIP_ROWS, &packSkipRows);
+    gl()->getIntegerv(GL_PACK_SKIP_PIXELS, &packSkipPixels);
+    if (packRowLength != 0 && packRowLength < width) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+    const uint64_t rowPixels = packRowLength != 0 ? packRowLength : width;
+    const uint64_t alignment = packAlignment > 0 ? packAlignment : 1;
+    const uint64_t rowStride =
+        (rowPixels * bytesPerPixel + alignment - 1) / alignment * alignment;
+    uint64_t requiredBytes = 0;
+    if (width != 0 && height != 0) {
+        requiredBytes =
+            (static_cast<uint64_t>(packSkipRows) + height - 1) * rowStride +
+            (static_cast<uint64_t>(packSkipPixels) + width) * bytesPerPixel;
+    }
+
+    GLint64 bufferSize = 0;
+    gl()->getBufferParameteri64v(GL_PIXEL_PACK_BUFFER, GL_BUFFER_SIZE,
+                                 &bufferSize);
+    if (bufferSize < 0 || requiredBytes > static_cast<uint64_t>(bufferSize) ||
+        static_cast<uint64_t>(offset) >
+            static_cast<uint64_t>(bufferSize) - requiredBytes) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    gl()->readPixels(x, y, width, height, format, type,
+                     reinterpret_cast<GLvoid*>(offset));
 }
 
 } // namespace Starfish

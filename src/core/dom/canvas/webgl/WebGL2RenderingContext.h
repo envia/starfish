@@ -287,6 +287,9 @@ public:
     void readPixels(GLint x, GLint y, GLsizei width, GLsizei height,
                     GLenum format, GLenum type,
                     Optional<ScriptArrayBufferView> dstData);
+    // WebGL 2: reads into the buffer bound to PIXEL_PACK_BUFFER.
+    void readPixels(GLint x, GLint y, GLsizei width, GLsizei height,
+                    GLenum format, GLenum type, GLintptr offset);
 
 protected:
     Optional<ScriptValue> getParameterImpl(GLenum pname);

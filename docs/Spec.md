@@ -2345,7 +2345,7 @@ Apps relying on the right-hand list get **no protection** — the directive is p
 | Interface | Notes |
 |-----------|-------|
 | `WebGLRenderingContext` | Full WebGL 1.0 surface (~190 methods) per [Khronos WebGL 1.0 spec](https://registry.khronos.org/webgl/specs/latest/1.0/). Obtain via `canvas.getContext('webgl')` or `'experimental-webgl'`. |
-| `WebGL2RenderingContext` | WebGL 2.0 surface; obtain via `canvas.getContext('webgl2')`. Includes `WebGLQuery`, `WebGLSampler`, `WebGLSync`, `WebGLTransformFeedback`, `WebGLVertexArrayObject`. |
+| `WebGL2RenderingContext` | WebGL 2.0 surface; obtain via `canvas.getContext('webgl2')`. Includes `WebGLQuery`, `WebGLSampler`, `WebGLSync`, `WebGLTransformFeedback`, `WebGLVertexArrayObject`. `readPixels(..., GLintptr offset)` reads into the bound `PIXEL_PACK_BUFFER` with the pack-state size check of §5.14.12; the `(dstData, dstOffset)` overload stays `[Unimplemented]`. |
 | Object handles | `WebGLBuffer`, `WebGLFramebuffer`, `WebGLRenderbuffer`, `WebGLTexture`, `WebGLProgram`, `WebGLShader`. |
 | Value types | `WebGLActiveInfo`, `WebGLShaderPrecisionFormat`, `WebGLUniformLocation`, `WebGLContextAttributes`. |
 | **Not exposed** | `WebGLContextEvent` typed event (use a generic `Event` listener for `webglcontextlost`/`webglcontextrestored`). |
