@@ -2350,11 +2350,17 @@ Apps relying on the right-hand list get **no protection** — the directive is p
 | Value types | `WebGLActiveInfo`, `WebGLShaderPrecisionFormat`, `WebGLUniformLocation`, `WebGLContextAttributes`. |
 | **Not exposed** | `WebGLContextEvent` typed event (use a generic `Event` listener for `webglcontextlost`/`webglcontextrestored`). |
 
-**Extensions exposed via `getExtension(name)`** (subject to the underlying GL driver advertising the matching `GL_*` token; on Mesa llvmpipe / SwiftShader none may be advertised):
+**Extensions exposed via `getExtension(name)`** (subject to the underlying GL driver advertising the matching `GL_*` token; on an OpenGL ES 3.0+ driver the ES 2.0 extensions that ES 3.0 folded into core count as advertised). Extensions are filtered per context version as the Khronos registry specifies, so WebGL 2 does not list the ones its core absorbed:
 
-`OES_texture_float`, `OES_texture_half_float`, `OES_texture_float_linear`, `OES_standard_derivatives`, `OES_vertex_array_object`, `WEBGL_depth_texture`, `EXT_blend_minmax`, `EXT_texture_filter_anisotropic`.
+| Extension | WebGL 1 | WebGL 2 | Native requirement |
+|-----------|---------|---------|--------------------|
+| `OES_texture_float`, `OES_texture_half_float`, `OES_standard_derivatives`, `OES_vertex_array_object`, `WEBGL_depth_texture`, `EXT_blend_minmax` | yes | no (core) | matching `GL_OES_*` / `GL_EXT_*` token, or ES 3.0+ |
+| `OES_texture_float_linear`, `EXT_texture_filter_anisotropic` | yes | yes | matching token |
+| `WEBGL_color_buffer_float` (float render targets and `readPixels(..., FLOAT, Float32Array)`) | yes | no | `GL_EXT_color_buffer_float` + float textures |
+| `EXT_color_buffer_half_float` | yes | yes | `GL_EXT_color_buffer_half_float` or `GL_EXT_color_buffer_float` + half-float textures |
+| `EXT_color_buffer_float` | no | yes | `GL_EXT_color_buffer_float` |
 
-**Common extensions NOT implemented** (will return `null`): `WEBGL_lose_context`, `WEBGL_debug_renderer_info`, `WEBGL_compressed_texture_*` (s3tc/etc1/astc/pvrtc), `OES_element_index_uint`, `EXT_color_buffer_float`, `ANGLE_instanced_arrays`, `OES_texture_half_float_linear`, `EXT_sRGB`, `KHR_parallel_shader_compile`.
+**Common extensions NOT implemented** (will return `null`): `WEBGL_lose_context`, `WEBGL_debug_renderer_info`, `WEBGL_compressed_texture_*` (s3tc/etc1/astc/pvrtc), `OES_element_index_uint`, `ANGLE_instanced_arrays`, `OES_texture_half_float_linear`, `EXT_sRGB`, `KHR_parallel_shader_compile`.
 
 ### Performance
 

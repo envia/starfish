@@ -96,9 +96,6 @@ WebGLRenderingContext::WebGLRenderingContext(HTMLCanvasElement* canvasElement)
     m_drawingBufferColorSpace = String::createASCIIString("srgb");
     m_state = new WebGLRenderingContextState();
     m_gl = m_ownerHTMLCanvasElement->webView()->renderer()->gl();
-    if (!WebGLExtensionRegistry::instance().isInitialized()) {
-        WebGLExtensionRegistry::instance().initialize(m_gl);
-    }
     GC_REGISTER_FINALIZER_NO_ORDER(
         this,
         [](void* obj, void* cd) {
@@ -193,8 +190,17 @@ void WebGLRenderingContext::initialize()
 
     viewport(0, 0, drawingBufferWidth(), drawingBufferHeight());
 
-    // bind default frame buffer
     GLContextScope contextScope(m_context);
+
+    // GL_EXTENSIONS and the GL version belong to the current context. The
+    // first WebGL canvas can be created before the compositor has made any
+    // context current (the libuv shell does so), so query them only now
+    // that this context is current; an early query sees an empty list.
+    if (!WebGLExtensionRegistry::instance().isInitialized()) {
+        WebGLExtensionRegistry::instance().initialize(m_gl);
+    }
+
+    // bind default frame buffer
     m_gl->bindFramebuffer(GL_FRAMEBUFFER, m_framebufferTexture->fbo());
 }
 
@@ -400,7 +406,8 @@ Optional<GCVector<String*>> WebGLRenderingContext::getSupportedExtensions()
 {
     ENTER_CONTEXT_SCOPE(Optional<GCVector<String*>>());
 
-    return WebGLExtensionRegistry::instance().getSupportedExtensions();
+    return WebGLExtensionRegistry::instance().getSupportedExtensions(
+        webGLVersion());
 }
 
 bool WebGLRenderingContext::isContextLost()
@@ -427,7 +434,7 @@ Optional<ScriptObject> WebGLRenderingContext::getExtension(
     }
 
     Optional<ExtensionGenerator> maybeGenerator =
-        WebGLExtensionRegistry::instance().getGenerator(name);
+        WebGLExtensionRegistry::instance().getGenerator(name, webGLVersion());
 
     if (!maybeGenerator.hasValue()) {
         return Optional<ScriptObject>();
@@ -1521,6 +1528,17 @@ ScriptValue WebGLRenderingContext::getFramebufferAttachmentParameter(
     case GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL:
     case GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE:
         return Escargot::ValueRef::create(params);
+    case GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE:
+        // FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT is added by the float
+        // color buffer extensions and is core in WebGL 2.
+        // https://registry.khronos.org/webgl/extensions/WEBGL_color_buffer_float/
+        if (webGLVersion() == WebGLExtensionRegistry::kWebGL2 ||
+            isExtensionEnabled("WEBGL_color_buffer_float") ||
+            isExtensionEnabled("EXT_color_buffer_half_float")) {
+            return Escargot::ValueRef::create(static_cast<GLenum>(params));
+        }
+        setGLError(GL_INVALID_ENUM);
+        break;
     case GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME: {
         Optional<WebGLFramebuffer*> webGLFramebuffer =
             m_state->webGLFramebuffer();

@@ -50,8 +50,17 @@ public:
         return m_isInitialized;
     }
 
-    Optional<ExtensionGenerator> getGenerator(const std::string& name);
-    GCVector<String*> getSupportedExtensions();
+    // WebGL 1 and WebGL 2 expose different extension sets: some WebGL 1
+    // extensions were promoted to core or replaced in WebGL 2, and
+    // EXT_color_buffer_float exists only for WebGL 2.
+    // https://registry.khronos.org/webgl/extensions/
+    static constexpr unsigned kWebGL1 = 1u << 1;
+    static constexpr unsigned kWebGL2 = 1u << 2;
+    static constexpr unsigned kWebGLAll = kWebGL1 | kWebGL2;
+
+    Optional<ExtensionGenerator> getGenerator(const std::string& name,
+                                              unsigned webGLVersion);
+    GCVector<String*> getSupportedExtensions(unsigned webGLVersion);
 
     WebGLExtensionRegistry(const WebGLExtensionRegistry&) = delete;
     WebGLExtensionRegistry(const WebGLExtensionRegistry&&) = delete;
@@ -63,6 +72,14 @@ public:
         return m_hasEXT_texture_format_BGRA8888;
     }
 
+    // True on an OpenGL ES 3.0+ context. ES 3 promotes OES_texture_float,
+    // OES_texture_half_float and OES_vertex_array_object to core and takes
+    // sized internal formats; WebGL 1 float textures are mapped onto those.
+    bool isES3()
+    {
+        return m_isES3;
+    }
+
     bool hasTextureCompressionExtension()
     {
         // NOTE: Currently verifiable targets don't support this feature.
@@ -72,11 +89,20 @@ public:
 private:
     WebGLExtensionRegistry();
 
-    std::unordered_map<std::string, ExtensionGenerator, CaseInsensitiveHash,
+    struct Extension {
+        ExtensionGenerator generator;
+        unsigned webGLVersions;
+    };
+
+    void registerExtension(const char* name, unsigned webGLVersions,
+                           ExtensionGenerator generator);
+
+    std::unordered_map<std::string, Extension, CaseInsensitiveHash,
                        CaseInsensitiveEqual>
         m_interfaceGenerators;
 
     bool m_hasEXT_texture_format_BGRA8888 = false;
+    bool m_isES3 = false;
     bool m_isInitialized = false;
 };
 

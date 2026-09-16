@@ -804,6 +804,7 @@ test/cairo/internal-test/canvas/toDataURL-with-pack-params.html
 test/cairo/internal-test/css/overflow/overflow-pseudo-element.html
 #test/cairo/internal-test/iframe/iframe-hittest.html
 test/cairo/internal-test/iframe/webgl-blend-in-iframe.html
+test/cairo/internal-test/canvas/webgl-extension-version.html
 test/cairo/internal-test/iframe/postmessage-typedarray.html
 test/cairo/internal-test/iframe/iframe-click-event-isolation.html
 test/cairo/internal-test/iframe/iframe-mouse-screen-coords.html

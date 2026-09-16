@@ -25,6 +25,7 @@
 #include "platform/canvas/gl/GLTypes.h"
 #include "core/dom/canvas/webgl/WebGLRenderingContextBaseMixIn.h"
 #include "core/dom/canvas/webgl/WebGLUtils.h"
+#include "core/dom/canvas/webgl/WebGLExtensions.h"
 #include "core/dom/canvas/webgl/WebGLContextAttributes.h"
 #include "core/util/GCDescriptor.h"
 
@@ -362,6 +363,12 @@ protected:
         Float32List data, unsigned long long srcOffset, GLuint srcLength);
 
 private:
+    // One of WebGLExtensionRegistry::kWebGL1 / kWebGL2.
+    virtual unsigned webGLVersion() const
+    {
+        return WebGLExtensionRegistry::kWebGL1;
+    }
+
     virtual bool checkInternalFormat(GLint internalFormat, GLenum format,
                                      GLenum type);
     virtual bool isSrcDataValid(ScriptArrayBufferView srcData, GLenum type);
