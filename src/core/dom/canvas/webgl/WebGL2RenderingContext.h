@@ -301,6 +301,11 @@ protected:
         unsigned long long srcOffset, GLuint srcLength);
 
 private:
+    int webGLVersion() const override
+    {
+        return 2;
+    }
+
     bool checkInternalFormat(GLint internalFormat, GLenum format,
                              GLenum type) override;
     bool isSrcDataValid(ScriptArrayBufferView srcData, GLenum type) override;
