@@ -3436,6 +3436,42 @@ bool WebGLRenderingContext::checkInternalFormat(GLint internalFormat,
     return true;
 }
 
+// EXT_color_buffer_float requires ES 3 and makes sized float formats
+// color-renderable. Preserve WebGL1 enums during validation, then translate
+// RGB/RGBA storage and the half-float upload type for the native ES3 driver.
+// https://registry.khronos.org/OpenGL/extensions/EXT/EXT_color_buffer_float.txt
+GLint WebGLRenderingContext::promotedWebGL1InternalFormat(GLint internalFormat,
+                                                          GLenum type)
+{
+    if (webGLVersion() != 1 ||
+        !WebGLExtensionRegistry::instance().hasEXT_color_buffer_float()) {
+        return internalFormat;
+    }
+    if (type == GL_FLOAT) {
+        if (internalFormat == GL_RGBA) {
+            return GL_RGBA32F;
+        } else if (internalFormat == GL_RGB) {
+            return GL_RGB32F;
+        }
+    } else if (type == GL_HALF_FLOAT_OES) {
+        if (internalFormat == GL_RGBA) {
+            return GL_RGBA16F;
+        } else if (internalFormat == GL_RGB) {
+            return GL_RGB16F;
+        }
+    }
+    return internalFormat;
+}
+
+GLenum WebGLRenderingContext::promotedWebGL1Type(GLenum type)
+{
+    if (webGLVersion() == 1 && type == GL_HALF_FLOAT_OES &&
+        WebGLExtensionRegistry::instance().hasEXT_color_buffer_float()) {
+        return GL_HALF_FLOAT;
+    }
+    return type;
+}
+
 void WebGLRenderingContext::texImage2D(GLenum target, GLint level,
                                        GLint internalFormat, GLsizei width,
                                        GLsizei height, GLint border,
@@ -3482,8 +3518,10 @@ void WebGLRenderingContext::texImage2D(GLenum target, GLint level,
                 format = GL_BGRA_EXT;
             }
 #endif
-            m_gl->texImage2D(target, level, internalFormat, width, height, 0,
-                             format, type, data);
+            m_gl->texImage2D(target, level,
+                             promotedWebGL1InternalFormat(internalFormat, type),
+                             width, height, 0, format, promotedWebGL1Type(type),
+                             data);
         });
 }
 
@@ -3550,7 +3588,7 @@ void WebGLRenderingContext::texSubImage2D(
         target, level, width, height, format, type, pixels,
         [&](const void* data) {
             m_gl->texSubImage2D(target, level, xoffset, yoffset, width, height,
-                                format, type, data);
+                                format, promotedWebGL1Type(type), data);
         });
 }
 

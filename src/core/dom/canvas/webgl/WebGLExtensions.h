@@ -69,6 +69,11 @@ public:
         return false;
     }
 
+    bool hasEXT_color_buffer_float() const
+    {
+        return m_hasEXT_color_buffer_float;
+    }
+
 private:
     WebGLExtensionRegistry();
 
@@ -77,6 +82,7 @@ private:
         m_interfaceGenerators;
 
     bool m_hasEXT_texture_format_BGRA8888 = false;
+    bool m_hasEXT_color_buffer_float = false;
     bool m_isInitialized = false;
 };
 

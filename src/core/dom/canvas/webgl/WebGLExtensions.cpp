@@ -133,6 +133,10 @@ void WebGLExtensionRegistry::initialize(GL* gl)
         (extensions.find("GL_EXT_texture_format_BGRA8888") !=
          std::string::npos);
 
+    // Native ES3 capability used to back WebGL1 float render targets. This
+    // does not expose the WebGL2-only EXT_color_buffer_float extension.
+    m_hasEXT_color_buffer_float =
+        glExtensions.find("EXT_color_buffer_float") != glExtensions.end();
     m_isInitialized = true;
 }
 

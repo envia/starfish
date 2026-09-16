@@ -798,6 +798,7 @@ test/cairo/internal-test/canvas/quadraticCurveTo.html
 test/cairo/internal-test/canvas/isPointInStroke.html
 test/cairo/internal-test/canvas/clearColor.html
 test/cairo/internal-test/canvas/webgl-float-texture-upload.html
+test/cairo/internal-test/canvas/webgl1-float-render-target.html
 test/cairo/internal-test/canvas/canvasSatus_lineDash.html
 test/cairo/internal-test/canvas/stroke-shadow.html
 test/cairo/internal-test/canvas/toDataURL-with-fbo-bound.html
