@@ -833,6 +833,12 @@ void WebGL2RenderingContext::getBufferSubData(GLenum target,
     size_t dstLength = dstBuffer->isDataViewObject() ? dstBuffer->byteLength()
                                                      : dstBuffer->arrayLength();
 
+    if (dstOffset > dstLength ||
+        (length != 0 && length > dstLength - dstOffset)) {
+        setGLError(GL_INVALID_VALUE);
+        return;
+    }
+
     unsigned long long copyLength =
         (length == 0) ? dstLength - dstOffset : length;
 
@@ -1901,8 +1907,172 @@ void WebGL2RenderingContext::readPixels(GLint x, GLint y, GLsizei width,
                                         GLenum type,
                                         Optional<ScriptArrayBufferView> dstData)
 {
-    WebGLRenderingContext::readPixels(x, y, width, height, format, type,
-                                      dstData);
+    if (!dstData) {
+        ENTER_CONTEXT_SCOPE();
+        setGLError(GL_INVALID_VALUE);
+        return;
+    }
+    readPixels(x, y, width, height, format, type, dstData.value(), 0);
+}
+
+static size_t readPixelsElementSize(GLenum type)
+{
+    switch (type) {
+    case GL_BYTE:
+    case GL_UNSIGNED_BYTE:
+        return 1;
+    case GL_SHORT:
+    case GL_UNSIGNED_SHORT:
+    case GL_HALF_FLOAT:
+    case GL_UNSIGNED_SHORT_4_4_4_4:
+    case GL_UNSIGNED_SHORT_5_5_5_1:
+    case GL_UNSIGNED_SHORT_5_6_5:
+        return 2;
+    case GL_INT:
+    case GL_UNSIGNED_INT:
+    case GL_FLOAT:
+    case GL_UNSIGNED_INT_2_10_10_10_REV:
+    case GL_UNSIGNED_INT_10F_11F_11F_REV:
+    case GL_UNSIGNED_INT_5_9_9_9_REV:
+        return 4;
+    default:
+        return 0;
+    }
+}
+
+bool WebGL2RenderingContext::validateReadPixelsBuffer(
+    GLsizei width, GLsizei height, GLenum format, GLenum type, uint64_t offset,
+    uint64_t bufferSize)
+{
+    if (width < 0 || height < 0) {
+        setGLError(GL_INVALID_VALUE);
+        return false;
+    }
+    switch (format) {
+    case GL_ALPHA:
+    case GL_RED:
+    case GL_RG:
+    case GL_RGB:
+    case GL_RGBA:
+    case GL_RED_INTEGER:
+    case GL_RG_INTEGER:
+    case GL_RGB_INTEGER:
+    case GL_RGBA_INTEGER:
+        break;
+    default:
+        setGLError(GL_INVALID_ENUM);
+        return false;
+    }
+    const size_t elementSize = readPixelsElementSize(type);
+    if (elementSize == 0) {
+        setGLError(GL_INVALID_ENUM);
+        return false;
+    }
+    const size_t bytesPerPixel = getBytesPerPixel(format, type);
+    if (bytesPerPixel == 0 || offset % elementSize != 0 ||
+        offset > bufferSize) {
+        setGLError(GL_INVALID_OPERATION);
+        return false;
+    }
+
+    GLint alignment = 0, rowLength = 0, skipRows = 0, skipPixels = 0;
+    gl()->getIntegerv(GL_PACK_ALIGNMENT, &alignment);
+    gl()->getIntegerv(GL_PACK_ROW_LENGTH, &rowLength);
+    gl()->getIntegerv(GL_PACK_SKIP_ROWS, &skipRows);
+    gl()->getIntegerv(GL_PACK_SKIP_PIXELS, &skipPixels);
+    const uint64_t storeWidth = rowLength == 0 ? width : rowLength;
+    // WebGL2 pixel store constraints forbid overlapping rows, even if the
+    // native driver permits them. Validate the entire requested rectangle
+    // before driver clipping, which otherwise hides undersized buffers.
+    // https://registry.khronos.org/webgl/specs/latest/2.0/#PixelStoreParams
+    if (static_cast<uint64_t>(skipPixels) + width > storeWidth) {
+        setGLError(GL_INVALID_OPERATION);
+        return false;
+    }
+    if (width == 0 || height == 0) {
+        return true;
+    }
+    const uint64_t rowBytes = storeWidth * bytesPerPixel;
+    const uint64_t stride = (rowBytes + alignment - 1) / alignment * alignment;
+    const uint64_t lastRowBytes =
+        (static_cast<uint64_t>(skipPixels) + width) * bytesPerPixel;
+    const uint64_t precedingRows = static_cast<uint64_t>(skipRows) + height - 1;
+    const uint64_t available = bufferSize - offset;
+    // Division avoids overflow for extreme dimensions/pack state.
+    if (lastRowBytes > available ||
+        precedingRows > (available - lastRowBytes) / stride) {
+        setGLError(GL_INVALID_OPERATION);
+        return false;
+    }
+    return true;
+}
+
+void WebGL2RenderingContext::readPixels(GLint x, GLint y, GLsizei width,
+                                        GLsizei height, GLenum format,
+                                        GLenum type, GLintptr offset)
+{
+    ENTER_CONTEXT_SCOPE();
+    if (!getState()->getBoundBuffer(GL_PIXEL_PACK_BUFFER)) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+    if (offset < 0) {
+        setGLError(GL_INVALID_VALUE);
+        return;
+    }
+    GLint64 bufferSize = 0;
+    gl()->getBufferParameteri64v(GL_PIXEL_PACK_BUFFER, GL_BUFFER_SIZE,
+                                 &bufferSize);
+    if (bufferSize < 0 || !validateReadPixelsBuffer(width, height, format, type,
+                                                    offset, bufferSize)) {
+        return;
+    }
+    // An explicit row length is equivalent to zero here. NVIDIA otherwise
+    // requires padding after the final row of a PBO, contrary to WebGL's
+    // required buffer-size calculation (OpenGL ES 3.0, section 4.3.1).
+    GLint rowLength = 0;
+    gl()->getIntegerv(GL_PACK_ROW_LENGTH, &rowLength);
+    if (rowLength == 0) {
+        gl()->pixelStorei(GL_PACK_ROW_LENGTH, width);
+    }
+    gl()->readPixels(x, y, width, height, format, type,
+                     reinterpret_cast<void*>(offset));
+    if (rowLength == 0) {
+        gl()->pixelStorei(GL_PACK_ROW_LENGTH, 0);
+    }
+}
+
+void WebGL2RenderingContext::readPixels(GLint x, GLint y, GLsizei width,
+                                        GLsizei height, GLenum format,
+                                        GLenum type,
+                                        ScriptArrayBufferView dstData,
+                                        unsigned long long dstOffset)
+{
+    ENTER_CONTEXT_SCOPE();
+    // A client pointer must never be interpreted as a pixel-buffer offset.
+    if (getState()->getBoundBuffer(GL_PIXEL_PACK_BUFFER)) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+    const size_t elementSize = readPixelsElementSize(type);
+    if (elementSize == 0) {
+        setGLError(GL_INVALID_ENUM);
+        return;
+    }
+    if (!isSrcDataValid(dstData, type) || dstOffset > dstData->arrayLength()) {
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+    const uint64_t byteOffset = dstOffset * elementSize;
+    if (!validateReadPixelsBuffer(width, height, format, type, byteOffset,
+                                  dstData->byteLength())) {
+        return;
+    }
+    if (width == 0 || height == 0) {
+        return;
+    }
+    void* data = dstData->rawBuffer() + byteOffset;
+    gl()->readPixels(x, y, width, height, format, type, data);
 }
 
 } // namespace Starfish
