@@ -57,6 +57,8 @@
 #include "platform/canvas/gl/GL.h"
 
 #include <EscargotPublic.h>
+#include <cstdlib>
+#include <limits>
 #include <sstream>
 #include <iomanip>
 
@@ -3062,6 +3064,24 @@ public:
                 hex(type).c_str());
         }
 
+        if (!m_isNativeImageDataUsed && type != GL_UNSIGNED_BYTE &&
+            !Pixel::isTwoBytesPerPixel(type)) {
+            // FLOAT and HALF_FLOAT_OES texels from an ArrayBufferView are
+            // already in the layout GL expects, so a row-wise copy handles
+            // UNPACK_FLIP_Y_WEBGL. UNPACK_PREMULTIPLY_ALPHA_WEBGL is not
+            // applied to float texels here; the byte paths below are the
+            // only ones that premultiply.
+            if (needsFlipY) {
+                const size_t stride = m_sourceImage.stride;
+                m_data.resize(height * stride);
+                for (size_t row = 0; row < height; row++) {
+                    memcpy(&m_data[(height - row - 1) * stride],
+                           image + row * stride, stride);
+                }
+            }
+            return;
+        }
+
 #if !defined(PORT_PIXEL_ORDER_RGBA) && !defined(PORT_PIXEL_ORDER_BGRA)
         STARFISH_ASSERT_NOT_REACHED();
         return;
@@ -3216,21 +3236,66 @@ bool WebGLRenderingContext::isSrcDataValid(ScriptArrayBufferView srcData,
         // UNSIGNED_SHORT_5_5_5_1, a Uint16Array must be supplied.
         return false;
     }
+    // OES_texture_float: FLOAT takes a Float32Array.
+    // OES_texture_half_float: HALF_FLOAT_OES takes a Uint16Array.
+    if (type == GL_FLOAT && !srcData->isFloat32ArrayObject()) {
+        return false;
+    }
+    if (type == GL_HALF_FLOAT_OES && !srcData->isUint16ArrayObject()) {
+        return false;
+    }
     return true;
 }
 
 void WebGLRenderingContext::handleTexImageWithArrayBufferView(
     GLenum target, GLint level, GLsizei width, GLsizei height, GLenum format,
     GLenum type, Optional<ScriptArrayBufferView> pixels,
-    std::function<void(const TexImageHelper*)> updateImage,
-    std::function<void(const std::vector<GLubyte>&)> updateBlackImage,
-    std::function<void(const std::vector<GLushort>&)> updateTwoBytesBlackImage)
+    std::function<void(const void*)> updateImage)
 {
     STARFISH_ASSERT(updateImage != nullptr);
-    STARFISH_ASSERT(updateBlackImage != nullptr);
-    STARFISH_ASSERT(updateTwoBytesBlackImage != nullptr);
 
-    if (pixels.hasValue()) {
+    if (width < 0 || height < 0) {
+        setGLError(GL_INVALID_VALUE);
+        return;
+    }
+
+    if (webGLVersion() == WebGLExtensionRegistry::kWebGL1) {
+        // WebGL 1 accepts a float type only once the matching extension is
+        // enabled. A null upload defines the texture's type as well, so the
+        // check applies to it too.
+        // https://registry.khronos.org/webgl/extensions/OES_texture_float/
+        // https://registry.khronos.org/webgl/extensions/OES_texture_half_float/
+        if ((type == GL_FLOAT && !isExtensionEnabled("OES_texture_float")) ||
+            (type == GL_HALF_FLOAT_OES &&
+             !isExtensionEnabled("OES_texture_half_float"))) {
+            setGLError(GL_INVALID_ENUM);
+            return;
+        }
+    } else if (m_state->getBoundBuffer(GL_PIXEL_UNPACK_BUFFER)) {
+        // WebGL 2: the ArrayBufferView overloads read client memory, which
+        // is not allowed while a pixel unpack buffer is bound.
+        // https://registry.khronos.org/webgl/specs/latest/2.0/#4.3
+        setGLError(GL_INVALID_OPERATION);
+        return;
+    }
+
+    const size_t bytesPerPixel = getBytesPerPixel(format, type);
+    if (bytesPerPixel == 0) {
+        setGLError(GL_INVALID_ENUM);
+        return;
+    }
+    // width * height * bytesPerPixel, guarded against size_t overflow.
+    const size_t maxByteLength = std::numeric_limits<size_t>::max();
+    if (static_cast<size_t>(width) > maxByteLength / bytesPerPixel ||
+        (height != 0 && static_cast<size_t>(width) * bytesPerPixel >
+                            maxByteLength / static_cast<size_t>(height))) {
+        setGLError(pixels ? GL_INVALID_OPERATION : GL_OUT_OF_MEMORY);
+        return;
+    }
+    const size_t rowByteLength = static_cast<size_t>(width) * bytesPerPixel;
+    const size_t byteLengthOfPixels = rowByteLength * height;
+
+    if (pixels) {
         ArrayBufferViewRef* pixelsView = pixels.getValue();
 
         if (!isSrcDataValid(pixelsView, type)) {
@@ -3238,17 +3303,10 @@ void WebGLRenderingContext::handleTexImageWithArrayBufferView(
             return;
         }
 
-        if ((type == GL_FLOAT) && !isExtensionEnabled("OES_texture_float")) {
-            setGLError(GL_INVALID_ENUM);
-            return;
-        }
-
         // If pixels is non-null but its size is less than what is required by
         // the specified width, height, format, type, and pixel storage
         // parameters, generates an INVALID_OPERATION error.
-        size_t bytesPerPixel = getBytesPerPixel(format, type);
-        size_t byteLengthOfPixels = width * height * bytesPerPixel;
-        size_t byteLengthOfView = pixels->byteLength();
+        size_t byteLengthOfView = pixelsView->byteLength();
 
         TRACEF(WEBGL, "\n%s",
                StringUtils::createTableString(20, KV(hex(target)), KV(width),
@@ -3264,66 +3322,46 @@ void WebGLRenderingContext::handleTexImageWithArrayBufferView(
 
         // Handle WebGL-specific pixel storage parameters that affect the
         // behavior of this function.
-        TexImageHelper image(width, height, width * bytesPerPixel, format,
-                             data);
+        TexImageHelper image(width, height, rowByteLength, format, data);
         image.draw(m_unpackFlipY, m_unpackPremultiplyAlpha, type,
                    bytesPerPixel);
 
-        updateImage(&image);
-    } else {
-        // Refs: conformance/resources/tex-image-and-sub-image-2d-with-image.js,
-        // initializing the texture to black by gl.texImage2D(..., null).
-
-        const size_t bytesPerPixel = getBytesPerPixel(format, type);
-        size_t byteLengthOfPixels = width * height * bytesPerPixel;
-
-        TRACE(WEBGL_V, KV(glValueString(format)), KV(glValueString(type)));
-        TRACE(WEBGL_V, KV(bytesPerPixel), KV(byteLengthOfPixels));
-
-        static size_t maxTextureSize = 0;
-        if (maxTextureSize == 0) {
-            m_gl->getIntegerv(GL_MAX_TEXTURE_SIZE,
-                              reinterpret_cast<GLint*>(&maxTextureSize));
-            TRACE(WEBGL_V, KV(maxTextureSize));
-        }
-
-        if (Pixel::isTwoBytesPerPixel(type)) {
-            std::vector<GLushort> blackData;
-            if (byteLengthOfPixels <= maxTextureSize) {
-                if (type == GL_UNSIGNED_SHORT_5_5_5_1) {
-                    blackData.resize(byteLengthOfPixels,
-                                     Pixel::makePixel5551(0, 0, 0, 0xFF));
-                } else if (type == GL_UNSIGNED_SHORT_4_4_4_4) {
-                    blackData.resize(byteLengthOfPixels,
-                                     Pixel::makePixel4444(0, 0, 0, 0xFF));
-                } else {
-                    // format == GL_RGB
-                    STARFISH_ASSERT(type == GL_UNSIGNED_SHORT_5_6_5);
-                    blackData.resize(byteLengthOfPixels, 0);
-                }
-            }
-
-            updateTwoBytesBlackImage(blackData);
-            return;
-        }
-
-        std::vector<GLubyte> blackData;
-        if (byteLengthOfPixels <= maxTextureSize) {
-            if (format == GL_ALPHA) {
-                blackData.resize(byteLengthOfPixels, 255);
-            } else if (format == GL_LUMINANCE_ALPHA || format == GL_RGBA) {
-                blackData.resize(byteLengthOfPixels, 0);
-                size_t alphaIndex = bytesPerPixel - 1;
-                for (size_t i = 0; i < byteLengthOfPixels; i += bytesPerPixel) {
-                    blackData[i + alphaIndex] = 255;
-                }
-            } else {
-                blackData.resize(byteLengthOfPixels, 0);
-            }
-        }
-
-        updateBlackImage(blackData);
+        updateImage(image.data());
+        return;
     }
+
+    // WebGL 1.0 5.14.8: "If pixels is null, a buffer of sufficient size
+    // initialized to 0 is passed." calloc lets large allocations come from
+    // demand-zero pages instead of an explicit fill.
+    // https://registry.khronos.org/webgl/specs/latest/1.0/#5.14.8
+    void* zeroData = std::calloc(std::max<size_t>(byteLengthOfPixels, 1), 1);
+    if (!zeroData) {
+        setGLError(GL_OUT_OF_MEMORY);
+        return;
+    }
+
+    // The zero buffer is tightly packed, so the application's unpack state
+    // must not change how GL reads it. Row length and skip parameters exist
+    // only in WebGL 2 (OpenGL ES 3.0).
+    const GLenum unpackParameters[] = { GL_UNPACK_ALIGNMENT,
+                                        GL_UNPACK_ROW_LENGTH,
+                                        GL_UNPACK_SKIP_ROWS,
+                                        GL_UNPACK_SKIP_PIXELS };
+    GLint savedUnpackParameters[4];
+    const size_t parameterCount =
+        webGLVersion() == WebGLExtensionRegistry::kWebGL2 ? 4 : 1;
+    for (size_t i = 0; i < parameterCount; ++i) {
+        m_gl->getIntegerv(unpackParameters[i], &savedUnpackParameters[i]);
+        m_gl->pixelStorei(unpackParameters[i], i == 0 ? 1 : 0);
+    }
+    auto onScopeLeave = OnScopeLeave::create([&]() {
+        for (size_t i = 0; i < parameterCount; ++i) {
+            m_gl->pixelStorei(unpackParameters[i], savedUnpackParameters[i]);
+        }
+        std::free(zeroData);
+    });
+
+    updateImage(zeroData);
 }
 
 void WebGLRenderingContext::handleTexImageWithImageSource(
@@ -3433,6 +3471,73 @@ bool WebGLRenderingContext::checkInternalFormat(GLint internalFormat,
     return true;
 }
 
+bool WebGLRenderingContext::validateTexImageSize(GLenum target, GLint level,
+                                                 GLsizei width, GLsizei height,
+                                                 GLint border)
+{
+    // OpenGL ES 2.0 3.7.1: level must be non-negative and no larger than
+    // log2 of the maximum size, border must be 0, and each dimension must
+    // fit in the maximum size shifted down by the level.
+    // https://registry.khronos.org/OpenGL/specs/es/2.0/es_full_spec_2.0.pdf
+    GLint maxTextureSize = 0;
+    m_gl->getIntegerv(target == GL_TEXTURE_2D ? GL_MAX_TEXTURE_SIZE
+                                              : GL_MAX_CUBE_MAP_TEXTURE_SIZE,
+                      &maxTextureSize);
+    if (border != 0 || width < 0 || height < 0 || level < 0 ||
+        level >= std::numeric_limits<GLint>::digits ||
+        (maxTextureSize >> level) == 0 || width > (maxTextureSize >> level) ||
+        height > (maxTextureSize >> level)) {
+        setGLError(GL_INVALID_VALUE);
+        return false;
+    }
+    return true;
+}
+
+// WebGL 1 float textures are OES_texture_float / OES_texture_half_float
+// textures with an unsized internal format. On an OpenGL ES 3.0 driver the
+// same textures are core with sized internal formats, and only the sized
+// RGBA32F / RGBA16F forms are color-renderable through
+// EXT_color_buffer_float, which WEBGL_color_buffer_float and
+// EXT_color_buffer_half_float rely on. Map the WebGL 1 enums onto the ES 3
+// forms; the WebGL enums are still what gets validated and reported.
+// https://registry.khronos.org/OpenGL/extensions/EXT/EXT_color_buffer_float.txt
+GLint WebGLRenderingContext::nativeTexImageInternalFormat(GLint internalFormat,
+                                                          GLenum type)
+{
+    if (webGLVersion() != WebGLExtensionRegistry::kWebGL1 ||
+        !WebGLExtensionRegistry::instance().isES3()) {
+        return internalFormat;
+    }
+    if (type == GL_FLOAT) {
+        if (internalFormat == GL_RGBA) {
+            return GL_RGBA32F;
+        }
+        if (internalFormat == GL_RGB) {
+            return GL_RGB32F;
+        }
+    } else if (type == GL_HALF_FLOAT_OES) {
+        if (internalFormat == GL_RGBA) {
+            return GL_RGBA16F;
+        }
+        if (internalFormat == GL_RGB) {
+            return GL_RGB16F;
+        }
+    }
+    return internalFormat;
+}
+
+GLenum WebGLRenderingContext::nativeTexImageType(GLenum type)
+{
+    // ES 3.0 spells the half-float type HALF_FLOAT; HALF_FLOAT_OES is the
+    // ES 2.0 extension token that WebGL 1 exposes.
+    if (type == GL_HALF_FLOAT_OES &&
+        webGLVersion() == WebGLExtensionRegistry::kWebGL1 &&
+        WebGLExtensionRegistry::instance().isES3()) {
+        return GL_HALF_FLOAT;
+    }
+    return type;
+}
+
 void WebGLRenderingContext::texImage2D(GLenum target, GLint level,
                                        GLint internalFormat, GLsizei width,
                                        GLsizei height, GLint border,
@@ -3454,33 +3559,36 @@ void WebGLRenderingContext::texImage2D(GLenum target, GLint level,
         return;
     }
 
+    // Reject bad dimensions before a null upload allocates its zero buffer.
+    if (!validateTexImageSize(target, level, width, height, border)) {
+        return;
+    }
+
+    const GLint nativeInternalFormat =
+        nativeTexImageInternalFormat(internalFormat, type);
+    const GLenum nativeType = nativeTexImageType(type);
+
     handleTexImageWithArrayBufferView(
         target, level, width, height, format, type, pixels,
-        [&](const TexImageHelper* helper) {
-            STARFISH_ASSERT(helper != nullptr);
-            m_gl->texImage2D(target, level, internalFormat, width, height, 0,
-                             format, type, helper->data());
-        },
-        [&](const std::vector<GLubyte>& blackData) {
+        [&](const void* data) {
+            GLint uploadInternalFormat = nativeInternalFormat;
+            GLenum uploadFormat = format;
 #if defined(PORT_PIXEL_ORDER_BGRA)
-            if (format == GL_RGBA) {
-                if (WebGLExtensionRegistry::instance()
-                        .hasEXT_texture_format_BGRA8888()) {
-                    // According to OpenGL ES specification, the format must
-                    // match the base internal format (no conversions from
-                    // one format to another during texture image processing
-                    // are supported.)
-                    internalFormat = GL_BGRA_EXT;
-                    format = GL_BGRA_EXT;
-                }
+            if (!pixels && internalFormat == GL_RGBA && format == GL_RGBA &&
+                type == GL_UNSIGNED_BYTE &&
+                WebGLExtensionRegistry::instance()
+                    .hasEXT_texture_format_BGRA8888()) {
+                // OpenGL ES 2.0 3.7.2 requires texSubImage2D's format to
+                // match the texture's internal format, and later uploads
+                // from NativeImageData arrive as BGRA. Keep this for byte
+                // textures only; float and sized formats stay as given.
+                // https://registry.khronos.org/OpenGL/specs/es/2.0/es_full_spec_2.0.pdf
+                uploadInternalFormat = GL_BGRA_EXT;
+                uploadFormat = GL_BGRA_EXT;
             }
 #endif
-            m_gl->texImage2D(target, level, internalFormat, width, height, 0,
-                             format, type, blackData.data());
-        },
-        [&](const std::vector<GLushort>& blackData) {
-            m_gl->texImage2D(target, level, internalFormat, width, height, 0,
-                             format, type, blackData.data());
+            m_gl->texImage2D(target, level, uploadInternalFormat, width, height,
+                             0, uploadFormat, nativeType, data);
         });
 }
 
@@ -3536,32 +3644,21 @@ void WebGLRenderingContext::texSubImage2D(
 {
     ENTER_CONTEXT_SCOPE();
 
+    // WebGL 1.0 5.14.8: unlike texImage2D, a null pixels argument to
+    // texSubImage2D generates INVALID_VALUE instead of a zero fill.
+    // https://registry.khronos.org/webgl/specs/latest/1.0/#5.14.8
+    if (!pixels) {
+        setGLError(GL_INVALID_VALUE);
+        return;
+    }
+
+    const GLenum nativeType = nativeTexImageType(type);
+
     handleTexImageWithArrayBufferView(
         target, level, width, height, format, type, pixels,
-        [&](const TexImageHelper* helper) {
-            STARFISH_ASSERT(helper != nullptr);
+        [&](const void* data) {
             m_gl->texSubImage2D(target, level, xoffset, yoffset, width, height,
-                                format, type, helper->data());
-        },
-        [&](const std::vector<GLubyte>& blackData) {
-#if defined(PORT_PIXEL_ORDER_BGRA)
-            if (format == GL_RGBA) {
-                if (WebGLExtensionRegistry::instance()
-                        .hasEXT_texture_format_BGRA8888()) {
-                    // According to OpenGL ES specification, the format must
-                    // match the base internal format (no conversions from
-                    // one format to another during texture image processing
-                    // are supported.)
-                    format = GL_BGRA_EXT;
-                }
-            }
-#endif
-            m_gl->texSubImage2D(target, level, xoffset, yoffset, width, height,
-                                format, type, blackData.data());
-        },
-        [&](const std::vector<GLushort>& blackData) {
-            m_gl->texSubImage2D(target, level, xoffset, yoffset, width, height,
-                                format, type, blackData.data());
+                                format, nativeType, data);
         });
 }
 

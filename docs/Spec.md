@@ -2360,6 +2360,8 @@ Apps relying on the right-hand list get **no protection** — the directive is p
 | `EXT_color_buffer_half_float` | yes | yes | `GL_EXT_color_buffer_half_float` or `GL_EXT_color_buffer_float` + half-float textures |
 | `EXT_color_buffer_float` | no | yes | `GL_EXT_color_buffer_float` |
 
+On an ES 3.0+ driver, WebGL 1 float textures (`RGBA`/`RGB` with `FLOAT` or `HALF_FLOAT_OES`) are stored as the sized `RGBA32F`/`RGB32F`/`RGBA16F`/`RGB16F` formats so they are color-renderable; `renderbufferStorage` with the `*_EXT` sized formats and `getFramebufferAttachmentParameter(FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT)` are passed through to the driver. `texImage2D` with `null` pixels zero-fills the texture per WebGL 1.0 §5.14.8.
+
 **Common extensions NOT implemented** (will return `null`): `WEBGL_lose_context`, `WEBGL_debug_renderer_info`, `WEBGL_compressed_texture_*` (s3tc/etc1/astc/pvrtc), `OES_element_index_uint`, `ANGLE_instanced_arrays`, `OES_texture_half_float_linear`, `EXT_sRGB`, `KHR_parallel_shader_compile`.
 
 ### Performance

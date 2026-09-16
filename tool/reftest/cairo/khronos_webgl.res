@@ -679,7 +679,7 @@ test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/textures/texture-draw-
 # test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/textures/texture-npot.html
 # test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/textures/texture-npot-video.html
 test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/textures/texture-size-cube-maps.html
-# test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/textures/texture-size.html
+test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/textures/texture-size.html
 test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/textures/texture-size-limit.html
 # test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/textures/texture-sub-image-cube-maps.html
 test/cairo/reftest/vendor/khronos/webgl/1.0.3/conformance/textures/texture-transparent-pixels-initialized.html

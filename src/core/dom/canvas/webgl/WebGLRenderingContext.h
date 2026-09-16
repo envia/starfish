@@ -259,13 +259,15 @@ public:
                     Optional<ScriptArrayBufferView> pixels);
 
 private:
+    // Validates and converts an ArrayBufferView upload, then hands the
+    // tightly packed pixel data (a zero-filled buffer when pixels is null)
+    // to updateImage, which issues the GL call.
     void handleTexImageWithArrayBufferView(
         GLenum target, GLint level, GLsizei width, GLsizei height,
         GLenum format, GLenum type, Optional<ScriptArrayBufferView> pixels,
-        std::function<void(const TexImageHelper*)> updateImage,
-        std::function<void(const std::vector<GLubyte>&)> updateBlackImage,
-        std::function<void(const std::vector<GLushort>&)>
-            updateTwoBytesBlackImage);
+        std::function<void(const void*)> updateImage);
+    bool validateTexImageSize(GLenum target, GLint level, GLsizei width,
+                              GLsizei height, GLint border);
     void handleTexImageWithImageSource(
         const GLenum format, const GLenum type, const TexImageSource& source,
         std::function<void(const TexImageHelper*)> updateImage);
@@ -373,6 +375,8 @@ private:
                                      GLenum type);
     virtual bool isSrcDataValid(ScriptArrayBufferView srcData, GLenum type);
     virtual size_t getBytesPerPixel(GLenum format, GLenum type);
+    GLint nativeTexImageInternalFormat(GLint internalFormat, GLenum type);
+    GLenum nativeTexImageType(GLenum type);
 
     bool m_hasPendingJobsBetweenFrames;
     uint32_t m_pendingClearMask;
