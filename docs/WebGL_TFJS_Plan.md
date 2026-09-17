@@ -3,7 +3,7 @@
 작성일: 2026-09-17
 
 검토 대상: `starfish_f_claude`의 `indigo/2025/webgl2/0375`,
-`22a49cdca7` (8판, `Record the tool hash used to validate 0377`).
+`d66e8e9c61` (9판, `Pin the model assets and verify the ordering rationale`).
 계획 합의 완료. 두 작업 브랜치는 표현과 언어가 달라도 아래 요구사항을 공유한다.
 계획 합의는 구현 코드의 승인이나 검증 완료를 뜻하지 않는다.
 
@@ -34,11 +34,12 @@ TFJS에 필요한 경로를 우선 구현한다. WebGL 및 관련 확장 전체 
 
 - 개발 저장소: `starfish_f_codex`
 - 개발 브랜치 및 push 대상: `origin/indigo/2025/webgl2/0376`
-- Claude 검토 브랜치: `origin/indigo/2025/webgl2/0375`
+- Claude 개발 브랜치: `origin/indigo/2025/webgl2/0375`
 - 시작 코드: `13c4ffd576` (`Bump version to 1.5.6`)
 - 개발 환경: Linux x86_64, X11, `uv_cairo_gl`, Debug, `WEBGL=1`
 - 통합 저장소 및 브랜치: `starfish_f`, `indigo/2025/webgl2/0377`
-- Codex 작업을 Claude Code와 검토하고 합의한 변경을 통합 저장소에 반영한다.
+- Codex와 Claude Code의 양 개발 브랜치를 교차 검토하고 합의한 변경을
+  통합 저장소에 반영한다.
   이 문서의 push만으로 통합 코드가 합의되었다고 간주하지 않는다.
 - 기존 untracked `Makefile`, `web_tc_new_/`는 보존하고 임의로 커밋하지 않는다.
 - 기능별 커밋에 관련 테스트와 필요한 문서 변경을 함께 포함한다.
@@ -102,6 +103,18 @@ TFJS에 필요한 경로를 우선 구현한다. WebGL 및 관련 확장 전체 
 `7818039497`이며 runner는 backend·빌드 종류·GL 환경을 인자로 받는다.
 사용법은 도구 README에 기록하며 저장소 루트 README는 변경하지 않는다.
 이 도구 커밋은 `0377`에 반영하지 않는다.
+참조 JSON에는 실제 입력 문자열과 모델 자산 URL 및 콘텐츠 식별 정보
+(다운로드한 모델 manifest·weight shard·어휘 등 사용 자산의 SHA-256)를 기록한다.
+같은 URL의 내용이 바뀐 경우도 검출해 고정 참조와 혼용하지 않는다.
+
+커밋 5 작업 시 PBO 수정 전 코드에 확장 노출만 임시 적용해
+`614c9a3c15`의 다운로드 정지가 현재 코드에서도 재현되는지 제한 시간 안에
+확인하고 결과 문서에 기록한다. 진단용 변경은 기능 커밋에 포함하지 않으며,
+기존 작업을 보존할 수 있도록 별도 임시 worktree 또는 구분된 패치로 관리한다.
+재현되지 않으면 관찰 결과를 그대로 기록하고 과거 기록을 현재 결과로 취급하지 않는다.
+커밋 5의 독립 readback 테스트는 확장 없이 가능한 byte 경로를 필수로 검사하고,
+확장에 의존하는 float 경로는 커밋 6에서 확장 활성화 후 반드시 재실행한다.
+float 경로의 skip을 검증 통과로 보고하지 않는다.
 
 기준선 확보는 별도 커밋이 아니라 커밋 1 이후, 첫 엔진 변경 전에 수행하는
 단계다. 아래 매트릭스에서 비교할 스위트의 변경 전 결과를 같은 환경별로
@@ -142,10 +155,13 @@ WebGL 버전 및 native GL 버전의 차이, 확장 지원·노출·활성화의
   `webgl-float-texture-upload.html`, `webgl1-float-render-target.html`,
   `webgl2-pixel-readback.html`이다. 기존 자산 유무를 먼저 확인한다.
 - 후보 Khronos 테스트는 `texture-size.html`, `oes-texture-float.html`,
-  `oes-texture-half-float.html`, `get-buffer-sub-data.html`,
+  `oes-texture-half-float.html`,
   `read-pixels-into-pixel-pack-buffer.html`, `read-pixels-pack-parameters.html`,
   `conformance2/extensions/promoted-extensions.html`이다.
   실제 경로와 baseline을 확인하고 지원 대상 환경에서 통과한 항목을 활성화한다.
+- `conformance2/buffers/get-buffer-sub-data.html`은 이미
+  `tool/reftest/cairo/khronos_webgl2.res`에서 활성 상태다. 새로 활성화하는
+  대상이 아니라 변경 전후 계속 통과하는지 확인하는 회귀 항목이다.
 
 ### 규격 및 수치 비교 기준
 
@@ -221,6 +237,19 @@ Release는 `testEnd` 바인딩이 없어 데모 probe로 결과를 판정한다.
 | `glib_cairo_gl` | Release | llvmpipe | 없음, 데모 검증 | 미실행 |
 | `glib_cairo_gl` | Release | NVIDIA | 없음, 데모 검증 | 미실행 |
 
+## 알려진 잔여 공백
+
+참고 브랜치 `0374`의 검증 문서에는
+`conformance2/extensions/ext-color-buffer-float.html`이 float renderbuffer의
+확장 활성화 검사, `RGB16F` 거부 및 `getInternalformatParameter` 미구현으로
+실패한다고 기록되어 있다. 현재 코드에서도 해당 테스트는 알려진 실패로
+주석 처리되어 있으며 `getInternalformatParameter`와 `clearBufferfv`의 IDL은
+`[Unimplemented]` 상태다. 이번 작업에서 전체 확장 구현을 목표로 하지 않는다.
+
+따라서 TFJS 성공만을 근거로 이 테스트를 활성화하지 않는다. 부분 구현의 제약을
+결과 문서에 기록하며 실제로 관련 실패를 해결하고 테스트 전체를 재검증한 경우에만
+활성화를 검토한다. 과거 실패 원인 기록과 이번 실행에서 관찰한 결과는 구분한다.
+
 ## 현재 검증 상태
 
 계획 작성 시점에는 구현·빌드·추론 테스트를 수행하지 않았다.
@@ -239,5 +268,5 @@ Release는 `testEnd` 바인딩이 없어 데모 probe로 결과를 판정한다.
 8조합 완료 전에는 종합 검증 완료로 보고하지 않는다.
 
 참고 변경, 커밋 경계, 수치 비교 기준, 테스트 자산 통합 방식, GPU 실행 확인
-절차는 합의 완료다. 기존 Claude 수정 요청 목록은 8판에 반영되어 제거했다.
+절차는 합의 완료다. 기존 Claude 수정 요청 목록은 반영되어 제거했다.
 한국어 문서와 `Codex <codex@ai.local>` trailer는 유지한다.
