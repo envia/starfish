@@ -3,7 +3,7 @@
 Written 2026-09-17. The Claude Code branch (`0375`) and the Codex branch
 (`0376`) each keep their own plan document at this path; the two documents
 differ in wording and language but share the agreed requirements recorded
-here. Revision 10: the validation tool is committed as the first commit of each
+here. Revision 11 (wording only): the validation tool is committed as the first commit of each
 working branch, and `0377` carries engine changes, tests and `docs/Spec.md`
 only; the tool, this plan and the results document stay on `0375` / `0376`
 (user decisions, 2026-09-17).
@@ -37,15 +37,15 @@ full conformance or of the absence of all regressions.
   sentences plus "Thank you for helping me." (7 labels × 4 inputs, 28
   decisions; the three initial sentences give the 21 decisions quoted below).
   The CPU reference is recomputed with the current build before the first
-  code change and compared with the 0730 JSON; a mismatch stops the work
-  until explained.
+  engine change (step 0) and compared with the 0730 JSON; a mismatch stops
+  the work until explained.
 - Pass rule: every decision matches the CPU reference and the maximum
   absolute probability error is at most 1e-3. NaN, Infinity, a missing result
   or a shape mismatch fails regardless of tolerance.
 - Small matrix multiplications (float32 and half-float) are checked with
   `WEBGL_CPU_FORWARD=false` so the GL path itself is exercised.
 - Test suites are diffed against a baseline captured from the same build
-  configuration before the first code change. Pre-existing failures and new
+  configuration before the first engine change (step 0). Pre-existing failures and new
   failures are reported separately; a new failure blocks completion until its
   cause is understood and fixed.
 - Timings are recorded but are not a pass criterion.
@@ -69,7 +69,10 @@ are not carried into `0377`. The untracked repo-root `Makefile` and the
 
 Development environment: Linux x86_64, `SHELL=x11`, `BACKEND=uv_cairo_gl`,
 `CMAKE_BUILD_TYPE=Debug`, `WEBGL=1` (`make` with the untracked `Makefile`
-configures `out/webgl2`). GPU: NVIDIA GeForce RTX 3050 OEM, driver 595.91.07,
+configures `out/webgl2`, which serves as the `uv_cairo_gl` Debug row of the
+validation matrix; the other seven rows are configured by hand into
+`out/<backend>-<type>` with the same flags apart from backend and build
+type). GPU: NVIDIA GeForce RTX 3050 OEM, driver 595.91.07,
 `DISPLAY=:1`, `/dev/dri/renderD128`. The Codex sandbox needs its
 outside-sandbox execution permission for GPU runs; every hardware run records
 Starfish's own renderer string, not only host-level `glxinfo`.
