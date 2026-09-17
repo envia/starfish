@@ -2,9 +2,10 @@
 
 Written 2026-09-17. Shared between the Claude Code branch (`0375`) and the
 Codex branch (`0376`); the agreed version of this document is the same on
-both branches so that `0377` can take either. Revision 4: the eight-row
-validation matrix and the results document are required (user decision after
-the Codex review in `c70f4982dd`).
+both branches. Revision 5: the validation tool is committed as the first code
+commit, and `0377` carries code, tests, the tool and `docs/Spec.md` only; this
+plan and the results document stay on `0375` / `0376` (user decisions,
+2026-09-17).
 
 Goal: make https://storage.googleapis.com/tfjs-models/demos/toxicity/index.html
 run on the TensorFlow.js `webgl` backend with both WebGL1
@@ -58,9 +59,12 @@ full conformance or of the absence of all regressions.
 | `<checkout>/web_tc_new_` | `origin/indigo/2025/webgl2/0375` (Claude), `0376` (Codex) | Test assets (see Testing) |
 
 Pushing this document does not make the code agreed; each commit is reviewed
-between the two branches before it is taken into `0377`. The untracked
-repo-root `Makefile` and the `web_tc_new_/` checkout are never committed to
-this repository.
+between the two branches before it is taken into `0377`. `0377` receives the
+engine changes, the test activations, the validation tool and the
+`docs/Spec.md` updates. `docs/WebGL_TFJS_Plan.md` and
+`docs/WebGL_TFJS_Validation.md` are working documents of `0375` / `0376` and
+are not carried into `0377`. The untracked repo-root `Makefile` and the
+`web_tc_new_/` checkout are never committed to this repository.
 
 Development environment: Linux x86_64, `SHELL=x11`, `BACKEND=uv_cairo_gl`,
 `CMAKE_BUILD_TYPE=Debug`, `WEBGL=1` (`make` with the untracked `Makefile`
@@ -76,7 +80,7 @@ Starfish's own renderer string, not only host-level `glxinfo`.
 
 | Branch | What to take from it |
 |---|---|
-| `origin/indigo/2025/webgl2/0374` | Most complete 7-commit series, validated on NVIDIA RTX 3050 for WebGL1 and WebGL2. Primary source for commits 2 to 5. |
+| `origin/indigo/2025/webgl2/0374` | Most complete 7-commit series, validated on NVIDIA RTX 3050 for WebGL1 and WebGL2. Primary source for commits 3 to 6. |
 | `origin/indigo/2025/webgl2/0373` | Extension registry initialization fix; alternative texture upload and readPixels implementations. |
 | `origin/indigo/2025/webgl2/0372` | Earlier 8-commit series; same fixes minus the registry initialization fix. |
 | `origin/indigo/2025/webgl2/0171` | Older WebGL2 work (texStorage, buffer objects, IDL updates). Background only. |
@@ -96,9 +100,9 @@ for in the `test/` submodule's fetched refs, in `web_tc_new` and
 `web_tc_new_`, and in the 0374 tree itself; none contain them. They are
 rewritten here. Anyone who finds an existing copy reuses it instead.
 
-## Step 0: baseline (no commit)
+## Step 0: baseline
 
-Before the first code change, on the `master` build:
+After commit 1 and before the first engine change, on that build:
 
 - Run `internal_test`, `vendor_test_khronos`, `vendor_test_khronos2`,
   `vendor_test_khronossdk` and `wpt_serve_testharness_canvas` under
@@ -122,7 +126,24 @@ WebGL2 `EXT_color_buffer_float` is exposed last, because exposing it before
 `readPixels` into a pack buffer exists turns the current CPU fallback into a
 hang in the TFJS download path (recorded in 0373 `614c9a3c15`).
 
-### 1. Initialize WebGL extension registry under a current GL context
+### 1. Add the TFJS toxicity validation tool
+
+- New `tool/tfjs_toxicity/` with `run.py` (launches Starfish on the hosted
+  demo or the CPU reference page, injects the probe over stdin in 350-byte
+  chunks with a `console.log` acknowledgement per chunk, records backend,
+  WebGL version, renderer, decisions and probability error, and diffs against
+  the reference), `toxicity-probe.js` (observes the unmodified demo through
+  its Parcel module exports) and `toxicity-reference.json` (TFJS 1.2.2, CPU
+  backend, four inputs, tolerance 1e-3), plus a short `README.md`. Source:
+  0730 `02094e8638`, `ca3fb940ee`, `7818039497` (`tests/webgl/`), adapted to
+  the `tool/` layout and to the matrix rows of this plan (backend, build
+  type, GL environment as arguments instead of the fixed four targets).
+- `README.md` Testing section gains the invocation, as AGENTS.md requires
+  for a tool a developer runs from outside the tree.
+- No engine change. The reference JSON is regenerated with the current build
+  in step 0 and replaced if it differs.
+
+### 2. Initialize WebGL extension registry under a current GL context
 
 `WebGLExtensionRegistry::initialize()` runs from the `WebGLRenderingContext`
 constructor before any `GLContextScope` is entered. When the first WebGL
@@ -148,7 +169,7 @@ llvmpipe / libuv".
   (clears the current context, then creates a context) is added in the same
   commit.
 
-### 2. Fix float texture uploads and null texture initialization
+### 3. Fix float texture uploads and null texture initialization
 
 Shared `handleTexImageWithArrayBufferView` path for WebGL1 and WebGL2:
 
@@ -179,7 +200,7 @@ Shared `handleTexImageWithArrayBufferView` path for WebGL1 and WebGL2:
   `conformance/extensions/oes-texture-float.html` and
   `oes-texture-half-float.html` if they pass on llvmpipe.
 
-### 3. Support WebGL1 float render targets on ES3
+### 4. Support WebGL1 float render targets on ES3
 
 TFJS decides `WEBGL_RENDER_FLOAT32_CAPABLE` by attaching a `RGBA` / `FLOAT`
 texture to a framebuffer and checking completeness. On an ES3 driver only the
@@ -187,7 +208,7 @@ sized formats are color-renderable through `EXT_color_buffer_float`.
 
 - Track the native `GL_EXT_color_buffer_float` capability in the registry
   without exposing any new WebGL extension. Three things stay distinct: the
-  native capability, the WebGL extension being exposed (commit 5, WebGL2
+  native capability, the WebGL extension being exposed (commit 6, WebGL2
   only), and the extension being enabled by the page.
 - When that capability is present and the context is WebGL1, store `RGBA` /
   `RGB` + `FLOAT` as `RGBA32F` / `RGB32F`, and `HALF_FLOAT_OES` as `RGBA16F` /
@@ -206,7 +227,7 @@ sized formats are color-renderable through `EXT_color_buffer_float`.
   After this commit the demo with `WEBGL_VERSION:1` must pass the acceptance
   criteria.
 
-### 4. Implement WebGL2 readPixels into pixel pack buffers
+### 5. Implement WebGL2 readPixels into pixel pack buffers
 
 TFJS downloads WebGL2 results through a `PIXEL_PACK_BUFFER`, a fence and
 `getBufferSubData`. Both WebGL2 `readPixels` overloads are `[Unimplemented]`
@@ -239,7 +260,7 @@ and throw "Illegal invocation".
   `read-pixels-pack-parameters.html`; confirm
   `conformance2/buffers/get-buffer-sub-data.html` stays passing.
 
-### 5. Expose EXT_color_buffer_float to WebGL2 and filter extensions by version
+### 6. Expose EXT_color_buffer_float to WebGL2 and filter extensions by version
 
 - Register `EXT_color_buffer_float` (new IDL interface, no members) when the
   driver advertises `GL_EXT_color_buffer_float`. Expose it to WebGL2 only.
@@ -262,7 +283,7 @@ and throw "Illegal invocation".
   `conformance2/extensions/promoted-extensions.html`. After this commit the
   demo with default WebGL2 must pass the acceptance criteria.
 
-### 6. Document the validation results
+### 7. Document the validation results
 
 - New `docs/WebGL_TFJS_Validation.md`: per matrix row, the source revision,
   build options, driver and renderer string, TFJS backend and version
@@ -272,8 +293,8 @@ and throw "Illegal invocation".
   The step 0 baseline observations are recorded in the same document.
 - `docs/WebGL_TFJS_Plan.md` is updated to its final agreed state in the same
   commit.
-- This is the only documentation commit; `docs/Spec.md` changes land with
-  the commits that change the surface (4 and 5).
+- `docs/Spec.md` changes land with the commits that change the surface (5
+  and 6). This commit and the plan document stay on `0375` / `0376`.
 
 ## Testing
 
@@ -328,7 +349,7 @@ Final verification, run sequentially (llvmpipe is CPU bound):
    is injected through stdin (`src/shell/Console.cpp`, 1023-byte lines) in
    chunks with a `console.log` acknowledgement per chunk; Release builds have
    no `testEnd` binding, so the probe output is the result.
-4. Record the results (commit 6) and push `indigo/2025/webgl2/0375` to
+4. Record the results (commit 7) and push `indigo/2025/webgl2/0375` to
    `origin` and the test commits to `web_tc_new_`.
 
 Every log records the source revision, build options, driver and renderer,
@@ -340,17 +361,14 @@ orientation only and not a pass criterion: CPU about 210 s, WebGL1 about 19 s
 on both llvmpipe and RTX 3050, maximum probability difference against CPU
 about 1e-7. Release: WebGL1 about 1.2 s, WebGL2 about 1.1 s.
 
-## Open items for review between 0375 and 0376
+## Settled between 0375 and 0376
 
-- Whether to commit the toxicity probe and runner into the repository (0730
-  put them under `tests/webgl/`, which is not a repository convention) or keep
-  them as untracked tooling described by this document. Default: untracked.
-- Document language: repository documents under `docs/` are in English; the
-  agreed final version should be too, or both branches carry the same
-  translation.
-
-Settled on 2026-09-17: all eight matrix rows are required; validation results
-are documented in `docs/WebGL_TFJS_Validation.md` (commit 6).
+- 2026-09-17: all eight matrix rows are required; results are documented in
+  `docs/WebGL_TFJS_Validation.md` (commit 7).
+- 2026-09-17: the validation tool is committed under `tool/tfjs_toxicity/`
+  (commit 1) and is part of `0377`.
+- 2026-09-17: `0377` updates `docs/Spec.md` only; the plan and results
+  documents are not carried over, so each branch may keep its own language.
 
 ## Known remaining gaps (not in this plan)
 
