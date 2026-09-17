@@ -1,11 +1,12 @@
 # WebGL acceleration plan for the TensorFlow.js toxicity demo
 
-Written 2026-09-17. Shared between the Claude Code branch (`0375`) and the
-Codex branch (`0376`); the agreed version of this document is the same on
-both branches. Revision 6: the validation tool is committed as the first
-commit of each working branch, and `0377` carries engine changes, tests and
-`docs/Spec.md` only; the tool, this plan and the results document stay on
-`0375` / `0376` (user decisions, 2026-09-17).
+Written 2026-09-17. The Claude Code branch (`0375`) and the Codex branch
+(`0376`) each keep their own plan document at this path; the two documents
+differ in wording and language but share the agreed requirements recorded
+here. Revision 7: the validation tool is committed as the first commit of each
+working branch, and `0377` carries engine changes, tests and `docs/Spec.md`
+only; the tool, this plan and the results document stay on `0375` / `0376`
+(user decisions, 2026-09-17).
 
 Goal: make https://storage.googleapis.com/tfjs-models/demos/toxicity/index.html
 run on the TensorFlow.js `webgl` backend with both WebGL1
