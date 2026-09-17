@@ -1,0 +1,301 @@
+{
+  "tfjs": "1.2.2",
+  "backend": "cpu",
+  "inputs": [
+    "We're dudes on computers, moron.  You are quite astonishingly stupid.",
+    "Please stop. If you continue to vandalize Wikipedia, as you did to Kmart, you will be blocked from editing.",
+    "I respect your point of view, and when this discussion originated on 8th April I would have tended to agree with you.",
+    "Thank you for helping me."
+  ],
+  "predictions": [
+    {
+      "label": "identity_attack",
+      "results": [
+        {
+          "match": false,
+          "probabilities": [
+            0.9890987873077393,
+            0.010901217348873615
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            0.9999542236328125,
+            0.00004580525273922831
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            0.9999876022338867,
+            0.000012396449164953083
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            0.9999852180480957,
+            0.000014754697076568846
+          ]
+        }
+      ]
+    },
+    {
+      "label": "insult",
+      "results": [
+        {
+          "match": true,
+          "probabilities": [
+            0.004024634137749672,
+            0.9959754943847656
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            0.9997678399085999,
+            0.00023212077212519944
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            0.999854564666748,
+            0.00014545029262080789
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            0.9998464584350586,
+            0.00015351363981608301
+          ]
+        }
+      ]
+    },
+    {
+      "label": "obscene",
+      "results": [
+        {
+          "match": false,
+          "probabilities": [
+            0.9909206628799438,
+            0.00907932873815298
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            0.9999674558639526,
+            0.00003253060640417971
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            0.9999765157699585,
+            0.000023531418264610693
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            0.999985933303833,
+            0.00001409387550665997
+          ]
+        }
+      ]
+    },
+    {
+      "label": "severe_toxicity",
+      "results": [
+        {
+          "match": false,
+          "probabilities": [
+            0.9999899864196777,
+            0.0000100318302429514
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            1,
+            2.3292948014841386e-8
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            1,
+            5.500310873429726e-9
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            1,
+            4.591695024203091e-9
+          ]
+        }
+      ]
+    },
+    {
+      "label": "sexual_explicit",
+      "results": [
+        {
+          "match": false,
+          "probabilities": [
+            0.9984368681907654,
+            0.0015631624264642596
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            0.9999574422836304,
+            0.00004252889993949793
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            0.9999849796295166,
+            0.000014974920304666739
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            0.999988317489624,
+            0.000011727424862328917
+          ]
+        }
+      ]
+    },
+    {
+      "label": "threat",
+      "results": [
+        {
+          "match": false,
+          "probabilities": [
+            0.9980043768882751,
+            0.0019955711904913187
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            0.9997342228889465,
+            0.00026577067910693586
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            0.9999825954437256,
+            0.00001741747655614745
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            0.999975323677063,
+            0.000024723634851397946
+          ]
+        }
+      ]
+    },
+    {
+      "label": "toxicity",
+      "results": [
+        {
+          "match": true,
+          "probabilities": [
+            0.004178992938250303,
+            0.9958211779594421
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            0.9991480112075806,
+            0.000851962249726057
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            0.9997469782829285,
+            0.00025298394029960036
+          ]
+        },
+        {
+          "match": false,
+          "probabilities": [
+            0.9997010231018066,
+            0.0002989585045725107
+          ]
+        }
+      ]
+    }
+  ],
+  "tolerance": 0.001,
+  "tolerance_source": "TFJS 1.2.2 src/test_util.ts TEST_EPSILON_FLOAT32 (included in demo source map)",
+  "demo_url": "https://storage.googleapis.com/tfjs-models/demos/toxicity/index.html",
+  "bundle": "demo.9dd631f3.js",
+  "bundle_sha256": "02b18cf1dfa88aa263f427d2980b99d744fe2db0985b90ee47e674c2845a35cd",
+  "source_map_sha256": "29fb5ae4b50e6eb5b81c691401bf10178d463329e3073c973310638487059381",
+  "downloads": [
+    {
+      "url": "https://storage.googleapis.com/tfjs-models/demos/toxicity/demo.9dd631f3.js",
+      "sha256": "02b18cf1dfa88aa263f427d2980b99d744fe2db0985b90ee47e674c2845a35cd",
+      "bytes": 613276
+    },
+    {
+      "url": "https://storage.googleapis.com/tfjs-models/savedmodel/toxicity/model.json",
+      "sha256": "27a8c98c1062132f88fe2e8a1e11c80c4166709f0d6f04baedc4df8c43739037",
+      "bytes": 173234
+    },
+    {
+      "url": "https://storage.googleapis.com/tfjs-models/savedmodel/universal_sentence_encoder/vocab.json",
+      "sha256": "1ad860b9720c16cd48e666d664a556b2515c04f5a26a4b53c0372427913b1b8e",
+      "bytes": 218327
+    },
+    {
+      "url": "https://storage.googleapis.com/tfjs-models/savedmodel/toxicity/group1-shard4of7",
+      "sha256": "e5333f7340b90299624caba94758dfdc97e116898d057d2bf8359a5a84f49578",
+      "bytes": 4194304
+    },
+    {
+      "url": "https://storage.googleapis.com/tfjs-models/savedmodel/toxicity/group1-shard1of7",
+      "sha256": "dae447834c7dd07424b0545a56621c11ef383d70a8d8901cd9b07c0a778b404c",
+      "bytes": 4194304
+    },
+    {
+      "url": "https://storage.googleapis.com/tfjs-models/savedmodel/toxicity/group1-shard5of7",
+      "sha256": "28f597298cefe70851491edb65a553c7ca1bb3c4f1aaaa0e12618de8e4706d08",
+      "bytes": 4194304
+    },
+    {
+      "url": "https://storage.googleapis.com/tfjs-models/savedmodel/toxicity/group1-shard6of7",
+      "sha256": "f74b009e4ccea1be2f82206eb827ccbe3e7cdda4d2fc936718035058e7f11e6f",
+      "bytes": 4194304
+    },
+    {
+      "url": "https://storage.googleapis.com/tfjs-models/savedmodel/toxicity/group1-shard2of7",
+      "sha256": "dd8301fc28abeea331739659af669b2ceb34c542cd6497636691e85823890997",
+      "bytes": 4194304
+    },
+    {
+      "url": "https://storage.googleapis.com/tfjs-models/savedmodel/toxicity/group1-shard3of7",
+      "sha256": "c7ef20d7bd2aab0524a58ec9a63298922cb6443e8f27d9d4aac91f5213b5bedb",
+      "bytes": 4194304
+    },
+    {
+      "url": "https://storage.googleapis.com/tfjs-models/savedmodel/toxicity/group1-shard7of7",
+      "sha256": "4f8be744443d1b66430e391088abc4961afe4fcbc8e433d388dbea252cf9534c",
+      "bytes": 4086004
+    }
+  ]
+}
