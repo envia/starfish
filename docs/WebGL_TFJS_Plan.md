@@ -2,6 +2,10 @@
 
 작성일: 2026-09-17
 
+검토 대상: `starfish_f_claude`의 `indigo/2025/webgl2/0375`,
+`5ebefdb0c2` (`Add WebGL plan for the TFJS toxicity demo`).
+아래 보완 사항은 Codex의 검토 제안이며 Claude와의 최종 합의 전이다.
+
 ## 목적과 완료 기준
 
 Starfish에서 다음 원본 데모를 실행하고, WebGL1과 WebGL2를 각각 이용한
@@ -27,6 +31,7 @@ TFJS에 필요한 경로를 우선 구현한다. WebGL 및 관련 확장 전체 
 
 - 개발 저장소: `starfish_f_codex`
 - 개발 브랜치 및 push 대상: `origin/indigo/2025/webgl2/0376`
+- Claude 검토 브랜치: `origin/indigo/2025/webgl2/0375`
 - 시작 코드: `13c4ffd576` (`Bump version to 1.5.6`)
 - 개발 환경: Linux x86_64, X11, `uv_cairo_gl`, Debug, `WEBGL=1`
 - 통합 저장소 및 브랜치: `starfish_f`, `indigo/2025/webgl2/0377`
@@ -76,6 +81,55 @@ TFJS에 필요한 경로를 우선 구현한다. WebGL 및 관련 확장 전체 
 WebGL 버전 및 native GL 버전의 차이, 확장 지원·노출·활성화의 차이를
 구분하고 필요한 기능만 노출한다.
 
+### Claude 계획에서 반영할 구현 세부 사항
+
+- 검증 도구는 `github/envia/2026/devel/0730`의 probe, runner 및 CPU 참조
+  파일을 검토해 재사용한다. 원본 URL 실행과 버전·입력을 고정한 재현 검증을
+  구분한다. 과거 CPU 참조 파일은 현재 자산과 일치하는지 확인한 뒤 사용한다.
+- 확장 초기화는 실제 current context 안으로 옮긴다. 해당 커밋 안에
+  current context가 없는 시작 조건을 재현하는 테스트를 넣는다.
+  동기 HTML 테스트만으로 그 조건이 보장되지 않으면
+  `origin/claude/2026/tfjs/0002`의 native 회귀 테스트를 검토해 사용한다.
+  null 조회 재시도는 원인 수정의 대체 수단으로 사용하지 않는다.
+- 내부 `webGLVersion()` 구분과 native float capability 추적은 최초로
+  필요한 기능 커밋에 포함한다. WebGL2 확장 노출 전에도 WebGL1 ES3 저장
+  형식 변환에서 이 정보가 필요할 수 있다.
+- 텍스처 검증은 FLOAT/HALF_FLOAT의 typed array 종류와 확장 활성화,
+  크기·level·border, null 초기화, unpack 상태 보존을 포함한다.
+  WebGL2 client-memory 업로드와 `PIXEL_UNPACK_BUFFER` 바인딩의 충돌도 확인한다.
+- readback은 TypedArray의 element offset과 PBO의 byte offset을 구분한다.
+  pack 상태, subview, 빈 범위, overflow, 버퍼 크기를 검사한다.
+  NVIDIA의 마지막 행 padding 우회는 현재 드라이버에서 재현한 뒤 도입 여부를
+  결정하고, 적용 시 기존 상태 복원과 다른 드라이버의 동작도 검증한다.
+- 후보 내부 테스트는 `webgl-extension-version.html`,
+  `webgl-float-texture-upload.html`, `webgl1-float-render-target.html`,
+  `webgl2-pixel-readback.html`이다. 기존 자산 유무를 먼저 확인한다.
+- 후보 Khronos 테스트는 `texture-size.html`, `oes-texture-float.html`,
+  `oes-texture-half-float.html`, `get-buffer-sub-data.html`,
+  `read-pixels-into-pixel-pack-buffer.html`, `read-pixels-pack-parameters.html`이다.
+  실제 경로와 baseline을 확인하고 지원 대상 환경에서 통과한 항목을 활성화한다.
+
+### 규격 및 수치 비교 기준
+
+WebGL2 core로 이동한 WebGL1 확장 목록은 테스트 통과 여부가 아니라
+[WebGL2 규격](https://registry.khronos.org/webgl/specs/latest/2.0/#extensions)의
+버전별 규칙을 기준으로 필터링한다. `getSupportedExtensions()`와
+`getExtension()`은 일관되어야 하며 기존에 잘못 노출된 항목의 수정도 테스트한다.
+
+WebGL1 float 렌더 타깃의 우선 검증 대상은 TFJS가 사용하는 RGBA 계열이다.
+RGB 저장 형식으로의 변환과 RGB의 렌더 가능 여부를 동일시하지 않는다.
+특히 [EXT_color_buffer_float 규격](https://registry.khronos.org/webgl/extensions/EXT_color_buffer_float/)
+상 `RGB16F`는 color-renderable이 아니다. native 지원, WebGL 버전,
+확장 활성화별로 허용 여부를 검토한다. RGB/half-float의 모든 조합을 무조건
+framebuffer complete로 기대하는 테스트를 만들지 않는다.
+
+수치 비교 기준 제안은 분류 결정 21개 일치 및 확률의 최대 절대 오차
+`1e-3` 이하이다. 이는 Claude 계획의 허용값을 검토용으로 채택한 것이며,
+동일 TFJS·모델·입력·threshold의 CPU 재측정 후 구현 전에 확정한다.
+NaN/Infinity, 결과 누락 및 shape 불일치는 허용 오차와 무관하게 실패다.
+작은 행렬 연산은 TFJS CPU forwarding을 끈 상태에서도 검사해 실제 GL
+연산 경로를 검증한다. 과거 실행 시간은 성능 합격 기준으로 사용하지 않는다.
+
 ## 테스트 운영
 
 - 구현 전 현재 코드의 관련 테스트 결과를 확보한다.
@@ -85,6 +139,11 @@ WebGL 버전 및 native GL 버전의 차이, 확장 지원·노출·활성화의
 - 알려진 실패를 숨기거나 테스트 기대값을 구현에 맞춰 완화하지 않는다.
 - `test/`는 submodule이므로 테스트 자산 커밋과 본 저장소 gitlink의 관계를
   명시한다. 기존 `web_tc_new_/`와의 중복·통합 방식은 내용을 확인한 뒤 정한다.
+  Claude의 `/home/hwang/work/web_tc_new_`와 checkout 내부 `web_tc_new_/`는
+  경로가 다르므로 동일 저장소로 가정하지 않는다. 담당 브랜치와 push 대상을
+  확정한 후 테스트를 공유한다. 각 기능 커밋은 대응 테스트 commit hash 및
+  적용 방법을 기록한다. 통합 브랜치에서는 최종 gitlink를 반영해 새 checkout만으로
+  테스트를 재현할 수 있게 한다.
 - IDL 변경 후에는 CMake를 다시 실행해 바인딩을 재생성한다.
 - C++ 변경에는 tidy를 실행한다. 최종 회귀 검증은 WebGL1·2·SDK의 활성
   Khronos 목록 및 영향받는 Canvas 내부 테스트와 WPT를 포함한다.
@@ -114,13 +173,38 @@ WebGL 버전 및 native GL 버전의 차이, 확장 지원·노출·활성화의
 
 계획 작성 시점에는 구현·빌드·추론 테스트를 수행하지 않았다.
 
-현재 명령 실행 환경에서 `/dev/dri`와 `/dev/nvidia*`가 보이지 않았고,
-`glxinfo -B`는 `DISPLAY=:1`에 연결하지 못했다. 이는 현재 환경의 관찰이며
-호스트 자체에 GPU가 없다는 결론은 아니다. GPU 검증 전에 실행 가능한
-호스트·컨테이너·display 및 접근 방법을 확인해야 한다.
+초기 sandbox 내부 확인에서는 장치와 display에 접근하지 못했으나,
+2026-09-17 sandbox 밖의 읽기 전용 확인에서 아래 정보를 확인했다.
 
-GPU 환경 확보가 지연되면 가능한 개발 및 소프트웨어 검증은 진행하되,
-GPU 항목은 미검증으로 남긴다. 8조합 완료 전에는 종합 검증 완료로 보고하지 않는다.
+- `/dev/dri/card1`, `/dev/dri/renderD128`, PCI `0000:01:00.0`
+- `DISPLAY=:1`, direct rendering 활성화
+- NVIDIA GeForce RTX 3050 OEM, 드라이버 `595.91.07`, OpenGL ES 3.2
+
+별도 GPU 호스트 확보는 현재 blocker가 아니다. 실제 Starfish의 EGL context가
+이 GPU를 사용하는지는 아직 검증하지 않았다. GPU 테스트는 필요한 sandbox 밖
+실행 권한을 사용하고 Starfish 자체의 renderer 및 실행 증거를 기록한다.
+8조합 완료 전에는 종합 검증 완료로 보고하지 않는다.
 
 Claude Code와 검토할 항목은 참고 변경의 선택, 커밋 경계, 수치 오차 기준,
-테스트 자산 통합 방식, GPU 검증 환경이다.
+테스트 자산 통합 방식, Starfish GPU 실행 확인 방법이다.
+
+## Claude Code 문서에 요청하는 수정
+
+1. 최종 검증에 두 backend × Debug/Release × 소프트웨어/GPU의 8조합을
+   명시하고, 각 조합에서 WebGL1·2와 원본 페이지의 자동 선택 경로를 확인한다.
+   회귀 목록에는 Khronos SDK 및 영향받는 Canvas/WPT도 포함한다.
+2. baseline·CPU 참조·검증 도구 준비를 구현 전에 배치하고 초기화 회귀 테스트는
+   초기화 수정과 같은 커밋에 넣는다. 다음 기능 커밋의 테스트에 의존하지 않는다.
+3. WebGL2에서 core로 이동한 확장 필터링의 기본값을 규격 기준으로 변경한다.
+   테스트가 요구할 때만 수정한다는 조건을 제거한다.
+4. native float 지원과 WebGL 확장 활성화, RGB와 RGBA 렌더 가능 여부를
+   구분한다. 부분 구현의 알려진 제약은 기록하되 새 규격 위반을 허용하는 근거로
+   사용하지 않는다.
+5. CPU 참조의 버전·입력·threshold 및 오차 정의를 명시한다. 이전 성능 수치와
+   테스트 성공 기록은 이번 검증 결과나 예상 성능 보장과 분리한다.
+6. 테스트 저장소의 정확한 경로·브랜치·commit hash와 최종 gitlink 갱신을
+   명시한다. 테스트가 어느 저장소에도 없다는 단정은 확인한 범위로 한정하고,
+   기존 자산을 확인한 후 재사용 또는 재작성한다.
+
+위 항목은 Claude checkout을 직접 수정한 결과가 아니다. Codex 문서에 반영한
+검토 의견이며 사용자와 Claude가 비교·합의한 뒤 통합한다.
