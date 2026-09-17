@@ -2,10 +2,10 @@
 
 Written 2026-09-17. Shared between the Claude Code branch (`0375`) and the
 Codex branch (`0376`); the agreed version of this document is the same on
-both branches. Revision 5: the validation tool is committed as the first code
-commit, and `0377` carries code, tests, the tool and `docs/Spec.md` only; this
-plan and the results document stay on `0375` / `0376` (user decisions,
-2026-09-17).
+both branches. Revision 6: the validation tool is committed as the first
+commit of each working branch, and `0377` carries engine changes, tests and
+`docs/Spec.md` only; the tool, this plan and the results document stay on
+`0375` / `0376` (user decisions, 2026-09-17).
 
 Goal: make https://storage.googleapis.com/tfjs-models/demos/toxicity/index.html
 run on the TensorFlow.js `webgl` backend with both WebGL1
@@ -60,9 +60,9 @@ full conformance or of the absence of all regressions.
 
 Pushing this document does not make the code agreed; each commit is reviewed
 between the two branches before it is taken into `0377`. `0377` receives the
-engine changes, the test activations, the validation tool and the
-`docs/Spec.md` updates. `docs/WebGL_TFJS_Plan.md` and
-`docs/WebGL_TFJS_Validation.md` are working documents of `0375` / `0376` and
+engine changes, the test activations and the `docs/Spec.md` updates.
+`tool/tfjs_toxicity/`, `docs/WebGL_TFJS_Plan.md` and
+`docs/WebGL_TFJS_Validation.md` are working assets of `0375` / `0376` and
 are not carried into `0377`. The untracked repo-root `Makefile` and the
 `web_tc_new_/` checkout are never committed to this repository.
 
@@ -138,8 +138,8 @@ hang in the TFJS download path (recorded in 0373 `614c9a3c15`).
   0730 `02094e8638`, `ca3fb940ee`, `7818039497` (`tests/webgl/`), adapted to
   the `tool/` layout and to the matrix rows of this plan (backend, build
   type, GL environment as arguments instead of the fixed four targets).
-- `README.md` Testing section gains the invocation, as AGENTS.md requires
-  for a tool a developer runs from outside the tree.
+- The tool's own `README.md` documents the invocation. The repository
+  `README.md` is not changed because the tool does not go to `0377`.
 - No engine change. The reference JSON is regenerated with the current build
   in step 0 and replaced if it differs.
 
@@ -366,9 +366,10 @@ about 1e-7. Release: WebGL1 about 1.2 s, WebGL2 about 1.1 s.
 - 2026-09-17: all eight matrix rows are required; results are documented in
   `docs/WebGL_TFJS_Validation.md` (commit 7).
 - 2026-09-17: the validation tool is committed under `tool/tfjs_toxicity/`
-  (commit 1) and is part of `0377`.
-- 2026-09-17: `0377` updates `docs/Spec.md` only; the plan and results
-  documents are not carried over, so each branch may keep its own language.
+  (commit 1) on `0375` / `0376` only.
+- 2026-09-17: `0377` updates `docs/Spec.md` only; the tool, the plan and the
+  results document are not carried over, so each branch may keep its own
+  language.
 
 ## Known remaining gaps (not in this plan)
 
