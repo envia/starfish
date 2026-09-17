@@ -3,7 +3,7 @@
 Written 2026-09-17. The Claude Code branch (`0375`) and the Codex branch
 (`0376`) each keep their own plan document at this path; the two documents
 differ in wording and language but share the agreed requirements recorded
-here. Revision 7: the validation tool is committed as the first commit of each
+here. Revision 8: the validation tool is committed as the first commit of each
 working branch, and `0377` carries engine changes, tests and `docs/Spec.md`
 only; the tool, this plan and the results document stay on `0375` / `0376`
 (user decisions, 2026-09-17).
@@ -292,6 +292,9 @@ and throw "Illegal invocation".
   probability error, suite diffs against the baseline (pre-existing versus
   new failures), timings for orientation, and every limit or unverified item.
   The step 0 baseline observations are recorded in the same document.
+- When `0377` is validated, the same document records the `0377` revision
+  that was run and the `0375` / `0376` commit hash of the tool used, since the
+  tool itself is not on `0377` (Codex proposal, `8c5ad90cfb`).
 - `docs/WebGL_TFJS_Plan.md` is updated to its final agreed state in the same
   commit.
 - `docs/Spec.md` changes land with the commits that change the surface (5
