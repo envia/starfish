@@ -3,7 +3,7 @@
 작성일: 2026-09-17
 
 검토 대상: `starfish_f_claude`의 `indigo/2025/webgl2/0375`,
-`d66e8e9c61` (9판, `Pin the model assets and verify the ordering rationale`).
+`3fefbf55f4` (10판, `Hash demo assets and stage float readback after exposure`).
 계획 합의 완료. 두 작업 브랜치는 표현과 언어가 달라도 아래 요구사항을 공유한다.
 계획 합의는 구현 코드의 승인이나 검증 완료를 뜻하지 않는다.
 
@@ -92,7 +92,7 @@ TFJS에 필요한 경로를 우선 구현한다. WebGL 및 관련 확장 전체 
 | 3 | float·half-float 텍스처 크기 계산, 업로드·부분 업로드·초기화 수정 | 데이터 보존, 영 초기화, 작은 버퍼 및 잘못된 입력, 기존 byte 텍스처 |
 | 4 | WebGL1 float 렌더 타깃 지원 | ES3 저장 형식 변환, framebuffer 완전성, float 연산 및 읽기 |
 | 5 | WebGL2 PBO·TypedArray 오프셋 `readPixels` 구현 및 관련 범위 검사 | pack 상태, 정렬·오프셋·버퍼 경계, `getBufferSubData`, fence 이후 결과 회수 |
-| 6 | WebGL2 `EXT_color_buffer_float` 노출 및 core 승격 확장 숨기기 | 버전별 노출, float 렌더 타깃, `conformance2/extensions/promoted-extensions.html` 활성화 |
+| 6 | WebGL2 `EXT_color_buffer_float` 노출 및 core 승격 확장 숨기기 | 버전별 노출, float 렌더 타깃, `conformance2/extensions/promoted-extensions.html` 활성화, 커밋 5 readback 테스트의 float 케이스 필수 재실행(PBO·view, RGBA32F, 범위 밖 값), skip은 통과로 집계하지 않음 |
 | 7 | `docs/WebGL_TFJS_Validation.md` 결과 문서화 | 아래 8조합에서 WebGL1·2, 원본 데모, CPU 결과 비교 및 회귀 검사 |
 
 확장 노출은 PBO 구현 뒤에 배치한다. `0373`의 `614c9a3c15`에 기록된
