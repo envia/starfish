@@ -3,7 +3,7 @@
 Written 2026-09-17. The Claude Code branch (`0375`) and the Codex branch
 (`0376`) each keep their own plan document at this path; the two documents
 differ in wording and language but share the agreed requirements recorded
-here. Revision 9: the validation tool is committed as the first commit of each
+here. Revision 10: the validation tool is committed as the first commit of each
 working branch, and `0377` carries engine changes, tests and `docs/Spec.md`
 only; the tool, this plan and the results document stay on `0375` / `0376`
 (user decisions, 2026-09-17).
@@ -135,9 +135,11 @@ hang in the TFJS download path (recorded in 0373 `614c9a3c15`).
   WebGL version, renderer, decisions and probability error, and diffs against
   the reference), `toxicity-probe.js` (observes the unmodified demo through
   its Parcel module exports) and `toxicity-reference.json` (TFJS 1.2.2, CPU
-  backend, four inputs, tolerance 1e-3; extended with the model asset URLs
-  and the input strings so a change of the hosted demo is detectable and a
-  drifted page is never compared against the fixed reference), plus a short
+  backend, four inputs, tolerance 1e-3; extended with the input strings and,
+  for every asset the demo loads (page scripts, model manifest, weight
+  shards, vocabulary), the URL and SHA-256 of the content, so a changed
+  hosted demo is detected even when the URLs stay the same and a drifted
+  page is never compared against the fixed reference), plus a short
   `README.md`. Source:
   0730 `02094e8638`, `ca3fb940ee`, `7818039497` (`tests/webgl/`), adapted to
   the `tool/` layout and to the matrix rows of this plan (backend, build
@@ -254,11 +256,20 @@ and throw "Illegal invocation".
   previous value afterwards, and verify llvmpipe behaves identically.
 - Remove the two `[Unimplemented]` markers in `WebGL2RenderingContext.idl`;
   update `docs/Spec.md` (readPixels overloads).
-- While working on this commit, expose `EXT_color_buffer_float` locally
-  (uncommitted) on the pre-commit tree once and record in the results
-  document whether the TFJS WebGL2 download hang from 0373 `614c9a3c15`
-  reproduces on the current code; this makes the commit order rest on our
-  own observation rather than on the reference branch.
+- While working on this commit, expose `EXT_color_buffer_float` on the
+  pre-commit tree once, in a separate worktree or a clearly separated patch
+  that never enters the feature commit, run the demo with a time limit, and
+  record in the results document whether the TFJS WebGL2 download hang from
+  0373 `614c9a3c15` reproduces on the current code. If it does not, record
+  that observation as is; the reference branch's record is not treated as a
+  current result.
+- Float readback needs a float color attachment, which WebGL2 pages may only
+  render to once `EXT_color_buffer_float` is enabled, and that extension is
+  exposed in commit 6. The commit 5 test therefore covers the byte paths and
+  every error path as mandatory; its float cases are gated on
+  `getExtension('EXT_color_buffer_float')` and report "not run" when it is
+  absent. Commit 6 must re-run the test with the float cases mandatory; a
+  skipped float case is never counted as a pass.
 - Reference: 0374 `423b832f10`; 0373 `614c9a3c15`; 0730 `02094e8638`.
 - Tests: new `test/cairo/internal-test/canvas/webgl2-pixel-readback.html`
   (PBO read plus fence plus `getBufferSubData`, odd widths, element offsets,
@@ -289,8 +300,11 @@ and throw "Illegal invocation".
 - Reference: 0374 `12bc919205`; 0730 `02094e8638`.
 - Tests: new `test/cairo/internal-test/canvas/webgl-extension-version.html`
   (the rules above, both queries consistent); activate Khronos
-  `conformance2/extensions/promoted-extensions.html`. After this commit the
-  demo with default WebGL2 must pass the acceptance criteria.
+  `conformance2/extensions/promoted-extensions.html`; re-run
+  `webgl2-pixel-readback.html` with its float cases now mandatory (PBO and
+  view overloads reading `RGBA` / `FLOAT` from an `RGBA32F` attachment,
+  values outside [0, 1]). After this commit the demo with default WebGL2
+  must pass the acceptance criteria.
 
 ### 7. Document the validation results
 
