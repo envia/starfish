@@ -96,9 +96,6 @@ WebGLRenderingContext::WebGLRenderingContext(HTMLCanvasElement* canvasElement)
     m_drawingBufferColorSpace = String::createASCIIString("srgb");
     m_state = new WebGLRenderingContextState();
     m_gl = m_ownerHTMLCanvasElement->webView()->renderer()->gl();
-    if (!WebGLExtensionRegistry::instance().isInitialized()) {
-        WebGLExtensionRegistry::instance().initialize(m_gl);
-    }
     GC_REGISTER_FINALIZER_NO_ORDER(
         this,
         [](void* obj, void* cd) {
@@ -195,6 +192,15 @@ void WebGLRenderingContext::initialize()
 
     // bind default frame buffer
     GLContextScope contextScope(m_context);
+    if (contextScope.hasError()) {
+        return;
+    }
+
+    // GL_EXTENSIONS describes the current context. During synchronous canvas
+    // creation the constructor may run before any GL context is current.
+    if (!WebGLExtensionRegistry::instance().isInitialized()) {
+        WebGLExtensionRegistry::instance().initialize(m_gl);
+    }
     m_gl->bindFramebuffer(GL_FRAMEBUFFER, m_framebufferTexture->fbo());
 }
 

@@ -53,7 +53,12 @@ void WebGLExtensionRegistry::initialize(GL* gl)
     // 1. Get a list of extensions supported on this device
     const char* raw =
         reinterpret_cast<const char*>(gl->getString(GL_EXTENSIONS));
-    const std::string extensions = raw ? raw : "";
+    if (!raw) {
+        // A failed query must not cache an empty registry for later contexts.
+        STARFISH_LOG_WARN("GL_EXTENSIONS unavailable; initialization deferred");
+        return;
+    }
+    const std::string extensions = raw;
 
     // WebGL uses extension names without the 'GL_' prefix.
     std::vector<std::string> tokens;

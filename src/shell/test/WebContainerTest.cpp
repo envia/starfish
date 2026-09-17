@@ -23,8 +23,12 @@
 
 #include "LWEWebView.h"
 #include "Window.h"
+#if defined(STARFISH_ENABLE_WEBGL) && !defined(STARFISH_HEADLESS)
+#include "../../platform/canvas/gl/IncludeGL.h"
+#endif
 
 #include <iostream>
+#include <sstream>
 
 namespace StarfishShell {
 
@@ -242,6 +246,69 @@ protected:
 
 Window* WebContainerTest::window = nullptr;
 LWE::WebContainer* WebContainerTest::lwe = nullptr;
+
+#if defined(STARFISH_ENABLE_WEBGL) && !defined(STARFISH_HEADLESS)
+// Run this test in a fresh process so no earlier WebGL context has cached
+// the process-wide registry. The expected name comes from the native driver.
+TEST_F(WebContainerTest, InitializeWebGLExtensionsWithoutCurrentGLContext)
+{
+    ASSERT_TRUE(window->renderer()->makeCurrent());
+    const char* raw = reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS));
+    ASSERT_NE(raw, nullptr);
+    struct ExtensionName {
+        const char* native;
+        const char* webGL;
+    };
+    const ExtensionName candidates[] = {
+        { "GL_OES_texture_float", "OES_texture_float" },
+        { "GL_OES_texture_half_float", "OES_texture_half_float" },
+        { "GL_OES_standard_derivatives", "OES_standard_derivatives" },
+        { "GL_OES_depth_texture", "WEBGL_depth_texture" },
+        { "GL_EXT_texture_filter_anisotropic",
+          "EXT_texture_filter_anisotropic" },
+        { "GL_OES_texture_float_linear", "OES_texture_float_linear" },
+        { "GL_EXT_blend_minmax", "EXT_blend_minmax" },
+        { "GL_OES_vertex_array_object", "OES_vertex_array_object" },
+    };
+    std::string expected;
+    std::istringstream extensions(raw);
+    std::string name;
+    while (extensions >> name && expected.empty()) {
+        for (const auto& candidate : candidates) {
+            if (name == candidate.native) {
+                expected = candidate.webGL;
+                break;
+            }
+        }
+    }
+    if (expected.empty()) {
+        GTEST_SKIP() << "Driver advertises no registered WebGL extension";
+    }
+    ASSERT_TRUE(window->renderer()->clearCurrentContext());
+    bool loaded = false;
+    lwe->RegisterOnPageLoadedHandler(
+        [&loaded](LWE::WebContainer*, const std::string&) {
+            loaded = true;
+            window->appLoop()->stop();
+        });
+    lwe->LoadData(
+        "<!doctype html><script>"
+        "var gl = document.createElement('canvas').getContext('webgl');"
+        "window.extensionAvailable = !!gl && "
+        "gl.getSupportedExtensions().indexOf('" +
+        expected + "') >= 0 && !!gl.getExtension('" + expected +
+        "');</script>");
+    window->appLoop()->start(1);
+    EXPECT_TRUE(loaded);
+    if (loaded) {
+        EXPECT_EQ(lwe->EvaluateJavaScript(
+                      "window.extensionAvailable ? 'true' : 'false'"),
+                  "true");
+    }
+    lwe->RegisterOnPageLoadedHandler(
+        [](LWE::WebContainer*, const std::string&) {});
+}
+#endif
 
 TEST_F(WebContainerTest, LoadURL)
 {
