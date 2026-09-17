@@ -19,7 +19,7 @@ https://storage.googleapis.com/tfjs-models/demos/toxicity/index.html
   backend와 WebGL 버전, `WEBGL_RENDER_FLOAT32_ENABLED`를 기록한다.
   WebGL2는 `WEBGL_BUFFER_SUPPORTED`도 기록한다. CPU fallback은 실패다.
 - 같은 모델과 입력에 대해 CPU 참조 결과와 분류 결과 및 확률을 비교한다.
-  TFJS 1.2.2, threshold 0.9, 아래의 고정 입력과 오차 기준을 사용한다.
+  TFJS 1.2.2, threshold 0.85, 아래의 고정 입력과 오차 기준을 사용한다.
 - 소프트웨어 GL과 실제 GPU 사용을 구분한다. GPU 검증은 renderer 정보와
   Starfish 자체 GL context의 renderer 문자열과 해당 Starfish PID의
   `nvidia-smi` 프로세스 항목을 확보하고, 소프트웨어 fallback을 실패로 처리한다.
@@ -181,7 +181,10 @@ RGB 저장 형식으로의 변환과 RGB의 렌더 가능 여부를 동일시하
 확장 활성화별로 허용 여부를 검토한다. RGB/half-float의 모든 조합을 무조건
 framebuffer complete로 기대하는 테스트를 만들지 않는다.
 
-수치 비교는 TFJS 1.2.2, 원본 데모의 toxicity 모델, threshold 0.9를 사용한다.
+수치 비교는 TFJS 1.2.2, 원본 데모의 toxicity 모델, threshold 0.85를 사용한다.
+2026-09-17 기준선 실행에서 원본 번들이 `load()`를 인자 없이 호출하고 모델의
+기본 threshold가 0.85임을 코드와 실행 기록으로 확인했다. 초기 계획의 0.9는
+잘못된 가정이므로 정정한다. 모델 확률과 28개 판정은 기존 참조와 일치했다.
 입력은 데모 초기 3문장과 `Thank you for helping me.`의 4문장이다.
 실제 입력 문자열과 모델 자산 식별 정보는 참조 데이터에 기록한다.
 7 labels × 4문장의 판정 28개가 모두 일치하고 확률의 최대 절대 오차가
@@ -252,7 +255,9 @@ Release는 `testEnd` 바인딩이 없어 데모 probe로 결과를 판정한다.
 
 ## 현재 검증 상태
 
-계획 작성 시점에는 구현·빌드·추론 테스트를 수행하지 않았다.
+계획 작성 후 검증 도구와 초기화 수정 단계까지 진행했다. 기준선과 단계별
+결과는 [검증 기록](WebGL_TFJS_Validation.md)에 기록한다. 8조합의 최종
+TFJS 가속 검증은 이후 기능 구현이 끝난 뒤 수행한다.
 
 초기 sandbox 내부 확인에서는 장치와 display에 접근하지 못했으나,
 2026-09-17 sandbox 밖의 읽기 전용 확인에서 아래 정보를 확인했다.
