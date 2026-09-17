@@ -44,7 +44,10 @@ class WebGLExtensionRegistry {
 public:
     static WebGLExtensionRegistry& instance();
 
-    void initialize(GL* gl);
+    // Queries GL_EXTENSIONS of the current GL context. Returns false and
+    // stays uninitialized when no context is current, so a later context
+    // can retry.
+    bool initialize(GL* gl);
     bool isInitialized()
     {
         return m_isInitialized;

@@ -258,6 +258,7 @@ public:
                     Optional<ScriptArrayBufferView> pixels);
 
 private:
+    bool ensureExtensionRegistryInitialized();
     void handleTexImageWithArrayBufferView(
         GLenum target, GLint level, GLsizei width, GLsizei height,
         GLenum format, GLenum type, Optional<ScriptArrayBufferView> pixels,

@@ -805,6 +805,7 @@ test/cairo/internal-test/canvas/clearColor.html
 test/cairo/internal-test/canvas/canvasSatus_lineDash.html
 test/cairo/internal-test/canvas/stroke-shadow.html
 test/cairo/internal-test/canvas/toDataURL-with-fbo-bound.html
+test/cairo/internal-test/canvas/webgl-extension-registry.html
 test/cairo/internal-test/canvas/toDataURL-with-pack-params.html
 test/cairo/internal-test/css/overflow/overflow-pseudo-element.html
 #test/cairo/internal-test/iframe/iframe-hittest.html

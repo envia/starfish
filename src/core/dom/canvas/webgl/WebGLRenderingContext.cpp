@@ -96,9 +96,6 @@ WebGLRenderingContext::WebGLRenderingContext(HTMLCanvasElement* canvasElement)
     m_drawingBufferColorSpace = String::createASCIIString("srgb");
     m_state = new WebGLRenderingContextState();
     m_gl = m_ownerHTMLCanvasElement->webView()->renderer()->gl();
-    if (!WebGLExtensionRegistry::instance().isInitialized()) {
-        WebGLExtensionRegistry::instance().initialize(m_gl);
-    }
     GC_REGISTER_FINALIZER_NO_ORDER(
         this,
         [](void* obj, void* cd) {
@@ -193,9 +190,22 @@ void WebGLRenderingContext::initialize()
 
     viewport(0, 0, drawingBufferWidth(), drawingBufferHeight());
 
-    // bind default frame buffer
     GLContextScope contextScope(m_context);
+
+    // GL_EXTENSIONS belongs to the current GL context. The constructor runs
+    // before any GLContextScope is entered, and the first WebGL canvas of a
+    // page can be created before the compositor has made any context
+    // current, so this is the earliest point where the query is reliable.
+    ensureExtensionRegistryInitialized();
+
+    // bind default frame buffer
     m_gl->bindFramebuffer(GL_FRAMEBUFFER, m_framebufferTexture->fbo());
+}
+
+bool WebGLRenderingContext::ensureExtensionRegistryInitialized()
+{
+    // Callers hold a GLContextScope for m_context.
+    return WebGLExtensionRegistry::instance().initialize(m_gl);
 }
 
 void WebGLRenderingContext::flushDrawingCommands()
@@ -400,6 +410,7 @@ Optional<GCVector<String*>> WebGLRenderingContext::getSupportedExtensions()
 {
     ENTER_CONTEXT_SCOPE(Optional<GCVector<String*>>());
 
+    ensureExtensionRegistryInitialized();
     return WebGLExtensionRegistry::instance().getSupportedExtensions();
 }
 
@@ -412,6 +423,8 @@ Optional<ScriptObject> WebGLRenderingContext::getExtension(
     String* requestedName)
 {
     ENTER_CONTEXT_SCOPE(Optional<ScriptObject>());
+
+    ensureExtensionRegistryInitialized();
 
     // TODO: An attempt to use any features of an extension without first
     // calling getExtension to enable it must generate an appropriate GL

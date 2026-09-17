@@ -2381,7 +2381,7 @@ Apps relying on the right-hand list get **no protection** — the directive is p
 | Value types | `WebGLActiveInfo`, `WebGLShaderPrecisionFormat`, `WebGLUniformLocation`, `WebGLContextAttributes`. |
 | **Not exposed** | `WebGLContextEvent` typed event (use a generic `Event` listener for `webglcontextlost`/`webglcontextrestored`). |
 
-**Extensions exposed via `getExtension(name)`** (subject to the underlying GL driver advertising the matching `GL_*` token; on Mesa llvmpipe / SwiftShader none may be advertised):
+**Extensions exposed via `getExtension(name)`** (subject to the underlying GL driver advertising the matching `GL_*` token):
 
 `OES_texture_float`, `OES_texture_half_float`, `OES_texture_float_linear`, `OES_standard_derivatives`, `OES_vertex_array_object`, `WEBGL_depth_texture`, `EXT_blend_minmax`, `EXT_texture_filter_anisotropic`.
 
