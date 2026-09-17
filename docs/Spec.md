@@ -2345,7 +2345,7 @@ Apps relying on the right-hand list get **no protection** — the directive is p
 | Interface | Notes |
 |-----------|-------|
 | `WebGLRenderingContext` | Full WebGL 1.0 surface (~190 methods) per [Khronos WebGL 1.0 spec](https://registry.khronos.org/webgl/specs/latest/1.0/). Obtain via `canvas.getContext('webgl')` or `'experimental-webgl'`. |
-| `WebGL2RenderingContext` | WebGL 2.0 surface; obtain via `canvas.getContext('webgl2')`. Includes `WebGLQuery`, `WebGLSampler`, `WebGLSync`, `WebGLTransformFeedback`, `WebGLVertexArrayObject`. |
+| `WebGL2RenderingContext` | WebGL 2.0 surface; obtain via `canvas.getContext('webgl2')`. Includes `WebGLQuery`, `WebGLSampler`, `WebGLSync`, `WebGLTransformFeedback`, `WebGLVertexArrayObject`. `readPixels` supports pixel-pack-buffer byte offsets and TypedArray element offsets, with buffer-size and `PACK_*` layout validation. |
 | Object handles | `WebGLBuffer`, `WebGLFramebuffer`, `WebGLRenderbuffer`, `WebGLTexture`, `WebGLProgram`, `WebGLShader`. |
 | Value types | `WebGLActiveInfo`, `WebGLShaderPrecisionFormat`, `WebGLUniformLocation`, `WebGLContextAttributes`. |
 | **Not exposed** | `WebGLContextEvent` typed event (use a generic `Event` listener for `webglcontextlost`/`webglcontextrestored`). |
@@ -2354,7 +2354,7 @@ Apps relying on the right-hand list get **no protection** — the directive is p
 
 `OES_texture_float`, `OES_texture_half_float`, `OES_texture_float_linear`, `OES_standard_derivatives`, `OES_vertex_array_object`, `WEBGL_depth_texture`, `EXT_blend_minmax`, `EXT_texture_filter_anisotropic`.
 
-**WebGL 2 only:** [`EXT_color_buffer_float`](https://registry.khronos.org/webgl/extensions/EXT_color_buffer_float/) is exposed when the GL driver advertises `GL_EXT_color_buffer_float`. WebGL 1 contexts omit it from `getSupportedExtensions()` and return `null` from `getExtension()`, including case-insensitive queries. The extension object is registered, but float-texture rendering and pixel-buffer readback still have implementation gaps; successful `getExtension()` is not sufficient to run TFJS inference on WebGL.
+**WebGL 2 only:** [`EXT_color_buffer_float`](https://registry.khronos.org/webgl/extensions/EXT_color_buffer_float/) is exposed when the GL driver advertises `GL_EXT_color_buffer_float`. WebGL 1 contexts omit it from `getSupportedExtensions()` and return `null` from `getExtension()`, including case-insensitive queries. Float texture rendering and pixel-buffer readback support the TFJS toxicity path; this does not imply full extension conformance (for example, `getInternalformatParameter` and `clearBufferfv` remain unimplemented).
 
 **Common extensions NOT implemented** (will return `null`): `WEBGL_lose_context`, `WEBGL_debug_renderer_info`, `WEBGL_compressed_texture_*` (s3tc/etc1/astc/pvrtc), `OES_element_index_uint`, `ANGLE_instanced_arrays`, `OES_texture_half_float_linear`, `EXT_sRGB`, `KHR_parallel_shader_compile`.
 

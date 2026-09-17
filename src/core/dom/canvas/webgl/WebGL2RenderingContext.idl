@@ -589,7 +589,7 @@ interface WebGL2RenderingContextOverloads
     // WebGL2:
     undefined readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type,
                          GLintptr offset);
-    [Unimplemented] undefined readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type,
+    undefined readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type,
                                          [AllowShared] ArrayBufferView dstData, unsigned long long dstOffset);
 };
 

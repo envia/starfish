@@ -60,7 +60,7 @@ using TexImageSource =
     ImageBitmapOrImageDataOrHTMLImageElementOrHTMLCanvasElementOrHTMLVideoElement;
 
 using GLErrorSet = std::unordered_set<GLenum>;
-using GLTextureMap = std::unordered_map<GLenum, GLuint>;
+using GLTextureMap = GCUnorderedMap<uint64_t, WebGLTexture*>;
 using GLExtensionMap =
     GCUnorderedMap<std::string, ScriptObject, CaseInsensitiveHash,
                    CaseInsensitiveEqual>;
@@ -303,6 +303,7 @@ public:
     FILL_GC_POINTER(WebGLRenderingContext, m_unpackColorSpace);
     FILL_GC_POINTER(WebGLRenderingContext, m_drawingBufferColorSpace);
     FILL_GC_COLLECTION(WebGLRenderingContext, m_enabledExtensions);
+    FILL_GC_COLLECTION(WebGLRenderingContext, m_boundTextures);
     END_IMPLEMENT_NEW_WITH_GC_DESC();
 
 public:
@@ -369,13 +370,22 @@ private:
     virtual bool isSrcDataValid(ScriptArrayBufferView srcData, GLenum type);
     virtual size_t getBytesPerPixel(GLenum format, GLenum type);
     GLint promotedWebGL1InternalFormat(GLint internalFormat, GLenum type);
-    GLenum promotedWebGL1Type(GLenum type);
+    GLenum promotedWebGL1Type(GLenum format, GLenum type);
+    bool ensureExtensionRegistryInitialized();
+    bool validatePixelTransferSize(GLsizei width, GLsizei height, GLenum format,
+                                   GLenum type, bool unpack, size_t bufferSize,
+                                   size_t& stride, size_t& offset);
+    Optional<WebGLTexture*> boundTexture(GLenum target) const;
+    void recordTextureImage(GLenum target, GLint level, GLenum type);
+    void applyTextureCompleteness(bool restore);
 
     bool m_hasPendingJobsBetweenFrames;
     uint32_t m_pendingClearMask;
 
     GLErrorSet m_GLErrors;
+    // Key: active texture enum in the high word, binding target in the low.
     GLTextureMap m_boundTextures;
+    GLenum m_activeTexture;
     bool m_unpackFlipY;
     bool m_unpackPremultiplyAlpha;
     GLenum m_unpackColorspaceConversion;

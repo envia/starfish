@@ -32,6 +32,17 @@ public:
                  WebGLRenderingContext* context, GLuint object);
     void init(ScriptBindingInstance* instance, void* domObjectPointer) override;
     bool isWebGLTexture() const override;
+    void setImageType(GLenum target, GLint level, GLenum type);
+    void setFilter(GLenum pname, GLint param);
+    bool needsFloatLinearExtension(bool floatLinearEnabled) const;
+
+private:
+    // One bit per base-level cube face; 2D uses bit zero. Other completeness
+    // rules (mip sizes and matching formats) are enforced by native GL.
+    uint8_t m_floatFaces = 0;
+    uint8_t m_halfFloatFaces = 0;
+    uint16_t m_minFilter;
+    uint16_t m_magFilter;
 };
 } // namespace Starfish
 

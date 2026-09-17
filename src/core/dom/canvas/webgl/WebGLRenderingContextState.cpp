@@ -74,20 +74,24 @@ void WebGLRenderingContextState::setBufferBoundToVertexAttributes(
 
 Optional<WebGLBuffer*> WebGLRenderingContextState::getBoundBuffer(GLuint target)
 {
-    GLuint vao = vertexArray();
-    const auto& iter = m_buffersBound[vao].find(target);
-    if (iter == m_buffersBound[vao].end()) {
-        return nullptr;
+    // Only ELEMENT_ARRAY_BUFFER bindings belong to a VAO (ES 3.0, 2.10).
+    GLuint vao = target == GL_ELEMENT_ARRAY_BUFFER ? vertexArray() : 0;
+    const auto buffers = m_buffersBound.find(vao);
+    if (buffers == m_buffersBound.end()) {
+        return Optional<WebGLBuffer*>();
+    }
+    const auto iter = buffers->second.find(target);
+    if (iter == buffers->second.end()) {
+        return Optional<WebGLBuffer*>();
     }
 
-    STARFISH_ASSERT(iter->second != nullptr);
     return iter->second;
 }
 
 void WebGLRenderingContextState::setBoundBuffer(GLenum target,
                                                 Optional<WebGLBuffer*> maybe)
 {
-    GLuint vao = vertexArray();
+    GLuint vao = target == GL_ELEMENT_ARRAY_BUFFER ? vertexArray() : 0;
     if (maybe.hasValue()) {
         m_buffersBound[vao][target] = maybe.value();
     } else {

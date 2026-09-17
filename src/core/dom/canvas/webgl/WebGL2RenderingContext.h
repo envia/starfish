@@ -290,6 +290,9 @@ public:
     // WebGL2: reads into the buffer bound to PIXEL_PACK_BUFFER.
     void readPixels(GLint x, GLint y, GLsizei width, GLsizei height,
                     GLenum format, GLenum type, GLintptr offset);
+    void readPixels(GLint x, GLint y, GLsizei width, GLsizei height,
+                    GLenum format, GLenum type, ScriptArrayBufferView dstData,
+                    unsigned long long dstOffset);
 
 protected:
     Optional<ScriptValue> getParameterImpl(GLenum pname);
@@ -313,6 +316,9 @@ private:
                              GLenum type) override;
     bool isSrcDataValid(ScriptArrayBufferView srcData, GLenum type) override;
     size_t getBytesPerPixel(GLenum format, GLenum type) override;
+    bool validateReadPixelsBuffer(GLsizei width, GLsizei height, GLenum format,
+                                  GLenum type, uint64_t offset,
+                                  uint64_t bufferSize);
 
     GLenum m_currentVertexAttribType = GL_FLOAT;
 };

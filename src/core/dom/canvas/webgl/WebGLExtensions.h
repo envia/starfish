@@ -44,7 +44,7 @@ class WebGLExtensionRegistry {
 public:
     static WebGLExtensionRegistry& instance();
 
-    void initialize(GL* gl);
+    bool initialize(GL* gl);
     bool isInitialized()
     {
         return m_isInitialized;

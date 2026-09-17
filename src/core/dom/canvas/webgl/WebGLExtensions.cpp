@@ -48,12 +48,19 @@ WebGLExtensionRegistry::WebGLExtensionRegistry()
 {
 }
 
-void WebGLExtensionRegistry::initialize(GL* gl)
+bool WebGLExtensionRegistry::initialize(GL* gl)
 {
+    if (m_isInitialized) {
+        return true;
+    }
     // 1. Get a list of extensions supported on this device
     const char* raw =
         reinterpret_cast<const char*>(gl->getString(GL_EXTENSIONS));
-    const std::string extensions = raw ? raw : "";
+    // A context must be current. A failed query must remain retryable.
+    if (!raw) {
+        return false;
+    }
+    const std::string extensions = raw;
 
     // WebGL uses extension names without the 'GL_' prefix.
     std::vector<std::string> tokens;
@@ -135,6 +142,7 @@ void WebGLExtensionRegistry::initialize(GL* gl)
          std::string::npos);
 
     m_isInitialized = true;
+    return true;
 }
 
 static bool isSupportedInWebGLVersion(const std::string& name, int webGLVersion)

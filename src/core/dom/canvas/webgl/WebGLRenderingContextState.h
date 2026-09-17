@@ -81,9 +81,8 @@ private:
 #undef V
 
     GCUnorderedMap<GLuint, std::unordered_set<GLuint>> m_arraysEnabled;
-    GCUnorderedMap<GLuint, std::unordered_map<GLuint, WebGLBuffer*>>
-        m_buffersBound;
-    GCUnorderedMap<GLuint, std::unordered_map<GLuint, WebGLBuffer*>>
+    GCUnorderedMap<GLuint, GCUnorderedMap<GLuint, WebGLBuffer*>> m_buffersBound;
+    GCUnorderedMap<GLuint, GCUnorderedMap<GLuint, WebGLBuffer*>>
         m_buffersBoundToVertexAttributes;
 };
 } // namespace Starfish

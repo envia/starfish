@@ -54,7 +54,9 @@ test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/canvas/to-data-url-tes
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/extensions/ext-disjoint-timer-query.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/extensions/ext-texture-filter-anisotropic.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/extensions/get-extension.html
-# test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/extensions/oes-texture-float-linear.html
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/extensions/oes-texture-float.html
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/extensions/oes-texture-half-float.html
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/extensions/oes-texture-float-linear.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/extensions/webgl-debug-renderer-info.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/extensions/webgl-debug-shaders.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/extensions/webgl-compressed-texture-etc.html
@@ -514,8 +516,8 @@ test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/programs/invalid-UTF-1
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/programs/program-infolog.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/programs/program-test.html
 test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/programs/use-program-crash-with-discard-in-fragment-shader.html
-# test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/reading/read-pixels-pack-alignment.html
-# test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/reading/read-pixels-test.html
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/reading/read-pixels-pack-alignment.html
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/reading/read-pixels-test.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/renderbuffers/feedback-loop.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/renderbuffers/framebuffer-state-restoration.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance/renderbuffers/renderbuffer-initialization.html
@@ -1556,8 +1558,8 @@ test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/programs/gl-get-frag-
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/query/occlusion-query.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/query/query.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/reading/read-pixels-from-fbo-test.html
-# test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/reading/read-pixels-into-pixel-pack-buffer.html
-# test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/reading/read-pixels-pack-parameters.html
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/reading/read-pixels-into-pixel-pack-buffer.html
+test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/reading/read-pixels-pack-parameters.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/renderbuffers/framebuffer-object-attachment.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/renderbuffers/framebuffer-test.html
 # test/cairo/reftest/vendor/khronos/webgl/2.0.0/conformance2/renderbuffers/framebuffer-texture-layer.html
