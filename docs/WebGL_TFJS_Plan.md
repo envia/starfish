@@ -2,8 +2,9 @@
 
 Written 2026-09-17. Shared between the Claude Code branch (`0375`) and the
 Codex branch (`0376`); the agreed version of this document is the same on
-both branches so that `0377` can take either. Revision 3 answers the review
-in Codex commit `c70f4982dd`.
+both branches so that `0377` can take either. Revision 4: the eight-row
+validation matrix and the results document are required (user decision after
+the Codex review in `c70f4982dd`).
 
 Goal: make https://storage.googleapis.com/tfjs-models/demos/toxicity/index.html
 run on the TensorFlow.js `webgl` backend with both WebGL1
@@ -261,6 +262,19 @@ and throw "Illegal invocation".
   `conformance2/extensions/promoted-extensions.html`. After this commit the
   demo with default WebGL2 must pass the acceptance criteria.
 
+### 6. Document the validation results
+
+- New `docs/WebGL_TFJS_Validation.md`: per matrix row, the source revision,
+  build options, driver and renderer string, TFJS backend and version
+  selected, per-input decisions against the CPU reference, maximum
+  probability error, suite diffs against the baseline (pre-existing versus
+  new failures), timings for orientation, and every limit or unverified item.
+  The step 0 baseline observations are recorded in the same document.
+- `docs/WebGL_TFJS_Plan.md` is updated to its final agreed state in the same
+  commit.
+- This is the only documentation commit; `docs/Spec.md` changes land with
+  the commits that change the surface (4 and 5).
+
 ## Testing
 
 Internal tests use `console.assert` and `testEnd()` and must also run in a
@@ -289,18 +303,20 @@ Khronos activations follow the `.res` rule: uncomment only tests that pass
 in this build, never delete or comment a line to make a run green, never relax
 an expectation to fit the implementation.
 
-Validation matrix. Required rows gate completion; optional rows are run when
-time allows and reported as run or not run. Release with software GL is
-dropped: it exercises no code path the Debug llvmpipe and Release NVIDIA rows
-do not.
+Validation matrix. All eight rows are required (user decision, 2026-09-17).
+Each row runs WebGL1 and WebGL2 forced, plus the page's own automatic
+selection. Builds use separate output directories (`out/<backend>-<type>`).
 
-| Backend | Build | GL | Suites | Toxicity WebGL1 / WebGL2 | Required |
-|---|---|---|---|---|---|
-| `uv_cairo_gl` | Debug | llvmpipe (`xvfb-run`, `LIBGL_ALWAYS_SOFTWARE=1`) | all five, diffed against baseline | yes | yes |
-| `uv_cairo_gl` | Debug | NVIDIA (`DISPLAY=:1`) | activated tests only | yes | yes |
-| `uv_cairo_gl` | Release | NVIDIA | none | yes | yes |
-| `glib_cairo_gl` | Debug | llvmpipe | `internal_test` | yes | yes |
-| `glib_cairo_gl` | Release | NVIDIA | none | yes | optional |
+| Backend | Build | GL | Suites | Toxicity WebGL1 / WebGL2 |
+|---|---|---|---|---|
+| `uv_cairo_gl` | Debug | llvmpipe (`xvfb-run`, `LIBGL_ALWAYS_SOFTWARE=1`) | all five, diffed against baseline | yes |
+| `uv_cairo_gl` | Debug | NVIDIA (`DISPLAY=:1`) | activated tests | yes |
+| `uv_cairo_gl` | Release | llvmpipe | none (no `testEnd` binding) | yes |
+| `uv_cairo_gl` | Release | NVIDIA | none | yes |
+| `glib_cairo_gl` | Debug | llvmpipe | `internal_test`, `vendor_test_khronos`, `vendor_test_khronos2` | yes |
+| `glib_cairo_gl` | Debug | NVIDIA | activated tests | yes |
+| `glib_cairo_gl` | Release | llvmpipe | none | yes |
+| `glib_cairo_gl` | Release | NVIDIA | none | yes |
 
 Final verification, run sequentially (llvmpipe is CPU bound):
 
@@ -312,8 +328,8 @@ Final verification, run sequentially (llvmpipe is CPU bound):
    is injected through stdin (`src/shell/Console.cpp`, 1023-byte lines) in
    chunks with a `console.log` acknowledgement per chunk; Release builds have
    no `testEnd` binding, so the probe output is the result.
-4. Push `indigo/2025/webgl2/0375` to `origin` and the test commits to
-   `web_tc_new_`.
+4. Record the results (commit 6) and push `indigo/2025/webgl2/0375` to
+   `origin` and the test commits to `web_tc_new_`.
 
 Every log records the source revision, build options, driver and renderer,
 TFJS and model version, per-input decisions, maximum probability error and
@@ -329,10 +345,12 @@ about 1e-7. Release: WebGL1 about 1.2 s, WebGL2 about 1.1 s.
 - Whether to commit the toxicity probe and runner into the repository (0730
   put them under `tests/webgl/`, which is not a repository convention) or keep
   them as untracked tooling described by this document. Default: untracked.
-- Whether the `glib_cairo_gl` Release row becomes required.
 - Document language: repository documents under `docs/` are in English; the
   agreed final version should be too, or both branches carry the same
   translation.
+
+Settled on 2026-09-17: all eight matrix rows are required; validation results
+are documented in `docs/WebGL_TFJS_Validation.md` (commit 6).
 
 ## Known remaining gaps (not in this plan)
 
