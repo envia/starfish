@@ -3,7 +3,7 @@
 Written 2026-09-17. The Claude Code branch (`0375`) and the Codex branch
 (`0376`) each keep their own plan document at this path; the two documents
 differ in wording and language but share the agreed requirements recorded
-here. Revision 8: the validation tool is committed as the first commit of each
+here. Revision 9: the validation tool is committed as the first commit of each
 working branch, and `0377` carries engine changes, tests and `docs/Spec.md`
 only; the tool, this plan and the results document stay on `0375` / `0376`
 (user decisions, 2026-09-17).
@@ -135,7 +135,10 @@ hang in the TFJS download path (recorded in 0373 `614c9a3c15`).
   WebGL version, renderer, decisions and probability error, and diffs against
   the reference), `toxicity-probe.js` (observes the unmodified demo through
   its Parcel module exports) and `toxicity-reference.json` (TFJS 1.2.2, CPU
-  backend, four inputs, tolerance 1e-3), plus a short `README.md`. Source:
+  backend, four inputs, tolerance 1e-3; extended with the model asset URLs
+  and the input strings so a change of the hosted demo is detectable and a
+  drifted page is never compared against the fixed reference), plus a short
+  `README.md`. Source:
   0730 `02094e8638`, `ca3fb940ee`, `7818039497` (`tests/webgl/`), adapted to
   the `tool/` layout and to the matrix rows of this plan (backend, build
   type, GL environment as arguments instead of the fixed four targets).
@@ -251,6 +254,11 @@ and throw "Illegal invocation".
   previous value afterwards, and verify llvmpipe behaves identically.
 - Remove the two `[Unimplemented]` markers in `WebGL2RenderingContext.idl`;
   update `docs/Spec.md` (readPixels overloads).
+- While working on this commit, expose `EXT_color_buffer_float` locally
+  (uncommitted) on the pre-commit tree once and record in the results
+  document whether the TFJS WebGL2 download hang from 0373 `614c9a3c15`
+  reproduces on the current code; this makes the commit order rest on our
+  own observation rather than on the reference branch.
 - Reference: 0374 `423b832f10`; 0373 `614c9a3c15`; 0730 `02094e8638`.
 - Tests: new `test/cairo/internal-test/canvas/webgl2-pixel-readback.html`
   (PBO read plus fence plus `getBufferSubData`, odd widths, element offsets,
